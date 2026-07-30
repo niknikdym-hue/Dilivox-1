@@ -1,0 +1,74 @@
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#F6F0E4">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Dilivox">
+<meta property="og:title" content="Она вышла на сцену дважды — интерактивный комикс-детектив | Dilivox">
+<meta property="og:description" content="На фестивале певицу замечают на двух сценах почти одновременно. Изучите 20 сюжетных кадров, найдите визуальные улики и выберите единственную версию.">
+<meta property="og:url" content="https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/">
+<meta property="og:image" content="https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp">
+<meta property="og:image:alt" content="Обложка комикса «Она вышла на сцену дважды»">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Она вышла на сцену дважды — интерактивный комикс-детектив | Dilivox">
+<meta name="twitter:description" content="На фестивале певицу замечают на двух сценах почти одновременно. Изучите 20 сюжетных кадров, найдите визуальные улики и выберите единственную версию.">
+<meta name="twitter:image" content="https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp">
+<meta name="twitter:image:alt" content="Обложка комикса «Она вышла на сцену дважды»">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Она вышла на сцену дважды",
+  "description": "На фестивале певицу замечают на двух сценах почти одновременно. Изучите 20 сюжетных кадров, найдите визуальные улики и выберите единственную версию.",
+  "image": "https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp",
+  "author": {
+    "@type": "Organization",
+    "name": "Dilivox"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dilivox",
+    "url": "https://dilivox.ru/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/"
+  },
+  "articleSection": "Комиксы",
+  "genre": "Детектив",
+  "contentRating": "12+",
+  "isAccessibleForFree": true,
+  "inLanguage": "ru-RU"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Dilivox",
+      "item": "https://dilivox.ru/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Истории",
+      "item": "https://dilivox.ru/istorii/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Она вышла на сцену дважды",
+      "item": "https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/"
+    }
+  ]
+}
+</script>

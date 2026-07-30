@@ -1,0 +1,85 @@
+DILIVOX — ПАСПОРТ КОНТЕНТНОГО ПАКЕТА
+
+Номер истории: 49
+Название: Она вышла на сцену дважды
+URL: https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
+Slug: ona-vyshla-na-stsenu-dvazhdy
+
+Видимый жанр: Детектив
+data-dv-genre: detektivy
+data-dv-format: short
+data-dv-story-type: comic
+Возраст: 12+
+
+Общее количество сюжетных и reveal-кадров: 21
+Номер последнего сюжетного кадра: 20
+Номер первого кадра развязки: 21
+Номер правильной версии: 3
+
+URL обложки:
+https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp
+
+URL кадров по порядку:
+01. https://optim.tildacdn.com/tild3231-3633-4565-b061-363739383733/-/format/webp/01-main-stage-finale.png.webp
+02. https://optim.tildacdn.com/tild6431-3165-4736-b233-313939383161/-/format/webp/02-boot-strap-fix.png.webp
+03. https://optim.tildacdn.com/tild6139-3330-4234-a564-633261383731/-/format/webp/03-green-wristbands.png.webp
+04. https://optim.tildacdn.com/tild3538-3434-4432-a665-336461333465/-/format/webp/04-flash-drive.png.webp
+05. https://optim.tildacdn.com/tild6564-3461-4731-b338-333763363735/-/format/webp/05-nika-enters-dress.png.webp
+06. https://optim.tildacdn.com/tild3635-3935-4663-a163-616561373763/-/format/webp/06-leksa-with-costum.png.webp
+07. https://optim.tildacdn.com/tild3734-6166-4235-b264-353564376335/-/format/webp/07-lera-gets-message.png.webp
+08. https://optim.tildacdn.com/tild6230-3433-4365-b065-313062633035/-/format/webp/08-double-on-side-st.png.webp
+09. https://optim.tildacdn.com/tild3139-6234-4436-b338-386533303836/-/format/webp/09-left-hand-and-sil.png.webp
+10. https://optim.tildacdn.com/tild6432-3731-4665-a132-393163346162/-/format/webp/10-black-poncho-esca.png.webp
+11. https://optim.tildacdn.com/tild3662-3033-4461-b766-393530663834/-/format/webp/11-real-nika-in-dres.png.webp
+12. https://optim.tildacdn.com/tild6363-3462-4561-b039-353935393666/-/format/webp/12-glitter-on-mirror.png.webp
+13. https://optim.tildacdn.com/tild6264-3063-4334-a637-653366653463/-/format/webp/13-four-suspects.png.webp
+14. https://optim.tildacdn.com/tild3866-3931-4461-b839-366136666266/-/format/webp/14-tim-shows-photos.png.webp
+15. https://optim.tildacdn.com/tild6266-6561-4534-b835-383466386366/-/format/webp/15-ankle-tattoo-and-.png.webp
+16. https://optim.tildacdn.com/tild6330-6364-4961-a230-636637643232/-/format/webp/16-leksa-rehearsal-f.png.webp
+17. https://optim.tildacdn.com/tild6362-6339-4334-a334-363539613330/-/format/webp/17-empty-costume-bag.png.webp
+18. https://optim.tildacdn.com/tild3161-3362-4832-a635-613264306436/-/format/webp/18-nika-left-wrist.png.webp
+19. https://optim.tildacdn.com/tild3463-6666-4663-a437-323539313065/-/format/webp/19-access-log-wristb.png.webp
+20. https://optim.tildacdn.com/tild6532-3565-4563-b365-346137386537/-/format/webp/20-before-the-accusa.png.webp
+21. https://optim.tildacdn.com/tild3438-6663-4464-b834-326661646238/-/format/webp/21-final-illustratio.png.webp
+
+Описание карточки каталога:
+Ника только что закончила выступление — и через несколько минут её снова видят на другой сцене. Разгадка спрятана в руках, обуви и деталях, которые легко пропустить.
+
+Метки:
+1. Фестиваль
+2. Двойник
+3. Кража
+4. Визуальные улики
+
+Предыдущая история:
+https://dilivox.ru/istorii/pansionat-tikhiy-uzhas/
+
+Следующая история:
+Не указана. Следующая история ещё не готова к публикации.
+
+Файлы пакета:
+1. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-content.txt
+2. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-frames.json
+3. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-visual-bible.txt
+4. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-for-codex.txt
+5. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-seo.txt
+6. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-head.txt
+7. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-t123.txt
+8. dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-card.txt
+
+Незаполненные значения:
+— next_slug намеренно оставлен пустым;
+— отсутствующих URL изображений нет;
+— T123, HEAD, JSON-LD, РСЯ и карточка каталога собраны Codex по правилам проекта.
+
+Контроль:
+— обложка вынесена отдельно;
+— кадры 01–20 имеют phase=story;
+— кадр 21 имеет phase=reveal;
+— выбор расположен после кадра 20;
+— правильный вариант один;
+— все изображения заявлены как 1080 × 1350, соотношение 4:5;
+— у каждого кадра заполнены alt, transcript, dialogue, caption, sound_text, clue и scene_break_after.
+— data-dv-genre нормализован до рабочего значения detektivy;
+— страница проверена на десктопе и мобильном экране;
+— выбор версии открывает кадр 21, развязку и блок улик через глобальную систему Dilivox.

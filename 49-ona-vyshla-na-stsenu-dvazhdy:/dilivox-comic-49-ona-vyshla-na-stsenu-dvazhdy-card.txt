@@ -1,0 +1,22 @@
+<article class="dv-story-card" data-dv-story-slug="ona-vyshla-na-stsenu-dvazhdy" data-dv-genre="detektivy" data-dv-format="short" data-dv-story-type="comic" data-dv-order="49" data-dv-popular="97">
+  <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/ona-vyshla-na-stsenu-dvazhdy/">
+    <div class="dv-story-card__media" data-dv-story-image>
+      <img src="https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp" width="1080" height="1350" alt="Обложка комикса «Она вышла на сцену дважды»" loading="lazy" decoding="async">
+    </div>
+    <div class="dv-story-card__top">
+      <span class="dv-story-card__number">49</span>
+      <span class="dv-story-card__status" data-dv-story-status="ona-vyshla-na-stsenu-dvazhdy">Новая</span>
+    </div>
+    <h3>Она вышла на сцену дважды</h3>
+    <p>Ника только что закончила выступление — и через несколько минут её снова видят на другой сцене. Разгадка спрятана в руках, обуви и деталях, которые легко пропустить.</p>
+    <div class="dv-story-card__meta">
+      <span class="dv-story-card__age">12+</span>
+      <span class="dv-story-card__type">Комикс</span>
+      <span>Фестиваль</span>
+      <span>Двойник</span>
+      <span>Кража</span>
+      <span>Визуальные улики</span>
+    </div>
+    <span class="dv-story-card__cta">Открыть историю</span>
+  </a>
+</article>

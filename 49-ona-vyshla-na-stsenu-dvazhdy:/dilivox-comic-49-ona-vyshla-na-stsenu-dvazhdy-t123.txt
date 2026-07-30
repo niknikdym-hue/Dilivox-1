@@ -1,0 +1,497 @@
+<style>
+.dv-comic,.dv-comic *{box-sizing:border-box}
+.dv-comic{--dv-bg:#F6F0E4;--dv-paper:#FFF9EF;--dv-paper-deep:#EFE3D0;--dv-text:#221B14;--dv-muted:#6F6253;--dv-gold:#B88A3B;--dv-gold-dark:#8A6428;--dv-ink:#263248;--dv-blue:#2F4C73;--dv-teal:#3C746E;position:relative;width:100%;padding:48px 20px 80px;color:var(--dv-text);background:var(--dv-bg);font-family:Inter,Arial,sans-serif}
+.dv-comic a{color:inherit}.dv-comic__shell{width:min(100%,1180px);margin:0 auto}.dv-comic__header{width:min(100%,860px);margin:0 auto 34px;text-align:center}.dv-comic__kicker{margin:0 0 14px;color:var(--dv-gold-dark);font-size:13px;font-weight:800;line-height:1.4;letter-spacing:.14em;text-transform:uppercase}.dv-comic h1{max-width:820px;margin:0 auto 22px;color:var(--dv-ink);font-family:Georgia,'Times New Roman',serif;font-size:64px;font-weight:500;line-height:1.02;letter-spacing:0}.dv-comic__lead{max-width:740px;margin:0 auto;color:var(--dv-muted);font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.55;letter-spacing:0}.dv-comic__tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px}.dv-comic__tag{display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border:1px solid rgba(111,98,83,.22);border-radius:999px;color:var(--dv-muted);background:rgba(255,249,239,.72);font-size:13px;font-weight:600;line-height:1}.dv-comic__tag--type{color:var(--dv-blue);border-color:rgba(47,76,115,.28)}.dv-comic__tag--age{font-weight:500}
+.dv-comic__cover{width:min(100%,720px);aspect-ratio:4/5;margin:0 auto 72px;overflow:hidden}.dv-comic__cover img{display:block;width:100%;height:100%;aspect-ratio:4/5;object-fit:cover;border:1px solid rgba(138,100,40,.24);border-radius:8px;background:var(--dv-paper-deep);box-shadow:0 24px 64px rgba(38,50,72,.16)}.dv-comic__layout{position:relative}.dv-comic__main{width:min(100%,820px);margin:0 auto}.dv-comic__reader{display:block}.dv-comic__scene{margin:0 0 64px}.dv-comic__scene-head{display:flex;align-items:baseline;gap:14px;margin:0 0 20px;padding-bottom:12px;border-bottom:1px solid rgba(138,100,40,.24)}.dv-comic__scene-head span{color:var(--dv-gold-dark);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.dv-comic__scene-head h2{margin:0;color:var(--dv-ink);font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:500;line-height:1.2;letter-spacing:0}.dv-comic__frame{margin:0 0 30px;overflow:hidden;border:1px solid rgba(138,100,40,.24);border-radius:8px;background:var(--dv-paper);box-shadow:0 18px 48px rgba(46,34,20,.10)}.dv-comic__image-wrap{position:relative;overflow:hidden;background:#11131B}.dv-comic__frame img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}.dv-comic__frame-number{position:absolute;top:12px;right:12px;display:grid;width:38px;height:38px;place-items:center;border:1px solid rgba(255,255,255,.34);border-radius:50%;color:#FFF9EF;background:rgba(17,19,27,.72);font-size:12px;font-weight:800}.dv-comic__frame-copy{padding:20px 22px 22px}.dv-comic__frame-label{display:block;margin-bottom:9px;color:var(--dv-gold-dark);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.dv-comic__caption,.dv-comic__transcript{margin:0;color:var(--dv-muted);font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:1.6;letter-spacing:0}.dv-comic__caption{margin-bottom:8px;color:var(--dv-text)}.dv-comic__dialogue{display:grid;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(138,100,40,.18)}.dv-comic__dialogue-line{display:grid;grid-template-columns:minmax(88px,auto) 1fr;gap:12px;margin:0;color:var(--dv-text);font-size:16px;line-height:1.55}.dv-comic__dialogue-line strong{color:var(--dv-blue);font-weight:800}.dv-comic__sounds{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.dv-comic__sound{color:var(--dv-teal);font-size:13px;font-weight:800;text-transform:uppercase}
+.dv-comic .dv-story__choice,.dv-comic .dv-story__reveal,.dv-comic .dv-story__facts{margin:56px 0;padding:34px;border:1px solid rgba(138,100,40,.28);border-radius:8px;background:var(--dv-paper);box-shadow:0 18px 48px rgba(46,34,20,.08)}.dv-comic .dv-story__choice h2,.dv-comic .dv-story__reveal h2,.dv-comic .dv-story__facts h2{margin:0 0 12px;color:var(--dv-ink);font-family:Georgia,'Times New Roman',serif;font-size:36px;font-weight:500;line-height:1.15;letter-spacing:0}.dv-comic .dv-story__choice-subtitle{margin:0 0 24px;color:var(--dv-muted);font-size:16px;line-height:1.6}.dv-comic .dv-story__answers{display:grid;gap:12px}.dv-comic .dv-story__answer{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;width:100%;padding:16px;border:1px solid rgba(47,76,115,.24);border-radius:8px;color:var(--dv-text);background:#FFFDF8;text-align:left;cursor:pointer;transition:border-color .2s ease,background-color .2s ease,transform .2s ease}.dv-comic .dv-story__answer:hover{border-color:rgba(47,76,115,.56);background:#F4F6F8;transform:translateY(-1px)}.dv-comic .dv-story__answer:focus-visible{outline:3px solid rgba(47,76,115,.28);outline-offset:3px}.dv-comic .dv-story__answer:disabled{cursor:default;transform:none}.dv-comic .dv-story__answer-prefix{display:grid;width:36px;height:36px;place-items:center;border-radius:50%;color:#FFF9EF;background:var(--ink,var(--dv-ink));font-weight:800}.dv-comic .dv-story__answer-text{padding-top:6px;font-size:16px;line-height:1.5}.dv-comic .dv-story__answer.is-correct{border-color:rgba(60,116,110,.65);background:#EEF6F3}.dv-comic .dv-story__answer.is-wrong{border-color:rgba(139,57,70,.48);background:#FAEFF1}.dv-comic .dv-story__result{margin-top:18px;padding:14px 16px;border-left:3px solid var(--dv-gold);color:var(--dv-muted);background:var(--dv-paper-deep);font-size:15px;line-height:1.55}.dv-comic .dv-story__reveal[hidden],.dv-comic .dv-story__facts[hidden]{display:none!important}.dv-comic .dv-story__reveal>p{margin:22px 0 0;color:var(--dv-muted);font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:1.7}.dv-comic .dv-story__facts ol{display:grid;gap:12px;margin:22px 0 0;padding-left:24px;color:var(--dv-muted);font-size:16px;line-height:1.6}
+.dv-comic .dv-story__nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:56px}.dv-comic .dv-story__nav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:11px 16px;border:1px solid rgba(138,100,40,.30);border-radius:8px;color:var(--dv-ink);background:var(--dv-paper);font-size:14px;font-weight:800;text-decoration:none}.dv-comic .dv-story__nav a:hover{border-color:var(--dv-gold-dark);background:var(--dv-paper-deep)}
+.dv-comic .dv-ad{position:relative;width:100%;margin:44px 0;padding:12px;border:1px solid rgba(138,100,40,.20);border-radius:8px;background:rgba(255,249,239,.72);box-shadow:0 14px 36px rgba(46,34,20,.06)}.dv-comic .dv-ad[hidden]{display:none!important}.dv-comic .dv-ad__label{display:block;margin:0 0 7px;color:rgba(111,98,83,.74);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.dv-comic .dv-ad__slot{min-height:112px;overflow:hidden;border-radius:6px;background:rgba(239,227,208,.45)}.dv-comic .dv-ad--story-sidebar{display:none}
+@media(min-width:1480px){.dv-comic .dv-ad--story-sidebar{position:fixed;top:138px;right:max(22px,calc((100vw - 1430px)/2));display:block;width:260px;margin:0;z-index:20}.dv-comic .dv-ad--story-sidebar .dv-ad__slot{min-height:520px}}
+@media(max-width:1479px){.dv-comic .dv-ad--story-sidebar{display:none!important}}
+@media(max-width:760px){.dv-comic{padding:34px 14px 60px}.dv-comic h1{font-size:42px;line-height:1.06}.dv-comic__lead{font-size:20px}.dv-comic__cover{margin-bottom:52px}.dv-comic__scene{margin-bottom:48px}.dv-comic__scene-head{display:block}.dv-comic__scene-head h2{margin-top:6px;font-size:22px}.dv-comic__frame{margin-bottom:22px}.dv-comic__frame-copy{padding:17px}.dv-comic__transcript,.dv-comic__caption{font-size:17px}.dv-comic__dialogue-line{display:block}.dv-comic__dialogue-line strong{display:block;margin-bottom:2px}.dv-comic .dv-story__choice,.dv-comic .dv-story__reveal,.dv-comic .dv-story__facts{margin:42px 0;padding:22px 18px}.dv-comic .dv-story__choice h2,.dv-comic .dv-story__reveal h2,.dv-comic .dv-story__facts h2{font-size:30px}.dv-comic .dv-story__answer{grid-template-columns:36px 1fr;padding:14px 12px}.dv-comic .dv-story__answer-prefix{width:32px;height:32px}.dv-comic .dv-ad{margin:34px 0}.dv-comic .dv-story__nav{display:grid}.dv-comic .dv-story__nav a{width:100%}}
+@media(prefers-reduced-motion:reduce){.dv-comic .dv-story__answer{transition:none}}
+</style>
+
+<!-- DILIVOX / Комикс 49 / без шапки, футера и счётчика -->
+<section class="dv-story dv-comic" data-dv-page="story" data-dv-story-slug="ona-vyshla-na-stsenu-dvazhdy" data-dv-genre="detektivy" data-dv-format="short" data-dv-story-type="comic">
+  <div class="dv-comic__shell">
+    <header class="dv-story__header dv-comic__header">
+      <p class="dv-story__kicker dv-comic__kicker">История 49 · Комикс-детектив</p>
+      <h1>Она вышла на сцену дважды</h1>
+      <p class="dv-story__lead dv-comic__lead">На фестивале хедлайнер появляется на двух сценах почти одновременно. Лере предстоит понять, кто вышел к публике второй раз и зачем кому-то понадобилась эта подмена.</p>
+      <div class="dv-story__tags dv-comic__tags" aria-label="Метки истории">
+        <span class="dv-comic__tag dv-comic__tag--type">Комикс</span>
+<span class="dv-comic__tag dv-comic__tag--age">12+</span>
+<span class="dv-comic__tag">Фестиваль</span>
+<span class="dv-comic__tag">Двойник</span>
+<span class="dv-comic__tag">Кража</span>
+<span class="dv-comic__tag">Визуальные улики</span>
+      </div>
+    </header>
+
+    <figure class="dv-story__image-card dv-comic__cover" data-dv-story-image aria-label="Обложка комикса «Она вышла на сцену дважды»">
+      <img src="https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp" width="1080" height="1350" alt="Обложка комикса «Она вышла на сцену дважды»" loading="eager" fetchpriority="high" decoding="async">
+    </figure>
+
+    <div class="dv-story__layout dv-comic__layout">
+      <main class="dv-story__main dv-comic__main">
+        <article class="dv-story__text dv-comic__reader" data-dv-story-text aria-label="Комикс «Она вышла на сцену дважды»">
+          <section class="dv-comic__scene" aria-labelledby="dv-comic-scene-1">
+  <header class="dv-comic__scene-head">
+    <span>Сцена 1</span>
+    <h2 id="dv-comic-scene-1">Главная сцена</h2>
+  </header>
+  <figure class="dv-comic__frame" data-dv-comic-frame="1" data-dv-scene="1">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3231-3633-4565-b061-363739383733/-/format/webp/01-main-stage-finale.png.webp" width="1080" height="1350" alt="Ника завершает выступление на главной сцене" loading="eager" fetchpriority="high" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">01</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 01</span>
+    
+    <p class="dv-comic__transcript">Финал главной сцены. Ника приветствует публику, держа микрофон правой рукой; на левом запястье заметен тейп.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Ника</strong><span>«SUNPULSE, спасибо!»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="2" data-dv-scene="1">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6431-3165-4736-b233-313939383161/-/format/webp/02-boot-strap-fix.png.webp" width="1080" height="1350" alt="Яна чинит правый ботинок Ники" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">02</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 02</span>
+    
+    <p class="dv-comic__transcript">За кулисами Яна заменяет сломанную серебряную пряжку на правом ботинке Ники чёрным ремешком.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Яна</strong><span>«Пряжка лопнула. Ставлю ремешок — до конца вечера хватит.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Ника</strong><span>«Только быстро.»</span></p></div>
+    
+  </figcaption>
+</figure>
+</section>
+<!-- DILIVOX / РСЯ / R-A-19563496-5 -->
+<div class="dv-ad dv-ad--comic-start" aria-label="Реклама" data-dv-ad-block="R-A-19563496-5" data-dv-ad-lazy="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-5"></div>
+</div>
+
+<section class="dv-comic__scene" aria-labelledby="dv-comic-scene-2">
+  <header class="dv-comic__scene-head">
+    <span>Сцена 2</span>
+    <h2 id="dv-comic-scene-2">Часть 2</h2>
+  </header>
+  <figure class="dv-comic__frame" data-dv-comic-frame="3" data-dv-scene="2">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6139-3330-4234-a564-633261383731/-/format/webp/03-green-wristbands.png.webp" width="1080" height="1350" alt="Марк получает два зелёных браслета" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">03</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 03</span>
+    
+    <p class="dv-comic__transcript">Координатор передаёт Марку два зелёных гостевых браслета и предупреждает об ответственности за них.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Координатор</strong><span>«Два гостевых. Оба под вашу ответственность.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Марк</strong><span>«Понял.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="4" data-dv-scene="2">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3538-3434-4432-a665-336461333465/-/format/webp/04-flash-drive.png.webp" width="1080" height="1350" alt="Ника показывает Марку флешку" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">04</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 04</span>
+    
+    <p class="dv-comic__transcript">Ника показывает Марку флешку с новым альбомом в маленьком прозрачном пурпурном футляре.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Ника</strong><span>«Здесь весь новый альбом. До релиза — ни одной копии.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Марк</strong><span>«Я прослежу.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="5" data-dv-scene="2">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6564-3461-4731-b338-333763363735/-/format/webp/05-nika-enters-dress.png.webp" width="1080" height="1350" alt="Ника входит в гримёрку" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">05</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 05</span>
+    
+    <p class="dv-comic__transcript">Ника входит в гримёрку, а Марк остаётся возле двери. На левом запястье Ники виден тейп.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Марк</strong><span>«Отдохни пять минут. Я у двери.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Ника</strong><span>«Никого не пускай.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="6" data-dv-scene="2">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3635-3935-4663-a163-616561373763/-/format/webp/06-leksa-with-costum.png.webp" width="1080" height="1350" alt="Лекса несёт чехол резервного костюма" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">06</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 06</span>
+    
+    <p class="dv-comic__transcript">Лекса проходит по служебному коридору с чехлом резервного костюма Ники.</p>
+    
+    
+  </figcaption>
+</figure>
+</section>
+<!-- DILIVOX / РСЯ / R-A-19563496-9 -->
+<div class="dv-ad dv-ad--comic-inline" aria-label="Реклама" data-dv-ad-block="R-A-19563496-9" data-dv-ad-lazy="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-9"></div>
+</div>
+
+<section class="dv-comic__scene" aria-labelledby="dv-comic-scene-3">
+  <header class="dv-comic__scene-head">
+    <span>Сцена 3</span>
+    <h2 id="dv-comic-scene-3">Часть 3</h2>
+  </header>
+  <figure class="dv-comic__frame" data-dv-comic-frame="7" data-dv-scene="3">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3734-6166-4235-b264-353564376335/-/format/webp/07-lera-gets-message.png.webp" width="1080" height="1350" alt="Лера получает сообщения о втором выступлении" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">07</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 07</span>
+    
+    <p class="dv-comic__transcript">Лера получает сообщения и видео о том, что Ника появилась на боковой сцене.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Сообщение</strong><span>«Ника уже на боковой сцене!»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Она только что ушла в гримёрку…»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="8" data-dv-scene="3">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6230-3433-4365-b065-313062633035/-/format/webp/08-double-on-side-st.png.webp" width="1080" height="1350" alt="Двойник выступает на боковой сцене" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">08</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 08</span>
+    
+    <p class="dv-comic__transcript">Двойник в чёрном парике-бобе и резервном костюме Ники выступает на боковой сцене. Микрофон находится в левой руке, тейпа нет.</p>
+    
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="9" data-dv-scene="3">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3139-6234-4436-b338-386533303836/-/format/webp/09-left-hand-and-sil.png.webp" width="1080" height="1350" alt="Крупный план руки и правого ботинка двойника" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">09</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 09</span>
+    
+    <p class="dv-comic__transcript">Увеличенный фрагмент выступления: микрофон находится в левой руке двойника, а на правом ботинке видна целая серебряная пряжка.</p>
+    
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="10" data-dv-scene="3">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6432-3731-4665-a132-393163346162/-/format/webp/10-black-poncho-esca.png.webp" width="1080" height="1350" alt="Человек в пончо скрывает сценический костюм" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">10</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 10</span>
+    
+    <p class="dv-comic__transcript">За сценой человек снимает серебристые ботинки, рядом стоят чёрные кроссовки. Фигура набрасывает чёрное пончо; на правом запястье виден зелёный браслет.</p>
+    
+    
+  </figcaption>
+</figure>
+</section>
+<!-- DILIVOX / РСЯ / R-A-19563496-10 -->
+<div class="dv-ad dv-ad--comic-inline" aria-label="Реклама" data-dv-ad-block="R-A-19563496-10" data-dv-ad-lazy="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-10"></div>
+</div>
+
+<section class="dv-comic__scene" aria-labelledby="dv-comic-scene-4">
+  <header class="dv-comic__scene-head">
+    <span>Сцена 4</span>
+    <h2 id="dv-comic-scene-4">Часть 4</h2>
+  </header>
+  <figure class="dv-comic__frame" data-dv-comic-frame="11" data-dv-scene="4">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3662-3033-4461-b766-393530663834/-/format/webp/11-real-nika-in-dres.png.webp" width="1080" height="1350" alt="Лера и охранник находят Нику" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">11</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 11</span>
+    
+    <p class="dv-comic__transcript">Лера и охранник находят настоящую Нику без сознания в гримёрке. На левом запястье тейп, на правом ботинке чёрный ремешок. Пурпурный футляр пуст.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Ника! Слышишь меня?»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Охранник</strong><span>«Дышит. Вызываю врача.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="12" data-dv-scene="4">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6363-3462-4561-b039-353935393666/-/format/webp/12-glitter-on-mirror.png.webp" width="1080" height="1350" alt="След блеска на зеркале" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">12</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 12</span>
+    
+    <p class="dv-comic__transcript">На зеркале гримёрки виден мазок серебристо-розового блеска из грима танцовщиц.</p>
+    
+    
+  </figcaption>
+</figure>
+</section>
+<!-- DILIVOX / РСЯ / R-A-19563496-11 -->
+<div class="dv-ad dv-ad--comic-inline" aria-label="Реклама" data-dv-ad-block="R-A-19563496-11" data-dv-ad-lazy="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-11"></div>
+</div>
+
+<section class="dv-comic__scene" aria-labelledby="dv-comic-scene-5">
+  <header class="dv-comic__scene-head">
+    <span>Сцена 5</span>
+    <h2 id="dv-comic-scene-5">Часть 5</h2>
+  </header>
+  <figure class="dv-comic__frame" data-dv-comic-frame="13" data-dv-scene="5">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6264-3063-4334-a637-653366653463/-/format/webp/13-four-suspects.png.webp" width="1080" height="1350" alt="Четверо подозреваемых в служебной зоне" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">13</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 13</span>
+    
+    <p class="dv-comic__transcript">Перед Лерой стоят Марк, Яна, Тим и Лекса.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Никто не уходит. Кто-то из вас помог двойнику.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Марк</strong><span>«Это абсурд.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Лекса</strong><span>«Я была на репетиции.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="14" data-dv-scene="5">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3866-3931-4461-b839-366136666266/-/format/webp/14-tim-shows-photos.png.webp" width="1080" height="1350" alt="Тим показывает фотографии Лере" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">14</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 14</span>
+    
+    <p class="dv-comic__transcript">Тим показывает Лере снимки, сделанные возле выхода с боковой сцены.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Тим</strong><span>«Я снимал выход со сцены. Здесь есть человек в пончо.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Увеличь.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="15" data-dv-scene="5">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6266-6561-4534-b835-383466386366/-/format/webp/15-ankle-tattoo-and-.png.webp" width="1080" height="1350" alt="На фото видна татуировка на левой щиколотке" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">15</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 15</span>
+    
+    <p class="dv-comic__transcript">На увеличенном снимке человека в чёрном пончо отчётливо видна татуировка-молния на левой щиколотке.</p>
+    
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="16" data-dv-scene="5">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6330-6364-4961-a230-636637643232/-/format/webp/16-leksa-rehearsal-f.png.webp" width="1080" height="1350" alt="Лекса на репетиции" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">16</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 16</span>
+    
+    <p class="dv-comic__transcript">Во время репетиции на левой щиколотке Лексы видна татуировка-молния, а у виска — серебристо-розовый блеск.</p>
+    
+    
+  </figcaption>
+</figure>
+</section>
+<!-- DILIVOX / РСЯ / R-A-19563496-12 -->
+<div class="dv-ad dv-ad--comic-inline" aria-label="Реклама" data-dv-ad-block="R-A-19563496-12" data-dv-ad-lazy="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-12"></div>
+</div>
+
+<section class="dv-comic__scene" aria-labelledby="dv-comic-scene-6">
+  <header class="dv-comic__scene-head">
+    <span>Сцена 6</span>
+    <h2 id="dv-comic-scene-6">Часть 6</h2>
+  </header>
+  <figure class="dv-comic__frame" data-dv-comic-frame="17" data-dv-scene="6">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6362-6339-4334-a334-363539613330/-/format/webp/17-empty-costume-bag.png.webp" width="1080" height="1350" alt="Яна показывает пустой чехол и карточку комплекта" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">17</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 17</span>
+    
+    <p class="dv-comic__transcript">Яна показывает пустое место резервного костюма, пустой чехол и карточку гардеробного учёта с фотографией двух серебристых ботинок с целыми пряжками.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Яна</strong><span>«Резервного комплекта нет. На карточке видно: обе пряжки были целы.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Значит, на сцене была не Ника.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="18" data-dv-scene="6">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3161-3362-4832-a635-613264306436/-/format/webp/18-nika-left-wrist.png.webp" width="1080" height="1350" alt="Ника показывает травмированное левое запястье" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">18</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 18</span>
+    
+    <p class="dv-comic__transcript">Ника показывает затейпированное левое запястье и держит микрофон правой рукой.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Ника</strong><span>«После травмы я держу микрофон только правой.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Тогда на боковой сцене выступала другая.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="19" data-dv-scene="6">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3463-6666-4663-a437-323539313065/-/format/webp/19-access-log-wristb.png.webp" width="1080" height="1350" alt="На планшете показан маршрут второго браслета" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">19</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 19</span>
+    
+    <p class="dv-comic__transcript">Сотрудник службы доступа показывает Лере маршрут второго зелёного браслета из артистической зоны к боковой сцене и далее в толпу.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Сотрудник доступа</strong><span>«Второй браслет прошёл из артистической зоны в толпу.»</span></p>
+<p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Тот самый, который выдали Марку.»</span></p></div>
+    
+  </figcaption>
+</figure>
+<figure class="dv-comic__frame" data-dv-comic-frame="20" data-dv-scene="6">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild6532-3565-4563-b365-346137386537/-/format/webp/20-before-the-accusa.png.webp" width="1080" height="1350" alt="Лера готова назвать виновных" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">20</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 20</span>
+    
+    <p class="dv-comic__transcript">Лера стоит перед Лексой и Марком, собрав все доказательства.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Теперь всё сходится.»</span></p></div>
+    
+  </figcaption>
+</figure>
+</section>
+        </article>
+
+        <!-- DILIVOX / РСЯ / R-A-19563496-6 -->
+<div class="dv-ad dv-ad--story-before-choice" aria-label="Реклама" data-dv-ad-block="R-A-19563496-6" data-dv-ad-lazy="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-6"></div>
+</div>
+
+        <section class="dv-story__choice" data-dv-choice-block aria-labelledby="dv-choice-title-49">
+          <h2 id="dv-choice-title-49">Выберите версию</h2>
+          <p class="dv-story__choice-subtitle">Какая версия объясняет все детали?</p>
+          <div class="dv-story__answers" role="group" aria-label="Версии разгадки">
+            <button class="dv-story__answer" type="button" data-dv-choice="1" data-dv-correct="false">
+  <span class="dv-story__answer-prefix">1</span>
+  <span class="dv-story__answer-text">Яна подменила Нику, чтобы скрыть ошибку с костюмом.</span>
+</button>
+<button class="dv-story__answer" type="button" data-dv-choice="2" data-dv-correct="false">
+  <span class="dv-story__answer-prefix">2</span>
+  <span class="dv-story__answer-text">Тим смонтировал ложные фотографии и украл флешку.</span>
+</button>
+<button class="dv-story__answer" type="button" data-dv-choice="3" data-dv-correct="true">
+  <span class="dv-story__answer-prefix">3</span>
+  <span class="dv-story__answer-text">Лекса вышла на сцену двойником, а Марк организовал кражу флешки.</span>
+</button>
+<button class="dv-story__answer" type="button" data-dv-choice="4" data-dv-correct="false">
+  <span class="dv-story__answer-prefix">4</span>
+  <span class="dv-story__answer-text">Ника сама инсценировала исчезновение ради рекламы.</span>
+</button>
+          </div>
+          <div class="dv-story__result" data-dv-choice-result hidden aria-live="polite"></div>
+        </section>
+
+        <section class="dv-story__reveal" data-dv-reveal hidden aria-hidden="true">
+          <h2>Правильная версия</h2>
+          <figure class="dv-comic__frame" data-dv-comic-frame="21" data-dv-scene="7">
+  <div class="dv-comic__image-wrap">
+    <img src="https://optim.tildacdn.com/tild3438-6663-4464-b834-326661646238/-/format/webp/21-final-illustratio.png.webp" width="1080" height="1350" alt="Охрана уводит Лексу и Марка" loading="lazy" decoding="async">
+    <span class="dv-comic__frame-number" aria-hidden="true">21</span>
+  </div>
+  <figcaption class="dv-comic__frame-copy">
+    <span class="dv-comic__frame-label">Кадр 21</span>
+    
+    <p class="dv-comic__transcript">Охрана уводит Лексу и Марка. Ника и Лера остаются возле сияющей фестивальной сцены.</p>
+    <div class="dv-comic__dialogue"><p class="dv-comic__dialogue-line"><strong>Лера</strong><span>«Лекса вышла на сцену вместо Ники. Марк организовал кражу флешки.»</span></p></div>
+    
+  </figcaption>
+</figure>
+          <p>На боковую сцену вышла Лекса в резервном костюме Ники и чёрном парике. Она держала микрофон левой рукой, хотя настоящая Ника после травмы пользовалась правой; на её правом ботинке оставалась целая серебряная пряжка, тогда как ботинок Ники уже был стянут чёрным ремешком. После выступления Лекса сняла серебристые ботинки, скрыла костюм под пончо и ушла в толпу по зелёному гостевому браслету. Марк получил два таких браслета, контролировал вход в гримёрку и знал о флешке с новым альбомом. Пока публика смотрела на ложное второе выступление, он забрал флешку. След блеска и татуировка подтвердили участие Лексы, а журнал доступа связал её путь с браслетом Марка.</p>
+        </section>
+
+        <section class="dv-story__facts" data-dv-facts hidden aria-hidden="true">
+          <h2>Что решило дело</h2>
+          <ol>
+            <li>Настоящая Ника держала микрофон правой рукой, двойник — левой.</li>
+<li>У Ники на левом запястье был тейп, у двойника его не было.</li>
+<li>На правом ботинке Ники стоял чёрный ремешок, у двойника сохранилась целая серебряная пряжка.</li>
+<li>Серебристо-розовый блеск на зеркале совпал с гримом Лексы.</li>
+<li>Татуировка-молния на левой щиколотке выдала Лексу.</li>
+<li>Второй зелёный браслет из пары Марка прошёл из артистической зоны в толпу.</li>
+          </ol>
+        </section>
+
+        <!-- DILIVOX / РСЯ / R-A-19563496-7 -->
+<div class="dv-ad dv-ad--story-after-reveal" aria-label="Реклама" data-dv-ad-block="R-A-19563496-7" data-dv-ad-lazy="true" data-dv-ad-after-reveal hidden aria-hidden="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-7"></div>
+</div>
+
+        <nav class="dv-story__nav" aria-label="Навигация по историям">
+          <a class="dv-prev-story" data-dv-goal="prev-story" href="/istorii/pansionat-tikhiy-uzhas/">← Предыдущая история</a>
+          <a class="dv-back-to-stories" data-dv-goal="back-to-stories" href="/istorii/">Все истории</a>
+        </nav>
+      </main>
+
+      <aside class="dv-story__sidebar" aria-label="Реклама">
+        <!-- DILIVOX / РСЯ / R-A-19563496-8 -->
+<div class="dv-ad dv-ad--story-sidebar" aria-label="Реклама" data-dv-ad-block="R-A-19563496-8" data-dv-ad-lazy="true" data-dv-ad-desktop-only="true">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-8"></div>
+</div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(w,d){
+  var root=d.querySelector('.dv-comic[data-dv-story-slug="ona-vyshla-na-stsenu-dvazhdy"]');
+  if(!root||root.dataset.dvComicAdsReady==='true')return;
+  root.dataset.dvComicAdsReady='true';
+  var blocks=Array.prototype.slice.call(root.querySelectorAll('[data-dv-ad-block]'));
+  var observer='IntersectionObserver' in w?new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){if(entry.isIntersecting){observer.unobserve(entry.target);render(entry.target);}});
+  },{rootMargin:'700px 0px'}):null;
+  function eligible(block){
+    if(block.hidden)return false;
+    if(block.hasAttribute('data-dv-ad-desktop-only')&&!(w.matchMedia&&w.matchMedia('(min-width:1480px)').matches))return false;
+    return true;
+  }
+  function render(block){
+    if(!eligible(block)||block.dataset.dvAdRendered==='true')return;
+    var id=block.getAttribute('data-dv-ad-block');
+    var slot=d.getElementById('yandex_rtb_'+id);
+    if(!id||!slot)return;
+    block.dataset.dvAdRendered='true';
+    w.yaContextCb = w.yaContextCb || [];
+    w.yaContextCb.push(function(){Ya.Context.AdvManager.render({blockId:id,renderTo:slot.id});});
+  }
+  function watch(block){
+    if(!eligible(block))return;
+    if(observer)observer.observe(block);else render(block);
+  }
+  blocks.forEach(function(block){
+    watch(block);
+    if('MutationObserver' in w){
+      new MutationObserver(function(){watch(block);}).observe(block,{attributes:true,attributeFilter:['hidden','aria-hidden','class','style']});
+    }
+  });
+  w.addEventListener('resize',function(){blocks.forEach(watch);},{passive:true});
+})(window,document);
+</script>
