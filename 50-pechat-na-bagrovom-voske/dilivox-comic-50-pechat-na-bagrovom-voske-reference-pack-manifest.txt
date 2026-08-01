@@ -1,0 +1,100 @@
+DILIVOX — ИСТОРИЯ-КОМИКС №50
+«ПЕЧАТЬ НА БАГРОВОМ ВОСКЕ»
+МАНИФЕСТ ВИЗУАЛЬНЫХ ПАКЕТОВ РЕФЕРЕНСОВ
+
+Назначение: точно фиксировать, какие утверждённые PNG разрешено подавать на вход при генерации каждого изображения.
+Предыдущие неудачные генерации в пакеты не включать.
+
+============================================================
+00-cover.png — УТВЕРЖДЕНО ВИЗУАЛЬНО
+============================================================
+
+Разрешённые источники:
+approved-characters/01-adrian-de-loren-approved-reference.png
+approved-characters/02-claire-d-aubigny-approved-reference.png
+approved-characters/03-queen-approved-reference.png
+approved-characters/05-etienne-vaudren-approved-reference.png
+02-queens-reception-room-approved-reference.png
+approved-characters/01-royal-signet-rings-and-seal-impressions-approved-reference.png
+approved-characters/02-blue-velvet-ring-box-approved-reference.png
+approved-characters/03-02-crimson-sealing-wax-melting-approved-reference.png
+
+Статус: изображение утверждено пользователем; бинарный файл ещё не загружен.
+
+============================================================
+01-third-bell-at-the-gates.png — УТВЕРЖДЕНО ВИЗУАЛЬНО
+============================================================
+
+Разрешённые источники:
+approved-characters/01-adrian-de-loren-approved-reference.png
+approved-characters/01-royal-residence-exterior-approved-reference.png
+
+Запрещено добавлять Клэр или других постоянных персонажей.
+Статус: изображение утверждено пользователем; бинарный файл ещё не загружен.
+
+============================================================
+02-letter-without-a-copy.png — СЛЕДУЮЩИЙ КАДР
+============================================================
+
+Разрешённые источники, и только они:
+approved-characters/02-claire-d-aubigny-approved-reference.png
+approved-characters/03-queen-approved-reference.png
+approved-characters/04-marie-de-seval-approved-reference.png
+approved-characters/05-etienne-vaudren-approved-reference.png
+approved-characters/06-armand-belfort-approved-reference.png
+approved-characters/07-gilles-renaud-approved-reference.png
+02-queens-reception-room-approved-reference.png
+approved-characters/03-01-sealing-wax-writing-set-approved-reference.png
+
+Композиционный приоритет:
+1. Королева и Клэр — крупнее и читаются первыми.
+2. Мари — у камина.
+3. Водрен — в средней глубине с закрытыми портфелем и тростью.
+4. Бельфор и Рено — разные, узнаваемые силуэты в глубине.
+5. Адриана в кадре нет.
+
+Жёсткие запреты:
+— не превращать комнату в тронный зал;
+— не использовать золочёное рококо;
+— не добавлять кардинала;
+— не давать Водрену шарообразное навершие;
+— не показывать открытый перстень крупным планом;
+— не делать дневное летнее освещение;
+— не создавать групповой парадный портрет.
+
+============================================================
+03-flaw-in-the-royal-lily.png — ПОСЛЕ УТВЕРЖДЕНИЯ КАДРА 02
+============================================================
+
+Разрешённые источники, и только они:
+approved-characters/02-claire-d-aubigny-approved-reference.png
+approved-characters/05-etienne-vaudren-approved-reference.png
+approved-characters/07-gilles-renaud-approved-reference.png
+approved-characters/01-royal-signet-rings-and-seal-impressions-approved-reference.png
+approved-characters/02-blue-velvet-ring-box-approved-reference.png
+approved-characters/03-01-sealing-wax-writing-set-approved-reference.png
+02-queens-reception-room-approved-reference.png
+
+Композиционный приоритет:
+1. Главный объект — настоящий перстень в синей шкатулке.
+2. Рено указывает тонким историческим инструментом на очень маленькую V-образную выемку.
+3. Клэр внимательно наблюдает.
+4. Водрен присутствует только на краю композиции и не выделяется.
+5. Серебряный бокал с красным вином находится слева от шкатулки.
+6. Письменные принадлежности и багровый сургуч находятся справа.
+7. У правого внутреннего шарнира шкатулки виден небольшой зацеп.
+
+Жёсткие запреты:
+— не увеличивать выемку до трещины или скола;
+— не менять левую сторону матрицы;
+— не делать матрицу выпуклой;
+— не показывать поддельный перстень;
+— не показывать открытую трость;
+— не добавлять стрелки, увеличительные круги, подписи и текст.
+
+============================================================
+ОБЩЕЕ ПРАВИЛО
+============================================================
+
+Для каждого следующего кадра этот манифест дополняется до генерации, а не после ошибки.
+Генерация без записи точного набора разрешённых PNG считается запрещённой.
