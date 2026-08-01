@@ -60,13 +60,19 @@ https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
 
 Файлы пакета:
 1. 00-WORK-STATUS.txt
-2. approved-characters/00-APPROVED-CHARACTERS.txt
-3. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
-4. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
-5. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
-6. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
-7. dilivox-comic-50-pechat-na-bagrovom-voske-image-prompts.txt
-8. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
+2. 00-HISTORICAL-AUDIT.txt
+3. 00-CONTENT-AUDIT.txt
+4. approved-characters/00-APPROVED-CHARACTERS.txt
+5. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
+6. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
+7. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
+8. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
+9. dilivox-comic-50-pechat-na-bagrovom-voske-image-prompts.txt
+10. dilivox-comic-50-pechat-na-bagrovom-voske-document-texts.txt
+11. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
+
+Канонический текст угрожающего приказа для HTML:
+«До полуночи передайте список тайных посланников. Иначе каждый из них получит новый приказ, скреплённый вашей печатью.»
 
 Незаполненные значения:
 — [IMAGE_URL_COVER]
@@ -88,4 +94,5 @@ DO NOT BUILD FINAL T123 UNTIL ALL IMAGE URL PLACEHOLDERS ARE REPLACED.
 — все решающие улики показаны до выбора;
 — отдельные технические референсы трости не требуются;
 — внутреннюю конструкцию трости крупным планом не показывать;
+— тексты документов брать только из document-texts.txt;
 — все плейсхолдеры URL должны быть заменены реальными адресами Tilda CDN до финальной сборки.
