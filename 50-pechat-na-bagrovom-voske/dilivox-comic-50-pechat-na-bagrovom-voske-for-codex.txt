@@ -28,19 +28,19 @@ URL кадров по порядку:
 06. [IMAGE_URL_FRAME_06] — 06-one-second-without-witnesses.png
 07. [IMAGE_URL_FRAME_07] — 07-new-sound.png
 08. [IMAGE_URL_FRAME_08] — 08-too-perfect-lily.png
-09. [IMAGE_URL_FRAME_09] — 09-error-not-in-the-wax.png
-10. [IMAGE_URL_FRAME_10] — 10-order-with-the-true-seal.png
+09. [IMAGE_URL_FRAME_09] — 09-error-is-not-in-the-wax.png
+10. [IMAGE_URL_FRAME_10] — 10-order-with-the-real-seal.png
 11. [IMAGE_URL_FRAME_11] — 11-no-one-leaves-the-palace.png
-12. [IMAGE_URL_FRAME_12] — 12-not-a-masters-work.png
+12. [IMAGE_URL_FRAME_12] — 12-not-the-masters-work.png
 13. [IMAGE_URL_FRAME_13] — 13-maries-lie.png
 14. [IMAGE_URL_FRAME_14] — 14-captains-green-wax.png
 15. [IMAGE_URL_FRAME_15] — 15-empty-place-in-the-register.png
-16. [IMAGE_URL_FRAME_16] — 16-paper-remembers.png
+16. [IMAGE_URL_FRAME_16] — 16-paper-remembers-the-entry.png
 17. [IMAGE_URL_FRAME_17] — 17-one-blue-thread.png
 18. [IMAGE_URL_FRAME_18] — 18-wine-remembers-the-side.png
 19. [IMAGE_URL_FRAME_19] — 19-fathers-gift.png
-20. [IMAGE_URL_FRAME_20] — 20-everything-but-the-last-move.png
-21. [IMAGE_URL_FRAME_21] — 21-the-true-ring.png
+20. [IMAGE_URL_FRAME_20] — 20-all-but-the-last-movement.png
+21. [IMAGE_URL_FRAME_21] — 21-the-real-signet.png
 22. [IMAGE_URL_FRAME_22] — 22-the-flaw-that-cannot-be-corrected.png
 
 Описание карточки каталога:
@@ -58,18 +58,23 @@ https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
 Следующая история:
 Не указана. Следующая история ещё не готова к публикации.
 
-Файлы пакета:
+ГЛАВНЫЕ ФАЙЛЫ ПАКЕТА:
 1. 00-WORK-STATUS.txt
-2. 00-HISTORICAL-AUDIT.txt
-3. 00-CONTENT-AUDIT.txt
-4. approved-characters/00-APPROVED-CHARACTERS.txt
-5. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
-6. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
-7. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
-8. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
-9. dilivox-comic-50-pechat-na-bagrovom-voske-image-prompts.txt
-10. dilivox-comic-50-pechat-na-bagrovom-voske-document-texts.txt
-11. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
+2. 00-IMAGE-PRODUCTION-GATE.txt
+3. 00-HISTORICAL-AUDIT.txt
+4. 00-CONTENT-AUDIT.txt
+5. approved-characters/00-APPROVED-CHARACTERS.txt
+6. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
+7. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
+8. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
+9. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
+10. dilivox-comic-50-pechat-na-bagrovom-voske-production-storyboard.txt
+11. dilivox-comic-50-pechat-na-bagrovom-voske-reference-pack-manifest.txt
+12. dilivox-comic-50-pechat-na-bagrovom-voske-document-texts.txt
+13. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
+
+Файл dilivox-comic-50-pechat-na-bagrovom-voske-image-prompts.txt снят с производства и не является источником визуальной сборки.
+Файл image-prompts-v2 удалён как частичный и дублирующий источник.
 
 Канонический текст угрожающего приказа для HTML:
 «До полуночи передайте список тайных посланников. Иначе каждый из них получит новый приказ, скреплённый вашей печатью.»
@@ -77,10 +82,15 @@ https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
 Незаполненные значения:
 — [IMAGE_URL_COVER]
 — [IMAGE_URL_FRAME_01] — [IMAGE_URL_FRAME_22]
-— файлы 00-cover.png и 01–22.png ещё не утверждены и не загружены в Tilda.
+
+Статус изображений:
+— обложка визуально утверждена, но URL Tilda ещё не подставлен;
+— кадр 01 визуально утверждён, но URL Tilda ещё не подставлен;
+— кадры 02–22 ещё не утверждены и не загружены.
 
 Текущий статус:
 CONTENT PACKAGE READY.
+STORYBOARD AND REFERENCES AUDITED.
 IMAGE PACKAGE NOT READY.
 DO NOT BUILD FINAL T123 UNTIL ALL IMAGE URL PLACEHOLDERS ARE REPLACED.
 
@@ -89,10 +99,13 @@ DO NOT BUILD FINAL T123 UNTIL ALL IMAGE URL PLACEHOLDERS ARE REPLACED.
 — кадры 21–22 имеют phase=reveal;
 — выбор расположен после кадра 20;
 — правильный вариант один;
-— все кадры имеют заявленный размер 1080 × 1350 и соотношение 4:5;
+— имена файлов полностью совпадают с frames.json и production-storyboard;
+— все кадры имеют размер 1080 × 1350 и соотношение 4:5;
 — у каждого кадра заполнены alt, transcript, dialogue, caption, sound_text, clue и scene_break_after;
+— визуальные transcript и alt соответствуют новой раскадровке, а не старым групповым сценам;
 — все решающие улики показаны до выбора;
 — отдельные технические референсы трости не требуются;
 — внутреннюю конструкцию трости крупным планом не показывать;
 — тексты документов брать только из document-texts.txt;
-— все плейсхолдеры URL должны быть заменены реальными адресами Tilda CDN до финальной сборки.
+— тексты документов не рисовать внутри PNG;
+— все плейсхолдеры URL заменить реальными адресами Tilda CDN до финальной сборки.
