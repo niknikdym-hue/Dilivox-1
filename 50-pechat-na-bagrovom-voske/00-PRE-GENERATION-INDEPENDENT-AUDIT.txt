@@ -20,7 +20,7 @@ FRAMES.JSON / CONTENT.TXT / FOR-CODEX: PASS ПО СЮЖЕТНОМУ СОСТАВ
 ШКАТУЛКА И СУРГУЧ: PNG ПРИСУТСТВУЮТ.
 ПЕРСТЕНЬ И ОТТИСКИ: FAIL.
 ТРОСТЬ И ТАЙНИК: FAIL.
-СИНХРОНИЗАЦИЯ СТАТУСОВ: ИСПРАВЛЕНА В GATE И WORK STATUS.
+СИНХРОНИЗАЦИЯ СЛУЖЕБНЫХ ФАЙЛОВ: PASS ПОСЛЕ ИСПРАВЛЕНИЙ.
 
 ПАКЕТ 02–11: NO-GO.
 ПАКЕТ 12–22: NO-GO.
@@ -183,22 +183,33 @@ FAIL В ПРЕДМЕТНОМ ПАКЕТЕ:
 7. Кадр 21 считался заблокированным только перстнем, хотя открытая система трости также не имеет фактического референса.
 8. В нескольких статусных файлах оставались формулировки GO, не учитывающие отсутствие cane-набора.
 9. В служебных файлах сохранялась недолговечная локальная ссылка /mnt/data/story50_refs_full/, которая не является частью репозитория и не подтверждает доступность файлов в новой сессии.
+10. Файл персонажей пытался словесно переопределять отдельные детали Королевы вместо безусловного приоритета фактического PNG.
+11. Frame-map блокировал предметные кадры только по ring-v2 и не учитывал отсутствие cane-набора.
 
 ============================================================
-10. ЧТО ИСПРАВЛЕНО ЭТИМ АУДИТОМ
+10. ИСПРАВЛЕННЫЕ ФАЙЛЫ
 ============================================================
 
-Обновлены:
+Синхронизированы и повторно проверены:
 — 00-WORK-STATUS.txt;
 — 00-IMAGE-PRODUCTION-GATE.txt;
-— этот текстовый аудит.
-
-Также должны быть синхронизированы:
+— 00-PRE-GENERATION-INDEPENDENT-AUDIT.txt;
 — 00-CONTENT-AUDIT.txt;
-— reference-pack-manifest.txt;
-— for-codex.txt.
+— approved-characters/00-APPROVED-CHARACTERS.txt;
+— dilivox-comic-50-pechat-na-bagrovom-voske-production-storyboard.txt;
+— dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt;
+— dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt;
+— dilivox-comic-50-pechat-na-bagrovom-voske-reference-pack-manifest.txt;
+— dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt.
 
-Production-storyboard и visual-bible нельзя считать разрешением к генерации, пока их предметные ссылки не заменены после появления фактических ring-v2 и cane PNG.
+Не изменялись без необходимости:
+— frames.json;
+— content.txt;
+— document-texts.txt;
+— фактические утверждённые PNG;
+— глобальные правила в корне репозитория.
+
+Production-storyboard, visual-bible и manifest содержат будущие обязательные пути ring-v2 и cane set, но не разрешают генерацию до появления и визуальной проверки этих PNG.
 
 ============================================================
 11. ФИНАЛЬНЫЙ СТАТУС
