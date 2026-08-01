@@ -46,7 +46,7 @@ data-dv-story-type: comic
 21. [IMAGE_URL_FRAME_21] — 21-the-real-signet.png
 22. [IMAGE_URL_FRAME_22] — 22-the-flaw-that-cannot-be-corrected.png
 
-Имена полностью совпадают с frames.json, content.txt и production-storyboard.
+Имена совпадают с frames.json, content.txt и production-storyboard.
 
 ============================================================
 2. КОНТЕНТ
@@ -78,117 +78,113 @@ https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
 
 1. 00-WORK-STATUS.txt
 2. 00-IMAGE-PRODUCTION-GATE.txt
-3. 00-PRE-GENERATION-INDEPENDENT-AUDIT.txt
-4. 00-HISTORICAL-AUDIT.txt
-5. 00-CONTENT-AUDIT.txt
-6. approved-characters/00-APPROVED-CHARACTERS.txt
-7. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
-8. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
-9. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
-10. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
-11. dilivox-comic-50-pechat-na-bagrovom-voske-production-storyboard.txt
-12. dilivox-comic-50-pechat-na-bagrovom-voske-reference-pack-manifest.txt
-13. dilivox-comic-50-pechat-na-bagrovom-voske-document-texts.txt
-14. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
+3. 00-RESUME-CHECKPOINT.txt
+4. 00-PRE-GENERATION-INDEPENDENT-AUDIT.txt
+5. 00-HISTORICAL-AUDIT.txt
+6. 00-CONTENT-AUDIT.txt
+7. approved-characters/00-APPROVED-CHARACTERS.txt
+8. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
+9. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
+10. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
+11. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
+12. dilivox-comic-50-pechat-na-bagrovom-voske-production-storyboard.txt
+13. dilivox-comic-50-pechat-na-bagrovom-voske-reference-pack-manifest.txt
+14. dilivox-comic-50-pechat-na-bagrovom-voske-document-texts.txt
+15. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
 
 image-prompts.txt снят с производства.
 image-prompts-v2 отсутствует.
 
 ============================================================
-4. СТАТУС УТВЕРЖДЁННЫХ СЮЖЕТНЫХ ИЗОБРАЖЕНИЙ
+4. СТАТУС СЮЖЕТНЫХ ИЗОБРАЖЕНИЙ
 ============================================================
 
 00-cover.png:
 — визуально утверждена пользователем;
-— бинарного файла в репозитории нет;
+— бинарного файла в репозитории по последней проверке нет;
 — URL Tilda не подставлен.
 
 01-third-bell-at-the-gates.png:
 — визуально утверждён пользователем;
-— бинарного файла в репозитории нет;
+— бинарного файла в репозитории по последней проверке нет;
 — URL Tilda не подставлен.
 
 Кадры 02–22:
-— не утверждены;
-— URL не подставлены;
-— генерация сейчас запрещена gate-файлом.
+— разрешены к пакетной генерации;
+— URL будут подставляться только после утверждения и публикации PNG.
 
 Все прежние варианты кадра 02 отклонены и не используются.
 
 ============================================================
-5. КРИТИЧЕСКИЕ ПРЕДМЕТНЫЕ БЛОКЕРЫ
+5. ПРЕДМЕТНЫЙ ПАКЕТ — GO
 ============================================================
 
-RING V2: MISSING.
+RING V2: APPROVED / PRESENT.
 
-Текущий ring-файл показывает перстни и оттиски, но является четырёхпанельным коллажем и не закрепляет правильную сторону дефекта безопасно.
-
-Требуется:
 approved-characters/01-royal-signet-rings-and-seal-impressions-approved-reference-v2.png
 
 Канон:
 — V-выемка на левом боковом лепестке матрицы;
 — зеркальный дефект справа на выпуклом оттиске;
-— копия и её оттиск без дефекта.
+— копия и её оттиск без дефекта;
+— изображения не зеркалить.
 
-CANE TECHNICAL SET: MISSING.
+CANE TECHNICAL SET: APPROVED / PRESENT 4/4.
 
-Отдельные технические референсы трости ОБЯЗАТЕЛЬНЫ. Прежняя формулировка «не требуются» отменена.
+approved-characters/04-01-etienne-vaudren-cane-overall-approved-reference.png
+approved-characters/04-02-etienne-vaudren-cane-pommel-and-seam-approved-reference.png
+approved-characters/04-03-etienne-vaudren-cane-open-mechanism-approved-reference.png
+approved-characters/04-04-etienne-vaudren-cane-hidden-ring-chamber-approved-reference.png
 
-Требуется зафиксировать:
-— общий закрытый вид;
-— одинаковый внешний диаметр навершия и металлической верхней части трости;
-— круговой шов;
-— наружную резьбу навершия;
-— внутреннюю резьбу трости;
-— прохождение перстня через внутренний диаметр;
-— осевую полость внутри трости;
-— отвинченное навершие без перстня внутри него.
+Канон:
+— одна и та же трость во всех четырёх PNG;
+— одинаковый внешний диаметр навершия и металлической верхней части;
+— наружная резьба на навершии;
+— внутренняя резьба в трости;
+— перстень проходит через внутренний диаметр;
+— тайник находится внутри трости, не в навершии;
+— царапина появляется с кадра 07;
+— без боковых окон, пружин, клинков и технических разрезов.
 
-Тайник находится в трости, не в навершии.
+Визуальный PASS пяти новых предметных PNG подтверждён владельцем проекта.
 
 ============================================================
-6. ЗАБЛОКИРОВАННЫЕ КАДРЫ
+6. ПРОИЗВОДСТВЕННЫЙ ПОРЯДОК
 ============================================================
 
-Ring blocker:
-03, 06, 08, 09, 10, 11, 12, 20, 21, 22.
+PACKAGE 02–11: GO.
+PACKAGE 12–22: GO.
 
-Cane blocker:
-06, 07, 19, 20, 21.
+Порядок работы:
+1. генерировать кадры 02–11;
+2. затем кадры 12–22;
+3. третьим проходом переделывать только REJECT.
 
-Общий список:
-03, 06, 07, 08, 09, 10, 11, 12, 19, 20, 21, 22.
-
-Формально независимы от этих двух наборов:
-02, 04, 05, 13, 14, 15, 16, 17, 18.
-
-Но запуск с пропусками не разрешён. Пакетное производство начинается только после полного GO.
+Перед каждым кадром использовать production-storyboard и reference-pack-manifest. Генератору фактически передавать только PNG видимых персонажей, локации и предметов текущего кадра.
 
 ============================================================
 7. ПРАВИЛА ДЛЯ CODEX
 ============================================================
 
 — не собирать финальный T123, пока все URL изображений не заменены реальными;
-— не считать CONTENT PACKAGE READY разрешением к генерации;
 — не использовать старый image-prompts.txt;
 — не использовать frame-map как визуальный промпт;
 — не использовать ложный декоративный аудиторский лист;
-— не создавать недостающие лица или предметы по текстовому имени файла;
+— не создавать лица или предметы по одному текстовому имени файла;
 — не добавлять отдельного молодого дворянина в список утверждённых персонажей;
-— не менять actual PNG Королевы по старому TXT;
-— кадр 15 не должен получать ring-reference: видима запись и вырезанное место старого оттиска, а не сам перстень;
-— внутреннюю конструкцию трости не показывать крупным техническим разрезом;
-— при этом технический reference set трости обязателен до кадров 06, 07, 19, 20 и 21.
+— не менять фактический PNG Королевы по старому TXT;
+— кадр 15 не получает ring-reference: видима запись и вырезанное место старого оттиска;
+— внутреннюю конструкцию трости в сюжетном кадре не показывать техническим разрезом;
+— кадр 21 использует 04-03 и 04-04 как предметный канон открытой трости.
 
 ============================================================
 8. ТЕКУЩИЙ СТАТУС
 ============================================================
 
 CONTENT AND DATA PACKAGE: READY.
-IMAGE REFERENCE PACKAGE: NO-GO.
-BATCH GENERATION: NO-GO.
-FINAL T123: BLOCKED.
+IMAGE REFERENCE PACKAGE: GO.
+BATCH GENERATION: GO.
+FINAL T123: BLOCKED UNTIL ALL FINAL PNG AND REAL URLS EXIST.
 
-Следующая допустимая работа:
-подготовка и визуальное утверждение ring-v2 и технического набора трости. Изображения кадров сейчас не генерировать.
+Следующая работа после перерыва:
+начать кадр 02 заново и продолжить пакет 02–11 по 00-IMAGE-PRODUCTION-GATE.txt.
