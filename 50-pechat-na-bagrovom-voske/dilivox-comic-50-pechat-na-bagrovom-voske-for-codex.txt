@@ -1,0 +1,91 @@
+DILIVOX — ПАСПОРТ КОНТЕНТНОГО ПАКЕТА
+
+Номер истории: 50
+Название: Печать на багровом воске
+URL: https://dilivox.ru/istorii/pechat-na-bagrovom-voske/
+Slug: pechat-na-bagrovom-voske
+
+Видимый жанр: Исторический детектив
+data-dv-genre: detektivy
+data-dv-format: short
+data-dv-story-type: comic
+Возраст: 12+
+
+Общее количество сюжетных и reveal-кадров: 22
+Номер последнего сюжетного кадра: 20
+Номер первого кадра развязки: 21
+Номер правильной версии: 3
+
+URL обложки:
+[IMAGE_URL_COVER]
+
+URL кадров по порядку:
+01. [IMAGE_URL_FRAME_01] — 01-third-bell-at-the-gates.png
+02. [IMAGE_URL_FRAME_02] — 02-letter-without-a-copy.png
+03. [IMAGE_URL_FRAME_03] — 03-flaw-in-the-royal-lily.png
+04. [IMAGE_URL_FRAME_04] — 04-too-timely-quarrel.png
+05. [IMAGE_URL_FRAME_05] — 05-portfolio-between-hands-and-eyes.png
+06. [IMAGE_URL_FRAME_06] — 06-one-second-without-witnesses.png
+07. [IMAGE_URL_FRAME_07] — 07-new-sound.png
+08. [IMAGE_URL_FRAME_08] — 08-too-perfect-lily.png
+09. [IMAGE_URL_FRAME_09] — 09-error-not-in-the-wax.png
+10. [IMAGE_URL_FRAME_10] — 10-order-with-the-true-seal.png
+11. [IMAGE_URL_FRAME_11] — 11-no-one-leaves-the-palace.png
+12. [IMAGE_URL_FRAME_12] — 12-not-a-masters-work.png
+13. [IMAGE_URL_FRAME_13] — 13-maries-lie.png
+14. [IMAGE_URL_FRAME_14] — 14-captains-green-wax.png
+15. [IMAGE_URL_FRAME_15] — 15-empty-place-in-the-register.png
+16. [IMAGE_URL_FRAME_16] — 16-paper-remembers.png
+17. [IMAGE_URL_FRAME_17] — 17-one-blue-thread.png
+18. [IMAGE_URL_FRAME_18] — 18-wine-remembers-the-side.png
+19. [IMAGE_URL_FRAME_19] — 19-fathers-gift.png
+20. [IMAGE_URL_FRAME_20] — 20-everything-but-the-last-move.png
+21. [IMAGE_URL_FRAME_21] — 21-the-true-ring.png
+22. [IMAGE_URL_FRAME_22] — 22-the-flaw-that-cannot-be-corrected.png
+
+Описание карточки каталога:
+Королевский перстень заменён безупречной копией, а настоящая печать уже появилась на приказе шантажиста. Разгадка спрятана в маленьком изъяне, синей нити и вещи, которая внезапно стала тяжелее.
+
+Метки:
+1. Королевская печать
+2. Дворцовая интрига
+3. Подмена
+4. Визуальные улики
+
+Предыдущая история:
+https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
+
+Следующая история:
+Не указана. Следующая история ещё не готова к публикации.
+
+Файлы пакета:
+1. 00-WORK-STATUS.txt
+2. approved-characters/00-APPROVED-CHARACTERS.txt
+3. dilivox-comic-50-pechat-na-bagrovom-voske-content.txt
+4. dilivox-comic-50-pechat-na-bagrovom-voske-frames.json
+5. dilivox-comic-50-pechat-na-bagrovom-voske-visual-bible.txt
+6. dilivox-comic-50-pechat-na-bagrovom-voske-frame-map.txt
+7. dilivox-comic-50-pechat-na-bagrovom-voske-image-prompts.txt
+8. dilivox-comic-50-pechat-na-bagrovom-voske-for-codex.txt
+
+Незаполненные значения:
+— [IMAGE_URL_COVER]
+— [IMAGE_URL_FRAME_01] — [IMAGE_URL_FRAME_22]
+— файлы 00-cover.png и 01–22.png ещё не утверждены и не загружены в Tilda.
+
+Текущий статус:
+CONTENT PACKAGE READY.
+IMAGE PACKAGE NOT READY.
+DO NOT BUILD FINAL T123 UNTIL ALL IMAGE URL PLACEHOLDERS ARE REPLACED.
+
+Контроль:
+— кадры 01–20 имеют phase=story;
+— кадры 21–22 имеют phase=reveal;
+— выбор расположен после кадра 20;
+— правильный вариант один;
+— все кадры имеют заявленный размер 1080 × 1350 и соотношение 4:5;
+— у каждого кадра заполнены alt, transcript, dialogue, caption, sound_text, clue и scene_break_after;
+— все решающие улики показаны до выбора;
+— отдельные технические референсы трости не требуются;
+— внутреннюю конструкцию трости крупным планом не показывать;
+— все плейсхолдеры URL должны быть заменены реальными адресами Tilda CDN до финальной сборки.
