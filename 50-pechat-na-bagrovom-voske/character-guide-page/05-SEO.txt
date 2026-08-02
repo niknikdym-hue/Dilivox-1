@@ -1,0 +1,140 @@
+DILIVOX №50 «ПЕЧАТЬ НА БАГРОВОМ ВОСКЕ»
+SEO ДЛЯ СТРАНИЦЫ «ДЕЙСТВУЮЩИЕ ЛИЦА»
+
+PAGE URL:
+https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/
+
+SLUG:
+deystvuyushchie-litsa
+
+TITLE:
+Действующие лица «Печати на багровом воске» — Dilivox
+
+DESCRIPTION:
+Познакомьтесь с героями исторического комикса Dilivox «Печать на багровом воске»: Адрианом де Лореном, Клэр д’Обиньи и участниками дворцового дела. Без спойлеров.
+
+H1:
+Действующие лица комикса «Печать на багровом воске»
+
+CANONICAL:
+https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/
+
+ROBOTS:
+index, follow, max-image-preview:large
+
+OG TITLE:
+Действующие лица комикса «Печать на багровом воске»
+
+OG DESCRIPTION:
+Досье героев и участников дворцового дела — с утверждёнными портретами и без спойлеров к разгадке.
+
+OG TYPE:
+website
+
+OG URL:
+https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/
+
+OG IMAGE:
+[IMAGE_URL_CHARACTER_GUIDE_OG]
+
+Рекомендуемый OG-файл:
+character-guide-page/images/character-guide-og.webp
+
+Рекомендуемый размер:
+1200 × 630 px
+
+Правило OG:
+создать нейтральную композицию из утверждённых crops Адриана и Клэр либо Адриана, Клэр, Королевы и Мари. Не включать Водрена отдельно крупнее других, перстень в трости, надпись о виновности или элементы развязки.
+
+ХЛЕБНЫЕ КРОШКИ:
+Главная
+https://dilivox.ru/
+
+Истории
+https://dilivox.ru/istorii/
+
+Печать на багровом воске
+https://dilivox.ru/istorii/pechat-na-bagrovom-voske/
+
+Действующие лица
+текущая страница
+
+ВНУТРЕННИЕ ССЫЛКИ СО СТРАНИЦЫ:
+
+Анкор: Читать комикс
+URL: https://dilivox.ru/istorii/pechat-na-bagrovom-voske/
+
+Анкор: Перейти к истории
+URL: https://dilivox.ru/istorii/pechat-na-bagrovom-voske/
+
+Анкор: Открыть все истории Dilivox
+URL: https://dilivox.ru/istorii/
+
+ВНУТРЕННЯЯ ССЫЛКА С КОМИКСА:
+
+Анкор: Все участники дела
+URL: https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/
+
+JSON-LD:
+использовать WebPage + BreadcrumbList.
+Не создавать ложные биографические Person-сущности с вымышленными датами рождения, организациями и внешними профилями.
+
+ПРИМЕР WEBPAGE JSON-LD:
+
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Действующие лица комикса «Печать на багровом воске»",
+  "description": "Досье героев и участников дворцового дела — без спойлеров к разгадке.",
+  "url": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Dilivox",
+    "url": "https://dilivox.ru/"
+  },
+  "about": {
+    "@type": "CreativeWork",
+    "name": "Печать на багровом воске",
+    "url": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/"
+  }
+}
+
+ПРИМЕР BREADCRUMBLIST JSON-LD:
+
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://dilivox.ru/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Истории",
+      "item": "https://dilivox.ru/istorii/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Печать на багровом воске",
+      "item": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Действующие лица",
+      "item": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/"
+    }
+  ]
+}
+
+ЗАПРЕТЫ:
+— не включать год в URL, Title и canonical;
+— не использовать слова «виновник», «преступник», «разоблачение Водрена»;
+— не дублировать SEO основной страницы комикса дословно;
+— не закрывать страницу от индексации после подстановки реальных изображений;
+— не публиковать плейсхолдер OG IMAGE.
