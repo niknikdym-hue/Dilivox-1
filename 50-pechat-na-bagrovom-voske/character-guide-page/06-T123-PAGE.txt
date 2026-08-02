@@ -1,0 +1,591 @@
+<!--
+DILIVOX №50 «ПЕЧАТЬ НА БАГРОВОМ ВОСКЕ»
+T123: ОТДЕЛЬНАЯ СТРАНИЦА «ДЕЙСТВУЮЩИЕ ЛИЦА»
+
+URL:
+/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/
+
+Шапка и футер подключаются отдельно.
+До публикации заменить все [IMAGE_URL_...] реальными URL Tilda.
+-->
+
+<style>
+  .dv50-cast-page {
+    --dv50-bg: #F6F0E4;
+    --dv50-surface: #FFF9EF;
+    --dv50-paper: #EFE3D0;
+    --dv50-text: #221B14;
+    --dv50-muted: #6F6253;
+    --dv50-gold: #B88A3B;
+    --dv50-gold-dark: #8A6428;
+    --dv50-ink: #263248;
+    --dv50-line: rgba(34, 27, 20, .14);
+    --dv50-shadow: 0 18px 50px rgba(34, 27, 20, .08);
+    background: var(--dv50-bg);
+    color: var(--dv50-text);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 34px 20px 88px;
+  }
+
+  .dv50-cast-page *,
+  .dv50-cast-page *::before,
+  .dv50-cast-page *::after {
+    box-sizing: border-box;
+  }
+
+  .dv50-cast-wrap {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+  }
+
+  .dv50-cast-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+    margin: 0 0 28px;
+    color: var(--dv50-muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .dv50-cast-breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .dv50-cast-breadcrumbs a:hover,
+  .dv50-cast-breadcrumbs a:focus-visible {
+    color: var(--dv50-text);
+    border-bottom-color: var(--dv50-gold);
+  }
+
+  .dv50-cast-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(34px, 6vw, 72px);
+    border: 1px solid var(--dv50-line);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 88% 10%, rgba(184, 138, 59, .18), transparent 28%),
+      var(--dv50-paper);
+    box-shadow: var(--dv50-shadow);
+  }
+
+  .dv50-cast-hero::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    bottom: -95px;
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgba(138, 100, 40, .22);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .dv50-cast-eyebrow {
+    margin: 0 0 14px;
+    color: var(--dv50-gold-dark);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .dv50-cast-hero h1 {
+    max-width: 900px;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(38px, 7vw, 76px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -.035em;
+  }
+
+  .dv50-cast-subtitle {
+    margin: 22px 0 0;
+    color: var(--dv50-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(21px, 3vw, 30px);
+    line-height: 1.25;
+  }
+
+  .dv50-cast-lead {
+    max-width: 800px;
+    margin: 22px 0 0;
+    color: var(--dv50-muted);
+    font-size: clamp(17px, 2vw, 20px);
+    line-height: 1.7;
+  }
+
+  .dv50-cast-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 24px 0 0;
+    padding: 10px 14px;
+    border: 1px solid rgba(38, 50, 72, .18);
+    border-radius: 999px;
+    background: rgba(255, 249, 239, .68);
+    color: var(--dv50-ink);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .dv50-cast-note::before {
+    content: "✦";
+    color: var(--dv50-gold-dark);
+  }
+
+  .dv50-cast-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 30px 0 0;
+  }
+
+  .dv50-cast-button {
+    display: inline-flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    border: 1px solid var(--dv50-ink);
+    border-radius: 999px;
+    background: var(--dv50-ink);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: transform .18s ease, background .18s ease;
+  }
+
+  .dv50-cast-button:hover,
+  .dv50-cast-button:focus-visible {
+    background: #1c2638;
+    transform: translateY(-1px);
+  }
+
+  .dv50-cast-section {
+    padding: clamp(58px, 8vw, 94px) 0 0;
+  }
+
+  .dv50-cast-section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 520px);
+    gap: 36px;
+    align-items: end;
+    margin: 0 0 28px;
+  }
+
+  .dv50-cast-section h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(31px, 5vw, 50px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -.025em;
+  }
+
+  .dv50-cast-section-intro {
+    margin: 0;
+    color: var(--dv50-muted);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .dv50-cast-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .dv50-cast-card {
+    overflow: hidden;
+    border: 1px solid var(--dv50-line);
+    border-radius: 22px;
+    background: var(--dv50-surface);
+    box-shadow: 0 13px 34px rgba(34, 27, 20, .055);
+  }
+
+  .dv50-cast-image-wrap {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #ded3c0;
+  }
+
+  .dv50-cast-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .dv50-cast-frame-badge {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(34, 27, 20, .82);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    backdrop-filter: blur(5px);
+  }
+
+  .dv50-cast-card-body {
+    padding: 22px 22px 25px;
+  }
+
+  .dv50-cast-role {
+    margin: 0 0 8px;
+    color: var(--dv50-gold-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .dv50-cast-card h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 27px;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .dv50-cast-description {
+    margin: 14px 0 0;
+    color: var(--dv50-muted);
+    font-size: 15px;
+    line-height: 1.68;
+  }
+
+  .dv50-cast-final {
+    margin: clamp(64px, 9vw, 110px) 0 0;
+    padding: clamp(32px, 6vw, 60px);
+    border-radius: 26px;
+    background: var(--dv50-ink);
+    color: #fff;
+    text-align: center;
+  }
+
+  .dv50-cast-final h2 {
+    max-width: 800px;
+    margin: 0 auto;
+    color: #fff;
+  }
+
+  .dv50-cast-final p {
+    max-width: 760px;
+    margin: 20px auto 0;
+    color: rgba(255, 255, 255, .76);
+    font-size: 17px;
+    line-height: 1.68;
+  }
+
+  .dv50-cast-final .dv50-cast-actions {
+    justify-content: center;
+  }
+
+  .dv50-cast-final .dv50-cast-button {
+    border-color: var(--dv50-gold);
+    background: var(--dv50-gold);
+    color: var(--dv50-text);
+  }
+
+  .dv50-cast-secondary-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 50px;
+    padding: 12px 8px;
+    color: rgba(255, 255, 255, .82);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dv50-cast-secondary-link:hover,
+  .dv50-cast-secondary-link:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .dv50-cast-section-head {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .dv50-cast-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .dv50-cast-page {
+      padding: 22px 14px 64px;
+    }
+
+    .dv50-cast-hero {
+      padding: 28px 22px 34px;
+      border-radius: 20px;
+    }
+
+    .dv50-cast-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .dv50-cast-card {
+      border-radius: 18px;
+    }
+
+    .dv50-cast-card-body {
+      padding: 20px;
+    }
+
+    .dv50-cast-actions,
+    .dv50-cast-button {
+      width: 100%;
+    }
+
+    .dv50-cast-secondary-link {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dv50-cast-button {
+      transition: none;
+    }
+  }
+</style>
+
+<main class="dv50-cast-page" id="dv50-cast-page">
+  <div class="dv50-cast-wrap">
+    <nav class="dv50-cast-breadcrumbs" aria-label="Хлебные крошки">
+      <a href="https://dilivox.ru/">Главная</a>
+      <span aria-hidden="true">→</span>
+      <a href="https://dilivox.ru/istorii/">Истории</a>
+      <span aria-hidden="true">→</span>
+      <a href="https://dilivox.ru/istorii/pechat-na-bagrovom-voske/">Печать на багровом воске</a>
+      <span aria-hidden="true">→</span>
+      <span aria-current="page">Действующие лица</span>
+    </nav>
+
+    <header class="dv50-cast-hero">
+      <p class="dv50-cast-eyebrow">История 50 · Исторический детектив</p>
+      <h1>Действующие лица комикса «Печать на багровом воске»</h1>
+      <p class="dv50-cast-subtitle">Досье участников дела — без спойлеров</p>
+      <p class="dv50-cast-lead">В закрытой королевской резиденции несколько минут суматохи связывают людей, документы и предметы в одну цепочку. Познакомьтесь с героями и участниками дела до чтения комикса или вернитесь к ним после развязки.</p>
+      <p class="dv50-cast-note">Здесь нет ответа на загадку и нет объяснения улик.</p>
+      <div class="dv50-cast-actions">
+        <a class="dv50-cast-button" href="https://dilivox.ru/istorii/pechat-na-bagrovom-voske/">Читать комикс</a>
+      </div>
+    </header>
+
+    <section class="dv50-cast-section" aria-labelledby="dv50-investigation-title">
+      <div class="dv50-cast-section-head">
+        <h2 id="dv50-investigation-title">В центре расследования</h2>
+        <p class="dv50-cast-section-intro">Они восстанавливают не удобную версию событий, а их точную последовательность — по движениям, словам и деталям, которые слишком легко принять за случайность.</p>
+      </div>
+      <div class="dv50-cast-grid">
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_ADRIAN]" alt="Адриан де Лорен, королевский мушкетёр из комикса «Печать на багровом воске»" loading="eager" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 01</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Королевский мушкетёр</p>
+            <h3>Адриан де Лорен</h3>
+            <p class="dv50-cast-description">Адриан прибывает в резиденцию незадолго до закрытия ворот и оказывается внутри дворца, когда обычная церемония превращается в расследование. Он доверяет порядку действий больше, чем первым впечатлениям, и проверяет, мог ли человек физически оказаться там, где утверждает.</p>
+          </div>
+        </article>
+
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_CLAIRE]" alt="Клэр д’Обиньи из исторического комикса «Печать на багровом воске»" loading="eager" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 02</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Участница подготовки королевского письма</p>
+            <h3>Клэр д’Обиньи</h3>
+            <p class="dv50-cast-description">Клэр находится рядом с королевой до начала суматохи и замечает, когда привычный порядок нарушается. Она сопоставляет документы, церемониал, показания и маленькие материальные следы, которые другие считают несущественными.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="dv50-cast-section" aria-labelledby="dv50-court-title">
+      <div class="dv50-cast-section-head">
+        <h2 id="dv50-court-title">При королевском дворе</h2>
+        <p class="dv50-cast-section-intro">У каждого из них есть своё место при дворе, собственные обязанности и причины не рассказывать всё сразу.</p>
+      </div>
+      <div class="dv50-cast-grid">
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_QUEEN]" alt="Королева из комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 02</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Владелица личного королевского перстня</p>
+            <h3>Королева</h3>
+            <p class="dv50-cast-description">Её личной печатью скрепляют распоряжения, которым должны доверять без лишних вопросов. После подмены ей необходимо вернуть не только драгоценность, но и уверенность в том, что её собственный знак по-прежнему означает её волю.</p>
+          </div>
+        </article>
+
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_MARIE]" alt="Мари де Севаль, придворная дама из комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 02</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Придворная дама</p>
+            <h3>Мари де Севаль</h3>
+            <p class="dv50-cast-description">Мари присутствует при подготовке секретного письма и остаётся рядом с королевским кругом в момент происшествия. Она хранит личную семейную тайну, поэтому её молчание легко принять за нечто более опасное.</p>
+          </div>
+        </article>
+
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_VAUDREN]" alt="Этьен Водрен из исторического комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 03</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Придворный чиновник</p>
+            <h3>Этьен Водрен</h3>
+            <p class="dv50-cast-description">Водрен сохраняет безупречные манеры даже тогда, когда спокойный дворцовый порядок рушится. Он оказывается возле письменного стола в момент внезапной суматохи и отвечает на те же вопросы, что и остальные участники церемонии.</p>
+          </div>
+        </article>
+
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_BELFORT]" alt="Арман Бельфор, начальник дворцовой охраны в комиксе «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 04</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Начальник дворцовой охраны</p>
+            <h3>Арман Бельфор</h3>
+            <p class="dv50-cast-description">Бельфор отвечает за ворота, коридоры и порядок внутри резиденции. Когда появляется приказ с опасной печатью, ему приходится проверять не только чужие маршруты, но и действия собственных людей.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="dv50-cast-section" aria-labelledby="dv50-witnesses-title">
+      <div class="dv50-cast-section-head">
+        <h2 id="dv50-witnesses-title">Свидетели и специалисты</h2>
+        <p class="dv50-cast-section-intro">Их знания и записи помогают отличить настоящий след от убедительного ложного объяснения.</p>
+      </div>
+      <div class="dv50-cast-grid">
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_RENAUD]" alt="Жиль Рено, ювелир и знаток печатей из комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 03</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Ювелир и знаток печатей</p>
+            <h3>Жиль Рено</h3>
+            <p class="dv50-cast-description">Рено знает историю королевского перстня и замечает то, что для другого глаза выглядит лишь несовершенством металла или воска. Его опыт помогает определить, как могла появиться слишком аккуратная копия.</p>
+          </div>
+        </article>
+
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_LEGRAND]" alt="Матьё Легран, хранитель архива из комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 15</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Хранитель канцелярского архива</p>
+            <h3>Матьё Легран</h3>
+            <p class="dv50-cast-description">Легран отвечает за старые реестры и записи о том, кому их выдавали. Он может забыть выражение лица посетителя, но не позволяет архиву забыть дату, том и имя.</p>
+          </div>
+        </article>
+
+        <article class="dv50-cast-card">
+          <div class="dv50-cast-image-wrap">
+            <img class="dv50-cast-image" src="[IMAGE_URL_CHARACTER_STRANGER]" alt="Незнакомец в красном плаще из комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            <span class="dv50-cast-frame-badge">Первое появление · кадр 04</span>
+          </div>
+          <div class="dv50-cast-card-body">
+            <p class="dv50-cast-role">Участник ссоры у дверей</p>
+            <h3>Незнакомец в красном плаще</h3>
+            <p class="dv50-cast-description">Его резкое появление нарушает порядок церемонии и заставляет нескольких людей одновременно отвернуться от письменного стола. Пока неизвестно, была ли ссора самостоятельным конфликтом или частью более сложной последовательности.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="dv50-cast-final" aria-labelledby="dv50-cast-final-title">
+      <h2 id="dv50-cast-final-title">Теперь вы знаете, на кого смотреть</h2>
+      <p>В комиксе важны не только лица, но и руки, маршруты, предметы и одна слишком безупречная деталь. Все сведения, необходимые для выбора версии, появятся до развязки.</p>
+      <div class="dv50-cast-actions">
+        <a class="dv50-cast-button" href="https://dilivox.ru/istorii/pechat-na-bagrovom-voske/">Перейти к истории</a>
+        <a class="dv50-cast-secondary-link" href="https://dilivox.ru/istorii/">Открыть все истории Dilivox</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Действующие лица комикса «Печать на багровом воске»",
+  "description": "Досье героев и участников дворцового дела — без спойлеров к разгадке.",
+  "url": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Dilivox",
+    "url": "https://dilivox.ru/"
+  },
+  "about": {
+    "@type": "CreativeWork",
+    "name": "Печать на багровом воске",
+    "url": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://dilivox.ru/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Истории",
+      "item": "https://dilivox.ru/istorii/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Печать на багровом воске",
+      "item": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Действующие лица",
+      "item": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/"
+    }
+  ]
+}
+</script>
