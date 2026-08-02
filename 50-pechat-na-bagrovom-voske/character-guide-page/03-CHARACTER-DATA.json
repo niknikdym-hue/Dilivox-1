@@ -1,0 +1,153 @@
+{
+  "page": {
+    "title": "Действующие лица комикса «Печать на багровом воске»",
+    "subtitle": "Досье участников дела — без спойлеров",
+    "url": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/",
+    "story_url": "https://dilivox.ru/istorii/pechat-na-bagrovom-voske/",
+    "story_number": 50,
+    "genre": "Исторический детектив",
+    "age": "12+"
+  },
+  "groups": [
+    {
+      "id": "investigation",
+      "title": "В центре расследования",
+      "description": "Они восстанавливают не удобную версию событий, а их точную последовательность — по движениям, словам и деталям, которые слишком легко принять за случайность."
+    },
+    {
+      "id": "court",
+      "title": "При королевском дворе",
+      "description": "У каждого из них есть своё место при дворе, собственные обязанности и причины не рассказывать всё сразу."
+    },
+    {
+      "id": "witnesses",
+      "title": "Свидетели и специалисты",
+      "description": "Их знания и записи помогают отличить настоящий след от убедительного ложного объяснения."
+    }
+  ],
+  "characters": [
+    {
+      "order": 1,
+      "id": "adrian-de-loren",
+      "name": "Адриан де Лорен",
+      "role": "Королевский мушкетёр",
+      "group": "investigation",
+      "first_frame": 1,
+      "description": "Адриан прибывает в резиденцию незадолго до закрытия ворот и оказывается внутри дворца, когда обычная церемония превращается в расследование. Он доверяет порядку действий больше, чем первым впечатлениям, и проверяет, мог ли человек физически оказаться там, где утверждает.",
+      "source_image": "approved-characters/01-adrian-de-loren-approved-reference.png",
+      "derived_image": "character-guide-page/images/adrian-de-loren-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_ADRIAN]",
+      "alt": "Адриан де Лорен, королевский мушкетёр из комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 2,
+      "id": "claire-d-aubigny",
+      "name": "Клэр д’Обиньи",
+      "role": "Участница закрытой подготовки королевского письма",
+      "group": "investigation",
+      "first_frame": 2,
+      "description": "Клэр находится рядом с королевой до начала суматохи и замечает, когда привычный порядок нарушается. Она сопоставляет документы, церемониал, показания и маленькие материальные следы, которые другие считают несущественными.",
+      "source_image": "approved-characters/02-claire-d-aubigny-approved-reference.png",
+      "derived_image": "character-guide-page/images/claire-d-aubigny-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_CLAIRE]",
+      "alt": "Клэр д’Обиньи из исторического комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 3,
+      "id": "queen",
+      "name": "Королева",
+      "role": "Владелица личного королевского перстня",
+      "group": "court",
+      "first_frame": 2,
+      "description": "Её личной печатью скрепляют распоряжения, которым должны доверять без лишних вопросов. После подмены ей необходимо вернуть не только драгоценность, но и уверенность в том, что её собственный знак по-прежнему означает её волю.",
+      "source_image": "approved-characters/03-queen-approved-reference.png",
+      "derived_image": "character-guide-page/images/queen-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_QUEEN]",
+      "alt": "Королева из комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 4,
+      "id": "marie-de-seval",
+      "name": "Мари де Севаль",
+      "role": "Придворная дама",
+      "group": "court",
+      "first_frame": 2,
+      "description": "Мари присутствует при подготовке секретного письма и остаётся рядом с королевским кругом в момент происшествия. Она хранит личную семейную тайну, поэтому её молчание легко принять за нечто более опасное.",
+      "source_image": "approved-characters/04-marie-de-seval-approved-reference.png",
+      "derived_image": "character-guide-page/images/marie-de-seval-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_MARIE]",
+      "alt": "Мари де Севаль, придворная дама из комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 5,
+      "id": "etienne-vaudren",
+      "name": "Этьен Водрен",
+      "role": "Придворный чиновник",
+      "group": "court",
+      "first_frame": 3,
+      "description": "Водрен сохраняет безупречные манеры даже тогда, когда спокойный дворцовый порядок рушится. Он оказывается возле письменного стола в момент внезапной суматохи и отвечает на те же вопросы, что и остальные участники церемонии.",
+      "source_image": "approved-characters/05-etienne-vaudren-approved-reference.png",
+      "derived_image": "character-guide-page/images/etienne-vaudren-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_VAUDREN]",
+      "alt": "Этьен Водрен из исторического комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 6,
+      "id": "armand-belfort",
+      "name": "Арман Бельфор",
+      "role": "Начальник дворцовой охраны",
+      "group": "court",
+      "first_frame": 4,
+      "description": "Бельфор отвечает за ворота, коридоры и порядок внутри резиденции. Когда появляется приказ с опасной печатью, ему приходится проверять не только чужие маршруты, но и действия собственных людей.",
+      "source_image": "approved-characters/06-armand-belfort-approved-reference.png",
+      "derived_image": "character-guide-page/images/armand-belfort-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_BELFORT]",
+      "alt": "Арман Бельфор, начальник дворцовой охраны в комиксе «Печать на багровом воске»"
+    },
+    {
+      "order": 7,
+      "id": "gilles-renaud",
+      "name": "Жиль Рено",
+      "role": "Ювелир и знаток печатей",
+      "group": "witnesses",
+      "first_frame": 3,
+      "description": "Рено знает историю королевского перстня и замечает то, что для другого глаза выглядит лишь несовершенством металла или воска. Его опыт помогает определить, как могла появиться слишком аккуратная копия.",
+      "source_image": "approved-characters/07-gilles-renaud-approved-reference.png",
+      "derived_image": "character-guide-page/images/gilles-renaud-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_RENAUD]",
+      "alt": "Жиль Рено, ювелир и знаток печатей из комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 8,
+      "id": "mathieu-legrand",
+      "name": "Матьё Легран",
+      "role": "Хранитель канцелярского архива",
+      "group": "witnesses",
+      "first_frame": 15,
+      "description": "Легран отвечает за старые реестры и записи о том, кому их выдавали. Он может забыть выражение лица посетителя, но не позволяет архиву забыть дату, том и имя.",
+      "source_image": "approved-characters/08-mathieu-legrand-approved-reference.png",
+      "derived_image": "character-guide-page/images/mathieu-legrand-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_LEGRAND]",
+      "alt": "Матьё Легран, хранитель архива из комикса «Печать на багровом воске»"
+    },
+    {
+      "order": 9,
+      "id": "stranger-in-red-cloak",
+      "name": "Незнакомец в красном плаще",
+      "role": "Участник ссоры у дверей",
+      "group": "witnesses",
+      "first_frame": 4,
+      "description": "Его резкое появление нарушает порядок церемонии и заставляет нескольких людей одновременно отвернуться от письменного стола. Пока неизвестно, была ли ссора самостоятельным конфликтом или частью более сложной последовательности.",
+      "source_image": "approved-characters/09-stranger-in-red-cloak-approved-reference.png",
+      "derived_image": "character-guide-page/images/stranger-in-red-cloak-card.webp",
+      "image_placeholder": "[IMAGE_URL_CHARACTER_STRANGER]",
+      "alt": "Незнакомец в красном плаще из комикса «Печать на багровом воске»"
+    }
+  ],
+  "comic_strip_characters": [
+    "adrian-de-loren",
+    "claire-d-aubigny",
+    "queen",
+    "marie-de-seval"
+  ]
+}
