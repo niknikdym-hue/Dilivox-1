@@ -1,0 +1,38 @@
+DILIVOX №50 «ПЕЧАТЬ НА БАГРОВОМ ВОСКЕ»
+ПРОИЗВОДСТВЕННЫЙ ПРОМПТ ДЛЯ CODEX
+
+СОЗДАТЬ ОДНО ОТДЕЛЬНОЕ ИЗОБРАЖЕНИЕ:
+20-all-but-the-last-movement.png
+
+Формат: вертикальный 4:5, 1080 × 1350 px. Франция, 1630-е годы. Без текста, рамки и коллажа.
+
+ОБЯЗАТЕЛЬНЫЕ PNG
+— approved-characters/01-adrian-de-loren-approved-reference.png
+— approved-characters/02-claire-d-aubigny-approved-reference.png
+— approved-characters/05-etienne-vaudren-approved-reference.png
+— approved-characters/01-royal-signet-rings-and-seal-impressions-approved-reference-v2.png — копия
+— approved-characters/02-blue-velvet-ring-box-approved-reference.png
+— approved-characters/03-03-crimson-and-green-wax-samples-approved-reference.png
+— approved-characters/04-01-etienne-vaudren-cane-overall-approved-reference.png
+— approved-characters/04-02-etienne-vaudren-cane-pommel-and-seam-approved-reference.png
+— 02-queens-reception-room-approved-reference.png
+
+Фактические PNG имеют абсолютный приоритет.
+
+ВИДИМЫЙ МОМЕНТ
+Адриан связывает уже найденные факты одним жестом; Клэр раскладывает копию на белом платке, синюю нить и образцы воска; Водрен стоит рядом с полностью закрытой тростью.
+
+КОМПОЗИЦИЯ
+Средне-общий трёхфигурный план с ясной предметной линией на столе. Главный центр — известные улики и закрытая трость. Новых сведений в кадре нет.
+
+УЛИКИ И НЕПРЕРЫВНОСТЬ
+Копия без дефекта, шкатулка, синяя нить, багровый и зелёный воск. Правый шарнир, правый рукав и левое винное пятно сохраняются в логике сцены.
+
+СВЕТ
+Поздние свечи.
+
+ЗАПРЕТЫ
+Не открывать трость, не находить оригинал, не показывать арест, новую улику, коллаж прошлых сцен или других постоянных героев.
+
+ПРОВЕРКА
+Три персонажа совпадают с PNG; копия и трость соответствуют предметным референсам; трость закрыта; только уже известные улики; один момент; нет текста и анатомических ошибок. Нарушение = REJECT.
