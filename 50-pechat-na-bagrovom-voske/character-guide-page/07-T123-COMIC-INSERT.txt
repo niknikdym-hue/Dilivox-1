@@ -1,0 +1,200 @@
+<!--
+DILIVOX №50 «ПЕЧАТЬ НА БАГРОВОМ ВОСКЕ»
+ДВА ЛОКАЛЬНЫХ БЛОКА ДЛЯ ОСНОВНОЙ СТРАНИЦЫ КОМИКСА
+
+ВАЖНО:
+— не заменять существующий T123 целиком;
+— не менять story / choice / reveal;
+— первый блок поставить после вступления и до кадра 01;
+— второй блок поставить только после полной развязки и доказательств;
+— до публикации заменить [IMAGE_URL_...] реальными URL Tilda.
+-->
+
+<style>
+  .dv50-cast-entry,
+  .dv50-cast-return {
+    --dv50-bg: #FFF9EF;
+    --dv50-paper: #EFE3D0;
+    --dv50-text: #221B14;
+    --dv50-muted: #6F6253;
+    --dv50-gold: #B88A3B;
+    --dv50-ink: #263248;
+    --dv50-line: rgba(34, 27, 20, .14);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--dv50-text);
+  }
+
+  .dv50-cast-entry *,
+  .dv50-cast-entry *::before,
+  .dv50-cast-entry *::after,
+  .dv50-cast-return *,
+  .dv50-cast-return *::before,
+  .dv50-cast-return *::after {
+    box-sizing: border-box;
+  }
+
+  .dv50-cast-entry {
+    width: min(1080px, calc(100% - 28px));
+    margin: 28px auto 44px;
+    padding: clamp(22px, 4vw, 34px);
+    border: 1px solid var(--dv50-line);
+    border-radius: 22px;
+    background: var(--dv50-paper);
+  }
+
+  .dv50-cast-entry-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(310px, .85fr);
+    gap: 28px;
+    align-items: center;
+  }
+
+  .dv50-cast-entry-eyebrow {
+    margin: 0 0 8px;
+    color: #8A6428;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .dv50-cast-entry h2,
+  .dv50-cast-return h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 500;
+    line-height: 1.1;
+  }
+
+  .dv50-cast-entry-text,
+  .dv50-cast-return-text {
+    margin: 13px 0 0;
+    color: var(--dv50-muted);
+    font-size: 16px;
+    line-height: 1.62;
+  }
+
+  .dv50-cast-entry-button,
+  .dv50-cast-return-button {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0 0;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: var(--dv50-ink);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dv50-cast-entry-button:hover,
+  .dv50-cast-entry-button:focus-visible,
+  .dv50-cast-return-button:hover,
+  .dv50-cast-return-button:focus-visible {
+    background: #1c2638;
+  }
+
+  .dv50-cast-entry-portraits {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .dv50-cast-entry-portrait {
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    border: 2px solid rgba(255, 249, 239, .9);
+    border-radius: 14px;
+    background: #d8cbb5;
+    box-shadow: 0 8px 22px rgba(34, 27, 20, .08);
+  }
+
+  .dv50-cast-entry-portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .dv50-cast-return {
+    width: min(920px, calc(100% - 28px));
+    margin: 42px auto 16px;
+    padding: clamp(24px, 4vw, 38px);
+    border: 1px solid var(--dv50-line);
+    border-radius: 22px;
+    background: var(--dv50-bg);
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .dv50-cast-entry-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dv50-cast-entry-portraits {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .dv50-cast-entry {
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .dv50-cast-entry-portraits {
+      gap: 6px;
+    }
+
+    .dv50-cast-entry-portrait {
+      border-radius: 10px;
+    }
+
+    .dv50-cast-entry-button,
+    .dv50-cast-return-button {
+      width: 100%;
+    }
+  }
+</style>
+
+<!-- ======================================================
+БЛОК 1. ПОСЛЕ ВСТУПЛЕНИЯ, ДО КАДРА 01
+======================================================= -->
+<section class="dv50-cast-entry" aria-labelledby="dv50-cast-entry-title">
+  <div class="dv50-cast-entry-grid">
+    <div>
+      <p class="dv50-cast-entry-eyebrow">Перед началом дела</p>
+      <h2 id="dv50-cast-entry-title">Действующие лица</h2>
+      <p class="dv50-cast-entry-text">Девять участников, одна закрытая резиденция и несколько минут, которые каждому придётся вспомнить точно. Краткое досье поможет различать героев и не раскрывает разгадку.</p>
+      <a class="dv50-cast-entry-button" href="https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/">Все участники дела</a>
+    </div>
+    <div class="dv50-cast-entry-portraits" aria-label="Главные действующие лица">
+      <div class="dv50-cast-entry-portrait">
+        <img src="[IMAGE_URL_CHARACTER_ADRIAN]" alt="Адриан де Лорен" loading="lazy" decoding="async">
+      </div>
+      <div class="dv50-cast-entry-portrait">
+        <img src="[IMAGE_URL_CHARACTER_CLAIRE]" alt="Клэр д’Обиньи" loading="lazy" decoding="async">
+      </div>
+      <div class="dv50-cast-entry-portrait">
+        <img src="[IMAGE_URL_CHARACTER_QUEEN]" alt="Королева" loading="lazy" decoding="async">
+      </div>
+      <div class="dv50-cast-entry-portrait">
+        <img src="[IMAGE_URL_CHARACTER_MARIE]" alt="Мари де Севаль" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+БЛОК 2. ПОСЛЕ РАЗВЯЗКИ И ДОКАЗАТЕЛЬСТВ
+======================================================= -->
+<section class="dv50-cast-return" aria-labelledby="dv50-cast-return-title">
+  <h2 id="dv50-cast-return-title">Посмотрите на участников дела ещё раз</h2>
+  <p class="dv50-cast-return-text">После развязки знакомые лица читаются иначе. Вернитесь к досье и сравните первое впечатление с тем, что показала цепочка улик.</p>
+  <a class="dv50-cast-return-button" href="https://dilivox.ru/istorii/pechat-na-bagrovom-voske/deystvuyushchie-litsa/">Вернуться к действующим лицам</a>
+</section>
