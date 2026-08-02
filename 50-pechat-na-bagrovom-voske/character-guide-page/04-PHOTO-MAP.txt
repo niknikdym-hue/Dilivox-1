@@ -1,0 +1,136 @@
+DILIVOX №50 «ПЕЧАТЬ НА БАГРОВОМ ВОСКЕ»
+КАРТА ФОТОГРАФИЙ ДЛЯ СТРАНИЦЫ «ДЕЙСТВУЮЩИЕ ЛИЦА»
+
+============================================================
+1. ГЛАВНОЕ ПРАВИЛО
+============================================================
+
+Все исходники уже утверждены и находятся в:
+50-pechat-na-bagrovom-voske/approved-characters/
+
+Исходные PNG не изменять, не перезаписывать и не использовать как холст для новой генерации.
+
+Для сайта создать отдельные производные портретные crops:
+
+— формат WebP;
+— рекомендуемый размер 900 × 1200 px;
+— соотношение 3:4;
+— качество 82–88;
+— без апскейла сверх реального качества исходника;
+— без дорисовки лица, одежды, фона, рук и аксессуаров;
+— без зеркалирования;
+— выбирать наиболее ясный фронтальный или трёхчетвертной портрет из утверждённого референса;
+— лицо, волосы, головной убор, украшения и костюм должны остаться фактическими;
+— допускается только кадрирование, масштабирование и техническая конвертация;
+— crops хранить отдельно в character-guide-page/images/;
+— после загрузки на Tilda заменить плейсхолдеры реальными URL.
+
+Если утверждённый PNG является многопанельным листом, не показывать весь лист внутри карточки. Выбрать один лучший портретный фрагмент без художественной переработки.
+
+============================================================
+2. КАРТА ФАЙЛОВ
+============================================================
+
+01. Адриан де Лорен
+Источник:
+approved-characters/01-adrian-de-loren-approved-reference.png
+Производный файл:
+character-guide-page/images/adrian-de-loren-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_ADRIAN]
+
+02. Клэр д’Обиньи
+Источник:
+approved-characters/02-claire-d-aubigny-approved-reference.png
+Производный файл:
+character-guide-page/images/claire-d-aubigny-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_CLAIRE]
+
+03. Королева
+Источник:
+approved-characters/03-queen-approved-reference.png
+Производный файл:
+character-guide-page/images/queen-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_QUEEN]
+Критическое требование:
+сохранить фактическое светлое жемчужно-слоновое / кремово-золотистое платье и все реальные детали утверждённого PNG.
+
+04. Мари де Севаль
+Источник:
+approved-characters/04-marie-de-seval-approved-reference.png
+Производный файл:
+character-guide-page/images/marie-de-seval-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_MARIE]
+
+05. Этьен Водрен
+Источник:
+approved-characters/05-etienne-vaudren-approved-reference.png
+Производный файл:
+character-guide-page/images/etienne-vaudren-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_VAUDREN]
+Не использовать отдельные технические изображения трости как портрет персонажа.
+
+06. Арман Бельфор
+Источник:
+approved-characters/06-armand-belfort-approved-reference.png
+Производный файл:
+character-guide-page/images/armand-belfort-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_BELFORT]
+
+07. Жиль Рено
+Источник:
+approved-characters/07-gilles-renaud-approved-reference.png
+Производный файл:
+character-guide-page/images/gilles-renaud-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_RENAUD]
+
+08. Матьё Легран
+Источник:
+approved-characters/08-mathieu-legrand-approved-reference.png
+Производный файл:
+character-guide-page/images/mathieu-legrand-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_LEGRAND]
+
+09. Незнакомец в красном плаще
+Источник:
+approved-characters/09-stranger-in-red-cloak-approved-reference.png
+Производный файл:
+character-guide-page/images/stranger-in-red-cloak-card.webp
+Плейсхолдер:
+[IMAGE_URL_CHARACTER_STRANGER]
+Не заменять случайным человеком в капюшоне и не усиливать «злодейский» образ.
+
+============================================================
+3. КОМПАКТНЫЙ БЛОК НА СТРАНИЦЕ КОМИКСА
+============================================================
+
+Использовать только четыре производных портрета:
+
+[IMAGE_URL_CHARACTER_ADRIAN]
+[IMAGE_URL_CHARACTER_CLAIRE]
+[IMAGE_URL_CHARACTER_QUEEN]
+[IMAGE_URL_CHARACTER_MARIE]
+
+Это нейтральный набор, не подсказывающий виновного.
+
+============================================================
+4. ПРОВЕРКА КАЖДОГО CROP
+============================================================
+
+[ ] выбран именно утверждённый исходный PNG;
+[ ] лицо не изменено;
+[ ] персонаж не смешан с другим;
+[ ] изображение не зеркалировано;
+[ ] не дорисованы новые детали;
+[ ] фон не содержит технического текста исходного листа;
+[ ] портрет хорошо читается на mobile;
+[ ] WebP открывается и не имеет прозрачных артефактов;
+[ ] alt совпадает с 03-CHARACTER-DATA.json;
+[ ] исходный approved PNG остался неизменным.
