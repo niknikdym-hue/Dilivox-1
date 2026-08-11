@@ -1,0 +1,1120 @@
+<!-- DILIVOX / Главная страница: основной блок без шапки и футера -->
+<main class="dv-home" data-dv-page="home" aria-label="Dilivox — истории с загадкой и выбором версии">
+  <div class="dv-home__grain" aria-hidden="true"></div>
+  <div class="dv-home__glow dv-home__glow--one" aria-hidden="true"></div>
+  <div class="dv-home__glow dv-home__glow--two" aria-hidden="true"></div>
+
+  <section class="dv-home__hero">
+    <div class="dv-home__shell">
+      <div class="dv-home__hero-grid">
+        <div class="dv-home__content">
+          <div class="dv-home__eyebrow">
+            <span class="dv-home__eyebrow-mark" aria-hidden="true"></span>
+            Dilivox
+          </div>
+
+          <h1>Истории, где важна каждая деталь</h1>
+
+          <p class="dv-home__lead">
+            Читайте сюжет, замечайте странные мелочи, выбирайте свою версию перед финалом
+            и проверяйте её в развязке. На Dilivox загадка работает не за счёт случайного
+            поворота, а за счёт деталей, которые были перед глазами с самого начала.
+          </p>
+
+          <div class="dv-home__actions" aria-label="Главные действия">
+            <a class="dv-home__button" data-dv-goal="home-to-stories" href="/istorii/">Перейти к историям</a>
+            <a class="dv-home__button dv-home__button--ghost" data-dv-goal="home-to-first-story" href="/istorii/tsena-vtoroy-pechati/">Начать читать</a>
+          </div>
+        </div>
+
+        <div class="dv-home__case" aria-label="Как устроены истории Dilivox">
+          <div class="dv-home__case-top">
+            <span>Как это работает</span>
+          </div>
+
+          <div class="dv-home__case-card">
+            <span class="dv-home__case-label">Читайте внимательно</span>
+            <p>Важная деталь может быть в документе, тени, отражении, маршруте, техническом сбое или одной неверной формулировке.</p>
+          </div>
+
+          <div class="dv-home__case-card">
+            <span class="dv-home__case-label">Выбирайте версию</span>
+            <p>Перед финалом вы выбираете объяснение из нескольких вариантов. Правильный ответ не угадывается случайно — он собирается из улик.</p>
+          </div>
+
+          <div class="dv-home__case-card">
+            <span class="dv-home__case-label">Открывайте развязку</span>
+            <p>После выбора появляется объяснение: что решило дело, какие детали были ключевыми и почему другие версии не подходят.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dv-home__genres" aria-labelledby="dv-home-genres-title">
+    <div class="dv-home__shell">
+      <div class="dv-home__section-head">
+        <span>Жанры</span>
+        <h2 id="dv-home-genres-title">Выберите настроение</h2>
+        <p>
+          В каталоге есть камерные детективные загадки, фантастические сюжеты о космосе,
+          городах будущего, андроидах, станциях и чужих планетах, а также киберпанк-триллеры, ужасы и приключения про море, горы, рифы, пустыни, ледники и маршруты, где детали становятся опасными.
+        </p>
+      </div>
+
+      <div class="dv-home__genre-grid">
+        <article class="dv-home__genre-card">
+          <span class="dv-home__story-meta">Детективы</span>
+          <h3>Детективы</h3>
+          <p>
+            Архивные дела, закрытые ужины, семейные тайны, исчезнувшие картины, полярные рейсы
+            и дворцовые интриги. Здесь решают порядок действий, лишняя деталь и ошибка,
+            которую кто-то считал незаметной.
+          </p>
+          <a class="dv-home__card-link" data-dv-goal="home-to-detective" href="/istorii/?filter=detektivy">Открыть детективы</a>
+        </article>
+
+        <article class="dv-home__genre-card">
+          <span class="dv-home__story-meta">Фантастика</span>
+          <h3>Фантастика</h3>
+          <p>
+            Космический лайнер с лишним пассажиром, город под ложным небом, андроид с запрещённой памятью,
+            молчащая станция, архив будущих преступлений и планета, которая отвечает раньше слов.
+          </p>
+          <a class="dv-home__card-link" data-dv-goal="home-to-fantasy" href="/istorii/?filter=fantastika">Открыть фантастику</a>
+        </article>
+
+        <article class="dv-home__genre-card">
+          <span class="dv-home__story-meta">Триллеры</span>
+          <h3>Триллеры</h3>
+          <p>
+            Завтрашние сообщения, подменённые трансляции, локальные серверы, цифровые ловушки
+            и маленькие технические детали, которые раскрывают настоящую цепочку событий.
+          </p>
+          <a class="dv-home__card-link" data-dv-goal="home-to-thriller" href="/istorii/?filter=trillery">Открыть триллеры</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="dv-home__cards dv-cards" aria-labelledby="dv-home-cards-title">
+    <div class="dv-home__shell">
+      <div class="dv-home__section-head">
+        <span>С чего начать</span>
+        <h2 id="dv-home-cards-title">С чего начать</h2>
+        <p>
+          Если хочется классической загадки — откройте историю о старом деле, закрытом ужине
+          или исчезнувшей картине. Если тянет к фантастике — начните с космического рейса,
+          города под куполом или планеты без эха. Если хочется напряжения ближе к цифровому городу —
+          попробуйте новые триллеры.
+        </p>
+      </div>
+
+      <div class="dv-home__story-grid">
+        
+        
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/tropa-zolotogo-yaguara/">
+          <span class="dv-home__story-number">30</span>
+          <h3>Тропа золотого ягуара</h3>
+          <p>
+            В джунглях находят фигурку золотого ягуара — ключ к древнему маршруту. Но храм оказывается ловушкой, а настоящая тропа открывается только на рассвете.
+          </p>
+          <span class="dv-home__story-meta">Приключения</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/gorod-pod-lednikom/">
+          <span class="dv-home__story-number">29</span>
+          <h3>Город под ледником</h3>
+          <p>
+            После обвала под ледником открывается город со светящимися окнами. Но за красивыми башнями скрыта станция, которую кто-то хочет разобрать до прихода спасателей.
+          </p>
+          <span class="dv-home__story-meta">Приключения</span>
+        </a>
+
+<a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/chelyusti-u-buyka-4/">
+          <span class="dv-home__story-number">24</span>
+          <h3>Челюсти у буйка № 4</h3>
+          <p>
+            У островного курорта пропадают дайверы. Все винят акул у буйка № 4, но хищники ведут себя не как убийцы — они будто охраняют то, что лежит под водой.
+          </p>
+          <span class="dv-home__story-meta">Ужасы</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/kayuta-7/">
+          <span class="dv-home__story-number">23</span>
+          <h3>Каюта № 7</h3>
+          <p>
+            На старом корабле-музее есть запечатанная каюта № 7. Каждую ночь оттуда звонит телефон, и женский голос просит открыть дверь.
+          </p>
+          <span class="dv-home__story-meta">Ужасы</span>
+        </a>
+
+<a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/posledniy-kadr-strima/">
+          <span class="dv-home__story-number">14</span>
+          <h3>Последний кадр стрима</h3>
+          <p>
+            Стример пропадает после эффектного кадра, но отражение в стекле выдаёт подмену эфира.
+          </p>
+          <span class="dv-home__story-meta">Триллеры</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/devushka-iz-zavtrashnego-chata/">
+          <span class="dv-home__story-number">13</span>
+          <h3>Девушка из завтрашнего чата</h3>
+          <p>
+            Сообщения с завтрашней датой оказываются не чудом, а следом аварийного локального контура.
+          </p>
+          <span class="dv-home__story-meta">Триллеры</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/tsena-vtoroy-pechati/">
+          <span class="dv-home__story-number">01</span>
+          <h3>Цена второй печати</h3>
+          <p>
+            Старое дело выглядит законно, пока гербовая печать не выдаёт нарушение порядка заверения.
+          </p>
+          <span class="dv-home__story-meta">Детективы</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/komnata-bez-otrazheniy/">
+          <span class="dv-home__story-number">04</span>
+          <h3>Комната без отражений</h3>
+          <p>
+            В закрытой галерее картина исчезает из рамы, хотя охрана, камеры и двери не дают простого объяснения.
+          </p>
+          <span class="dv-home__story-meta">Детективы</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/nulevoy-passazhir/">
+          <span class="dv-home__story-number">07</span>
+          <h3>Нулевой пассажир</h3>
+          <p>
+            После гиперперехода корабль находит лишнего пассажира: тела нет, но права человека уже выданы.
+          </p>
+          <span class="dv-home__story-meta">Фантастика</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/gorod-pod-chuzhim-nebom/">
+          <span class="dv-home__story-number">08</span>
+          <h3>Город под чужим небом</h3>
+          <p>
+            В колонии с двумя солнцами тени идут не туда, а приборы утверждают, что небо не менялось.
+          </p>
+          <span class="dv-home__story-meta">Фантастика</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/stantsiya-kotoraya-molchala/">
+          <span class="dv-home__story-number">10</span>
+          <h3>Станция, которая молчала</h3>
+          <p>
+            Станция у Сатурна работает, расходует ресурсы на экипаж и при этом утверждает: людей на борту нет.
+          </p>
+          <span class="dv-home__story-meta">Фантастика</span>
+        </a>
+
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/planeta-bez-eha/">
+          <span class="dv-home__story-number">12</span>
+          <h3>Планета без эха</h3>
+          <p>
+            На чужой планете звук исчезает через несколько метров, а ответы приходят раньше произнесённых слов.
+          </p>
+          <span class="dv-home__story-meta">Фантастика</span>
+        </a>
+      </div>
+
+      <div class="dv-home__actions dv-home__actions--section">
+        <a class="dv-home__button" data-dv-goal="home-all-stories" href="/istorii/">Все истории</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dv-home__steps" aria-labelledby="dv-home-steps-title">
+    <div class="dv-home__shell">
+      <div class="dv-home__steps-inner">
+        <div class="dv-home__section-head dv-home__section-head--compact">
+          <span>Почему это работает</span>
+          <h2 id="dv-home-steps-title">Загадка должна быть честной</h2>
+          <p>
+            В хорошем сюжете разгадка не падает с потолка. Она уже спрятана в сцене:
+            в неверной тени, пустой капсуле, странной записи, техническом протоколе или детали,
+            которую персонажи сначала объясняют неправильно.
+          </p>
+        </div>
+
+        <div class="dv-home__step-line" aria-label="Последовательность чтения">
+          <div class="dv-home__step">
+            <span>1</span>
+            <p><strong>Улики видны до финала</strong> Читатель получает те же детали, что и герой, но не всегда сразу понимает их значение.</p>
+          </div>
+          <div class="dv-home__step-separator" aria-hidden="true"></div>
+          <div class="dv-home__step">
+            <span>2</span>
+            <p><strong>Версии конкурируют между собой</strong> Каждый вариант кажется возможным, пока развязка не показывает, какая деталь ломает ложные объяснения.</p>
+          </div>
+          <div class="dv-home__step-separator" aria-hidden="true"></div>
+          <div class="dv-home__step">
+            <span>3</span>
+            <p><strong>Финал проверяет внимательность</strong> Развязка показывает цепочку: что заметить, как связать и почему именно это решило дело.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dv-home__final dv-final" aria-label="Переход к историям Dilivox">
+    <div class="dv-home__shell">
+      <div class="dv-home__final-card">
+        <div class="dv-home__final-mark" aria-hidden="true">✦</div>
+        <div>
+          <h2>Выберите историю и проверьте свою версию</h2>
+          <p>
+            Откройте любой сюжет, читайте до выбора и решите, что произошло на самом деле.
+            Развязка покажет, какие детали были ключевыми.
+          </p>
+          <a class="dv-home__button" data-dv-goal="home-final-stories" href="/istorii/">Перейти в каталог</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<style>
+  :root {
+    --dv-bg: #F6F0E4;
+    --dv-bg-soft: #FFF9EF;
+    --dv-paper: #EFE3D0;
+    --dv-paper-deep: #E2D2B9;
+
+    --dv-text: #221B14;
+    --dv-muted: #6F6253;
+    --dv-muted-soft: #9B8C78;
+
+    --dv-gold: #B88A3B;
+    --dv-gold-deep: #8A6428;
+    --dv-gold-light: #D8B56A;
+
+    --dv-ink: #263248;
+    --dv-blue: #2F4C73;
+    --dv-teal: #3C746E;
+
+    --dv-border: rgba(138, 100, 40, .28);
+    --dv-border-strong: rgba(138, 100, 40, .48);
+
+    --dv-card: rgba(255, 249, 239, .88);
+    --dv-card-solid: #FFF9EF;
+    --dv-shadow: rgba(46, 34, 20, .14);
+  }
+
+  .dv-home,
+  .dv-home * {
+    box-sizing: border-box;
+  }
+
+  .dv-home {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 100vh;
+    color: var(--dv-text);
+    background:
+      radial-gradient(circle at 8% 10%, rgba(216, 181, 106, .34), transparent 30%),
+      radial-gradient(circle at 94% 16%, rgba(60, 116, 110, .13), transparent 27%),
+      linear-gradient(135deg, var(--dv-bg-soft) 0%, var(--dv-bg) 46%, #EDE0CA 100%);
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  .dv-home__grain {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    opacity: .42;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(34, 27, 20, .035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 27, 20, .025) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(circle at center, #000 0%, transparent 78%);
+  }
+
+  .dv-home__glow {
+    position: absolute;
+    z-index: -2;
+    border-radius: 999px;
+    filter: blur(22px);
+    pointer-events: none;
+  }
+
+  .dv-home__glow--one {
+    width: 380px;
+    height: 380px;
+    left: -160px;
+    top: 120px;
+    background: rgba(184, 138, 59, .18);
+  }
+
+  .dv-home__glow--two {
+    width: 420px;
+    height: 420px;
+    right: -190px;
+    bottom: 80px;
+    background: rgba(47, 76, 115, .10);
+  }
+
+  .dv-home__shell {
+    width: min(1160px, calc(100% - 36px));
+    margin: 0 auto;
+  }
+
+  .dv-home__hero {
+    padding: clamp(58px, 8vw, 112px) 0 clamp(42px, 6vw, 74px);
+  }
+
+  .dv-home__hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, .72fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+  }
+
+  .dv-home__content {
+    position: relative;
+    padding: clamp(30px, 5vw, 58px);
+    border: 1px solid var(--dv-border);
+    border-radius: 34px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, .52), transparent 42%),
+      rgba(255, 249, 239, .72);
+    box-shadow:
+      0 34px 86px var(--dv-shadow),
+      inset 0 1px 0 rgba(255, 255, 255, .72);
+    backdrop-filter: blur(14px);
+  }
+
+  .dv-home__content::before,
+  .dv-home__content::after {
+    content: "";
+    position: absolute;
+    border: 1px solid var(--dv-border);
+    pointer-events: none;
+  }
+
+  .dv-home__content::before {
+    inset: 14px;
+    border-radius: 24px;
+  }
+
+  .dv-home__content::after {
+    width: 72px;
+    height: 72px;
+    right: 28px;
+    top: 28px;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 20px 0 0;
+    opacity: .68;
+  }
+
+  .dv-home__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    color: var(--dv-gold-deep);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+
+  .dv-home__eyebrow-mark {
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--dv-gold-deep), var(--dv-gold-light));
+  }
+
+  .dv-home h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0;
+    color: var(--dv-ink);
+    font-size: clamp(42px, 7.4vw, 92px);
+    font-weight: 500;
+    line-height: .94;
+    letter-spacing: -.065em;
+  }
+
+  .dv-home__lead {
+    position: relative;
+    z-index: 1;
+    max-width: 690px;
+    margin: 30px 0 0;
+    color: var(--dv-text);
+    font-size: clamp(21px, 2.5vw, 31px);
+    line-height: 1.34;
+    letter-spacing: -.02em;
+  }
+
+  .dv-home__text {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 24px 0 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.76;
+  }
+
+  .dv-home__actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .dv-home__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 14px 20px;
+    border: 1px solid rgba(47, 76, 115, .32);
+    border-radius: 999px;
+    color: #FFF9EF !important;
+    background: linear-gradient(135deg, var(--dv-blue), var(--dv-teal));
+    box-shadow: 0 16px 34px rgba(47, 76, 115, .18);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none !important;
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+
+  .dv-home__button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(47, 76, 115, .52);
+    box-shadow: 0 20px 42px rgba(47, 76, 115, .22);
+  }
+
+  .dv-home__button--ghost {
+    color: var(--dv-ink) !important;
+    background: rgba(255, 249, 239, .78);
+    border-color: var(--dv-border);
+    box-shadow: none;
+  }
+
+  .dv-home__status {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding: 12px 16px;
+    border: 1px solid var(--dv-border);
+    border-radius: 999px;
+    color: var(--dv-muted);
+    background: rgba(246, 240, 228, .62);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .dv-home__status-dot {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--dv-teal);
+    box-shadow: 0 0 0 6px rgba(60, 116, 110, .12);
+  }
+
+  .dv-home__case {
+    position: relative;
+    padding: 22px;
+    border: 1px solid var(--dv-border);
+    border-radius: 30px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(216, 181, 106, .30), transparent 34%),
+      rgba(255, 249, 239, .78);
+    box-shadow: 0 28px 70px rgba(46, 34, 20, .12);
+  }
+
+  .dv-home__case::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1px dashed rgba(138, 100, 40, .28);
+    border-radius: 22px;
+    pointer-events: none;
+  }
+
+  .dv-home__case-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px;
+    color: var(--dv-gold-deep);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .dv-home__case-top strong {
+    color: rgba(38, 50, 72, .18);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 54px;
+    font-weight: 500;
+    letter-spacing: -.08em;
+  }
+
+  .dv-home__case-card {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    border: 1px solid rgba(138, 100, 40, .20);
+    border-radius: 20px;
+    background: rgba(255, 249, 239, .78);
+  }
+
+  .dv-home__case-card + .dv-home__case-card {
+    margin-top: 12px;
+  }
+
+  .dv-home__case-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--dv-blue);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .dv-home__case-card p {
+    margin: 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.62;
+  }
+
+  .dv-home__genres,
+  .dv-home__cards,
+  .dv-home__steps,
+  .dv-home__final {
+    padding: clamp(34px, 6vw, 72px) 0;
+  }
+
+  .dv-home__genres {
+    padding-top: 0;
+  }
+
+  .dv-home__section-head {
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  .dv-home__section-head span {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--dv-gold-deep);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .dv-home__section-head h2 {
+    margin: 0;
+    color: var(--dv-ink);
+    font-size: clamp(32px, 4.4vw, 58px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -.055em;
+  }
+
+  .dv-home__section-head p {
+    max-width: 760px;
+    margin: 16px 0 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  .dv-home__section-head--compact {
+    margin-bottom: 0;
+  }
+
+  .dv-home__story-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .dv-home__genre-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .dv-home__genre-card {
+    position: relative;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(26px, 4vw, 38px);
+    overflow: hidden;
+    border: 1px solid var(--dv-border);
+    border-radius: 30px;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(216, 181, 106, .24), transparent 28%),
+      linear-gradient(135deg, rgba(255, 255, 255, .42), rgba(255, 249, 239, .74));
+    box-shadow: 0 24px 68px rgba(46, 34, 20, .10);
+  }
+
+  .dv-home__genre-card::after {
+    content: "";
+    position: absolute;
+    right: -44px;
+    bottom: -44px;
+    width: 138px;
+    height: 138px;
+    border: 1px solid rgba(184, 138, 59, .22);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .dv-home__genre-card h3 {
+    position: relative;
+    z-index: 1;
+    margin: 28px 0 14px;
+    color: var(--dv-ink);
+    font-size: clamp(30px, 3.6vw, 46px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -.045em;
+  }
+
+  .dv-home__genre-card p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .dv-home__card-link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 44px;
+    margin-top: auto;
+    padding: 12px 16px;
+    border: 1px solid rgba(47, 76, 115, .32);
+    border-radius: 999px;
+    color: #FFF9EF !important;
+    background: linear-gradient(135deg, var(--dv-blue), var(--dv-teal));
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none !important;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+
+  .dv-home__card-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(47, 76, 115, .50);
+    box-shadow: 0 14px 30px rgba(47, 76, 115, .18);
+  }
+
+  .dv-home__actions--section {
+    margin-top: 24px;
+  }
+
+  .dv-home__story-card {
+    position: relative;
+    min-height: 282px;
+    display: flex;
+    flex-direction: column;
+    padding: 26px;
+    overflow: hidden;
+    border: 1px solid var(--dv-border);
+    border-radius: 28px;
+    color: var(--dv-text) !important;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(216, 181, 106, .23), transparent 28%),
+      rgba(255, 249, 239, .74);
+    box-shadow: 0 22px 62px rgba(46, 34, 20, .10);
+    text-decoration: none !important;
+    transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease, background .24s ease;
+  }
+
+  .dv-home__story-card::after {
+    content: "";
+    position: absolute;
+    right: -34px;
+    bottom: -34px;
+    width: 110px;
+    height: 110px;
+    border: 1px solid rgba(184, 138, 59, .22);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .dv-home__story-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--dv-border-strong);
+    background:
+      radial-gradient(circle at 88% 12%, rgba(216, 181, 106, .30), transparent 30%),
+      rgba(255, 249, 239, .90);
+    box-shadow: 0 28px 74px rgba(46, 34, 20, .15);
+  }
+
+  .dv-home__story-number {
+    color: rgba(138, 100, 40, .58);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .18em;
+  }
+
+  .dv-home__story-card h3 {
+    position: relative;
+    z-index: 1;
+    margin: 44px 0 14px;
+    color: var(--dv-ink);
+    font-size: clamp(25px, 2.55vw, 34px);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -.045em;
+  }
+
+  .dv-home__story-card p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.62;
+  }
+
+  .dv-home__story-meta {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    width: fit-content;
+    margin-top: auto;
+    padding-top: 22px;
+    color: var(--dv-blue);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .dv-home__card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .dv-home__card {
+    position: relative;
+    min-height: 260px;
+    padding: 28px;
+    overflow: hidden;
+    border: 1px solid var(--dv-border);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(216, 181, 106, .25), transparent 28%),
+      rgba(255, 249, 239, .74);
+    box-shadow: 0 22px 62px rgba(46, 34, 20, .10);
+  }
+
+  .dv-home__card::after {
+    content: "";
+    position: absolute;
+    right: -34px;
+    bottom: -34px;
+    width: 110px;
+    height: 110px;
+    border: 1px solid rgba(184, 138, 59, .22);
+    border-radius: 50%;
+  }
+
+  .dv-home__card-number {
+    margin-bottom: 48px;
+    color: rgba(138, 100, 40, .56);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .18em;
+  }
+
+  .dv-home__card h3 {
+    margin: 0 0 12px;
+    color: var(--dv-ink);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -.035em;
+  }
+
+  .dv-home__card p {
+    margin: 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.68;
+  }
+
+  .dv-home__steps-inner {
+    display: grid;
+    grid-template-columns: minmax(0, .72fr) minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    padding: clamp(26px, 4vw, 42px);
+    border: 1px solid var(--dv-border);
+    border-radius: 32px;
+    background:
+      linear-gradient(135deg, rgba(47, 76, 115, .08), transparent 48%),
+      rgba(255, 249, 239, .68);
+  }
+
+  .dv-home__step-line {
+    display: grid;
+    grid-template-columns: 1fr 34px 1fr 34px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .dv-home__step {
+    min-height: 134px;
+    padding: 22px 16px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    border: 1px solid rgba(138, 100, 40, .22);
+    border-radius: 24px;
+    background: rgba(255, 249, 239, .78);
+  }
+
+  .dv-home__step span {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    color: #FFF9EF;
+    background: linear-gradient(135deg, var(--dv-gold-deep), var(--dv-gold-light));
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .dv-home__step p {
+    margin: 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .dv-home__step p strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--dv-ink);
+    font-size: 15px;
+  }
+
+  .dv-home__step-separator {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--dv-gold-deep), transparent);
+    opacity: .55;
+  }
+
+  .dv-home__final {
+    padding-bottom: clamp(58px, 8vw, 100px);
+  }
+
+  .dv-home__final-card {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    padding: clamp(28px, 5vw, 46px);
+    border: 1px solid var(--dv-border-strong);
+    border-radius: 34px;
+    background:
+      radial-gradient(circle at 92% 16%, rgba(60, 116, 110, .12), transparent 28%),
+      linear-gradient(135deg, rgba(255, 255, 255, .46), rgba(255, 249, 239, .72));
+    box-shadow: 0 28px 72px rgba(46, 34, 20, .10);
+  }
+
+  .dv-home__final-mark {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid var(--dv-border-strong);
+    border-radius: 50%;
+    color: var(--dv-gold-deep);
+    background: rgba(255, 249, 239, .88);
+    font-size: 22px;
+  }
+
+  .dv-home__final h2 {
+    margin: 0;
+    color: var(--dv-ink);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -.05em;
+  }
+
+  .dv-home__final p {
+    max-width: 760px;
+    margin: 14px 0 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  .dv-home__final .dv-home__button {
+    margin-top: 22px;
+  }
+
+  @media (max-width: 980px) {
+    .dv-home__hero-grid,
+    .dv-home__steps-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-home__case {
+      max-width: 640px;
+    }
+
+    .dv-home__card-grid,
+    .dv-home__genre-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-home__story-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .dv-home__card {
+      min-height: auto;
+    }
+
+    .dv-home__card-number {
+      margin-bottom: 34px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .dv-home__shell {
+      width: min(100% - 28px, 1160px);
+    }
+
+    .dv-home__hero {
+      padding-top: 40px;
+    }
+
+    .dv-home__content,
+    .dv-home__case,
+    .dv-home__steps-inner,
+    .dv-home__final-card {
+      border-radius: 24px;
+    }
+
+    .dv-home__content {
+      padding: 28px 20px;
+    }
+
+    .dv-home__content::before,
+    .dv-home__content::after {
+      display: none;
+    }
+
+    .dv-home h1 {
+      font-size: clamp(40px, 13vw, 58px);
+    }
+
+    .dv-home__lead {
+      font-size: 20px;
+    }
+
+    .dv-home__text,
+    .dv-home__section-head p,
+    .dv-home__final p {
+      font-size: 15px;
+      line-height: 1.68;
+    }
+
+    .dv-home__status {
+      align-items: flex-start;
+      border-radius: 18px;
+    }
+
+    .dv-home__step-line {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-home__story-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-home__genre-card {
+      min-height: auto;
+    }
+
+    .dv-home__story-card {
+      min-height: auto;
+      padding: 24px 20px;
+    }
+
+    .dv-home__story-card h3 {
+      margin-top: 34px;
+      font-size: 29px;
+    }
+
+    .dv-home__step-separator {
+      width: 1px;
+      height: 20px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, transparent, var(--dv-gold-deep), transparent);
+    }
+
+    .dv-home__final-card {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dv-home * {
+      scroll-behavior: auto !important;
+    }
+  }
+</style>

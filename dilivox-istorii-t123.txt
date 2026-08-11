@@ -1,0 +1,2912 @@
+<!-- DILIVOX / Каталог историй / без шапки и футера -->
+<main class="dv-stories-list" data-dv-page="stories-list" aria-label="Каталог историй Dilivox">
+  <div class="dv-stories__grain" aria-hidden="true"></div>
+  <div class="dv-stories__glow dv-stories__glow--one" aria-hidden="true"></div>
+  <div class="dv-stories__glow dv-stories__glow--two" aria-hidden="true"></div>
+
+  <section class="dv-stories__hero" data-dv-ad-exclude="true">
+    <div class="dv-stories__shell">
+      <div class="dv-stories__hero-card">
+        <div class="dv-stories__hero-copy">
+          <div class="dv-stories__eyebrow">
+            <span class="dv-stories__eyebrow-line" aria-hidden="true"></span>
+            КАТАЛОГ DILIVOX
+          </div>
+
+          <h1>Выберите историю. Найдите деталь. Проверьте версию.</h1>
+
+          <p class="dv-stories__lead">
+            Детективы, фантастика, триллеры, ужасы, приключения, юмор и комиксы с выбором версии перед развязкой.
+          </p>
+        </div>
+        <div class="dv-stories__hero-slider" data-dv-catalog-hero data-dv-ad-exclude="true" aria-roledescription="карусель" aria-label="Избранные истории каталога" style="position:relative;overflow:hidden;height:560px;min-height:0">
+          <a class="dv-stories__hero-slide is-active" data-dv-catalog-slide="0" href="/istorii/ona-vyshla-na-stsenu-dvazhdy/" aria-hidden="false" style="position:absolute;inset:0;opacity:1;pointer-events:auto">
+            <img src="https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp" alt="Обложка комикса «Она вышла на сцену дважды»" fetchpriority="high" decoding="async">
+            <span class="dv-stories__hero-caption"><small>Комикс</small><strong>Она вышла на сцену дважды</strong></span>
+          </a>
+          <a class="dv-stories__hero-slide" data-dv-catalog-slide="1" href="/istorii/posledniy-reys-severnoy-chayki/" aria-hidden="true" style="position:absolute;inset:0;opacity:0;pointer-events:none">
+            <img data-src="https://optim.tildacdn.com/tild6237-3364-4465-b062-303963303761/-/format/webp/posledniy-reys-sever.png.webp" alt="Иллюстрация к истории «Последний рейс Северной чайки»" decoding="async">
+            <span class="dv-stories__hero-caption"><small>Детектив</small><strong>Последний рейс «Северной чайки»</strong></span>
+          </a>
+          <a class="dv-stories__hero-slide" data-dv-catalog-slide="2" href="/istorii/sisadmin-pri-dvore-magov/" aria-hidden="true" style="position:absolute;inset:0;opacity:0;pointer-events:none">
+            <img data-src="https://optim.tildacdn.com/tild6533-3632-4031-b634-393366623033/-/format/webp/34-sisadmin-pri-dvor.png.webp" alt="Иллюстрация к истории «Сисадмин при дворе магов»" decoding="async">
+            <span class="dv-stories__hero-caption"><small>Фантастика</small><strong>Сисадмин при дворе магов</strong></span>
+          </a>
+          <a class="dv-stories__hero-slide" data-dv-catalog-slide="3" href="/istorii/operatsiya-mertvyy-mayak/" aria-hidden="true" style="position:absolute;inset:0;opacity:0;pointer-events:none">
+            <img data-src="https://optim.tildacdn.com/tild6333-3165-4266-a330-656232616137/-/format/webp/37-operatsiya-mertvy.png.webp" alt="Иллюстрация к истории «Операция Мёртвый маяк»" decoding="async">
+            <span class="dv-stories__hero-caption"><small>Триллер</small><strong>Операция «Мёртвый маяк»</strong></span>
+          </a>
+          <a class="dv-stories__hero-slide" data-dv-catalog-slide="4" href="/istorii/teatr-kotoryy-igraet-posle-zakrytiya/" aria-hidden="true" style="position:absolute;inset:0;opacity:0;pointer-events:none">
+            <img data-src="https://optim.tildacdn.com/tild6138-3364-4731-a436-323135323931/-/format/webp/21-teatr-kotoryy-igr.png.webp" alt="Иллюстрация к истории «Театр, который играет после закрытия»" decoding="async">
+            <span class="dv-stories__hero-caption"><small>Ужасы</small><strong>Театр, который играет после закрытия</strong></span>
+          </a>
+          <div class="dv-stories__hero-dots" role="group" aria-label="Выбрать слайд">
+            <button class="is-active" type="button" data-dv-catalog-dot="0" aria-label="Она вышла на сцену дважды" aria-current="true"></button>
+            <button type="button" data-dv-catalog-dot="1" aria-label="Последний рейс Северной чайки"></button>
+            <button type="button" data-dv-catalog-dot="2" aria-label="Сисадмин при дворе магов"></button>
+            <button type="button" data-dv-catalog-dot="3" aria-label="Операция Мёртвый маяк"></button>
+            <button type="button" data-dv-catalog-dot="4" aria-label="Театр, который играет после закрытия"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dv-stories__catalog dv-cards" aria-labelledby="dv-stories-catalog-title">
+    <div class="dv-stories__shell">
+      <div class="dv-stories__section-head">
+        <span>Каталог</span>
+        <h2 id="dv-stories-catalog-title">Все истории</h2>
+        <p>Выберите жанр или откройте историю, которая привлекла внимание.</p>
+      </div>
+
+      <div class="dv-stories__tools" aria-label="Фильтры историй">
+        <button class="dv-stories__tool is-active" type="button" data-dv-filter-control data-dv-filter="all" aria-pressed="true">Все</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="detektivy" aria-pressed="false">Детективы</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="fantastika" aria-pressed="false">Фантастика</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="trillery" aria-pressed="false">Триллеры</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="uzhasy" aria-pressed="false">Ужасы</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="priklyucheniya" aria-pressed="false">Приключения</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="yumoristicheskaya-literatura" aria-pressed="false">Юмор</button>
+        <button class="dv-stories__tool" type="button" data-dv-filter-control data-dv-filter="komiksy" aria-pressed="false">Комиксы</button>
+      </div>
+
+      <div class="dv-stories__tools dv-stories__tools--sort" aria-label="Сортировка историй">
+        <button class="dv-stories__tool is-active" type="button" data-dv-sort-control data-dv-sort="new" aria-pressed="true">Новые</button>
+        <button class="dv-stories__tool" type="button" data-dv-sort-control data-dv-sort="popular" aria-pressed="false">Популярные</button>
+      </div>
+
+      <div class="dv-stories__new-head">
+        <span>СВЕЖИЕ ПУБЛИКАЦИИ</span>
+        <h2>Новое на Dilivox</h2>
+      </div>
+
+      <div class="dv-stories__grid" data-dv-stories-grid>
+        <article class="dv-story-card" data-dv-story-slug="ona-vyshla-na-stsenu-dvazhdy" data-dv-genre="komiksy" data-dv-format="short" data-dv-story-type="comic" data-dv-featured="true" data-dv-order="49" data-dv-popular="97">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/ona-vyshla-na-stsenu-dvazhdy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6361-3137-4134-b338-306566366465/-/format/webp/00-cover.png.webp" width="1080" height="1350" alt="Обложка комикса «Она вышла на сцену дважды»" loading="lazy" decoding="async">
+            </div>
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">49</span>
+              <span class="dv-story-card__status" data-dv-story-status="ona-vyshla-na-stsenu-dvazhdy">Новая</span>
+            </div>
+            <h3>Она вышла на сцену дважды</h3>
+            <p>Ника только что закончила выступление — и через несколько минут её снова видят на другой сцене. Разгадка спрятана в руках, обуви и деталях, которые легко пропустить.</p>
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span class="dv-story-card__type">Комикс</span>
+              <span>Фестиваль</span>
+              <span>Двойник</span>
+              <span>Кража</span>
+              <span>Визуальные улики</span>
+            </div>
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="pechat-na-bagrovom-voske" data-dv-genre="komiksy" data-dv-format="short" data-dv-story-type="comic" data-dv-order="50" data-dv-popular="98">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/pechat-na-bagrovom-voske/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6364-6366-4861-b535-616133396235/-/format/webp/00-cover.png.webp" width="1080" height="1350" alt="Обложка комикса «Печать на багровом воске»" loading="lazy" decoding="async">
+            </div>
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">50</span>
+              <span class="dv-story-card__status" data-dv-story-status="pechat-na-bagrovom-voske">Новая</span>
+            </div>
+            <h3>Печать на багровом воске</h3>
+            <p>Королевский перстень заменён безупречной копией, а угрожающий приказ уже скреплён подлинной печатью. Разгадка спрятана в маленьком изъяне, синей нити и вещи, которая внезапно стала тяжелее.</p>
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span class="dv-story-card__type">Комикс</span>
+              <span>Королевская печать</span>
+              <span>Дворцовая интрига</span>
+              <span>Подмена</span>
+              <span>Визуальные улики</span>
+            </div>
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="pansionat-tikhiy-uzhas" data-dv-genre="yumoristicheskaya-literatura" data-dv-format="short" data-dv-order="48" data-dv-popular="93">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/pansionat-tikhiy-uzhas/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3234-3134-4864-a161-313636653332/-/format/webp/48-pansionat-tikhiy-.png.webp" alt="Иллюстрация к истории «Пансионат «Тихий ужас»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">48</span>
+              <span class="dv-story-card__status" data-dv-story-status="pansionat-tikhiy-uzhas">Новая</span>
+            </div>
+
+            <h3>Пансионат «Тихий ужас»</h3>
+
+            <p>За полтора часа до проверки из запертой библиотеки пропадает сейф с телефонами гостей. По пансионату звонят пустые номера, ездят бельевые тележки, а вывеска «Тихий ужас» неожиданно оказывается самым честным документом.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Пансионат</span>
+              <span>Закрытая комната</span>
+              <span>Пропавший сейф</span>
+              <span>Юмор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="ofisnyy-klad" data-dv-genre="yumoristicheskaya-literatura" data-dv-format="short" data-dv-order="47" data-dv-popular="86">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/ofisnyy-klad/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3139-6464-4866-a138-343662646632/-/format/webp/47-ofisnyy-klad.png.webp" alt="Иллюстрация к истории «Офисный клад»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">47</span>
+              <span class="dv-story-card__status" data-dv-story-status="ofisnyy-klad">Новая</span>
+            </div>
+
+            <h3>Офисный клад</h3>
+
+            <p>Во время переезда сотрудники находят карту к офисному кладу. Но охота за сокровищем быстро превращается в расследование: кто-то использует подсказки, чтобы выманить всех из нужных комнат и добраться до корпоративного сейфа.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Офис</span>
+              <span>Клад</span>
+              <span>Переезд</span>
+              <span>Юмор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="kot-kotoryy-sdaval-kvartiru" data-dv-genre="yumoristicheskaya-literatura" data-dv-format="short" data-dv-order="46" data-dv-popular="88">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/kot-kotoryy-sdaval-kvartiru/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3964-3938-4139-a532-353531633831/-/format/webp/46-kot-kotoryy-sdava.png.webp" alt="Иллюстрация к истории «Кот, который сдавал квартиру»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">46</span>
+              <span class="dv-story-card__status" data-dv-story-status="kot-kotoryy-sdaval-kvartiru">Новая</span>
+            </div>
+
+            <h3>Кот, который сдавал квартиру</h3>
+
+            <p>Пока хозяйка была в отпуске, её квартира оказалась сдана сразу трём жильцам. Все показывают настоящие договоры, а главный подозреваемый — кот с привычкой приносить ключи и открывать домофон.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Кот</span>
+              <span>Квартира</span>
+              <span>Аренда</span>
+              <span>Юмор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="svadba-s-dostavkoy" data-dv-genre="yumoristicheskaya-literatura" data-dv-format="short" data-dv-order="45" data-dv-popular="91">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/svadba-s-dostavkoy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3837-3431-4365-a334-353862323363/-/format/webp/45-svadba-s-dostavko.png.webp" alt="Иллюстрация к истории «Свадьба с доставкой»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">45</span>
+              <span class="dv-story-card__status" data-dv-story-status="svadba-s-dostavkoy">Новая</span>
+            </div>
+
+            <h3>Свадьба с доставкой</h3>
+
+            <p>Свадьбу привозят в загородный отель по коробкам, но кольца и ключ регистрации исчезают из опечатанного модуля. Координатору приходится разбираться в поддельных этикетках, второй несуществующей свадьбе и очень самостоятельной тележке.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Свадьба</span>
+              <span>Доставка</span>
+              <span>Пропавшие кольца</span>
+              <span>Юмор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+<!-- DILIVOX / РСЯ: Dilivox Каталог Верх -->
+<div class="dv-ad dv-ad--catalog-top" aria-label="Реклама" data-dv-ad-block="R-A-19563496-3">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-3"></div>
+</div>
+<script>
+(function(w,d,blockId,renderTo){
+  function position(wrapper){
+    var grid = wrapper && wrapper.closest ? wrapper.closest('[data-dv-stories-grid], .dv-stories__grid') : null;
+    if (!grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.dv-story-card')).filter(function(card){
+      return !card.hidden;
+    });
+    if (!cards.length) {
+      if (!wrapper.hidden) wrapper.hidden = true;
+      return;
+    }
+    if (wrapper.hidden) wrapper.hidden = false;
+    var anchor = cards[Math.min(5, cards.length - 1)];
+    if (anchor.nextElementSibling !== wrapper) anchor.insertAdjacentElement('afterend', wrapper);
+  }
+  function render(){
+    var slot = d.getElementById(renderTo);
+    if (!slot || slot.dataset.dvAdRendered === 'true') return;
+    slot.dataset.dvAdRendered = 'true';
+    w.yaContextCb = w.yaContextCb || [];
+    w.yaContextCb.push(function(){
+      Ya.Context.AdvManager.render({ blockId: blockId, renderTo: renderTo });
+    });
+  }
+  function init(){
+    var slot = d.getElementById(renderTo);
+    var wrapper = slot && slot.closest ? slot.closest('.dv-ad') : null;
+    var grid = wrapper && wrapper.closest ? wrapper.closest('[data-dv-stories-grid], .dv-stories__grid') : null;
+    if (!slot || !wrapper || !grid) return;
+    position(wrapper);
+    if ('MutationObserver' in w) {
+      new MutationObserver(function(){ position(wrapper); }).observe(grid, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['hidden']
+      });
+    }
+    render();
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})(window, document, 'R-A-19563496-3', 'yandex_rtb_R-A-19563496-3');
+</script>
+<!-- /DILIVOX / РСЯ: Dilivox Каталог Верх -->
+
+        <article class="dv-story-card" data-dv-story-slug="babushka-protiv-robota-pylesosa" data-dv-genre="yumoristicheskaya-literatura" data-dv-format="short" data-dv-order="44" data-dv-popular="84">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/babushka-protiv-robota-pylesosa/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3265-3230-4531-a438-616238306161/-/format/webp/44-babushka-protiv-r.png.webp" alt="Иллюстрация к истории «Бабушка против робота-пылесоса»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">44</span>
+              <span class="dv-story-card__status" data-dv-story-status="babushka-protiv-robota-pylesosa">Новая</span>
+            </div>
+
+            <h3>Бабушка против робота-пылесоса</h3>
+
+            <p>Из витрины исчезает фамильная брошь, а единственный подозреваемый с уликами на щётках — робот-пылесос. Но бабушка уверена: техника может быть вредной, но алиби себе пока не пишет.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Семейная загадка</span>
+              <span>Умный дом</span>
+              <span>Робот-пылесос</span>
+              <span>Юмор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="detektivnoe-agentstvo-nu-pochti" data-dv-genre="yumoristicheskaya-literatura" data-dv-format="short" data-dv-order="43" data-dv-popular="96">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/detektivnoe-agentstvo-nu-pochti/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3765-6335-4562-b330-366337636534/-/format/webp/43-detektivnoe-agent.png.webp" alt="Иллюстрация к истории «Детективное агентство «Ну почти»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">43</span>
+              <span class="dv-story-card__status" data-dv-story-status="detektivnoe-agentstvo-nu-pochti">Новая</span>
+            </div>
+
+            <h3>Детективное агентство «Ну почти»</h3>
+
+            <p>Из запертой переговорной пропал ключ к корпоративным счетам. Дверь не открывалась, камеры молчат, а агентству «Ну почти» приходится допрашивать директора, уборщика и очень принципиальный робот-пылесос.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Детектив</span>
+              <span>Офис</span>
+              <span>Кража</span>
+              <span>Юмор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="desyat-minut-do-granitsy" data-dv-genre="boeviki" data-dv-format="short" data-dv-order="42" data-dv-popular="89">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/desyat-minut-do-granitsy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3564-3863-4537-b036-613966656132/-/format/webp/42-desyat-minut-do-g.png.webp" alt="Иллюстрация к истории «Десять минут до границы»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">42</span>
+              <span class="dv-story-card__status" data-dv-story-status="desyat-minut-do-granitsy">Новая</span>
+            </div>
+
+            <h3>Десять минут до границы</h3>
+
+            <p>Группа сопровождения идёт к границе по заминированному горному коридору. До закрытия прохода десять минут, противник не пытается уничтожить машину, а каждый маяк записывает её маршрут.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Граница</span>
+              <span>Бронемашина</span>
+              <span>Погоня</span>
+              <span>Скрытая операция</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="marshrut-17" data-dv-genre="boeviki" data-dv-format="short" data-dv-order="41" data-dv-popular="82">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/marshrut-17/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3436-3230-4535-b031-323538346338/-/format/webp/41-marshrut-17.png.webp" alt="Иллюстрация к истории «Маршрут 17»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">41</span>
+              <span class="dv-story-card__status" data-dv-story-status="marshrut-17">Новая</span>
+            </div>
+
+            <h3>Маршрут 17</h3>
+
+            <p>Бронированный автобус идёт по захваченному городу. Враг атакует колёса, а не пассажиров, маршрут сам добавляет остановки, и до активации неизвестного городского контура остаётся сорок минут.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Городская операция</span>
+              <span>Автобус</span>
+              <span>Засада</span>
+              <span>Скрытая цель</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="platforma-sever-9" data-dv-genre="boeviki" data-dv-format="short" data-dv-order="40" data-dv-popular="94">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/platforma-sever-9/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3563-3536-4430-b866-396639303638/-/format/webp/40-platforma-sever-9.png.webp" alt="Иллюстрация к истории «Платформа «Север-9»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">40</span>
+              <span class="dv-story-card__status" data-dv-story-status="platforma-sever-9">Новая</span>
+            </div>
+
+            <h3>Платформа «Север-9»</h3>
+
+            <p>Штурмовая группа входит на арктическую платформу «Север-9». До удара по флоту тридцать пять минут, персонал пропал, радар молчит, а подо льдом движется груз, которого нет в документах.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Арктика</span>
+              <span>Штурм</span>
+              <span>Платформа</span>
+              <span>Диверсия</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="posledniy-lift-bashni-orion" data-dv-genre="boeviki" data-dv-format="short" data-dv-order="39" data-dv-popular="87">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/posledniy-lift-bashni-orion/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6263-3036-4465-a230-313739613039/-/format/webp/39-posledniy-lift-ba.png.webp" alt="Иллюстрация к истории «Последний лифт башни «Орион»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">39</span>
+              <span class="dv-story-card__status" data-dv-story-status="posledniy-lift-bashni-orion">Новая</span>
+            </div>
+
+            <h3>Последний лифт башни «Орион»</h3>
+
+            <p>Группа захвата входит в башню «Орион» за инженером ПРО. До ракетного удара двадцать восемь минут, последний лифт идёт только вверх, а каждый этаж оказывается не тем, что указан на панели.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Штурм</span>
+              <span>Небоскрёб</span>
+              <span>Лифт</span>
+              <span>Саботаж</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="chernyy-konvoy" data-dv-genre="boeviki" data-dv-format="short" data-dv-order="38" data-dv-popular="80">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/chernyy-konvoy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6637-3530-4165-a539-383562376634/-/format/webp/38-chernyy-konvoy.png.webp" alt="Иллюстрация к истории «Чёрный конвой»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">38</span>
+              <span class="dv-story-card__status" data-dv-story-status="chernyy-konvoy">Новая</span>
+            </div>
+
+            <h3>Чёрный конвой</h3>
+
+            <p>Бронеколонна идёт через охваченный боями город. Враг атакует не ту машину, маршрут меняется без приказа, а настоящая цель конвоя скрыта среди медицинских контейнеров.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Бронеколонна</span>
+              <span>Эвакуация</span>
+              <span>Засада</span>
+              <span>Предательство</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="operatsiya-mertvyy-mayak" data-dv-genre="boeviki" data-dv-format="short" data-dv-order="37" data-dv-popular="92">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/operatsiya-mertvyy-mayak/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6333-3165-4266-a330-656232616137/-/format/webp/37-operatsiya-mertvy.png.webp" alt="Иллюстрация к истории «Операция «Мёртвый маяк»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">37</span>
+              <span class="dv-story-card__status" data-dv-story-status="operatsiya-mertvyy-mayak">Новая</span>
+            </div>
+
+            <h3>Операция «Мёртвый маяк»</h3>
+
+            <p>Штурмовая группа входит на остров с молчащим маяком. Гарнизон уничтожен, радар не работает, но ракеты продолжают находить цели. До удара по флоту остаётся сорок минут.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Спецоперация</span>
+              <span>Остров</span>
+              <span>Маяк</span>
+              <span>Предательство</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="yurist-v-korolevstve-bez-zakonov" data-dv-genre="popadantsy" data-dv-format="short" data-dv-order="36" data-dv-popular="85">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/yurist-v-korolevstve-bez-zakonov/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3662-3739-4461-a565-623264653035/-/format/webp/36-yurist-v-korolevs.png.webp" alt="Иллюстрация к истории «Юрист в королевстве без законов»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">36</span>
+              <span class="dv-story-card__status" data-dv-story-status="yurist-v-korolevstve-bez-zakonov">Новая</span>
+            </div>
+
+            <h3>Юрист в королевстве без законов</h3>
+
+            <p>Юрист Елена попадает в королевство без письменных законов и должна остановить казнь до заката. Все свидетели говорят одинаково, а приговор был объявлен раньше преступления.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Попаданец</span>
+              <span>Юрист</span>
+              <span>Суд</span>
+              <span>Дворцовый заговор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="feldsher-na-piratskom-korable" data-dv-genre="popadantsy" data-dv-format="short" data-dv-order="35" data-dv-popular="97">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/feldsher-na-piratskom-korable/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3939-3563-4133-b133-626166656161/-/format/webp/35-feldsher-na-pirat.png.webp" alt="Иллюстрация к истории «Фельдшер на пиратском корабле»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">35</span>
+              <span class="dv-story-card__status" data-dv-story-status="feldsher-na-piratskom-korable">Новая</span>
+            </div>
+
+            <h3>Фельдшер на пиратском корабле</h3>
+
+            <p>Фельдшер Илья попадает на пиратский корабль перед погоней. Команда падает без ран, капитан скрывает груз, а признаки «чумы» почему-то исчезают на верхней палубе.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Попаданец</span>
+              <span>Фельдшер</span>
+              <span>Пираты</span>
+              <span>Морская загадка</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="sisadmin-pri-dvore-magov" data-dv-genre="popadantsy" data-dv-format="short" data-dv-order="34" data-dv-popular="90">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/sisadmin-pri-dvore-magov/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6533-3632-4031-b634-393366623033/-/format/webp/34-sisadmin-pri-dvor.png.webp" alt="Иллюстрация к истории «Сисадмин при дворе магов»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">34</span>
+              <span class="dv-story-card__status" data-dv-story-status="sisadmin-pri-dvore-magov">Новая</span>
+            </div>
+
+            <h3>Сисадмин при дворе магов</h3>
+
+            <p>Сисадмин Дарья попадает во дворец магов и берётся за сбой защитной сети. До коронации два часа, заклинания подписаны верно, а несуществующая башня уже получила доступ к трону.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Попаданец</span>
+              <span>Сисадмин</span>
+              <span>Магия</span>
+              <span>Дворцовый заговор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="bilet-do-stantsii-vchera" data-dv-genre="popadantsy" data-dv-format="short" data-dv-order="33" data-dv-popular="83">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/bilet-do-stantsii-vchera/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3036-6565-4239-a134-323032376166/-/format/webp/33-bilet-do-stantsii.png.webp" alt="Иллюстрация к истории «Билет до станции «Вчера»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">33</span>
+              <span class="dv-story-card__status" data-dv-story-status="bilet-do-stantsii-vchera">Новая</span>
+            </div>
+
+            <h3>Билет до станции «Вчера»</h3>
+
+            <p>Инженер Марина попадает в поезд между днями и замечает невозможное: сигналы открываются позади состава, а в счётчике не хватает четырёх осей. До полуночи нужно понять, кто ведёт поезд во вчера.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Попаданец</span>
+              <span>Поезд</span>
+              <span>Время</span>
+              <span>Заговор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="inzhener-dlya-osazhdennoy-kreposti" data-dv-genre="popadantsy" data-dv-format="short" data-dv-order="32" data-dv-popular="95">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/inzhener-dlya-osazhdennoy-kreposti/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3331-6135-4631-b734-613132643030/-/format/webp/32-inzhener-dlya-osa.png.webp" alt="Иллюстрация к истории «Инженер для осаждённой крепости»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">32</span>
+              <span class="dv-story-card__status" data-dv-story-status="inzhener-dlya-osazhdennoy-kreposti">Новая</span>
+            </div>
+
+            <h3>Инженер для осаждённой крепости</h3>
+
+            <p>Инженер Варвара попадает в осаждённую крепость и замечает: стены рушатся не от ударов врага. До штурма остаётся три часа, а настоящая угроза скрыта под фундаментом.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Попаданец</span>
+              <span>Инженер</span>
+              <span>Осада</span>
+              <span>Крепость</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="kuryer-dlya-imperatora-drakonov" data-dv-genre="popadantsy" data-dv-format="short" data-dv-order="31" data-dv-popular="88">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/kuryer-dlya-imperatora-drakonov/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3737-6665-4435-b162-613235393331/-/format/webp/31-kuryer-dlya-imper.png.webp" alt="Иллюстрация к истории «Курьер для императора драконов»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">31</span>
+              <span class="dv-story-card__status" data-dv-story-status="kuryer-dlya-imperatora-drakonov">Новая</span>
+            </div>
+
+            <h3>Курьер для императора драконов</h3>
+
+            <p>Курьер Артём попадает в империю драконов и получает срочный заказ до дворца. Но маршрут подменён, охрана лжёт, а содержимое послания опаснее любой засады.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Попаданец</span>
+              <span>Драконы</span>
+              <span>Курьер</span>
+              <span>Заговор</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="tropa-zolotogo-yaguara" data-dv-genre="priklyucheniya" data-dv-format="short" data-dv-order="30" data-dv-popular="84">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/tropa-zolotogo-yaguara/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6433-3465-4332-a462-333030353637/-/format/webp/30-tropa-zolotogo-ya.png.webp" alt="Иллюстрация к истории «Тропа золотого ягуара»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">30</span>
+              <span class="dv-story-card__status" data-dv-story-status="tropa-zolotogo-yaguara">Новая</span>
+            </div>
+
+            <h3>Тропа золотого ягуара</h3>
+
+            <p>В джунглях находят фигурку золотого ягуара — ключ к древнему маршруту. Но храм оказывается ловушкой, а настоящая тропа открывается только на рассвете.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Джунгли</span>
+              <span>Золотой ягуар</span>
+              <span>Храм</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="gorod-pod-lednikom" data-dv-genre="priklyucheniya" data-dv-format="short" data-dv-order="29" data-dv-popular="93">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/gorod-pod-lednikom/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3563-6164-4965-b936-373962393730/-/format/webp/29-gorod-pod-ledniko.png.webp" alt="Иллюстрация к истории «Город под ледником»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">29</span>
+              <span class="dv-story-card__status" data-dv-story-status="gorod-pod-lednikom">Новая</span>
+            </div>
+
+            <h3>Город под ледником</h3>
+
+            <p>После обвала под ледником открывается город со светящимися окнами. Но за красивыми башнями скрыта станция, которую кто-то хочет разобрать до прихода спасателей.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Ледник</span>
+              <span>Экспедиция</span>
+              <span>Скрытая станция</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="poezd-cherez-krasnuyu-pustynyu" data-dv-genre="priklyucheniya" data-dv-format="short" data-dv-order="28" data-dv-popular="92">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/poezd-cherez-krasnuyu-pustynyu/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6333-6531-4133-a436-643966313032/-/format/webp/28-poezd-cherez-kras.png.webp" alt="Иллюстрация к истории «Поезд через Красную пустыню»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">28</span>
+              <span class="dv-story-card__status" data-dv-story-status="poezd-cherez-krasnuyu-pustynyu">Новая</span>
+            </div>
+
+            <h3>Поезд через Красную пустыню</h3>
+
+            <p>Старый грузовой поезд идёт через Красную пустыню без права на остановку. Все смотрят на бронированный контейнер, но настоящая цель спрятана в пустом вагоне.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Поезд</span>
+              <span>Пустыня</span>
+              <span>Погоня</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="ostrov-na-odin-priliv" data-dv-genre="priklyucheniya" data-dv-format="short" data-dv-order="27" data-dv-popular="91">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/ostrov-na-odin-priliv/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6466-3731-4138-b634-383637336266/-/format/webp/27-ostrov-na-odin-pr.png.webp" alt="Иллюстрация к истории «Остров на один прилив»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">27</span>
+              <span class="dv-story-card__status" data-dv-story-status="ostrov-na-odin-priliv">Новая</span>
+            </div>
+
+            <h3>Остров на один прилив</h3>
+
+            <p>Раз в год у рифа появляется остров, который живёт всего несколько часов. Рита ищет там следы отца и находит тайник, за которым охотятся не ради золота.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Море</span>
+              <span>Исчезающий остров</span>
+              <span>Прилив</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="sedmoy-vodopad" data-dv-genre="priklyucheniya" data-dv-format="short" data-dv-order="26" data-dv-popular="90">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/sedmoy-vodopad/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6537-6132-4035-a565-333161366134/-/format/webp/26-sedmoy-vodopad.png.webp" alt="Иллюстрация к истории «Седьмой водопад»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">26</span>
+              <span class="dv-story-card__status" data-dv-story-status="sedmoy-vodopad">Новая</span>
+            </div>
+
+            <h3>Седьмой водопад</h3>
+
+            <p>После грозы в горах появляется седьмой водопад, которого нет на картах. За его потоком скрыт проход, из-за которого пропали люди.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Горы</span>
+              <span>Водопад</span>
+              <span>Спасательная операция</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="zoloto-chernoy-marii" data-dv-genre="priklyucheniya" data-dv-format="short" data-dv-order="25" data-dv-popular="89">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/zoloto-chernoy-marii/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6638-3834-4164-a137-353261373663/-/format/webp/25-zoloto-chernoy-ma.png.webp" alt="Иллюстрация к истории «Золото «Чёрной Марии»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">25</span>
+              <span class="dv-story-card__status" data-dv-story-status="zoloto-chernoy-marii">Новая</span>
+            </div>
+
+            <h3>Золото «Чёрной Марии»</h3>
+
+            <p>Экспедиция находит затонувший пиратский корабль «Чёрная Мария». Все ищут сундук с золотом, но настоящая добыча спрятана там, куда никто не смотрит.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Пираты</span>
+              <span>Затонувший корабль</span>
+              <span>Сокровища</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+
+        <article class="dv-story-card" data-dv-story-slug="chelyusti-u-buyka-4" data-dv-genre="uzhasy" data-dv-format="short" data-dv-order="24" data-dv-popular="89">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/chelyusti-u-buyka-4/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3465-3138-4034-a463-343230653038/-/format/webp/24-chelyusti-u-buyka.png.webp" alt="Иллюстрация к истории «Челюсти у буйка № 4»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">24</span>
+              <span class="dv-story-card__status" data-dv-story-status="chelyusti-u-buyka-4">Новая</span>
+            </div>
+
+            <h3>Челюсти у буйка № 4</h3>
+
+            <p>У островного курорта пропадают дайверы. Все винят акул у буйка № 4, но хищники ведут себя не как убийцы — они будто охраняют то, что лежит под водой.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Морской хоррор</span>
+              <span>Акулы</span>
+              <span>Буй № 4</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="kayuta-7" data-dv-genre="uzhasy" data-dv-format="short" data-dv-order="23" data-dv-popular="88">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/kayuta-7/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3361-3464-4165-b035-393263653164/-/format/webp/23-kayuta-7.png.webp" alt="Иллюстрация к истории «Каюта № 7»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">23</span>
+              <span class="dv-story-card__status" data-dv-story-status="kayuta-7">Новая</span>
+            </div>
+
+            <h3>Каюта № 7</h3>
+
+            <p>На старом корабле-музее есть запечатанная каюта № 7. Каждую ночь оттуда звонит телефон, и женский голос просит открыть дверь.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Старый корабль</span>
+              <span>Каюта № 7</span>
+              <span>Звонок изнутри</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="chernaya-tropa" data-dv-genre="uzhasy" data-dv-format="short" data-dv-order="22" data-dv-popular="87">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/chernaya-tropa/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6430-6232-4434-a634-313334383662/-/format/webp/22-chernaya-tropa.png.webp" alt="Иллюстрация к истории «Чёрная тропа»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">22</span>
+              <span class="dv-story-card__status" data-dv-story-status="chernaya-tropa">Новая</span>
+            </div>
+
+            <h3>Чёрная тропа</h3>
+
+            <p>На болоте появляется узкая чёрная тропа, которой нет на карте. Кто идёт по ней за огнями, может вернуться обратно — но уже не своим голосом.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Болото</span>
+              <span>Чёрная тропа</span>
+              <span>Огни на воде</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="teatr-kotoryy-igraet-posle-zakrytiya" data-dv-genre="uzhasy" data-dv-format="short" data-dv-order="21" data-dv-popular="86">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/teatr-kotoryy-igraet-posle-zakrytiya/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6138-3364-4731-a436-323135323931/-/format/webp/21-teatr-kotoryy-igr.png.webp" alt="Иллюстрация к истории «Театр, который играет после закрытия»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">21</span>
+              <span class="dv-story-card__status" data-dv-story-status="teatr-kotoryy-igraet-posle-zakrytiya">Новая</span>
+            </div>
+
+            <h3>Театр, который играет после закрытия</h3>
+
+            <p>В заброшенном театре после закрытия загорается рампа, а пустой зал начинает заполняться зрителями. Чтобы выбраться, Нике придётся сыграть роль, которую театр навязывает живым.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Заброшенный театр</span>
+              <span>Призрачный спектакль</span>
+              <span>Белая перчатка</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="passazhir-iz-poslednego-vagona" data-dv-genre="uzhasy" data-dv-format="short" data-dv-order="20" data-dv-popular="85">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/passazhir-iz-poslednego-vagona/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3839-6432-4365-a462-366565326261/-/format/webp/20-passazhir-iz-posl.png.webp" alt="Иллюстрация к истории «Пассажир из последнего вагона»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">20</span>
+              <span class="dv-story-card__status" data-dv-story-status="passazhir-iz-poslednego-vagona">Новая</span>
+            </div>
+
+            <h3>Пассажир из последнего вагона</h3>
+
+            <p>В ночном поезде появляется пассажир без лица. Его нет в списках, но после каждого перегона исчезает человек, а система делает вид, что его никогда не было.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Ночной поезд</span>
+              <span>Последний вагон</span>
+              <span>Безликий пассажир</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="krasnaya-voda-pod-kilem" data-dv-genre="uzhasy" data-dv-format="short" data-dv-order="19" data-dv-popular="94">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/krasnaya-voda-pod-kilem/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6238-3662-4062-a562-306439646233/-/format/webp/19-krasnaya-voda-pod.png.webp" alt="Иллюстрация к истории «Красная вода под килем»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">19</span>
+              <span class="dv-story-card__status" data-dv-story-status="krasnaya-voda-pod-kilem">Новая</span>
+            </div>
+
+            <h3>Красная вода под килем</h3>
+
+            <p>Старое исследовательское судно идёт на утилизацию, но за ним по холодной воде движется стая акул. Они не охотятся. Они ждут, когда то, что спрятано под килем, вернут глубине.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Морской хоррор</span>
+              <span>Старое судно</span>
+              <span>Акулы</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="bumazhnyy-zhuravl-na-mokrom-stekle" data-dv-genre="trillery" data-dv-format="short" data-dv-order="18" data-dv-popular="96">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/bumazhnyy-zhuravl-na-mokrom-stekle/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3733-3638-4062-b330-393334373735/-/format/webp/18-bumazhnyy-zhuravl.png.webp" alt="Иллюстрация к истории «Бумажный журавль на мокром стекле»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">18</span>
+              <span class="dv-story-card__status" data-dv-story-status="bumazhnyy-zhuravl-na-mokrom-stekle">Новая</span>
+            </div>
+
+            <h3>Бумажный журавль на мокром стекле</h3>
+
+            <p>Свидетельница исчезает из стеклянного перехода, а камеры показывают, что она ушла сама. Единственная улика — бумажный журавль на мокром стекле.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Мокрое стекло</span>
+              <span>Отражение</span>
+              <span>Исчезновение</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="golos-v-levom-naushnike" data-dv-genre="trillery" data-dv-format="short" data-dv-order="17" data-dv-popular="95">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/golos-v-levom-naushnike/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6564-3865-4438-a336-643566393635/-/format/webp/17-golos-v-levom-nau.png.webp" alt="Иллюстрация к истории «Голос в левом наушнике»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">17</span>
+              <span class="dv-story-card__status" data-dv-story-status="golos-v-levom-naushnike">Новая</span>
+            </div>
+
+            <h3>Голос в левом наушнике</h3>
+
+            <p>Ночной курьер слышит в левом наушнике голос пропавшей девушки. Он ведёт его по городу, но каждая подсказка оказывается не спасением, а частью чужой охоты.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Ночной курьер</span>
+              <span>Левый канал</span>
+              <span>Аудиослед</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="chernaya-metka-na-zapyastye" data-dv-genre="trillery" data-dv-format="short" data-dv-order="16" data-dv-popular="94">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/chernaya-metka-na-zapyastye/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6463-3362-4236-a133-306639376436/-/format/webp/16-chernaya-metka-na.png.webp" alt="Иллюстрация к истории «Чёрная метка на запястье»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">16</span>
+              <span class="dv-story-card__status" data-dv-story-status="chernaya-metka-na-zapyastye">Новая</span>
+            </div>
+
+            <h3>Чёрная метка на запястье</h3>
+
+            <p>После ночного сбоя система помечает живую свидетельницу как умершую. На её запястье остаётся чёрный след, который ведёт не к мистике, а к краже личности.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Биометрический ключ</span>
+              <span>Ночной терминал</span>
+              <span>Кража личности</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="maska-dlya-chuzhogo-litsa" data-dv-genre="trillery" data-dv-format="short" data-dv-order="15" data-dv-popular="93">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/maska-dlya-chuzhogo-litsa/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3763-3436-4662-a531-356166626461/-/format/webp/15-maska-dlya-chuzho.png.webp" alt="Иллюстрация к истории «Маска для чужого лица»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">15</span>
+              <span class="dv-story-card__status" data-dv-story-status="maska-dlya-chuzhogo-litsa">Новая</span>
+            </div>
+
+            <h3>Маска для чужого лица</h3>
+
+            <p>В неоновом квартале пропадает свидетельница, а камеры показывают, что она ушла сама. Единственная улика — маска, сделанная не для преступника, а для чужого лица.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Ночной рынок лиц</span>
+              <span>Биометрия</span>
+              <span>Подмена личности</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+
+        <article class="dv-story-card" data-dv-story-slug="posledniy-kadr-strima" data-dv-genre="trillery" data-dv-format="short" data-dv-order="14" data-dv-popular="97">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/posledniy-kadr-strima/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6461-3036-4235-b263-646435306665/-/format/webp/14-posledniy-kadr-st.png.webp" alt="Иллюстрация к истории «Последний кадр стрима»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">14</span>
+              <span class="dv-story-card__status" data-dv-story-status="posledniy-kadr-strima">Новая</span>
+            </div>
+
+            <h3>Последний кадр стрима</h3>
+
+            <p>Стример пропадает после кадра с человеком в лисьей маске. Ночная модераторша замечает отражение, которое разоблачает подмену эфира.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Киберпанк-триллер</span>
+              <span>Стрим</span>
+              <span>Последний кадр</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="devushka-iz-zavtrashnego-chata" data-dv-genre="trillery" data-dv-format="short" data-dv-order="13" data-dv-popular="96">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/devushka-iz-zavtrashnego-chata/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3034-3164-4264-b962-623962333065/-/format/webp/13-devushka-iz-zavtr.png.webp" alt="Иллюстрация к истории «Девушка из завтрашнего чата»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">13</span>
+              <span class="dv-story-card__status" data-dv-story-status="devushka-iz-zavtrashnego-chata">Новая</span>
+            </div>
+
+            <h3>Девушка из завтрашнего чата</h3>
+
+            <p>Лера получает сообщения с завтрашней датой. Утренний визит кажется невозможным, пока маленький значок в углу чата не показывает настоящую цепочку.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">16+</span>
+              <span>Киберпанк-триллер</span>
+              <span>Домовой сервер</span>
+              <span>Локальный контур</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="planeta-bez-eha" data-dv-genre="fantastika" data-dv-format="short" data-dv-order="12" data-dv-popular="91">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/planeta-bez-eha/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3764-3539-4333-b639-613831626566/-/format/webp/planeta-bez-eha.png.webp" alt="Иллюстрация к истории «Планета без эха»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">12</span>
+              <span class="dv-story-card__status" data-dv-story-status="planeta-bez-eha">Новая</span>
+            </div>
+
+            <h3>Планета без эха</h3>
+
+            <p>Экспедиция высаживается на планету, где звук исчезает через несколько метров. Потом планета начинает отвечать на фразы, которые люди ещё не успели произнести.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Первый контакт</span>
+              <span>Чужая планета</span>
+              <span>Кристаллическая сеть</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="arhiv-budushchih-prestupleniy" data-dv-genre="fantastika" data-dv-format="short" data-dv-order="11" data-dv-popular="93">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/arhiv-budushchih-prestupleniy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3266-3230-4663-b565-326536316536/-/format/webp/arhiv-budushchih-pre.png.webp" alt="Иллюстрация к истории «Архив будущих преступлений»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">11</span>
+              <span class="dv-story-card__status" data-dv-story-status="arhiv-budushchih-prestupleniy">Новая</span>
+            </div>
+
+            <h3>Архив будущих преступлений</h3>
+
+            <p>Система предсказывает убийство заранее: жертва, место и время известны. Но имени убийцы нет, а смерть происходит в закрытой комнате под охраной.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Город будущего</span>
+              <span>Прогноз преступлений</span>
+              <span>Закрытая комната</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="stantsiya-kotoraya-molchala" data-dv-genre="fantastika" data-dv-format="short" data-dv-order="10" data-dv-popular="89">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/stantsiya-kotoraya-molchala/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3533-3534-4437-b734-643765363663/-/format/webp/stantsiya-kotoraya-m.png.webp" alt="Иллюстрация к истории «Станция, которая молчала»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">10</span>
+              <span class="dv-story-card__status" data-dv-story-status="stantsiya-kotoraya-molchala">Новая</span>
+            </div>
+
+            <h3>Станция, которая молчала</h3>
+
+            <p>Станция у Сатурна перестаёт отвечать. Системы работают, ресурсы расходуются на экипаж, но бортовой голос утверждает: людей на борту нет.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Станция</span>
+              <span>Сатурн</span>
+              <span>Анабиоз</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="posledniy-son-androida" data-dv-genre="fantastika" data-dv-format="short" data-dv-order="9" data-dv-popular="95">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/posledniy-son-androida/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6566-3939-4566-b161-633636366662/-/format/webp/posledniy-son-androi.png.webp" alt="Иллюстрация к истории «Последний сон андроида»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">09</span>
+              <span class="dv-story-card__status" data-dv-story-status="posledniy-son-androida">Новая</span>
+            </div>
+
+            <h3>Последний сон андроида</h3>
+
+            <p>Андроид говорит, что видел убийцу во сне. Но машинам запрещены сны, а официальная запись за минуту смерти владельца пуста.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Андроид</span>
+              <span>Искусственный интеллект</span>
+              <span>Фантастический нуар</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="gorod-pod-chuzhim-nebom" data-dv-genre="fantastika" data-dv-format="short" data-dv-order="8" data-dv-popular="90">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/gorod-pod-chuzhim-nebom/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3533-3837-4137-b834-613363316132/-/format/webp/gorod-pod-chuzhim-ne.png.webp" alt="Иллюстрация к истории «Город под чужим небом»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">08</span>
+              <span class="dv-story-card__status" data-dv-story-status="gorod-pod-chuzhim-nebom">Новая</span>
+            </div>
+
+            <h3>Город под чужим небом</h3>
+
+            <p>В колонии на планете с двумя солнцами второе солнце восходит раньше срока. Приборы утверждают, что небо не менялось, но тени на улицах идут не туда.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Колония</span>
+              <span>Два солнца</span>
+              <span>Купол</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="nulevoy-passazhir" data-dv-genre="fantastika" data-dv-format="short" data-dv-order="7" data-dv-popular="94">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/nulevoy-passazhir/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3466-3637-4462-b663-336235303031/-/format/webp/nulevoy-passazhir.png.webp" alt="Иллюстрация к истории «Нулевой пассажир»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">07</span>
+              <span class="dv-story-card__status" data-dv-story-status="nulevoy-passazhir">Новая</span>
+            </div>
+
+            <h3>Нулевой пассажир</h3>
+
+            <p>После гиперперехода на борту космического лайнера появляется лишний пассажир. Камеры его не видят, но корабль уже выдал ему права человека.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Космос</span>
+              <span>Лишний пассажир</span>
+              <span>Корабельный ИИ</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+        <article class="dv-story-card" data-dv-story-slug="chernyy-yashchik-imperatritsy" data-dv-genre="detektivy" data-dv-format="short" data-dv-order="6" data-dv-popular="94">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/chernyy-yashchik-imperatritsy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6436-6564-4261-b566-393637303466/-/format/webp/chernyy-yashchik-imp.png.webp" alt="Иллюстрация к истории «Чёрный ящик императрицы»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">06</span>
+              <span class="dv-story-card__status" data-dv-story-status="chernyy-yashchik-imperatritsy">Новая</span>
+            </div>
+
+            <h3>Чёрный ящик императрицы</h3>
+
+            <p>Во дворце готовится переворот: из чёрного ящика исчезает список заговорщиков, хотя ящик лежит перед всеми.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Дворцовая интрига</span>
+              <span>Подмена на глазах</span>
+              <span>Чёрный ящик</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="posledniy-reys-severnoy-chayki" data-dv-genre="detektivy" data-dv-format="short" data-dv-order="5" data-dv-popular="96">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/posledniy-reys-severnoy-chayki/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6237-3364-4465-b062-303963303761/-/format/webp/posledniy-reys-sever.png.webp" alt="Иллюстрация к истории «Последний рейс «Северной чайки»»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">05</span>
+              <span class="dv-story-card__status" data-dv-story-status="posledniy-reys-severnoy-chayki">Новая</span>
+            </div>
+
+            <h3>Последний рейс «Северной чайки»</h3>
+
+            <p>Пароход застрял во льдах, радист ранен, а сигнал бедствия ушёл с координатами, где судна быть не должно.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Полярная экспедиция</span>
+              <span>Ложный сигнал</span>
+              <span>Тайный груз</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="komnata-bez-otrazheniy" data-dv-genre="detektivy" data-dv-format="short" data-dv-order="4" data-dv-popular="98">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/komnata-bez-otrazheniy/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6562-3830-4835-b537-383938323738/-/format/webp/komnata-bez-otrazhen.png.webp" alt="Иллюстрация к истории «Комната без отражений»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">04</span>
+              <span class="dv-story-card__status" data-dv-story-status="komnata-bez-otrazheniy">Новая</span>
+            </div>
+
+            <h3>Комната без отражений</h3>
+
+            <p>В закрытой галерее картина исчезает из рамы, хотя двери заперты, камеры работают, а охрана стоит у выхода.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Современность</span>
+              <span>Галерея</span>
+              <span>Исчезнувшая картина</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="poslednee-mesto-za-stolom" data-dv-genre="detektivy" data-dv-format="short" data-dv-order="3" data-dv-popular="88">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/poslednee-mesto-za-stolom/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6634-3233-4565-a233-343532616634/-/format/webp/poslednee-mesto-za-s.png.webp" alt="Иллюстрация к истории «Последнее место за столом»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">03</span>
+              <span class="dv-story-card__status" data-dv-story-status="poslednee-mesto-za-stolom">Новая</span>
+            </div>
+
+            <h3>Последнее место за столом</h3>
+
+            <p>В старом доме лишний прибор за столом указывает на человека, чьё положение в семье пытались скрыть.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Семейная тайна</span>
+              <span>Наследство</span>
+              <span>Старый дом</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="spisok-priglashennyh" data-dv-genre="detektivy" data-dv-format="short" data-dv-order="2" data-dv-popular="90">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/spisok-priglashennyh/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild3437-3465-4665-a562-616435636364/-/format/webp/spisok-priglashennyh.png.webp" alt="Иллюстрация к истории «Список приглашённых»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">02</span>
+              <span class="dv-story-card__status" data-dv-story-status="spisok-priglashennyh">Новая</span>
+            </div>
+
+            <h3>Список приглашённых</h3>
+
+            <p>Закрытый ужин, винная книга и место за столом превращаются в карту чужой сделки. Один гость оказался не случайным свидетелем.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Закрытый ужин</span>
+              <span>Тайная сделка</span>
+              <span>Свидетель</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+
+        <article class="dv-story-card" data-dv-story-slug="tsena-vtoroy-pechati" data-dv-genre="detektivy" data-dv-format="short" data-dv-order="1" data-dv-popular="92">
+          <a class="dv-story-link" data-dv-goal="story-card" href="/istorii/tsena-vtoroy-pechati/">
+            <div class="dv-story-card__media" data-dv-story-image>
+              <img src="https://optim.tildacdn.com/tild6363-6633-4532-b734-346332386639/-/format/webp/tsena-vtoroy-pechati.png.webp" alt="Иллюстрация к истории «Цена второй печати»" loading="lazy">
+            </div>
+
+            <div class="dv-story-card__top">
+              <span class="dv-story-card__number">01</span>
+              <span class="dv-story-card__status" data-dv-story-status="tsena-vtoroy-pechati">Новая</span>
+            </div>
+
+            <h3>Цена второй печати</h3>
+
+            <p>В старом деле всё выглядит безупречно: прошивка, печать, подпись чиновника. Но одна деталь показывает, что порядок заверения нарушили.</p>
+
+            <div class="dv-story-card__meta">
+              <span class="dv-story-card__age">12+</span>
+              <span>Архив</span>
+              <span>Документы</span>
+              <span>Подмена</span>
+              <span>Выбор версии</span>
+            </div>
+
+            <span class="dv-story-card__cta">Открыть историю</span>
+          </a>
+        </article>
+      </div>
+<!-- DILIVOX / РСЯ: Dilivox Каталог Низ -->
+<div class="dv-ad dv-ad--catalog-bottom" aria-label="Реклама" data-dv-ad-block="R-A-19563496-4">
+  <span class="dv-ad__label">Реклама</span>
+  <div class="dv-ad__slot" id="yandex_rtb_R-A-19563496-4"></div>
+</div>
+<script>
+(function(w,d,blockId,renderTo,desktopOnly,deferUntilVisible){
+  function canRender(slot){
+    var wrapper = slot && slot.closest ? slot.closest('.dv-ad') : null;
+    if (desktopOnly && !(w.matchMedia && w.matchMedia('(min-width: 1480px)').matches)) return false;
+    if (deferUntilVisible && wrapper && wrapper.hidden) return false;
+    return true;
+  }
+  function ensureLoader(){
+    w.yaContextCb = w.yaContextCb || [];
+    if (!d.querySelector('script[data-dv-yandex-ads]')) {
+      var script = d.createElement('script');
+      script.src = 'https://yandex.ru/ads/system/context.js';
+      script.async = true;
+      script.setAttribute('data-dv-yandex-ads', 'true');
+      d.head.appendChild(script);
+    }
+  }
+  function render(){
+    var slot = d.getElementById(renderTo);
+    if (!slot || slot.dataset.dvAdRendered === 'true' || !canRender(slot)) return;
+    slot.dataset.dvAdRendered = 'true';
+    ensureLoader();
+    w.yaContextCb.push(function(){
+      Ya.Context.AdvManager.render({ blockId: blockId, renderTo: renderTo });
+    });
+  }
+  function init(){
+    var slot = d.getElementById(renderTo);
+    var wrapper = slot && slot.closest ? slot.closest('.dv-ad') : null;
+    if (deferUntilVisible && wrapper && 'MutationObserver' in w) {
+      new MutationObserver(render).observe(wrapper, { attributes: true, attributeFilter: ['hidden', 'aria-hidden', 'style', 'class'] });
+    }
+    if (desktopOnly) w.addEventListener('resize', render, { passive: true });
+    render();
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})(window, document, 'R-A-19563496-4', 'yandex_rtb_R-A-19563496-4', false, false);
+</script>
+<!-- /DILIVOX / РСЯ: Dilivox Каталог Низ -->
+    </div>
+  </section>
+
+  <section class="dv-stories__note dv-final" aria-label="С чего начать">
+    <div class="dv-stories__shell">
+      <div class="dv-stories__note-card">
+        <div>
+          <h2>Не знаете, с чего начать?</h2>
+          <p>Откройте классическую загадку или попробуйте новый формат комиксов.</p>
+          <div class="dv-stories__note-actions">
+            <a class="dv-stories__note-link" data-dv-goal="stories-start-first" href="/istorii/tsena-vtoroy-pechati/">Начать с классической истории</a>
+            <a class="dv-stories__note-link dv-stories__note-link--ghost" data-dv-goal="story-card" href="/istorii/ona-vyshla-na-stsenu-dvazhdy/">Открыть комикс</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<style>
+  :root {
+    --dv-bg: #F6F0E4;
+    --dv-bg-soft: #FFF9EF;
+    --dv-paper: #EFE3D0;
+    --dv-paper-deep: #E2D2B9;
+
+    --dv-text: #221B14;
+    --dv-muted: #6F6253;
+    --dv-muted-soft: #9B8C78;
+
+    --dv-gold: #B88A3B;
+    --dv-gold-deep: #8A6428;
+    --dv-gold-light: #D8B56A;
+
+    --dv-ink: #263248;
+    --dv-blue: #2F4C73;
+    --dv-teal: #3C746E;
+
+    --dv-border: rgba(138, 100, 40, .28);
+    --dv-border-strong: rgba(138, 100, 40, .48);
+
+    --dv-card: rgba(255, 249, 239, .88);
+    --dv-card-solid: #FFF9EF;
+    --dv-shadow: rgba(46, 34, 20, .14);
+  }
+
+  .dv-stories-list,
+  .dv-stories-list * {
+    box-sizing: border-box;
+  }
+
+  .dv-stories-list {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 100vh;
+    color: var(--dv-text);
+    background:
+      radial-gradient(circle at 8% 10%, rgba(216, 181, 106, .30), transparent 30%),
+      radial-gradient(circle at 94% 16%, rgba(60, 116, 110, .12), transparent 27%),
+      linear-gradient(135deg, var(--dv-bg-soft) 0%, var(--dv-bg) 48%, #EDE0CA 100%);
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  .dv-stories__grain {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    opacity: .42;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(34, 27, 20, .035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 27, 20, .025) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(circle at center, #000 0%, transparent 78%);
+  }
+
+  .dv-stories__glow {
+    position: absolute;
+    z-index: -2;
+    border-radius: 999px;
+    filter: blur(22px);
+    pointer-events: none;
+  }
+
+  .dv-stories__glow--one {
+    width: 380px;
+    height: 380px;
+    left: -160px;
+    top: 120px;
+    background: rgba(184, 138, 59, .16);
+  }
+
+  .dv-stories__glow--two {
+    width: 420px;
+    height: 420px;
+    right: -190px;
+    bottom: 80px;
+    background: rgba(47, 76, 115, .10);
+  }
+
+  .dv-stories__shell {
+    width: min(1160px, calc(100% - 36px));
+    margin: 0 auto;
+  }
+
+  .dv-stories__hero {
+    padding: clamp(48px, 7vw, 92px) 0 clamp(14px, 2.8vw, 30px);
+  }
+
+  .dv-stories__hero-card {
+    position: relative;
+    max-width: 940px;
+    padding: clamp(30px, 5vw, 58px);
+    border: 1px solid var(--dv-border);
+    border-radius: 34px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, .52), transparent 42%),
+      rgba(255, 249, 239, .72);
+    box-shadow:
+      0 34px 86px var(--dv-shadow),
+      inset 0 1px 0 rgba(255, 255, 255, .72);
+    backdrop-filter: blur(14px);
+  }
+
+  .dv-stories__hero-card::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1px solid var(--dv-border);
+    border-radius: 24px;
+    pointer-events: none;
+  }
+
+  .dv-stories__eyebrow {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    color: var(--dv-gold-deep);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+
+  .dv-stories__eyebrow-line {
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--dv-gold-deep), var(--dv-gold-light));
+  }
+
+  .dv-stories-list h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0;
+    color: var(--dv-ink);
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 500;
+    line-height: .94;
+    letter-spacing: -.065em;
+  }
+
+  .dv-stories__lead {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 30px 0 0;
+    color: var(--dv-text);
+    font-size: clamp(21px, 2.4vw, 30px);
+    line-height: 1.36;
+    letter-spacing: -.02em;
+  }
+
+  .dv-stories__catalog,
+  .dv-stories__note {
+    padding: clamp(34px, 6vw, 72px) 0;
+  }
+
+  .dv-stories__catalog {
+    padding-top: clamp(16px, 3vw, 34px);
+  }
+
+  .dv-stories__section-head {
+    max-width: 820px;
+    margin-bottom: clamp(24px, 4vw, 34px);
+  }
+
+  .dv-stories__section-head span {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--dv-gold-deep);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .dv-stories__section-head h2 {
+    margin: 0;
+    color: var(--dv-ink);
+    font-size: clamp(32px, 4.4vw, 58px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -.055em;
+  }
+
+  .dv-stories__section-head p {
+    max-width: 820px;
+    margin: 16px 0 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  .dv-stories__tools {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 22px;
+    padding: 6px;
+    border: 1px solid var(--dv-border);
+    border-radius: 999px;
+    background: rgba(255, 249, 239, .62);
+    box-shadow: 0 14px 34px rgba(46, 34, 20, .08);
+  }
+
+  .dv-stories__tool {
+    appearance: none;
+    min-height: 38px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: var(--dv-muted);
+    background: transparent;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .22s ease, background .22s ease, border-color .22s ease, transform .22s ease;
+  }
+
+  .dv-stories__tool:hover {
+    color: var(--dv-ink);
+  }
+
+  .dv-stories__tool.is-active,
+  .dv-stories__tool[aria-pressed="true"] {
+    color: #FFF9EF;
+    border-color: rgba(47, 76, 115, .28);
+    background: linear-gradient(135deg, var(--dv-blue), var(--dv-teal));
+    box-shadow: 0 10px 22px rgba(47, 76, 115, .16);
+  }
+
+  .dv-stories__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .dv-story-card {
+    min-height: 100%;
+  }
+
+  .dv-story-link {
+    position: relative;
+    min-height: 620px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid var(--dv-border);
+    border-radius: 30px;
+    color: var(--dv-text) !important;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(216, 181, 106, .24), transparent 28%),
+      rgba(255, 249, 239, .74);
+    box-shadow: 0 22px 62px rgba(46, 34, 20, .10);
+    text-decoration: none !important;
+    transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease;
+  }
+
+  .dv-story-link::before {
+    content: "";
+    position: absolute;
+    inset: 13px;
+    border: 1px solid rgba(138, 100, 40, .18);
+    border-radius: 21px;
+    pointer-events: none;
+    transition: border-color .28s ease;
+  }
+
+  .dv-story-link::after {
+    content: "";
+    position: absolute;
+    right: -42px;
+    bottom: -42px;
+    width: 132px;
+    height: 132px;
+    border: 1px solid rgba(184, 138, 59, .22);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .dv-story-link:hover {
+    transform: translateY(-4px);
+    border-color: var(--dv-border-strong);
+    box-shadow: 0 30px 78px rgba(46, 34, 20, .15);
+    background:
+      radial-gradient(circle at 88% 12%, rgba(216, 181, 106, .30), transparent 30%),
+      rgba(255, 249, 239, .86);
+  }
+
+  .dv-story-link:hover::before {
+    border-color: rgba(138, 100, 40, .34);
+  }
+
+  .dv-story-card__media {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(138, 100, 40, .20);
+    border-radius: 22px;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(255, 249, 239, .38), transparent 48%),
+      rgba(239, 227, 208, .72);
+  }
+
+  .dv-story-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.01);
+  }
+
+  .dv-story-card__top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .dv-story-card__number {
+    color: rgba(138, 100, 40, .58);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .18em;
+  }
+
+  .dv-story-card__status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 6px 10px;
+    border: 1px solid rgba(138, 100, 40, .24);
+    border-radius: 999px;
+    color: var(--dv-muted);
+    background: rgba(255, 249, 239, .70);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .dv-story-card__status.is-started {
+    color: var(--dv-blue);
+    border-color: rgba(47, 76, 115, .28);
+  }
+
+  .dv-story-card__status.is-read {
+    color: var(--dv-teal);
+    border-color: rgba(60, 116, 110, .34);
+  }
+
+  .dv-story-card h3 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 16px;
+    color: var(--dv-ink);
+    font-size: clamp(30px, 3vw, 40px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -.05em;
+  }
+
+  .dv-story-card p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.68;
+  }
+
+  .dv-story-card__meta {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 32px;
+  }
+
+  .dv-story-card__meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 6px 10px;
+    border: 1px solid rgba(138, 100, 40, .18);
+    border-radius: 999px;
+    color: var(--dv-muted-soft);
+    background: rgba(255, 249, 239, .54);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .dv-story-card__age {
+    color: #6F6253;
+    background: rgba(255, 249, 239, .55);
+    border: 1px solid rgba(111, 98, 83, .18);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    padding: 6px 9px;
+  }
+
+  .dv-story-card__cta {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: 22px;
+    min-height: 42px;
+    padding: 11px 16px;
+    border: 1px solid rgba(138, 100, 40, .30);
+    border-radius: 999px;
+    color: var(--dv-blue);
+    background: rgba(255, 249, 239, .76);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+
+  .dv-story-link:hover .dv-story-card__cta {
+    transform: translateX(2px);
+    border-color: rgba(138, 100, 40, .48);
+    background: rgba(255, 249, 239, .96);
+  }
+
+  .dv-stories__note {
+    padding-bottom: clamp(58px, 8vw, 100px);
+  }
+
+  .dv-stories__note-card {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    padding: clamp(28px, 5vw, 46px);
+    border: 1px solid var(--dv-border-strong);
+    border-radius: 34px;
+    background:
+      radial-gradient(circle at 92% 16%, rgba(60, 116, 110, .12), transparent 28%),
+      linear-gradient(135deg, rgba(255, 255, 255, .46), rgba(255, 249, 239, .72));
+    box-shadow: 0 28px 72px rgba(46, 34, 20, .10);
+  }
+
+  .dv-stories__note-mark {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid var(--dv-border-strong);
+    border-radius: 50%;
+    color: var(--dv-gold-deep);
+    background: rgba(255, 249, 239, .88);
+    font-size: 22px;
+  }
+
+  .dv-stories__note-card h2 {
+    margin: 0;
+    color: var(--dv-ink);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -.05em;
+  }
+
+  .dv-stories__note-card p {
+    max-width: 760px;
+    margin: 14px 0 0;
+    color: var(--dv-muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  .dv-stories__note-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .dv-stories__note-link {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    margin: 0;
+    padding: 13px 18px;
+    border: 1px solid rgba(47, 76, 115, .32);
+    border-radius: 999px;
+    color: #FFF9EF !important;
+    background: linear-gradient(135deg, var(--dv-blue), var(--dv-teal));
+    font-family: Inter, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none !important;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+
+  .dv-stories__note-link--ghost {
+    color: var(--dv-ink) !important;
+    background: rgba(255, 249, 239, .78);
+    border-color: var(--dv-border);
+    box-shadow: none;
+    cursor: pointer;
+  }
+
+  .dv-stories__note-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(47, 76, 115, .50);
+    box-shadow: 0 16px 34px rgba(47, 76, 115, .18);
+  }
+
+  @media (max-width: 1040px) {
+    .dv-stories__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-story-link {
+      min-height: auto;
+    }
+
+    .dv-story-card__top {
+      margin-bottom: 38px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .dv-stories__shell {
+      width: min(100% - 28px, 1160px);
+    }
+
+    .dv-stories__hero {
+      padding-top: 40px;
+    }
+
+    .dv-stories__hero-card,
+    .dv-story-link,
+    .dv-stories__note-card {
+      border-radius: 24px;
+    }
+
+    .dv-stories__hero-card {
+      padding: 28px 20px;
+    }
+
+    .dv-stories__hero-card::before,
+    .dv-story-link::before {
+      display: none;
+    }
+
+    .dv-stories-list h1 {
+      font-size: clamp(44px, 15vw, 68px);
+    }
+
+    .dv-stories__lead {
+      font-size: 20px;
+    }
+
+    .dv-stories__tools {
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .dv-stories__tool {
+      flex: 1 1 calc(50% - 6px);
+      padding-inline: 10px;
+    }
+
+    .dv-story-link {
+      padding: 24px 20px;
+    }
+
+    .dv-story-card h3 {
+      font-size: 31px;
+    }
+
+    .dv-stories__note-card {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-stories__note-actions {
+      flex-direction: column;
+    }
+
+    .dv-stories__note-link {
+      width: 100%;
+    }
+
+    .dv-stories__note-card p {
+      font-size: 15px;
+      line-height: 1.68;
+    }
+  }
+
+/* DILIVOX / усиление каталога 2026-07: только визуальная подача /istorii/ */
+  .dv-stories-list {
+    overflow-x: hidden;
+    background: var(--dv-bg);
+  }
+
+  .dv-stories__shell {
+    width: min(1360px, calc(100% - 48px));
+  }
+
+  .dv-stories__hero {
+    padding: clamp(44px, 6vw, 84px) 0 40px;
+  }
+
+  .dv-stories__catalog {
+    padding-top: 32px;
+  }
+
+  .dv-stories__hero-card {
+    display: grid;
+    grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
+    gap: clamp(38px, 5vw, 76px);
+    align-items: center;
+    max-width: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .dv-stories__hero-card::before {
+    display: none;
+  }
+
+  .dv-stories-list h1 {
+    max-width: 690px;
+    font-size: clamp(46px, 5.2vw, 76px);
+    line-height: .98;
+  }
+
+  .dv-stories__lead {
+    max-width: 650px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: clamp(18px, 1.7vw, 23px);
+    line-height: 1.55;
+  }
+
+  .dv-stories__hero-slider {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    border: 1px solid rgba(34, 27, 20, .10);
+    border-radius: 24px;
+    background: var(--dv-paper);
+  }
+
+  .dv-stories__hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 800ms ease;
+  }
+
+  .dv-stories__hero-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .dv-stories__hero-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .dv-stories__hero-slide::after {
+    content: "";
+    position: absolute;
+    inset: 42% 0 0;
+    background: linear-gradient(transparent, rgba(20, 24, 34, .84));
+  }
+
+  .dv-stories__hero-caption {
+    position: absolute;
+    z-index: 2;
+    left: 30px;
+    right: 90px;
+    bottom: 30px;
+    color: #FFF9EF;
+  }
+
+  .dv-stories__hero-caption small,
+  .dv-stories__hero-caption strong {
+    display: block;
+  }
+
+  .dv-stories__hero-caption small {
+    margin-bottom: 7px;
+    color: #EFD8A9;
+    font: 800 12px/1 Inter, Arial, sans-serif;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+  .dv-stories__hero-caption strong {
+    font-size: clamp(25px, 2.5vw, 39px);
+    line-height: 1.06;
+  }
+
+  .dv-stories__hero-dots {
+    position: absolute;
+    z-index: 3;
+    right: 28px;
+    bottom: 32px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .dv-stories__hero-dots button {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 1px solid #FFF9EF;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .dv-stories__hero-dots button.is-active {
+    background: #FFF9EF;
+  }
+
+  .dv-stories__section-head {
+    margin-bottom: 28px;
+  }
+
+  .dv-stories__section-head p {
+    line-height: 1.55;
+  }
+
+  .dv-stories__tools {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 8px;
+    border-color: rgba(34, 27, 20, .10);
+    border-radius: 18px;
+    background: var(--dv-bg-soft);
+    box-shadow: none;
+  }
+
+  .dv-stories__tool {
+    min-height: 42px;
+    padding: 11px 16px;
+    color: var(--dv-text);
+    background: var(--dv-paper);
+  }
+
+  .dv-stories__tool.is-active,
+  .dv-stories__tool[aria-pressed="true"] {
+    color: var(--dv-bg-soft);
+    border-color: var(--dv-ink);
+    background: var(--dv-ink);
+    box-shadow: none;
+  }
+
+  .dv-stories__tools--sort {
+    margin-left: 10px;
+  }
+
+  .dv-stories__new-head {
+    margin: 42px 0 26px;
+  }
+
+  .dv-stories__new-head span {
+    color: var(--dv-gold-deep);
+    font: 800 12px/1 Inter, Arial, sans-serif;
+    letter-spacing: .18em;
+  }
+
+  .dv-stories__new-head h2 {
+    margin: 10px 0 0;
+    color: var(--dv-ink);
+    font-size: clamp(34px, 4vw, 54px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -.045em;
+  }
+
+  .dv-stories__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 26px;
+  }
+
+  .dv-story-card {
+    min-width: 0;
+  }
+
+  .dv-story-card[data-dv-featured="true"] {
+    grid-column: span 2;
+  }
+
+  .dv-story-link {
+    min-height: 590px;
+    padding: 0 22px 22px;
+    border-color: rgba(34, 27, 20, .10);
+    border-radius: 22px;
+    background: var(--dv-bg-soft);
+    box-shadow: none;
+    transition: border-color .2s ease, background .2s ease;
+  }
+
+  .dv-story-link::before,
+  .dv-story-link::after {
+    display: none;
+  }
+
+  .dv-story-link:hover {
+    transform: none;
+    border-color: rgba(138, 100, 40, .48);
+    background: var(--dv-bg-soft);
+    box-shadow: none;
+  }
+
+  .dv-story-card__media {
+    order: -2;
+    width: calc(100% + 44px);
+    aspect-ratio: 4 / 3;
+    margin: 0 -22px 20px;
+    border: 0;
+    border-radius: 20px 20px 0 0;
+    background: var(--dv-paper);
+  }
+
+  .dv-story-card[data-dv-featured="true"] .dv-story-card__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .dv-story-card__media img {
+    transform: none;
+  }
+
+  .dv-story-card__top {
+    order: -1;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 3;
+    margin: 0;
+  }
+
+  .dv-story-card__number,
+  .dv-story-card__status {
+    min-height: 30px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 249, 239, .45);
+    border-radius: 999px;
+    color: var(--dv-bg-soft);
+    background: rgba(38, 50, 72, .88);
+    backdrop-filter: none;
+  }
+
+  .dv-story-card__status.is-started,
+  .dv-story-card__status.is-read {
+    color: var(--dv-bg-soft);
+    border-color: rgba(255, 249, 239, .45);
+    background: rgba(38, 50, 72, .88);
+  }
+
+  .dv-story-card h3 {
+    margin-bottom: 12px;
+    font-size: clamp(26px, 2.3vw, 34px);
+    line-height: 1.08;
+  }
+
+  .dv-story-card p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-height: 1.52;
+  }
+
+  .dv-story-card__meta {
+    gap: 6px;
+    padding-top: 20px;
+  }
+
+  .dv-story-card__meta span:nth-child(n+4) {
+    display: none;
+  }
+
+  .dv-story-card__cta {
+    align-self: flex-end;
+    min-height: 34px;
+    margin-top: 18px;
+    padding: 8px 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--dv-ink);
+    background: transparent;
+  }
+
+  .dv-story-card__cta::after {
+    content: " →";
+  }
+
+  .dv-story-link:hover .dv-story-card__cta {
+    transform: none;
+    border: 0;
+    background: transparent;
+  }
+
+  .dv-story-card[data-dv-genre="detektivy"] .dv-story-link { border-top: 4px solid #8A6428; }
+  .dv-story-card[data-dv-genre="fantastika"] .dv-story-link { border-top: 4px solid #2F4C73; }
+  .dv-story-card[data-dv-genre="trillery"] .dv-story-link { border-top: 4px solid #263248; }
+  .dv-story-card[data-dv-genre="uzhasy"] .dv-story-link { border-top: 4px solid #6D3038; }
+  .dv-story-card[data-dv-genre="priklyucheniya"] .dv-story-link { border-top: 4px solid #3C746E; }
+  .dv-story-card[data-dv-genre="yumoristicheskaya-literatura"] .dv-story-link { border-top: 4px solid #A75F56; }
+  .dv-story-card[data-dv-genre="komiksy"] .dv-story-link { border-top: 4px solid #B88A3B; }
+
+  .dv-ad--catalog-top,
+  .dv-ad--catalog-bottom {
+    grid-column: 1 / -1;
+  }
+
+  .dv-stories__note-card {
+    display: block;
+    padding: clamp(28px, 5vw, 48px);
+    border-radius: 24px;
+    box-shadow: none;
+  }
+
+  @media (max-width: 1024px) {
+    .dv-stories__hero-card {
+      grid-template-columns: 1fr;
+    }
+
+    .dv-stories__hero-slider {
+      min-height: 430px;
+    }
+
+    .dv-stories__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dv-story-card[data-dv-featured="true"] {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .dv-stories__shell {
+      width: min(100% - 28px, 1360px);
+    }
+
+    .dv-stories-list h1 {
+      font-size: clamp(42px, 12vw, 58px);
+    }
+
+    .dv-stories__hero {
+      padding-bottom: 32px;
+    }
+
+    .dv-stories__catalog {
+      padding-top: 24px;
+    }
+
+    .dv-stories__hero-slider {
+      width: calc(100% + 28px);
+      margin-left: -14px;
+      min-height: 340px;
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+    }
+
+    .dv-stories__tools:not(.dv-stories__tools--sort) {
+      width: calc(100vw - 28px);
+      max-width: none;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .dv-stories__tools:not(.dv-stories__tools--sort)::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dv-stories__tool {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .dv-stories__tools--sort {
+      width: fit-content;
+      margin-left: 0;
+    }
+
+    .dv-stories__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .dv-story-card[data-dv-featured="true"] {
+      grid-column: auto;
+    }
+
+    .dv-story-link {
+      min-height: 560px;
+      padding: 0 18px 20px;
+    }
+
+    .dv-story-card__media {
+      width: calc(100% + 36px);
+      margin-right: -18px;
+      margin-left: -18px;
+    }
+
+    .dv-story-card[data-dv-featured="true"] .dv-story-card__media {
+      aspect-ratio: 4 / 3;
+    }
+
+    .dv-story-card__top {
+      margin: 0;
+    }
+
+    .dv-stories__note-actions {
+      align-items: stretch;
+    }
+  }
+
+/* DILIVOX / фильтры и сортировка */
+  .dv-stories__tools:not(.dv-stories__tools--sort) {
+    gap: 11px;
+    padding: 13px;
+    border: 1px solid rgba(34, 27, 20, .08);
+    border-radius: 20px;
+    background: rgba(255, 249, 239, .72);
+    box-shadow: none;
+  }
+
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool {
+    flex: 0 0 auto;
+    min-height: 45px;
+    padding: 11px 20px;
+    border: 1px solid #D8C9B2;
+    border-radius: 15px;
+    color: #221B14;
+    background: #FFF9EF;
+    box-shadow:
+      0 3px 0 rgba(138, 100, 40, .18),
+      0 6px 16px rgba(34, 27, 20, .06);
+    font-weight: 700;
+    transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  }
+
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool:hover {
+    color: #221B14;
+    border-color: #B88A3B;
+    background: #EFE3D0;
+  }
+
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool.is-active,
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool[aria-pressed="true"] {
+    color: #FFF9EF;
+    border-color: #263248;
+    background: #263248;
+    box-shadow:
+      0 4px 0 #182233,
+      0 8px 18px rgba(38, 50, 72, .22);
+  }
+
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool.is-active::before,
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool[aria-pressed="true"]::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #B88A3B;
+    vertical-align: 2px;
+  }
+
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool.is-active:hover,
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool[aria-pressed="true"]:hover {
+    color: #FFF9EF;
+    border-color: #2F4C73;
+    background: #2F4C73;
+  }
+
+  .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool:active {
+    box-shadow: 0 1px 0 rgba(34, 27, 20, .18);
+  }
+
+  .dv-stories__tool:focus-visible {
+    outline: 2px solid #B88A3B;
+    outline-offset: 2px;
+  }
+
+  .dv-stories__tools--sort {
+    display: inline-flex;
+    gap: 0;
+    width: fit-content;
+    padding: 4px;
+    border: 0;
+    border-radius: 14px;
+    background: #EFE3D0;
+    box-shadow: none;
+  }
+
+  .dv-stories__tools--sort .dv-stories__tool {
+    min-height: 38px;
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 10px;
+    color: #6F6253;
+    background: transparent;
+    box-shadow: none;
+    transition: color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+  }
+
+  .dv-stories__tools--sort .dv-stories__tool.is-active,
+  .dv-stories__tools--sort .dv-stories__tool[aria-pressed="true"] {
+    color: #263248;
+    border: 0;
+    background: #FFF9EF;
+    box-shadow: 0 2px 6px rgba(34, 27, 20, .12);
+  }
+
+  .dv-stories__tools--sort .dv-stories__tool:hover {
+    color: #263248;
+  }
+
+  .dv-stories__tools--sort .dv-stories__tool:active {
+    box-shadow: 0 1px 0 rgba(34, 27, 20, .18);
+  }
+
+  @media (max-width: 700px) {
+    .dv-stories__tools:not(.dv-stories__tools--sort) {
+      width: calc(100vw - 28px);
+      max-width: none;
+      flex-wrap: nowrap;
+      gap: 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-inline: contain;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .dv-stories__tools:not(.dv-stories__tools--sort)::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dv-stories__tools:not(.dv-stories__tools--sort) .dv-stories__tool {
+      flex: 0 0 auto;
+      min-height: 45px;
+      white-space: nowrap;
+    }
+  }
+/* /DILIVOX / фильтры и сортировка */
+
+/* DILIVOX / РСЯ */
+.dv-ad {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: clamp(30px, 5vw, 48px) 0;
+  padding: 14px;
+  border: 1px solid rgba(138, 100, 40, .22);
+  border-radius: 24px;
+  background: rgba(255, 249, 239, .62);
+  box-shadow: 0 18px 46px rgba(46, 34, 20, .08);
+}
+.dv-ad[hidden] { display: none !important; }
+.dv-ad__label {
+  display: block;
+  margin: 0 0 8px;
+  color: rgba(111, 98, 83, .78);
+  font-family: Inter, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.dv-ad__slot {
+  min-height: 118px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(239, 227, 208, .42);
+}
+.dv-ad--catalog-top,
+.dv-ad--catalog-bottom {
+  grid-column: 1 / -1;
+}
+.dv-ad--catalog-bottom {
+  margin-bottom: 0;
+  padding-bottom: 14px;
+}
+.dv-stories__catalog:has(.dv-ad--catalog-bottom) {
+  padding-bottom: 0;
+}
+.dv-stories__catalog:has(.dv-ad--catalog-bottom) + .dv-stories__note {
+  padding-top: 48px;
+}
+.dv-ad--story-start,
+.dv-ad--story-before-choice,
+.dv-ad--story-after-reveal {
+  margin-block: clamp(30px, 5vw, 50px);
+}
+.dv-story-text .dv-ad,
+.dv-story__text .dv-ad {
+  font-size: initial;
+  line-height: normal;
+}
+.dv-ad--story-sidebar {
+  display: none;
+}
+@media (min-width: 1480px) {
+  .dv-ad--story-sidebar {
+    position: fixed;
+    top: 138px;
+    right: max(24px, calc((100vw - 1400px) / 2));
+    display: block;
+    width: 260px;
+    margin: 0;
+    z-index: 20;
+  }
+  .dv-ad--story-sidebar .dv-ad__slot {
+    min-height: 520px;
+  }
+}
+@media (max-width: 1479px) {
+  .dv-ad--story-sidebar {
+    display: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .dv-ad {
+    margin: 28px 0;
+    padding: 12px;
+    border-radius: 20px;
+  }
+  .dv-ad__slot {
+    min-height: 108px;
+    border-radius: 14px;
+  }
+  .dv-ad--catalog-bottom {
+    margin-bottom: 0;
+    padding-bottom: 12px;
+  }
+  .dv-stories__catalog:has(.dv-ad--catalog-bottom) + .dv-stories__note {
+    padding-top: 32px;
+  }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+  .dv-stories__catalog:has(.dv-ad--catalog-bottom) + .dv-stories__note {
+    padding-top: 40px;
+  }
+}
+/* /DILIVOX / РСЯ */
+
+@media (prefers-reduced-motion: reduce) {
+  .dv-stories__hero-slide { transition: none; }
+  .dv-stories__hero-slide:not(:first-child),
+  .dv-stories__hero-dots { display: none; }
+}
+
+</style>
+
+<script>
+(function () {
+  var root = document.querySelector('[data-dv-catalog-hero]');
+  if (!root) return;
+
+  var slides = Array.prototype.slice.call(root.querySelectorAll('[data-dv-catalog-slide]'));
+  var dots = Array.prototype.slice.call(root.querySelectorAll('[data-dv-catalog-dot]'));
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var current = 0;
+  var timer;
+
+  function load(index) {
+    var image = slides[index] && slides[index].querySelector('img[data-src]');
+    if (!image) return;
+    image.src = image.getAttribute('data-src');
+    image.removeAttribute('data-src');
+  }
+
+  function show(index) {
+    current = index;
+    load(index);
+    slides.forEach(function (slide, slideIndex) {
+      var active = slideIndex === index;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+    dots.forEach(function (dot, dotIndex) {
+      var active = dotIndex === index;
+      dot.classList.toggle('is-active', active);
+      if (active) dot.setAttribute('aria-current', 'true');
+      else dot.removeAttribute('aria-current');
+    });
+  }
+
+  function start() {
+    if (reduced) return;
+    window.clearInterval(timer);
+    timer = window.setInterval(function () {
+      show((current + 1) % slides.length);
+    }, 5000);
+  }
+
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      show(Number(dot.getAttribute('data-dv-catalog-dot')));
+      start();
+    });
+  });
+
+  if (!reduced) {
+    window.setTimeout(function () {
+      for (var index = 1; index < slides.length; index += 1) load(index);
+    }, 1200);
+    start();
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) window.clearInterval(timer);
+    else start();
+  });
+})();
+</script>
