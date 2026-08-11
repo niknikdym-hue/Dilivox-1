@@ -23,7 +23,7 @@
 
           <div class="dv-home__actions" aria-label="Главные действия">
             <a class="dv-home__button" data-dv-goal="home-to-stories" href="/istorii/">Перейти к историям</a>
-            <a class="dv-home__button dv-home__button--ghost" data-dv-goal="home-to-first-story" href="/istorii/tsena-vtoroy-pechati/">Начать читать</a>
+            <a class="dv-home__button dv-home__button--ghost" data-dv-goal="home-to-first-story" href="/istorii/pechat-na-bagrovom-voske/">Открыть новый комикс</a>
           </div>
         </div>
 
@@ -111,15 +111,13 @@
       </div>
 
       <div class="dv-home__story-grid">
-        
-        
-        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/tropa-zolotogo-yaguara/">
-          <span class="dv-home__story-number">30</span>
-          <h3>Тропа золотого ягуара</h3>
+        <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/pechat-na-bagrovom-voske/">
+          <span class="dv-home__story-number">50</span>
+          <h3>Печать на багровом воске</h3>
           <p>
-            В джунглях находят фигурку золотого ягуара — ключ к древнему маршруту. Но храм оказывается ловушкой, а настоящая тропа открывается только на рассвете.
+            Королевский перстень заменён безупречной копией. Разгадка спрятана в маленьком изъяне, синей нити и вещи, которая внезапно стала тяжелее.
           </p>
-          <span class="dv-home__story-meta">Приключения</span>
+          <span class="dv-home__story-meta">Комикс · 12+</span>
         </a>
 
         <a class="dv-home__story-card" data-dv-goal="home-story-card" href="/istorii/gorod-pod-lednikom/">
