@@ -1,0 +1,69 @@
+DILIVOX — STORY 48
+
+Номер истории:
+48
+
+Название:
+Пансионат «Тихий ужас»
+
+URL:
+https://dilivox.ru/istorii/pansionat-tikhiy-uzhas/
+
+Slug:
+pansionat-tikhiy-uzhas
+
+Папка:
+08-stories-content/48-pansionat-tikhiy-uzhas/
+
+Видимый жанр:
+Юмористическая литература
+
+data-dv-genre:
+yumoristicheskaya-literatura
+
+data-dv-format:
+short
+
+Возрастная категория:
+12+
+
+Image URL:
+https://optim.tildacdn.com/tild3234-3134-4864-a161-313636653332/-/format/webp/48-pansionat-tikhiy-.png.webp
+
+Краткое описание для карточки каталога:
+За полтора часа до проверки из запертой библиотеки пропадает сейф с телефонами гостей. По пансионату звонят пустые номера, ездят бельевые тележки, а вывеска «Тихий ужас» неожиданно оказывается самым честным документом.
+
+Метки карточки:
+пансионат, закрытая комната, пропавший сейф, юмор
+
+Предыдущая история:
+https://dilivox.ru/istorii/ofisnyy-klad/
+
+Следующая история:
+https://dilivox.ru/istorii/ona-vyshla-na-stsenu-dvazhdy/
+
+РСЯ:
+R-A-19563496-8 — desktop sidebar
+R-A-19563496-5 — после начала текста
+R-A-19563496-6 — перед выбором версии
+R-A-19563496-7 — после развязки; hidden, aria-hidden="true", data-dv-ad-after-reveal
+R-A-19563496-9 — первый дополнительный внутритекстовый блок
+R-A-19563496-10 — второй дополнительный внутритекстовый блок
+R-A-19563496-11 — третий дополнительный внутритекстовый блок
+R-A-19563496-12 — четвёртый дополнительный внутритекстовый блок
+R-A-19563496-13 — пятый дополнительный внутритекстовый блок
+R-A-19563496-14 — шестой дополнительный внутритекстовый блок
+
+Файлы пакета:
+dilivox-story-48-pansionat-tikhiy-uzhas-clean.txt
+dilivox-story-48-pansionat-tikhiy-uzhas-seo.txt
+dilivox-story-48-pansionat-tikhiy-uzhas-head.txt
+dilivox-story-48-pansionat-tikhiy-uzhas-t123.txt
+dilivox-story-48-pansionat-tikhiy-uzhas-for-codex.txt
+
+Важно:
+- не добавлять шапку, футер и Яндекс Метрику;
+- не добавлять локальный JS выбора версии;
+- не использовать radio input и :has;
+- не ставить next, пока история 49 не готова к публикации;
+- картинка вставлена в HEAD и T123; Image URL заполнен.

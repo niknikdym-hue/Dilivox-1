@@ -1,0 +1,70 @@
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f172a">
+<link rel="canonical" href="https://dilivox.ru/istorii/pansionat-tikhiy-uzhas/">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Dilivox">
+<meta property="og:title" content="Пансионат «Тихий ужас»">
+<meta property="og:description" content="Из запертой библиотеки пансионата исчезает сейф с ценностями гостей. До проверки остаётся полтора часа, а старые звонки и подъёмники начинают работать сами.">
+<meta property="og:url" content="https://dilivox.ru/istorii/pansionat-tikhiy-uzhas/">
+<meta property="og:image" content="https://optim.tildacdn.com/tild3234-3134-4864-a161-313636653332/-/format/webp/48-pansionat-tikhiy-.png.webp">
+<meta property="og:image:alt" content="Иллюстрация к истории «Пансионат «Тихий ужас»»">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Пансионат «Тихий ужас»">
+<meta name="twitter:image" content="https://optim.tildacdn.com/tild3234-3134-4864-a161-313636653332/-/format/webp/48-pansionat-tikhiy-.png.webp">
+<meta name="twitter:image:alt" content="Иллюстрация к истории «Пансионат «Тихий ужас»»">
+<meta name="twitter:description" content="Из запертой библиотеки пансионата исчезает сейф с ценностями гостей. До проверки остаётся полтора часа, а старые звонки и подъёмники начинают работать сами.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Пансионат «Тихий ужас»",
+  "description": "Из запертой библиотеки пансионата исчезает сейф с ценностями гостей. До проверки остаётся полтора часа, а старые звонки и подъёмники начинают работать сами.",
+  "author": {
+    "@type": "Organization",
+    "name": "Dilivox"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dilivox",
+    "url": "https://dilivox.ru/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://dilivox.ru/istorii/pansionat-tikhiy-uzhas/"
+  },
+  "genre": "Юмористическая литература",
+  "contentRating": "12+",
+  "inLanguage": "ru-RU"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Dilivox",
+      "item": "https://dilivox.ru/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Истории",
+      "item": "https://dilivox.ru/istorii/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Пансионат «Тихий ужас»",
+      "item": "https://dilivox.ru/istorii/pansionat-tikhiy-uzhas/"
+    }
+  ]
+}
+</script>
