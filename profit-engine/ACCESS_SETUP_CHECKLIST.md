@@ -49,7 +49,7 @@ Acceptance:
 - [x] technical ID has no unnecessary access to unrelated sites under this grant;
 - [x] site/block editing remains disabled.
 
-Note: Partner Statistics API authorization uses an OAuth token for a YAN-registered account. During M0, verify whether the assistant/delegated technical identity can obtain the exact required statistics scope for Dilivox. If not, use the minimum-scope statistics token from the owner YAN identity and keep it only in Lockbox; do not store the owner password anywhere.
+Note: Partner Statistics API authorization uses an OAuth token for a YAN-registered account. During M0, verify whether the assistant/delegated technical identity can obtain the exact required statistics token for Dilivox. If not, use the minimum-scope statistics token from the owner YAN identity and keep it only in Lockbox; do not store the owner password anywhere.
 
 ## D. Yandex Direct — Dilivox
 
@@ -61,23 +61,21 @@ Resolved delegation model:
 - technical Direct identity: existing Managing Account `reklamadymova`;
 - stale old invitation was revoked by the owner;
 - fresh Managing Account invitation was sent with `Reading` access;
-- fresh invitation has been accepted by the technical account.
+- fresh invitation has been accepted by the technical account;
+- owner Direct account and its campaign list/statistics are visible from the technical account.
 
 Current rollout requirement:
 
-1. Verify the owner Direct account appears under Available accounts for the technical ID.
-2. Confirm access level is `Reading`.
-3. Confirm the technical ID can open campaign list/statistics without edit controls.
-4. Keep Profit Engine read-only / shadow mode during M0-M5.
-5. Restore `Editing` only when M6 guarded autopilot is ready and Budget Governor tests have passed.
-6. Register OAuth application/access required by Direct API.
-7. Restrict the engine to registered Dilivox account/campaign scopes.
+1. Keep Profit Engine read-only / shadow mode during M0-M5.
+2. Restore `Editing` only when M6 guarded autopilot is ready and Budget Governor tests have passed.
+3. Register OAuth application/access required by Direct API.
+4. Restrict the engine to registered Dilivox account/campaign scopes.
 
 Acceptance:
 
 - [x] fresh Managing Account invitation accepted by the technical identity;
-- [x] requested Managing Account access level is `Reading` during M0-M5;
-- [ ] technical identity can view Dilivox campaigns and statistics;
+- [x] Managing Account access level is `Reading` during M0-M5;
+- [x] technical identity can view owner Direct campaigns and statistics;
 - [ ] weekly budget baseline is captured;
 - [ ] campaign/account identifiers are mapped to `site_id=dilivox`;
 - [x] no automatic Direct writes are enabled yet;
@@ -107,4 +105,4 @@ Runtime code should never contain interactive account passwords.
 
 ## Current next action
 
-Under the technical account `reklamadymova`, open Available accounts in Yandex Direct and verify the owner Direct account is visible with `Reading` access; then open the campaign list/statistics to confirm read access works. In parallel, verify Monetization/YAN reports are visible in the Dilivox Metrica counter. After these checks, proceed to OAuth/API inventory and Cloud foundation planning.
+Direct read access is confirmed. Proceed with `OAUTH_API_SETUP.md`: register the Profit Engine OAuth application under the technical identity, request only the scopes needed for the current read-only stage, then submit the Direct API access request. In parallel, verify Monetization/YAN reports are visible in the Dilivox Metrica counter and obtain the YAN Statistics API token through the RСЯ interface. No token/secret values are committed to GitHub.
