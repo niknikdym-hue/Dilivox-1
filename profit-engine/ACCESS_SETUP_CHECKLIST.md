@@ -7,7 +7,7 @@ Purpose: configure the owner's existing second Yandex ID as the technical operat
 
 ## A. Identity readiness
 
-- [ ] Confirm the second Yandex ID is under the owner's control.
+- [x] Confirm the second Yandex ID is under the owner's control.
 - [ ] Enable strong account security and recovery methods.
 - [ ] Record the technical login privately; do not commit it if it is not intended to be public.
 - [ ] Confirm whether this login has ever been used in Yandex Direct, because representative eligibility may depend on prior Direct usage.
@@ -25,7 +25,7 @@ Owner actions in the Dilivox counter:
 
 Acceptance:
 
-- [ ] technical ID can open the Dilivox counter;
+- [x] technical ID can open the Dilivox counter / access has been granted;
 - [ ] technical ID can see Monetization / YAN reports;
 - [ ] counter ID is recorded in private deployment configuration / site registry.
 
@@ -96,6 +96,4 @@ Runtime code should never contain interactive account passwords.
 
 ## Current next action
 
-Start with Metrica because access can be verified immediately and it establishes the first required data source.
-
-After Metrica is confirmed, configure YAN Assistant access, then determine the correct Direct delegation path based on whether the technical ID has previously been used in Direct.
+Metrica access is granted. Next configure YAN Partner Assistant access for the Dilivox site with view/statistics permission only. After that, verify Monetization visibility under the technical account and determine the correct Direct delegation path based on whether the technical ID has previously been used in Direct.
