@@ -54,11 +54,12 @@ Read in this order when resuming the project after any chat/context loss:
 
 1. `profit-engine/PROJECT_STATE.md`
 2. `profit-engine/OWNER_DECISIONS.md`
-3. `profit-engine/ARCHITECTURE.md`
-4. `profit-engine/YANDEX_CLOUD_ARCHITECTURE.md`
-5. `profit-engine/SECURITY_AND_ACCESS.md`
-6. `profit-engine/SITE_ONBOARDING.md`
-7. site-specific file, beginning with `profit-engine/sites/dilivox/SITE_STATE.md`
+3. `profit-engine/IMPLEMENTATION_PLAN.md`
+4. `profit-engine/ARCHITECTURE.md`
+5. `profit-engine/YANDEX_CLOUD_ARCHITECTURE.md`
+6. `profit-engine/SECURITY_AND_ACCESS.md`
+7. `profit-engine/SITE_ONBOARDING.md`
+8. site-specific file, beginning with `profit-engine/sites/dilivox/SITE_STATE.md`
 
 ## Source-of-truth rule
 
