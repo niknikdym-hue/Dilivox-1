@@ -44,9 +44,10 @@ Owner actions:
 
 Acceptance:
 
-- [ ] technical ID can see Dilivox site and block statistics;
-- [ ] technical ID has no unnecessary access to unrelated sites;
-- [ ] editing remains disabled unless specifically required.
+- [x] technical ID has been added as Partner Assistant for Dilivox;
+- [x] technical ID can see Dilivox site / statistics access is granted;
+- [x] technical ID has no unnecessary access to unrelated sites under this grant;
+- [x] site/block editing remains disabled.
 
 Note: Partner Statistics API authorization uses an OAuth token for a YAN-registered account. During M0, verify whether the assistant/delegated technical identity can obtain the exact required statistics scope for Dilivox. If not, use the minimum-scope statistics token from the owner YAN identity and keep it only in Lockbox; do not store the owner password anywhere.
 
@@ -96,4 +97,4 @@ Runtime code should never contain interactive account passwords.
 
 ## Current next action
 
-Metrica access is granted. Next configure YAN Partner Assistant access for the Dilivox site with view/statistics permission only. After that, verify Monetization visibility under the technical account and determine the correct Direct delegation path based on whether the technical ID has previously been used in Direct.
+Metrica and YAN delegated access are granted. Before touching Direct from the technical account, determine whether this second Yandex ID has ever previously been used to sign in to Yandex Direct. Then choose the correct supported delegation model and continue M0 in read-only/shadow mode.
