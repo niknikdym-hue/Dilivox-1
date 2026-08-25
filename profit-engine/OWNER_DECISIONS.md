@@ -55,3 +55,11 @@ Preferred production environment is Yandex Cloud for operational simplicity, loc
 ## OD-009 — Chat is not source of truth
 
 Repository authority files are the source of truth for project decisions and state. Material decisions must be committed. Replaced decisions are marked `SUPERSEDED`, not silently deleted.
+
+## OD-010 — Technical Yandex identity
+
+The owner's existing second Yandex ID is designated as the preferred technical identity for Profit Engine, subject to access-compatibility checks in Direct, Metrica, and YAN.
+
+The owner's primary Yandex ID remains the ownership/control identity.
+
+The technical Yandex ID is used for delegated operational access and OAuth/API authorization where supported. The engine must never require or store the owner's primary Yandex password, and production OAuth/API credentials must be kept in Lockbox or an equivalent secret manager rather than GitHub.
