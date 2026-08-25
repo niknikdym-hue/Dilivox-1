@@ -59,14 +59,15 @@ Resolved delegation model:
 
 - main Direct account chief representative: owner account;
 - technical Direct identity: existing Managing Account `reklamadymova`;
-- invitation has been created but is currently pending acceptance;
-- current requested access shown in Direct is `Editing`.
+- stale old invitation has been revoked by the owner;
+- a fresh Managing Account invitation has been sent with `Reading` access;
+- the fresh invitation is currently pending acceptance by the technical account.
 
 Current rollout requirement:
 
-1. Prefer changing the Managing Account level to `Reading` for M0-M5 before/around acceptance, because only campaign/settings/statistics visibility is required now.
-2. Accept the Managing Account invitation from the technical Yandex ID.
-3. Verify the owner Direct account appears under Available accounts for the technical ID.
+1. Accept the fresh Managing Account invitation from the technical Yandex ID.
+2. Verify the owner Direct account appears under Available accounts for the technical ID.
+3. Confirm access level is `Reading`.
 4. Keep Profit Engine read-only / shadow mode during M0-M5.
 5. Restore `Editing` only when M6 guarded autopilot is ready and Budget Governor tests have passed.
 6. Register OAuth application/access required by Direct API.
@@ -74,8 +75,8 @@ Current rollout requirement:
 
 Acceptance:
 
-- [ ] Managing Account invitation accepted by the technical identity;
-- [ ] Managing Account access level is `Reading` during M0-M5;
+- [ ] fresh Managing Account invitation accepted by the technical identity;
+- [x] requested Managing Account access level is `Reading` during M0-M5;
 - [ ] technical identity can view Dilivox campaigns and statistics;
 - [ ] weekly budget baseline is captured;
 - [ ] campaign/account identifiers are mapped to `site_id=dilivox`;
@@ -106,4 +107,4 @@ Runtime code should never contain interactive account passwords.
 
 ## Current next action
 
-Direct delegation is resolved through the existing Managing Account `reklamadymova`. Set its access to `Reading` for the current read-only stages if possible, then accept the invitation under the technical account and verify the owner Direct account appears under Available accounts. After this, finish Metrica/YAN monetization visibility checks and proceed to OAuth/API inventory.
+Open Yandex Direct under the technical account `reklamadymova`, click the account login in the left menu, accept the fresh Managing Account invitation, then verify the owner Direct account appears under Available accounts with `Reading` access. After this, finish Metrica/YAN monetization visibility checks and proceed to OAuth/API inventory.
