@@ -10,7 +10,7 @@ Purpose: configure the owner's existing second Yandex ID as the technical operat
 - [x] Confirm the second Yandex ID is under the owner's control.
 - [ ] Enable strong account security and recovery methods.
 - [ ] Record the technical login privately; do not commit it if it is not intended to be public.
-- [ ] Confirm whether this login has ever been used in Yandex Direct, because representative eligibility may depend on prior Direct usage.
+- [x] Direct delegation path resolved: use the existing Managing Account relationship rather than a new representative login.
 
 ## B. Yandex Metrica — Dilivox
 
@@ -55,22 +55,31 @@ Note: Partner Statistics API authorization uses an OAuth token for a YAN-registe
 
 Goal: technical identity can eventually read and control only the required Dilivox campaigns.
 
-Important eligibility check: Yandex Direct representative setup expects a Yandex login that has not already been used to sign in to Direct. If the existing second account was already used in Direct, do not force the representative path; evaluate a Managing Account or another supported delegation model instead.
+Resolved delegation model:
 
-Initial rollout:
+- main Direct account chief representative: owner account;
+- technical Direct identity: existing Managing Account `reklamadymova`;
+- invitation has been created but is currently pending acceptance;
+- current requested access shown in Direct is `Editing`.
 
-1. First grant/read-map access sufficient to inventory campaigns and current weekly budgets.
-2. Keep Profit Engine in read-only / shadow mode during M0-M5.
-3. Grant write-capable Direct API access only for M6 guarded autopilot.
-4. Register OAuth application/access required by Direct API.
-5. Restrict the engine to registered Dilivox account/campaign scopes.
+Current rollout requirement:
+
+1. Prefer changing the Managing Account level to `Reading` for M0-M5 before/around acceptance, because only campaign/settings/statistics visibility is required now.
+2. Accept the Managing Account invitation from the technical Yandex ID.
+3. Verify the owner Direct account appears under Available accounts for the technical ID.
+4. Keep Profit Engine read-only / shadow mode during M0-M5.
+5. Restore `Editing` only when M6 guarded autopilot is ready and Budget Governor tests have passed.
+6. Register OAuth application/access required by Direct API.
+7. Restrict the engine to registered Dilivox account/campaign scopes.
 
 Acceptance:
 
-- [ ] technical identity can view Dilivox campaigns;
+- [ ] Managing Account invitation accepted by the technical identity;
+- [ ] Managing Account access level is `Reading` during M0-M5;
+- [ ] technical identity can view Dilivox campaigns and statistics;
 - [ ] weekly budget baseline is captured;
 - [ ] campaign/account identifiers are mapped to `site_id=dilivox`;
-- [ ] no automatic Direct writes are enabled yet;
+- [x] no automatic Direct writes are enabled yet;
 - [ ] future write path is compatible with the Budget Governor.
 
 ## E. Budget Governor invariant
@@ -97,4 +106,4 @@ Runtime code should never contain interactive account passwords.
 
 ## Current next action
 
-Metrica and YAN delegated access are granted. Before touching Direct from the technical account, determine whether this second Yandex ID has ever previously been used to sign in to Yandex Direct. Then choose the correct supported delegation model and continue M0 in read-only/shadow mode.
+Direct delegation is resolved through the existing Managing Account `reklamadymova`. Set its access to `Reading` for the current read-only stages if possible, then accept the invitation under the technical account and verify the owner Direct account appears under Available accounts. After this, finish Metrica/YAN monetization visibility checks and proceed to OAuth/API inventory.
