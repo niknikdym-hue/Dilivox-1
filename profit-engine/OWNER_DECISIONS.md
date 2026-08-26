@@ -1,7 +1,7 @@
 # PROFIT ENGINE — OWNER DECISIONS
 
 Status: CANONICAL / ACTIVE
-Updated: 2026-08-25
+Updated: 2026-08-26
 
 ## OD-001 — Economic target
 
@@ -63,3 +63,18 @@ The owner's existing second Yandex ID is designated as the preferred technical i
 The owner's primary Yandex ID remains the ownership/control identity.
 
 The technical Yandex ID is used for delegated operational access and OAuth/API authorization where supported. The engine must never require or store the owner's primary Yandex password, and production OAuth/API credentials must be kept in Lockbox or an equivalent secret manager rather than GitHub.
+
+## OD-011 — External disclosure minimization
+
+External providers, including Yandex, receive only the information strictly required to provision, certify, operate, or troubleshoot the specific provider integration.
+
+Do NOT disclose strategic or commercially sensitive Profit Engine information unless technically or legally required, including:
+
+- the internal `1 RUB -> 5 RUB` economic target;
+- YAN ROAS/LTV targets or optimization economics;
+- internal scoring, forecasting, allocation, scaling, or recommendation algorithms;
+- multi-site commercial strategy;
+- owner-specific budget governance details beyond what is necessary for the requested provider operation;
+- internal data architecture or provider-neutral design details that are not required for certification.
+
+For Direct API certification, disclose only the minimal truthful information needed to explain Direct API use: requested functions, protocol/language, authentication, basic interaction flow, current development stage, and credential handling.
