@@ -1,7 +1,7 @@
 # PROFIT ENGINE — OAUTH AND API SETUP
 
 Status: ACTIVE M0 GUIDE
-Updated: 2026-08-25
+Updated: 2026-08-26
 
 ## Objective
 
@@ -9,13 +9,13 @@ Create secure API access for the technical Yandex identity without passwords in 
 
 ## OAuth application
 
-Create the application under the technical Yandex identity used for Profit Engine operations.
+Application created under the technical Yandex identity used for Profit Engine operations.
 
 Application type: `For API access or debugging`.
 
-Suggested service name: `Profit Engine`.
+Service name: `Profit Engine`.
 
-Current required scopes:
+Configured scopes:
 
 - `direct:api` — Yandex Direct API;
 - `metrika:read` — Yandex Metrica statistics/counter read access.
@@ -26,25 +26,28 @@ For API-access/debug applications Yandex supplies the verification-code redirect
 
 ## Secret handling
 
-The OAuth app will expose a ClientID and Client secret.
+The OAuth app exposes a ClientID and Client secret.
 
 Rules:
 
 - never commit Client secret;
 - do not paste access tokens into GitHub issues/PRs/docs;
-- ClientID may be recorded only in private deployment configuration if desired;
+- ClientID is kept in private deployment configuration / owner secure storage;
 - production Client secret and OAuth tokens go to Yandex Lockbox;
 - until Lockbox exists, keep secrets only in the owner's secure local/password-manager storage.
 
-## Direct API access
+## Direct API access — current next step
 
 After the OAuth app exists:
 
 1. Open Direct API settings under the application-developer/technical identity.
-2. Accept the Direct API user agreement if prompted.
-3. Create a new API access request using the OAuth application's ClientID.
-4. Request the appropriate production access after any required test/access stage.
-5. Keep operational campaign permissions read-only during M0-M5 even though the `direct:api` OAuth scope itself supports management methods.
+2. If the API settings page is unavailable, note that Yandex currently requires at least one campaign in that developer Direct account before the API settings page becomes available; do not launch spend accidentally just to satisfy this prerequisite.
+3. Click `Get API access` / accept the Direct API user agreement if prompted.
+4. Open `My requests`.
+5. Create one new access request for the Profit Engine ClientID.
+6. Provide the current contact email and accurate application description.
+7. Submit the request and track its status in `My requests`.
+8. Keep operational campaign permissions read-only during M0-M5 even though the `direct:api` OAuth scope itself supports management methods.
 
 Important: provider authorization and our own action policy are separate layers. The Profit Engine Budget Governor and staged rollout remain authoritative regardless of API scope.
 
@@ -76,16 +79,17 @@ Do not confuse the Statistics API token with the separate in-app block-configura
 
 ## M0 acceptance
 
-- [ ] OAuth application `Profit Engine` created under technical identity;
-- [ ] `direct:api` scope added;
-- [ ] `metrika:read` scope added;
-- [ ] ClientID captured privately;
-- [ ] Client secret captured securely and not committed;
-- [ ] Direct API access request submitted/approved as required;
+- [x] OAuth application `Profit Engine` created under technical identity;
+- [x] `direct:api` scope added;
+- [x] `metrika:read` scope added;
+- [x] ClientID captured privately by owner;
+- [x] Client secret captured securely and not committed;
+- [ ] Direct API access request submitted;
+- [ ] Direct API access request approved as required;
 - [ ] Metrica API can list/read Dilivox counter data;
 - [ ] Metrica monetization/YAN data is readable;
 - [ ] YAN Statistics API token obtained and Dilivox statistics readable;
-- [ ] all tokens/secrets scheduled for migration into Lockbox in M1.
+- [ ] all tokens/secrets migrated into Lockbox in M1.
 
 ## Next after M0 API access
 
