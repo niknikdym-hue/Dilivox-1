@@ -34,47 +34,57 @@ Rules:
 - production Client secret and OAuth tokens go to Yandex Lockbox;
 - until Lockbox exists, keep secrets only in the owner's secure local/password-manager storage.
 
-## Direct API access — staged rule
+## Direct API access — current UI path
 
-Use Yandex's staged access model.
+The current Russian Direct UI for this account exposes:
 
-### D0 — Test access first
+- `My requests -> New request` as the Full Access certification form;
+- a separate `Sandbox` tab with `Start using Sandbox`.
 
-During development, request `Test access` / trial access for the Profit Engine OAuth application.
+Therefore the project follows the current UI rather than assuming a visible `Test access` item exists in the New request menu.
 
-Test access works only with the Direct API Sandbox and is sufficient to implement and debug the client without touching real campaigns or spending real money.
+### D0 — Enable Sandbox first
 
-Do NOT submit the full-access certification form while the Profit Engine implementation, screenshots, and technical specification do not yet exist.
+1. Open Direct API settings under the technical identity.
+2. Open the `Sandbox` tab.
+3. Click `Start using Sandbox`.
+4. If the UI asks to associate/select an OAuth application, use `Profit Engine`.
+5. Obtain an OAuth token for the technical developer/test identity when required.
+6. Use only the Sandbox API endpoint during this stage.
 
-If the UI shows a long form requiring company data, programming language, example Direct logins, application functions, interaction scheme, and mandatory specification/screenshots, treat that as the FULL ACCESS certification form and return to the request list.
+Sandbox is isolated from live Direct data. Test campaigns/ads are not actually served and simulated funds do not affect real campaigns.
 
-Create/select `Test access` instead.
+### D1 — Build and validate against Sandbox
 
-### D1 — Build and validate in Sandbox
+Implement and test:
 
-After test access approval:
+1. Direct campaign/statistics read client;
+2. campaign-control methods against toy campaigns only;
+3. API error handling and retry policy;
+4. idempotency and action audit log;
+5. Budget Governor;
+6. hard owner invariant: automatic weekly budget increase > +20% is impossible without explicit owner approval;
+7. emergency-stop and DATA_QUALITY_HOLD behavior.
 
-1. obtain an OAuth token for the technical developer/test identity;
-2. use the Direct Sandbox;
-3. implement read/write API calls against Sandbox only;
-4. build Direct connector/controller tests;
-5. validate error handling, idempotency, and audit logging;
-6. implement and test Budget Governor before any real write-capable access.
+The Sandbox JSON endpoint follows the `api-sandbox.direct.yandex.com/json/v5/...` pattern.
 
 ### D2 — Full access later
 
-Convert the same application/request to Full access only after the application actually exists and we can truthfully provide:
+`My requests -> New request` currently opens the Full Access certification form. Do not submit it prematurely.
+
+Submit Full Access only after the application actually exists and we can truthfully provide:
 
 - implemented function list;
-- technical architecture/scheme;
+- technical architecture/interaction scheme;
 - programming language and library versions;
 - application screenshots/specification;
 - example Direct login(s) where the application is actually used;
-- real description of new user capabilities.
+- real description of new user capabilities;
+- API services/methods, call order/frequency, error handling and API-limit handling.
 
-Full access is required for real Direct campaign data/control.
+Full access is required for real Direct campaign API data/control.
 
-M0-M5 policy remains read-only/shadow for real campaigns. M6 enables guarded write control only after Budget Governor tests pass.
+M0-M5 policy remains read-only/shadow for real campaigns. M6 enables guarded write control only after Budget Governor tests pass and Direct access is upgraded appropriately.
 
 ## Metrica API
 
@@ -109,19 +119,22 @@ Do not confuse the Statistics API token with the separate in-app block-configura
 - [x] `metrika:read` scope added;
 - [x] ClientID captured privately by owner;
 - [x] Client secret captured securely and not committed;
-- [ ] Direct API TEST access request submitted/approved;
-- [ ] Direct Sandbox request succeeds;
+- [ ] Direct Sandbox enabled for the technical developer identity;
+- [ ] Direct Sandbox API request succeeds;
 - [ ] Metrica API can list/read Dilivox counter data;
 - [ ] Metrica monetization/YAN data is readable;
 - [ ] YAN Statistics API token obtained and Dilivox statistics readable;
 - [ ] all tokens/secrets migrated into Lockbox in M1.
 
-## Next after M0 API access
+## Next after Sandbox enablement
 
-Provision Yandex Cloud M1 foundation and implement the first read-only collectors:
+Proceed in parallel rather than waiting for Full Access certification:
 
-- Direct collector;
-- Metrica collector;
-- YAN collector;
-- immutable raw snapshot archive;
-- canonical site/account mapping for `site_id=dilivox`.
+- begin M1 Yandex Cloud foundation;
+- implement Direct connector/controller against Sandbox;
+- implement real read-only Metrica collector;
+- implement real read-only YAN collector;
+- create immutable raw snapshot archive;
+- create canonical site/account mapping for `site_id=dilivox`.
+
+When those pieces are demonstrably working, prepare and submit the Full Access certification package with real screenshots/specification rather than placeholders.
