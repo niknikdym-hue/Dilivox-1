@@ -22,8 +22,6 @@ Configured scopes:
 
 Do not add `metrika:write` during M0 unless a concrete write task requires it.
 
-For API-access/debug applications Yandex supplies the verification-code redirect URI; do not invent or commit custom secret callback credentials.
-
 ## Secret handling
 
 The OAuth app exposes a ClientID and Client secret.
@@ -31,25 +29,52 @@ The OAuth app exposes a ClientID and Client secret.
 Rules:
 
 - never commit Client secret;
-- do not paste access tokens into GitHub issues/PRs/docs;
+- do not paste access tokens into GitHub issues/PRs/docs/chat;
 - ClientID is kept in private deployment configuration / owner secure storage;
 - production Client secret and OAuth tokens go to Yandex Lockbox;
 - until Lockbox exists, keep secrets only in the owner's secure local/password-manager storage.
 
-## Direct API access — current next step
+## Direct API access — staged rule
 
-After the OAuth app exists:
+Use Yandex's staged access model.
 
-1. Open Direct API settings under the application-developer/technical identity.
-2. If the API settings page is unavailable, note that Yandex currently requires at least one campaign in that developer Direct account before the API settings page becomes available; do not launch spend accidentally just to satisfy this prerequisite.
-3. Click `Get API access` / accept the Direct API user agreement if prompted.
-4. Open `My requests`.
-5. Create one new access request for the Profit Engine ClientID.
-6. Provide the current contact email and accurate application description.
-7. Submit the request and track its status in `My requests`.
-8. Keep operational campaign permissions read-only during M0-M5 even though the `direct:api` OAuth scope itself supports management methods.
+### D0 — Test access first
 
-Important: provider authorization and our own action policy are separate layers. The Profit Engine Budget Governor and staged rollout remain authoritative regardless of API scope.
+During development, request `Test access` / trial access for the Profit Engine OAuth application.
+
+Test access works only with the Direct API Sandbox and is sufficient to implement and debug the client without touching real campaigns or spending real money.
+
+Do NOT submit the full-access certification form while the Profit Engine implementation, screenshots, and technical specification do not yet exist.
+
+If the UI shows a long form requiring company data, programming language, example Direct logins, application functions, interaction scheme, and mandatory specification/screenshots, treat that as the FULL ACCESS certification form and return to the request list.
+
+Create/select `Test access` instead.
+
+### D1 — Build and validate in Sandbox
+
+After test access approval:
+
+1. obtain an OAuth token for the technical developer/test identity;
+2. use the Direct Sandbox;
+3. implement read/write API calls against Sandbox only;
+4. build Direct connector/controller tests;
+5. validate error handling, idempotency, and audit logging;
+6. implement and test Budget Governor before any real write-capable access.
+
+### D2 — Full access later
+
+Convert the same application/request to Full access only after the application actually exists and we can truthfully provide:
+
+- implemented function list;
+- technical architecture/scheme;
+- programming language and library versions;
+- application screenshots/specification;
+- example Direct login(s) where the application is actually used;
+- real description of new user capabilities.
+
+Full access is required for real Direct campaign data/control.
+
+M0-M5 policy remains read-only/shadow for real campaigns. M6 enables guarded write control only after Budget Governor tests pass.
 
 ## Metrica API
 
@@ -65,14 +90,14 @@ Required verification:
 
 ## YAN/RСЯ Statistics API
 
-YAN Statistics API token is obtained from the YAN interface/API action for the YAN-registered account.
+YAN Statistics API token is obtained through the YAN interface/API flow for the YAN-registered account.
 
 Preferred path:
 
 1. under the technical Partner Assistant account, open the RСЯ interface;
-2. use the API control and request an OAuth token for the Statistics API;
+2. obtain the Statistics API token if delegated access supports the required Dilivox data;
 3. test the statistics tree/report endpoints for the Dilivox resource;
-4. if delegated assistant access does not expose the required statistics data, use the minimum necessary statistics token from the owner YAN identity instead;
+4. if delegated assistant access does not expose required statistics data, use the minimum necessary statistics token from the owner YAN identity instead;
 5. store the resulting token in Lockbox only.
 
 Do not confuse the Statistics API token with the separate in-app block-configuration API token.
@@ -84,8 +109,8 @@ Do not confuse the Statistics API token with the separate in-app block-configura
 - [x] `metrika:read` scope added;
 - [x] ClientID captured privately by owner;
 - [x] Client secret captured securely and not committed;
-- [ ] Direct API access request submitted;
-- [ ] Direct API access request approved as required;
+- [ ] Direct API TEST access request submitted/approved;
+- [ ] Direct Sandbox request succeeds;
 - [ ] Metrica API can list/read Dilivox counter data;
 - [ ] Metrica monetization/YAN data is readable;
 - [ ] YAN Statistics API token obtained and Dilivox statistics readable;
