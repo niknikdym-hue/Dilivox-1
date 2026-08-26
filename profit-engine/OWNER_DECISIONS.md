@@ -21,9 +21,30 @@ For this engine, the target revenue stream is revenue from standard YAN/RСЯ ad
 
 The project is a normal lawful optimization and analytics system for high-quality sites and real users. No bots, click stimulation, motivated ad interactions, artificial impressions, or manipulation of ad systems are part of the design.
 
-## OD-004 — Independence
+## OD-004 — Yandex role: execution instrument, not project goal
 
-Profit Engine is an independent owner-controlled system. Yandex services are external infrastructure/data/control providers. Yandex does not define the engine's architecture, optimization policy, ownership, or business logic.
+The Owner defines the economic objective. Profit Engine owns the cross-system business logic, capital-allocation rules, measurement, experimentation, and decisions required to achieve that objective.
+
+Yandex is an important execution and data instrument used by Profit Engine where it is economically useful:
+
+- Yandex Direct = traffic-acquisition and provider-native bidding/optimization instrument;
+- Yandex Metrica = attribution, behavior and monetization-measurement instrument;
+- YAN/RСЯ = first monetization provider and revenue source;
+- Yandex Cloud = preferred operational infrastructure for the first production implementation.
+
+Profit Engine does NOT attempt to replace provider auction algorithms merely for architectural independence. It should deliberately use Yandex's native algorithms when they improve the Owner's economics.
+
+At the same time, Yandex does not set the Owner's economic target and does not have final authority over Profit Engine's cross-system allocation logic.
+
+Canonical hierarchy:
+
+`OWNER ECONOMIC GOAL -> PROFIT ENGINE -> YANDEX AND OTHER EXECUTION TOOLS -> MEASURED RESULT -> PROFIT ENGINE`.
+
+The question is never «how do we replace Yandex?».
+
+The question is:
+
+`How do we use Yandex and every other available tool most effectively to reach and exceed the Owner's profit target?`
 
 ## OD-005 — Automation priority
 
