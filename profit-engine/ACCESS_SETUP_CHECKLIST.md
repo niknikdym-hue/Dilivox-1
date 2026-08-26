@@ -1,13 +1,14 @@
 # PROFIT ENGINE — TECHNICAL YANDEX ID ACCESS CHECKLIST
 
 Status: ACTIVE SETUP CHECKLIST
-Updated: 2026-08-25
+Updated: 2026-08-26
 
 Purpose: configure the owner's existing second Yandex ID as the technical operational identity for Profit Engine without exposing the primary owner account.
 
 ## A. Identity readiness
 
 - [x] Confirm the second Yandex ID is under the owner's control.
+- [x] Technical Yandex ID verification via Gosuslugi completed.
 - [ ] Enable strong account security and recovery methods.
 - [ ] Record the technical login privately; do not commit it if it is not intended to be public.
 - [x] Direct delegation path resolved: use the existing Managing Account relationship rather than a new representative login.
@@ -105,4 +106,4 @@ Runtime code should never contain interactive account passwords.
 
 ## Current next action
 
-Direct read access is confirmed. Proceed with `OAUTH_API_SETUP.md`: register the Profit Engine OAuth application under the technical identity, request only the scopes needed for the current read-only stage, then submit the Direct API access request. In parallel, verify Monetization/YAN reports are visible in the Dilivox Metrica counter and obtain the YAN Statistics API token through the RСЯ interface. No token/secret values are committed to GitHub.
+Technical identity verification is complete and Direct read access is confirmed. Proceed with `OAUTH_API_SETUP.md`: register the `Profit Engine` OAuth application under the technical identity with only `direct:api` and `metrika:read`, then submit the Direct API access request. In parallel, verify Monetization/YAN reports are visible in the Dilivox Metrica counter and obtain the YAN Statistics API token through the RСЯ interface. No token/secret values are committed to GitHub.
