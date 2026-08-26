@@ -33,19 +33,36 @@ Create/verify the canonical local working copy on the Owner's Mac and produce a 
 
 No advertising spend or Direct write operation is allowed in this task.
 
+## OWNER-APPROVED LOCAL WORKSPACE SEPARATION
+
+There are two separate local workspaces. They MUST NOT be conflated.
+
+### Existing Dilivox site workspace
+
+`~/Documents/New project/Dilivox`
+
+This is the existing working folder for the Dilivox site. Do NOT delete, move, reset, overwrite or repurpose it as the Profit Engine workspace. It may be inspected read-only if required to understand the current Dilivox implementation.
+
+### Canonical Profit Engine workspace
+
+`~/Documents/New project/Profit Engine/Dilivox-1`
+
+This is the required local clone for the Profit Engine workstream.
+
 ## LOCAL FOLDER
 
-Preferred local path:
+Canonical local path:
 
-`~/Documents/Profit Engine/Dilivox-1`
+`~/Documents/New project/Profit Engine/Dilivox-1`
 
 Rules:
-- create parent folder if missing;
+- create `~/Documents/New project/Profit Engine` if missing;
 - if the target path does not exist, clone `https://github.com/niknikdym-hue/Dilivox-1.git` there;
 - if it already exists and is the correct Git clone, do NOT reclone or destroy anything: fetch and verify it;
 - if it exists but is not the correct repository, STOP before overwriting/deleting and report the conflict;
 - checkout `profit-engine` and sync it safely from `origin/profit-engine`;
-- do not reset or discard unknown local work without reporting it first.
+- do not reset or discard unknown local work without reporting it first;
+- do not modify the separate `~/Documents/New project/Dilivox` workspace during bootstrap.
 
 ## BASELINE VERIFICATION
 
@@ -76,6 +93,8 @@ Report, with paths/evidence:
 - any existing API/Profit Engine code beyond the canonical docs;
 - any `.env`, credential config names or secret references, WITHOUT printing secret values;
 - whether there is a `.gitignore` adequate to prevent common secret files from being committed.
+
+If implementation/deployment information exists only in `~/Documents/New project/Dilivox`, inspect it read-only and record findings without mutating that workspace.
 
 ## PROVIDER ACCESS PRECHECK — NO SECRET EXPOSURE
 
@@ -119,21 +138,23 @@ Commit this evidence file to `profit-engine` only if it contains no sensitive id
 - do not commit tokens/client secrets/passwords/private credentials;
 - do not merge anything into `main`;
 - do not rewrite canonical Owner decisions;
-- do not invent missing access.
+- do not invent missing access;
+- do not delete/reset/overwrite/repurpose `~/Documents/New project/Dilivox`.
 
 ## ACCEPTANCE GATES
 
 Task 001 is accepted only if:
 
-1. canonical local clone exists and `profit-engine` is checked out;
-2. branch/HEAD/origin evidence is exact;
-3. repository/site implementation surface is mapped;
-4. current tracking/YAN/attribution instrumentation is inventoried;
-5. credential presence is classified without exposing secrets;
-6. any safe available read-only provider checks are reported accurately;
-7. no provider writes/spend occurred;
-8. no secrets entered the repository;
-9. evidence file exists and is complete enough for Central Brain to issue Task 002.
+1. canonical local clone exists at `~/Documents/New project/Profit Engine/Dilivox-1` and `profit-engine` is checked out;
+2. existing site workspace `~/Documents/New project/Dilivox` remains separate and unmodified by bootstrap;
+3. branch/HEAD/origin evidence is exact;
+4. repository/site implementation surface is mapped;
+5. current tracking/YAN/attribution instrumentation is inventoried;
+6. credential presence is classified without exposing secrets;
+7. any safe available read-only provider checks are reported accurately;
+8. no provider writes/spend occurred;
+9. no secrets entered the repository;
+10. evidence file exists and is complete enough for Central Brain to issue Task 002.
 
 ## FINAL REPORT FORMAT
 
