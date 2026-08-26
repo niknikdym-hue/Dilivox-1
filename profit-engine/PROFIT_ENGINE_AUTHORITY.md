@@ -1,6 +1,6 @@
 # DILIVOX PROFIT ENGINE — AUTHORITY
 
-Version: 0.1
+Version: 0.2
 Date: 2026-08-26
 Branch: `profit-engine`
 Repository: `niknikdym-hue/Dilivox-1`
@@ -77,6 +77,29 @@ The common core must support gradual connection of additional Owner sites using 
 Automatic increase of weekly advertising budget is allowed up to +20% without Owner confirmation.
 
 Any increase above +20% requires explicit Owner approval before application.
+
+### A-008 — PROFIT-FIRST OPERATING DOCTRINE — APPROVED
+
+DILIVOX PROFIT ENGINE is a hard profit-first machine whose purpose is to make money.
+
+Every production function must have a direct economic role. It must do at least one of the following:
+- increase attributable monetization revenue;
+- reduce the cost of acquiring valuable traffic;
+- increase monetization value per legitimate visitor;
+- reallocate spend toward higher-profit segments;
+- stop or reduce loss-making spend;
+- discover and validate new profitable traffic/monetization combinations;
+- protect earned money from fraud, invalid traffic, provider sanctions, data errors or uncontrolled budget growth.
+
+Analytics, AI, dashboards, reports, experimentation and automation are instruments, not goals.
+
+No feature is justified merely because it is technologically interesting, visually impressive, or analytically sophisticated. If a feature has no credible path to increasing profit or protecting profit, it is secondary to Profit Engine launch.
+
+The default decision hierarchy is:
+
+`PROTECT CAPITAL → MEASURE MONEY → STOP LOSSES → FIND PROFIT → SCALE PROFIT → REPEAT`
+
+The system must prefer measurable economic outcomes over vanity metrics. CTR, CPC, traffic volume, pageviews, session duration and similar indicators are diagnostic variables only; they are not the final optimization objective.
 
 ---
 
@@ -499,6 +522,11 @@ Until these are approved, implementation must preserve the ability to calculate 
 ---
 
 ## 17. CHANGE LOG
+
+### 0.2 — 2026-08-26
+- Owner approved the PROFIT-FIRST operating doctrine.
+- Added A-008: every production function must increase profit, reduce acquisition cost, stop losses, discover scalable profit, or protect capital.
+- Added mandatory decision hierarchy: `PROTECT CAPITAL → MEASURE MONEY → STOP LOSSES → FIND PROFIT → SCALE PROFIT → REPEAT`.
 
 ### 0.1 — 2026-08-26
 - Created canonical Profit Engine authority document.
