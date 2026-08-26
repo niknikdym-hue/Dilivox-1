@@ -48,7 +48,7 @@ The question is:
 
 ## OD-005 — Automation priority
 
-Maximum practical automation is required, including automated data collection, attribution, analysis, forecasting, anomaly detection, experiment evaluation, Direct campaign control, budget redistribution, and recommendations.
+Maximum practical automation is required, including automated data collection, attribution, analysis, forecasting, anomaly detection, experiment evaluation, Direct campaign control, budget redistribution, creative routine, and recommendations.
 
 ## OD-006 — Budget authority
 
@@ -89,16 +89,7 @@ The technical Yandex ID is used for delegated operational access and OAuth/API a
 
 External providers, including Yandex, receive only the information strictly required to provision, certify, operate, or troubleshoot the specific provider integration.
 
-Do NOT disclose strategic or commercially sensitive Profit Engine information unless technically or legally required, including:
-
-- the internal `1 RUB -> 5 RUB` economic target;
-- YAN ROAS/LTV targets or optimization economics;
-- internal scoring, forecasting, allocation, scaling, or recommendation algorithms;
-- multi-site commercial strategy;
-- owner-specific budget governance details beyond what is necessary for the requested provider operation;
-- internal data architecture or provider-neutral design details that are not required for certification.
-
-For Direct API certification, disclose only the minimal truthful information needed to explain Direct API use: requested functions, protocol/language, authentication, basic interaction flow, current development stage, and credential handling.
+Do NOT disclose strategic or commercially sensitive Profit Engine information unless technically or legally required, including the internal 5:1 target, internal scoring/forecast/allocation algorithms, multi-site commercial strategy, or unnecessary architecture details.
 
 ## OD-012 — PROFIT-FIRST operating doctrine
 
@@ -139,8 +130,6 @@ Where Direct capabilities, data volume and campaign eligibility allow, Profit En
 
 The winner is selected by observed Profit Engine economics, primarily K5 and realized incremental profit, not by the provider's internal KPI alone.
 
-No Direct strategy receives permanent authority merely because it is branded as automated or profit-maximizing.
-
 ## OD-014 — Dilivox is the reference ecosystem implementation
 
 Dilivox is not merely a landing site receiving traffic. It is the first full site-side execution node of Profit Engine.
@@ -151,4 +140,51 @@ The first complete closed-loop ecosystem is:
 
 We develop and prove this ecosystem on Dilivox first, then connect additional owner sites through the same shared contracts and site adapters without rewriting the common core.
 
-Dilivox-specific code and content rules must remain separated from reusable Profit Engine interfaces.
+## OD-015 — Advertising operations are machine-operated — APPROVED
+
+Advertising operations are machine-operated end-to-end. The Owner is not the routine operator of Yandex Direct.
+
+After guarded write access is enabled and all safety/data gates pass, Profit Engine must itself perform recurring advertising operations through supported APIs/provider mechanisms, including where technically supported:
+
+- create campaigns;
+- create and maintain ad groups;
+- create/version/maintain ads;
+- prepare and populate approved headlines, descriptions, links and tracking parameters;
+- upload/select/attach approved images and creative assets;
+- configure targeting, geography, schedules and eligible campaign settings;
+- select/configure CPC, conversion, value/DRR, Maximum Profit and other eligible native strategies using economic evidence;
+- configure approved conversion goals and values;
+- start, pause, resume and stop campaigns/groups/ads/strategy cells;
+- create bounded campaign/creative/strategy experiments;
+- suppress losing variants and segments;
+- redistribute budget toward validated winners;
+- scale profitable cells within Budget Governor limits;
+- keep an immutable audit trail and rollback path for every write action.
+
+Routine creative production is also to be automated as far as practical. The system should use controlled templates, the Dilivox content registry, approved source assets and machine-generated variants subject to automated quality/policy gates. The Owner is not expected to manually write routine ads or attach images.
+
+The Owner is involved only when an action genuinely requires owner authority, including permissions/secrets, legal/payment/account-owner actions, weekly budget growth above +20%, or a true strategic decision escalated by Central Brain.
+
+## OD-016 — Central Brain leads and executes the launch — APPROVED
+
+Central Brain is the project brain, project lead, acceptance authority and active executor.
+
+Central Brain must:
+
+- maintain canonical repository authority/state;
+- derive the next task from actual repository/provider state;
+- perform directly all work available through its tools/capabilities;
+- create one complete Codex task contract when engineering/local/deployment work is required;
+- inspect Codex evidence and repository changes;
+- accept/reject/rework the result against explicit gates;
+- update canonical state after acceptance;
+- immediately issue the next task in the launch plan without restarting discussion;
+- escalate to the Owner only for actions or decisions that genuinely require Owner authority.
+
+Codex is an engineering executor, not the project brain and not an independent product decision maker.
+
+## OD-017 — Full Dilivox workstream is launch-critical — APPROVED
+
+The complete Dilivox site-side Profit Engine workstream defined in `DILIVOX_SITE_INTEGRATION.md` is mandatory launch scope, including attribution, stable content IDs, first-party events, monetization placement registry, experiment SDK, recirculation/return-value optimization, proxy conversions, performance/quality measurement, kill switches and closed-loop site actions.
+
+Profit Engine launch is not complete if only provider connectors or a dashboard exist.
