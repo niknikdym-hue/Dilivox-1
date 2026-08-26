@@ -30,6 +30,7 @@ This is the optimization target. It is not a claimed current result.
 - Full Dilivox site-side integration is launch-critical.
 - Central Brain leads, executes available work, issues Codex tasks, accepts results and immediately advances the plan.
 - Chat is not source of truth.
+- Local workspaces are separated: existing site workspace `~/Documents/New project/Dilivox` remains independent; canonical Profit Engine workspace is `~/Documents/New project/Profit Engine/Dilivox-1`.
 
 ## Canonical implementation package now present
 
@@ -66,7 +67,8 @@ From repository evidence and Owner updates:
 - Owner reported on 2026-08-26 that Direct programmatic access is open and the account UI shows 32,000 API points for legacy v4/Live 4;
 - this indicates provider programmatic permission, but production readiness still requires an actual authenticated API read against the current intended Direct API path;
 - Direct write access remains intentionally disabled until guarded-autopilot gates pass;
-- local Profit Engine working folder on the Owner Mac has not yet been certified by Codex in this workstream.
+- existing local Dilivox site workspace: `~/Documents/New project/Dilivox`;
+- canonical Profit Engine local workspace to be created/certified by Codex: `~/Documents/New project/Profit Engine/Dilivox-1`.
 
 ## Immediate active task
 
@@ -76,7 +78,8 @@ Executor: Codex.
 Acceptance authority: Central Brain.
 
 Task 001 outcome:
-- create/verify canonical local clone under preferred path `~/Documents/Profit Engine/Dilivox-1`;
+- create/verify canonical local clone under `~/Documents/New project/Profit Engine/Dilivox-1`;
+- preserve existing `~/Documents/New project/Dilivox` as a separate site workspace;
 - checkout/sync `profit-engine`;
 - map the actual Dilivox implementation surface;
 - classify current analytics/YAN/attribution implementation;
