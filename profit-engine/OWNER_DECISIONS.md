@@ -188,3 +188,17 @@ Codex is an engineering executor, not the project brain and not an independent p
 The complete Dilivox site-side Profit Engine workstream defined in `DILIVOX_SITE_INTEGRATION.md` is mandatory launch scope, including attribution, stable content IDs, first-party events, monetization placement registry, experiment SDK, recirculation/return-value optimization, proxy conversions, performance/quality measurement, kill switches and closed-loop site actions.
 
 Profit Engine launch is not complete if only provider connectors or a dashboard exist.
+
+## OD-018 — Local workspace separation — APPROVED
+
+The existing Dilivox site workspace and the Profit Engine workspace are separate and must remain separate.
+
+Existing site workspace:
+
+`~/Documents/New project/Dilivox`
+
+Canonical Profit Engine workspace:
+
+`~/Documents/New project/Profit Engine/Dilivox-1`
+
+The existing Dilivox folder must not be deleted, reset, overwritten, moved or repurposed as the Profit Engine clone. Codex may inspect it read-only when required to understand the current site implementation. All Profit Engine implementation work that requires a local Git working copy uses the canonical Profit Engine workspace unless a later Owner decision explicitly supersedes this rule.
