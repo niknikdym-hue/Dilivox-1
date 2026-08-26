@@ -78,3 +78,56 @@ Do NOT disclose strategic or commercially sensitive Profit Engine information un
 - internal data architecture or provider-neutral design details that are not required for certification.
 
 For Direct API certification, disclose only the minimal truthful information needed to explain Direct API use: requested functions, protocol/language, authentication, basic interaction flow, current development stage, and credential handling.
+
+## OD-012 — PROFIT-FIRST operating doctrine
+
+Profit Engine is a hard machine directed at making money.
+
+Analytics, AI, reports, dashboards, experiments and automation are tools, not product goals.
+
+Every production capability must have a credible path to at least one of:
+
+- increase attributable monetization revenue;
+- reduce the cost of acquiring valuable traffic;
+- increase monetization value per legitimate visitor;
+- stop or reduce loss-making spend;
+- reallocate money toward more profitable segments;
+- discover new scalable profit pools;
+- protect capital and earned revenue from fraud, provider sanctions, data errors or uncontrolled budget growth.
+
+Canonical operating order:
+
+`PROTECT CAPITAL -> MEASURE MONEY -> STOP LOSSES -> FIND PROFIT -> SCALE PROFIT -> REPEAT`
+
+Vanity metrics are never the final optimization target.
+
+## OD-013 — Acquisition payment/optimization model is not preselected
+
+Profit Engine must not hard-code a permanent assumption that Yandex Direct traffic should be purchased only by clicks or only by conversions.
+
+The acquisition strategy itself is an optimization variable.
+
+Where Direct capabilities, data volume and campaign eligibility allow, Profit Engine must be able to compare controlled strategies including:
+
+- click-based acquisition / CPC;
+- conversion-optimized acquisition with payment for clicks;
+- pay-for-conversion acquisition;
+- cost-revenue-ratio / value-based variants;
+- Yandex Direct `Maximum Profit` strategy;
+- later, other provider-native bidding strategies.
+
+The winner is selected by observed Profit Engine economics, primarily K5 and realized incremental profit, not by the provider's internal KPI alone.
+
+No Direct strategy receives permanent authority merely because it is branded as automated or profit-maximizing.
+
+## OD-014 — Dilivox is the reference ecosystem implementation
+
+Dilivox is not merely a landing site receiving traffic. It is the first full site-side execution node of Profit Engine.
+
+The first complete closed-loop ecosystem is:
+
+`Acquisition provider -> Dilivox site instrumentation/experience -> monetization provider -> attribution/reconciliation -> Profit Engine decision -> acquisition/site action -> measured outcome`.
+
+We develop and prove this ecosystem on Dilivox first, then connect additional owner sites through the same shared contracts and site adapters without rewriting the common core.
+
+Dilivox-specific code and content rules must remain separated from reusable Profit Engine interfaces.
