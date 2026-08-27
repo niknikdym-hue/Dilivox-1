@@ -97,10 +97,6 @@ These are different metrics and MUST NOT be silently conflated.
 
 For a calendar/reporting interval:
 
-`period_K5 = Direct spend in interval denominator scope /?`
-
-Canonical ratio is:
-
 `period_K5 = YAN revenue attributable to Direct in the same reporting interval / Direct spend in that interval`.
 
 It is useful for operating diagnostics but is not cohort LTV.
