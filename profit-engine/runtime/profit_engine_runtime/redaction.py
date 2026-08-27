@@ -25,7 +25,7 @@ def redact(value: Any, secrets: Iterable[str] = ()) -> Any:
         result = value
         for secret in secret_values:
             result = result.replace(secret, REDACTED)
-        result = re.sub(r"(?i)(Bearer|OAuth)\s+[A-Za-z0-9._~+/=-]+", rf"\1 {REDACTED}", result)
+        result = re.sub(r"(?i)(Bearer|OAuth)\s+[A-Za-z0-9._~+/=-]{12,}", rf"\1 {REDACTED}", result)
         return result
     return value
 
