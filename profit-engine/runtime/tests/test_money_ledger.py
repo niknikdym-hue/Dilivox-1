@@ -41,6 +41,22 @@ class MoneyLedgerTests(unittest.TestCase):
   for days,revenue,expected in [(1,"4","1"),(7,"12","3"),(30,"20","5")]:
    m=cohort_k5(days,spend,Decimal(revenue),cohort_ref="c",grade=AttributionGrade.A,link_proven=True,as_of=start+timedelta(days=40),cohort_start=start);self.assertEqual(Decimal(expected),m.value);self.assertEqual(spend,m.denominator)
   immature=cohort_k5(30,spend,Decimal("20"),cohort_ref="c",grade=AttributionGrade.A,link_proven=True,as_of=start+timedelta(days=10),cohort_start=start);self.assertIn("late_arrival_window_open",immature.hold_reasons);self.assertNotEqual(MoneyState.FINAL,immature.state)
+ def test_k5_nonmatched_reconciliation_is_never_consumable(self):
+  start=datetime(2026,8,1,tzinfo=timezone.utc)
+  expected={
+   ReconciliationState.PENDING:"reconciliation_pending",
+   ReconciliationState.DRIFT:"reconciliation_drift",
+   ReconciliationState.BASIS_BLOCKED:"reconciliation_basis_blocked",
+   ReconciliationState.SOURCE_MISSING:"reconciliation_source_missing",
+  }
+  for state,reason in expected.items():
+   p=period_k5(Decimal("2"),Decimal("10"),reconciliation=state)
+   self.assertIsNone(p.value);self.assertFalse(p.optimizer_consumable);self.assertIn(reason,p.hold_reasons)
+   c=cohort_k5(7,Decimal("2"),Decimal("10"),cohort_ref="c",grade=AttributionGrade.A,link_proven=True,as_of=start+timedelta(days=40),cohort_start=start,reconciliation=state)
+   self.assertIsNone(c.value);self.assertFalse(c.optimizer_consumable);self.assertIn(reason,c.hold_reasons)
+ def test_unit_revenue_remains_diagnostic_while_reconciliation_pending(self):
+  m=unit_revenue("revenue_per_visit",Decimal("10"),5,True)
+  self.assertEqual(Decimal("2"),m.value);self.assertEqual(ReconciliationState.PENDING,m.reconciliation);self.assertFalse(m.optimizer_consumable)
  def test_late_arrival_versions_without_rewrite(self):
   store=DerivedVersions();a=period_k5(Decimal("2"),Decimal("8"));b=period_k5(Decimal("2"),Decimal("10"));v1=store.recompute("p",a);v2=store.recompute("p",b);self.assertEqual((1,2),(v1.version,v2.version));self.assertEqual(Decimal("4"),store.values["p"][0].value)
  def test_double_count_prevention(self):
