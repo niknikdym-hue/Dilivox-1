@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 7 — MONEY LEDGER + ATTRIBUTION + RECONCILIATION
+Status: IMPLEMENTATION ACTIVE / DAY 8 — CAMPAIGN FACTORY + CREATIVE FACTORY DRY-RUN
 Updated: 2026-08-27
 Canonical branch: `profit-engine`
 
@@ -33,7 +33,7 @@ This is an optimization target, not a claimed current result.
   - site/Tilda: `~/Documents/New project/Dilivox`;
   - Profit Engine: `~/Documents/New project/Profit Engine/Dilivox-1`.
 
-## Tasks 001–005 — ACCEPTED
+## Tasks 001–006 — ACCEPTED
 
 Canonical evidence exists under `profit-engine/evidence/`.
 
@@ -46,36 +46,64 @@ Accepted foundation includes:
 - stable Dilivox content identities and placement registry;
 - strict paid-attribution allowlist and first-party acquisition/session context;
 - generic SiteAgent + `DilivoxSiteAgent`;
+- canonical first-party event layer with raw-first ingestion, dedupe and site-safe fail-open behavior;
 - no provider/site write or spend.
 
-## Task 006 — ACCEPTED
+## Task 007 — ACCEPTED AFTER CENTRAL BRAIN HOTFIX
 
-Accepted implementation HEAD:
+Codex implementation:
 
-`ff5b0251daeb90e373aa890e2ca198282a533102`
+`ffd097881cf1006a54035b7f32da8101e34dd0be`
 
-Canonical evidence:
+Central Brain found one launch-critical defect before acceptance: non-MATCHED reconciliation states were not uniformly propagated into K5 holds, so mature/proven cohort K5 could become optimizer-consumable despite bad reconciliation.
 
-`profit-engine/evidence/TASK-006-FIRST-PARTY-EVENTS.md`
+Central Brain corrected it directly:
 
-Central Brain independently inspected and accepted:
+- `f6579eac2030084fb7d27fac0b89a99d36371b2f` — common reconciliation gate for period/cohort K5 and optimizer consumption;
+- `e5b21baa1622e77e5d1e9408f799a5843e51f2d4` — regression coverage for all non-MATCHED reconciliation states and diagnostic-only unit revenue behavior.
 
-- all 16 canonical first-party event types;
-- strict event schema/property privacy allowlist;
-- shared text/comic browser event controller;
-- content-relative progress 25/50/75;
-- trusted choice event and strict `version_selected != story_completed` semantics;
-- completion only after reveal open + genuine reveal/final visibility;
-- bounded async queue: 50 events, 8 KiB/event, 64 KiB/batch, 24h TTL, max 3 retries;
-- dispatch kill switch/fail-open behavior;
-- raw-first event batch ingestion with immutable raw put + SHA verification before normalization;
-- authoritative dedupe/idempotency/conflict handling;
-- health/performance signals without raw URL/stack/PII;
-- nine material `DATA_QUALITY_HOLD` classes with `optimizer_consumable=false`;
-- reported Node 22/22 PASS and Python 44/44 PASS;
-- no real event endpoint, no production dispatch, no Tilda publication, no YAN mutation.
+Accepted Task-007 code state:
 
-Task 006 decision: `ACCEPTED`.
+`e5b21baa1622e77e5d1e9408f799a5843e51f2d4`
+
+Canonical acceptance evidence:
+
+`profit-engine/evidence/TASK-007-CENTRAL-BRAIN-ACCEPTANCE.md`
+
+Accepted money rules now include:
+
+- explicit attribution grades;
+- no date-only attribution fallback;
+- Metrica YAN revenue as attribution view;
+- YAN Statistics as reconciliation/control total only;
+- no Metrica+YAN double-count;
+- distinct period K5 vs cohort K5;
+- original cohort-spend denominator for 1D/7D/30D;
+- late-arrival append-versioning;
+- unknown revenue never zero-filled;
+- zero spend never produces infinity;
+- `PENDING/DRIFT/BASIS_BLOCKED/SOURCE_MISSING` reconciliation cannot be optimizer-consumable.
+
+No real `K5 >= 5.0` is claimed from fixtures.
+
+## Permanent Profit Engine CI
+
+Central Brain added:
+
+`.github/workflows/profit-engine-ci.yml`
+
+Verification descendant:
+
+`7bf092c63c4d04f71eb5d48192395845a110f206`
+
+GitHub Actions run #2 is GREEN:
+
+- Python `60/60 PASS`;
+- Node `22/22 PASS`;
+- JSON validation PASS;
+- diff whitespace check PASS.
+
+All future Codex tasks must finish with green `Profit Engine CI` on the final origin HEAD.
 
 ## External provider credentials — parallel blocker only
 
@@ -91,7 +119,7 @@ Classification:
 
 Safe plan remains:
 
-- one existing Profit Engine OAuth token under technical Yandex identity for `direct:api` + `metrika:read`;
+- one Profit Engine OAuth token under technical Yandex identity for `direct:api` + `metrika:read`;
 - separate YAN Statistics OAuth token;
 - macOS Keychain for local development;
 - private provider mappings in local mode-`0600` config;
@@ -99,97 +127,96 @@ Safe plan remains:
 
 Tokens/private provider IDs never enter chat or Git.
 
-This blocker does not stop Day 7 fixture/source-contract engineering.
+This blocker does not stop Day 8 dry-run engineering.
 
 ## Public/private core gate
 
 Current `Dilivox-1` repository is public.
 
-Public-safe:
+Public-safe on Day 8:
 
-- generic provider/site adapters;
-- schemas/contracts;
-- identity/attribution/event plumbing;
-- ledger/reconciliation/data-quality measurement logic;
-- generic safety/controller interfaces.
+- deterministic campaign/creative specs;
+- provider capability metadata;
+- tracking validation;
+- asset identity/versioning;
+- inert provider intents;
+- dry-run dependency/rollback planning;
+- safety/validation code.
 
 Forbidden before private core exists:
 
 - proprietary profit scoring formulas/weights;
 - learned optimizer thresholds;
 - owner-specific capital allocation heuristics;
-- commercially sensitive creative ranking/generation logic;
+- commercially sensitive creative ranking/winner-selection;
 - confidential provider mappings;
 - production model data/raw exports.
 
-Mandatory gate:
+Mandatory gate before sensitive Day-9/10 implementation:
 
 `PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`.
 
-Central Brain continues preparing this boundary in parallel before Days 9–10.
+Central Brain has already prepared the repository-boundary design. Actual private-repository creation is an Owner/GitHub action because the current connector cannot create a new repository. This does not block Task 008, but must be resolved before private optimizer logic begins.
 
-## Canonical Day 7 design
+## Canonical Day 8 design
 
-`profit-engine/DAY7_MONEY_LEDGER_DESIGN.md`
+- `profit-engine/DAY8_CAMPAIGN_FACTORY_DESIGN.md`
+- `profit-engine/DAY8_ACCEPTANCE_MATRIX.md`
 
-Critical money rules:
+Current provider contracts were rechecked against current Yandex Direct API v5/v501 documentation before issuing Task 008. Campaigns, AdGroups, Ads, Keywords/autotargeting and AdImages remain separate lifecycle services; unified performance campaigns/groups use v501-compatible contracts. Day 8 models these only as inert future intents.
 
-1. no date-proximity attribution;
-2. every join has explicit `attribution_grade`;
-3. Metrica YAN revenue is the attribution view;
-4. YAN Partner Statistics is a control/reconciliation total;
-5. Metrica + YAN revenue are never double-counted;
-6. `period_K5` and cohort `K5_1D/7D/30D` are different measurements;
-7. cohort K5 is `NOT_COMPUTABLE_ATTRIBUTION_HOLD` if later revenue cannot be proven to belong to the original acquisition cohort;
-8. unknown revenue is never converted to zero;
-9. zero spend never yields infinite K5;
-10. material uncertainty -> `DATA_QUALITY_HOLD`.
-
-Current official Yandex contracts confirm Metrica attribution-aware Direct campaign/group/UTM dimensions and YAN monetization metrics, while Direct supports dynamic campaign/ad/group/click identifiers in landing URLs. Task 007 therefore cross-checks independent attribution paths rather than trusting one source blindly.
-
-## Immediate active task — Task 007 / Day 7
+## Immediate active task — Task 008 / Day 8
 
 Canonical contract:
 
-`profit-engine/tasks/TASK-007-MONEY-LEDGER-RECONCILIATION.md`
+`profit-engine/tasks/TASK-008-CAMPAIGN-CREATIVE-FACTORY-DRY-RUN.md`
 
 Executor: Codex.
 Acceptance authority: Central Brain.
 
-Task 007 scope:
+Task 008 objective:
 
-- versioned acquisition/money/reconciliation/K5 schema migration;
-- strict privacy-safe acquisition registration contract;
-- Direct spend ledger input;
-- Metrica Direct-attributed YAN report contract;
-- explicit attribution grades and cross-check engine;
-- Metrica-vs-YAN control-total reconciliation;
-- period K5 and distinct cohort K5 1D/7D/30D;
-- source states `ESTIMATED/FINAL/RECONCILED/NOT_COMPUTABLE`;
-- late-arrival/versioned recomputation;
-- revenue/user and revenue/visit with compatible denominator scopes only;
-- comprehensive `DATA_QUALITY_HOLD` matrix;
-- fixture/source-contract execution while provider credentials remain externally blocked;
-- no optimizer or provider/site write.
+`CampaignSpec -> validation -> Creative/Asset specs -> inert Direct entity intents -> dependency graph -> tracking plan -> rollback graph -> immutable preview digest`.
+
+Hard Task-008 invariants:
+
+- `provider_write_allowed=false`;
+- `requires_budget_governor=true` for any budget intent;
+- `provider_requests=0`;
+- `advertising_spend=0`;
+- no executable Direct write path;
+- no image upload;
+- no moderation submission;
+- no budget mutation;
+- no proprietary commercial winner-selection in the public repo;
+- final `Profit Engine CI` must be green.
+
+Allowed result states include `PREVIEW_VALID`, explicit invalid/block states, and deliberately no `EXECUTED` state.
 
 ## Current launch day
 
-Day 7 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
+Day 8 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
 
-## Expected Task 008 boundary after Task 007 acceptance
+## Parallel Central Brain work
 
-Day 8 target remains Campaign Factory + Creative Factory foundation in non-spending dry-run mode:
+Central Brain continues two non-conflicting streams while Codex executes Task 008:
 
-- provider-neutral campaign specification;
-- Yandex Direct entity lifecycle adapter contracts;
-- campaign/group/ad/keyword-or-autotargeting construction where supported;
-- tracking-parameter generation aligned with the accepted attribution ledger;
-- creative asset registry/versioning;
-- automated public-safe validation/policy hooks;
-- complete preview/dry-run plan before any provider write;
-- no money spend and no Direct Editing enablement.
+1. private-core boundary / Day-9 readiness;
+2. read-only ledger materialization bridge from immutable provider/event facts into accepted generic money-ledger interfaces, without optimizer logic or provider writes.
 
-Central Brain is preparing Day-8 public-safe contracts in parallel while Codex executes Task 007.
+These streams are kept separate from Codex's branch writes until compatibility is verified.
+
+## Expected Task 009 boundary
+
+Day 9 target:
+
+- AcquisitionStrategyLab contract;
+- strategy-cell model for CPC / conversion-click / pay-for-conversion / value/CRR / Maximum Profit where eligible;
+- proxy-value inputs only where proven by money evidence;
+- bounded experiment definitions;
+- comparison using K5/expected contribution rather than vanity provider KPIs;
+- private-core gate enforced before sensitive strategy selection/weights;
+- no Direct write execution yet.
 
 ## Launch definition
 
