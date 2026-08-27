@@ -1,0 +1,26 @@
+{
+  "site_id": "dilivox",
+  "canonical_domain": "dilivox.ru",
+  "rollout_mode": "READ_ONLY",
+  "providers": {
+    "direct": {
+      "endpoint": "https://api.direct.yandex.com/json/v5",
+      "token_source_ref": "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN",
+      "client_login_ref": "PRIVATE_LOCAL_VALUE",
+      "account_ref": "PRIVATE_LOCAL_VALUE",
+      "campaign_refs": ["PRIVATE_LOCAL_VALUE"]
+    },
+    "metrica": {
+      "management_endpoint": "https://api-metrika.yandex.net/management/v1",
+      "reports_endpoint": "https://api-metrika.yandex.net/stat/v1/data",
+      "token_source_ref": "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN",
+      "counter_ref": "PRIVATE_LOCAL_VALUE"
+    },
+    "yan_statistics": {
+      "endpoint": "https://partner.yandex.ru/api/statistics2",
+      "token_source_ref": "env:PROFIT_ENGINE_YAN_STATS_TOKEN",
+      "resource_ref": "PRIVATE_LOCAL_VALUE",
+      "placement_refs": ["PRIVATE_LOCAL_VALUE"]
+    }
+  }
+}

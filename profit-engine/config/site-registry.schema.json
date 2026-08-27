@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dilivox.ru/schemas/profit-engine-site-registry.json",
+  "title": "Profit Engine private site registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["site_id", "canonical_domain", "rollout_mode", "providers"],
+  "properties": {
+    "site_id": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
+    "canonical_domain": {"type": "string", "minLength": 1},
+    "rollout_mode": {"const": "READ_ONLY"},
+    "providers": {
+      "type": "object",
+      "required": ["direct", "metrica", "yan_statistics"],
+      "properties": {
+        "direct": {"$ref": "#/$defs/provider"},
+        "metrica": {"$ref": "#/$defs/provider"},
+        "yan_statistics": {"$ref": "#/$defs/provider"}
+      }
+    }
+  },
+  "$defs": {
+    "provider": {
+      "type": "object",
+      "required": ["token_source_ref"],
+      "properties": {
+        "token_source_ref": {"type": "string", "pattern": "^(env|keychain):"},
+        "endpoint": {"type": "string", "format": "uri"},
+        "management_endpoint": {"type": "string", "format": "uri"},
+        "reports_endpoint": {"type": "string", "format": "uri"},
+        "client_login_ref": {"type": "string"},
+        "account_ref": {"type": "string"},
+        "campaign_refs": {"type": "array", "items": {"type": "string"}},
+        "counter_ref": {"type": "string"},
+        "resource_ref": {"type": "string"},
+        "placement_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
