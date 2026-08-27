@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,
+  "required":["schema_version","site_id","acquisition_id","cohort_ref","acquired_at","landing_content_id","provider","attribution","expires_at","deployment_version","provenance"],
+  "properties":{
+    "schema_version":{"const":"1.0"},"site_id":{"const":"dilivox"},"acquisition_id":{"type":"string","format":"uuid"},
+    "cohort_ref":{"type":"string","maxLength":128},"acquired_at":{"type":"string","format":"date-time"},
+    "landing_content_id":{"type":["string","null"]},"provider":{"type":["string","null"]},"expires_at":{"type":"string","format":"date-time"},
+    "deployment_version":{"type":"string"},"provenance":{"type":"object"},
+    "attribution":{"type":"object","additionalProperties":false,"properties":{
+      "yclid":{"type":"string","maxLength":128},"campaign_id":{"type":"string","maxLength":128},"ad_id":{"type":"string","maxLength":128},
+      "group_id":{"type":"string","maxLength":128},"criterion_id":{"type":"string","maxLength":128},"phrase_id":{"type":"string","maxLength":128},
+      "keyword_id":{"type":"string","maxLength":128},"utm_source":{"type":"string","maxLength":128},"utm_medium":{"type":"string","maxLength":64},
+      "utm_campaign":{"type":"string","maxLength":256},"utm_content":{"type":"string","maxLength":256},"utm_term":{"type":"string","maxLength":256}
+    }}
+  }
+}
