@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 5 — DILIVOX IDENTITY + ATTRIBUTION
+Status: IMPLEMENTATION ACTIVE / DAY 6 — FIRST-PARTY EVENTS + SITE SAFETY
 Updated: 2026-08-27
 Canonical branch: `profit-engine`
 
@@ -18,74 +18,80 @@ Primary launch target:
 
 This is an optimization target, not a claimed current result.
 
-## Locked Owner/governance rules
+## Locked governance
 
 - PROFIT-FIRST: `PROTECT CAPITAL -> MEASURE MONEY -> STOP LOSSES -> FIND PROFIT -> SCALE PROFIT -> REPEAT`.
-- Yandex is an execution/data tool used to achieve Owner economics.
+- Yandex is an execution/data instrument used to achieve Owner economics.
 - Routine advertising operations are machine-operated; Owner is not the Direct operator.
 - Acquisition mode is an optimization variable: CPC / conversion / pay-for-conversion / value-DRR / Maximum Profit where eligible.
-- Weekly automatic budget growth above +20% is forbidden without explicit Owner approval.
-- Full Dilivox site-side integration is launch-critical.
-- Dilivox is site #1; common core remains multi-site/provider-neutral.
-- Central Brain leads, performs available work, issues Codex tasks, accepts/reworks evidence and immediately advances the plan.
+- Weekly automatic budget growth above +20% requires explicit Owner approval.
+- Dilivox site-side integration is launch-critical.
+- Core remains multi-site/provider-neutral.
+- Central Brain leads, performs available work itself, issues Codex tasks, accepts/reworks evidence and immediately advances the plan.
 - Chat is not source of truth.
-- Workspaces remain separated: `~/Documents/New project/Dilivox` is the site/Tilda workspace; `~/Documents/New project/Profit Engine/Dilivox-1` is the Profit Engine workspace.
+- Local workspaces remain separated:
+  - site/Tilda: `~/Documents/New project/Dilivox`;
+  - Profit Engine: `~/Documents/New project/Profit Engine/Dilivox-1`.
 
-## Tasks 001–003 — ACCEPTED
+## Tasks 001–004 — ACCEPTED
 
 Canonical evidence:
 
 - `profit-engine/evidence/TASK-001-M0-INVENTORY.md`
 - `profit-engine/evidence/TASK-002-READ-FOUNDATION.md`
 - `profit-engine/evidence/TASK-003-DATA-FOUNDATION.md`
+- `profit-engine/evidence/TASK-004-READ-ONLY-INGESTION.md`
 
-Accepted foundations include:
+Accepted foundation includes:
 
-- local workspace and Dilivox implementation inventory;
-- provider-neutral READ_ONLY Direct/Metrica/YAN diagnostic clients;
-- secret-safe config/redaction boundary;
+- local/source inventory;
+- read-only Direct/Metrica/YAN diagnostics;
+- secret-safe configuration/redaction;
 - PostgreSQL schema foundation;
-- immutable raw snapshot contract/store;
-- provider-neutral storage/secret/health/audit interfaces;
-- `DATA_QUALITY_HOLD` primitives;
-- explicit public/private core boundary.
+- immutable raw snapshot store;
+- provider-neutral storage/health/audit/data-quality contracts;
+- `DATA_QUALITY_HOLD`;
+- raw-first Direct/Metrica/YAN ingestion;
+- deterministic/idempotent normalization;
+- 38-test suite reported green by Task 004;
+- no provider/site writes or spend.
 
-Mandatory private-core gate remains:
-
-`PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`.
-
-## Task 004 — ACCEPTED
+## Task 005 — ACCEPTED
 
 Accepted implementation HEAD:
 
-`8e7bb96450e6d878b513f47649929c27a868ea4b`
+`ec3590f9a4daee08fcbdac957269fd77d78c9a15`
 
 Canonical evidence:
 
-`profit-engine/evidence/TASK-004-READ-ONLY-INGESTION.md`
+`profit-engine/evidence/TASK-005-DILIVOX-IDENTITY-ATTRIBUTION.md`
 
-Central Brain independently inspected the implementation and accepted:
+Central Brain independently inspected and accepted:
 
-- ingestion lifecycle `started/complete/failed/held`;
-- deterministic request/run/fact identities and replay-safe normalization;
-- enforced RAW-FIRST sequence: provider/fixture read -> immutable raw put -> raw read/hash verification -> normalization;
-- raw conflict -> held with no normalized output from conflicting payload;
-- Direct campaign metadata + daily Reports collector with Decimal spend and explicit VAT/discount basis;
-- Metrica traffic + YAN monetization collector with sampling/accuracy provenance;
-- YAN Statistics tree-driven collector with revenue-field semantic validation and money/currency/timezone provenance;
-- ambiguous/unknown money semantics -> `DATA_QUALITY_HOLD`, never guessed/zero revenue;
-- provider-neutral normalized campaign/traffic/monetization facts;
-- CLI for Direct/Metrica/YAN/all with deterministic fixture mode;
-- fixture result: 3 raw snapshots -> 1 campaign snapshot + 2 traffic facts + 2 monetization facts;
-- 38/38 tests reported PASS and previous tests preserved;
-- secret scan/provider-write scan/diff checks PASS;
-- no Direct/site/provider write, spend, Cloud apply or Tilda publication.
+- 61 immutable opaque content identities;
+- 56/56 source story/comic coverage;
+- 50/50 discoverable active content coverage;
+- immutable ID preservation independent of URL/title/slug changes;
+- 12/12 current YAN `data-dv-ad-block` placement mappings;
+- generic SiteAgent + `DilivoxSiteAgent` adapter;
+- strict acquisition allowlist (`yclid`, approved UTM/Direct identifiers only);
+- paid acquisition persistence across internal navigation;
+- deterministic paid->paid supersession;
+- 30-day hard attribution/return TTL cap;
+- privacy-gated durable return identity;
+- no fingerprinting and no Metrica ClientID identity;
+- experiment/variant identity + kill switches without optimizer logic;
+- event-context schema for Day 6;
+- self-contained unpublished Tilda integration artifact;
+- 11/11 Node simulations and previous 38/38 Python tests reported green;
+- no `fetch` event dispatch or `Ya.Context` mutation in the Task 005 SiteAgent artifact;
+- no Tilda publication, Direct write, spend or secret exposure.
 
-Task 004 acceptance decision: `ACCEPTED`.
+Task 005 decision: `ACCEPTED`.
 
-## External provider credential blocker — parallel only
+## External provider credentials — parallel blocker only
 
-Live provider certification/collection remains:
+Live provider certification remains:
 
 - Direct: `BLOCKED_MISSING_CREDENTIAL`;
 - Metrica: `BLOCKED_MISSING_CREDENTIAL`;
@@ -95,89 +101,104 @@ Classification:
 
 `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL`.
 
-Required later Owner/provider actions remain secret-safe:
+Current safe plan:
 
-1. securely authorize/store shared Direct+Metrica OAuth token;
-2. securely obtain/store separate YAN Statistics OAuth token;
-3. populate private local provider mappings with mode `0600`;
-4. rerun provider doctor/live bounded READ_ONLY collectors.
+- one existing Profit Engine Yandex OAuth token for technical identity with `direct:api` + `metrika:read` scopes;
+- separate YAN Statistics OAuth token;
+- local macOS Keychain storage during development;
+- private provider mappings in `~/.config/profit-engine/sites/dilivox.json` mode `0600`;
+- later migrate production secrets to Lockbox.
 
-Never send tokens/private provider IDs in chat or Git.
+Token values/private provider IDs never enter chat or Git.
 
-This external blocker does not stop Day-5 engineering.
+This blocker does not stop Day 6 engineering.
 
-## Public/private core boundary
+## Public/private core gate
 
-Current repository is public.
+Current `Dilivox-1` repository is public.
 
-Public-safe here:
+Public-safe:
 
 - generic provider/site adapters;
 - schemas/contracts;
+- identity/attribution/event plumbing;
 - data-quality/safety invariants;
-- browser SiteAgent contracts;
-- identity/attribution plumbing;
-- content/placement registries that contain no confidential provider/account mappings;
-- redaction/audit/health/storage utilities.
+- generic controller interfaces;
+- public-safe registries/fixtures.
 
-Still forbidden here before private core exists:
+Forbidden here before private core exists:
 
 - proprietary profit scoring formulas/weights;
-- learned thresholds;
+- learned optimizer thresholds;
 - owner-specific capital allocation heuristics;
 - commercially sensitive creative ranking/generation logic;
-- private provider/account mappings;
-- production datasets/raw exports.
+- confidential provider mappings;
+- production model data/raw exports.
 
-## Immediate active task — Task 005 / Day 5
+Mandatory gate:
+
+`PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`.
+
+Central Brain has prepared a parallel private-core repository design so this does not become a Day 9/10 surprise blocker; actual private repository creation remains a later explicit implementation step.
+
+## Canonical Day 6 design
+
+`profit-engine/DAY6_EVENT_LAYER_DESIGN.md`
+
+Key rule:
+
+`version_selected != story_completed`.
+
+Completion requires reveal to be open AND genuinely viewed; a choice click alone is not a completed reader.
+
+Canonical event path:
+
+`Dilivox DOM -> SiteAgent -> canonical event -> bounded browser queue -> first-party event batch -> immutable raw -> dedupe/validation -> site_events -> data-quality state`.
+
+## Immediate active task — Task 006 / Day 6
 
 Canonical contract:
 
-`profit-engine/tasks/TASK-005-DILIVOX-IDENTITY-ATTRIBUTION-SITE-AGENT.md`
+`profit-engine/tasks/TASK-006-FIRST-PARTY-EVENTS-SITE-SAFETY.md`
 
 Executor: Codex.
 Acceptance authority: Central Brain.
 
-Task 005 objective:
+Task 006 scope:
 
-`paid acquisition -> immutable Dilivox content_id -> persistent first-party attribution -> SiteAgent context -> provider-neutral placement identity -> Day-6 event context`.
-
-Required scope:
-
-- persistent stable Dilivox content/page/story registry;
-- immutable opaque `content_id` independent of later title/URL/slug changes;
-- reusable browser-side `SiteAgent` contract + `DilivoxSiteAgent` adapter;
-- privacy-minimal allowlisted UTM/yclid/Direct attribution capture;
-- attribution persistence across internal navigation;
-- pseudonymous session/acquisition references with no fingerprinting;
-- provider-neutral current YAN placement registry mapped from actual `data-dv-ad-block` source;
-- experiment/variant identity hooks and kill-switch context only, no proprietary optimizer;
-- event-envelope/context contract for Day 6;
-- self-contained Tilda/T123 integration artifact prepared but NOT published;
-- tests/coverage/evidence.
-
-Production/Tilda publication remains forbidden in Task 005.
+- canonical behavior event taxonomy;
+- content-relative story progress 25/50/75;
+- choice/reveal/completion semantics;
+- next-story/catalog/return/experiment events;
+- strict event envelope/privacy allowlist;
+- deterministic idempotency/dedupe;
+- bounded async browser queue with retry/TTL/kill switch;
+- raw-first first-party event batch ingestion;
+- normalization into `site_events`;
+- JS/performance/event-delivery health signals;
+- `DATA_QUALITY_HOLD` for unreliable telemetry;
+- representative text/comic/mobile/desktop tests;
+- Task 006 successor Tilda artifact prepared but NOT published;
+- no provider impression/revenue invention from DOM events.
 
 ## Current launch day
 
-Day 5 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
+Day 6 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
 
-The separate current Dilivox/Tilda workspace may be inspected for source truth and local integration validation, but production publication requires a later controlled deployment gate.
+## Expected Task 007 boundary after Task 006 acceptance
 
-## Expected Task 006 boundary
+Day 7 is the money ledger/reconciliation milestone:
 
-After Task 005 acceptance, Day 6 should implement:
+- join Direct spend to acquired Dilivox cohorts;
+- join first-party events/content identity to Metrica/YAN monetization;
+- reconcile Metrica YAN revenue vs Partner Statistics;
+- calculate observed `K5_1D`, `K5_7D`, `K5_30D` where source data exists;
+- calculate revenue/visit and revenue/acquired-user;
+- preserve estimated/final/reconciled states;
+- enforce `DATA_QUALITY_HOLD` on unresolved money or attribution discrepancies;
+- expose evidence-ready money map, not a vanity dashboard.
 
-- canonical first-party event taxonomy;
-- browser event capture/dedupe;
-- local/portable first-party event ingestion;
-- story progress/choice/reveal/completion/next-story/return signals;
-- experiment exposure context;
-- mobile/desktop validation;
-- JS/performance/failure signals;
-- first-party event kill switch/fail-safe behavior;
-- controlled production deployment preparation;
-- no autonomous money scaling until first-party and provider data reconcile.
+Live monetary reconciliation remains fixture-contract capable until OAuth provider reads are unblocked.
 
 ## Launch definition
 
