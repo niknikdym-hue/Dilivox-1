@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 3 — DATA FOUNDATION
+Status: IMPLEMENTATION ACTIVE / DAY 4 — READ-ONLY INGESTION
 Updated: 2026-08-27
 Canonical branch: `profit-engine`
 
@@ -34,20 +34,20 @@ This is the optimization target, not a claimed current result.
 
 ## Task 001 — ACCEPTED
 
-Canonical evidence is now on origin:
+Canonical evidence:
 
 `profit-engine/evidence/TASK-001-M0-INVENTORY.md`
 
-Accepted findings:
-- local Profit Engine clone exists and is cleanly separated from the site workspace;
-- current Dilivox implementation surface, Metrica hooks and YAN placements were inventoried;
-- no production/site/provider writes occurred;
-- current gaps include UTM/yclid persistence, stable immutable content IDs and Profit Engine first-party ingestion;
-- provider live API checks were blocked by missing secure tokens.
+Accepted:
+- local Profit Engine clone exists and is separated from the site workspace;
+- Dilivox implementation surface, Metrica hooks and YAN placements inventoried;
+- no production/provider writes occurred;
+- gaps identified: UTM/yclid persistence, stable immutable content IDs, Profit Engine first-party ingestion;
+- provider live reads blocked by missing secure tokens.
 
 ## Task 002 — ENGINEERING ACCEPTED / LIVE CERTIFICATION BLOCKED EXTERNALLY
 
-Evidence-bearing HEAD reviewed by Central Brain:
+Accepted implementation HEAD:
 
 `a5de1b32a8460fb18428625e01b09509686d158a`
 
@@ -55,90 +55,121 @@ Canonical evidence:
 
 `profit-engine/evidence/TASK-002-READ-FOUNDATION.md`
 
-Accepted engineering deliverables:
-- Task 001 evidence safely rebased/pushed without force push;
-- root `.gitignore` and secret hygiene in place;
-- provider-neutral READ_ONLY runtime foundation;
-- Direct/Metrica/YAN diagnostic read clients;
-- public-example/private-local configuration boundary;
-- redacted logging and bounded retries;
-- fixture/unit test suite reported 11 PASS;
-- no provider write methods, spend, Tilda publication or production mutation.
+Accepted:
+- provider-neutral READ_ONLY runtime;
+- Direct/Metrica/YAN diagnostic clients;
+- redacted logging and bounded retry;
+- public example/private local config boundary;
+- Task 001 evidence safely synchronized;
+- 11 tests reported PASS;
+- no provider writes/spend/site mutation.
 
-Central Brain independently checked the request shapes against current official Yandex documentation: Direct Clients/Campaigns read pattern, Metrica `ym:s:yanPartnerPrice`, and YAN Statistics API structure are consistent with current provider contracts.
-
-### D2 live certification blocker
-
-Current status:
+Live state remains:
 - Direct: `BLOCKED_MISSING_CREDENTIAL`;
 - Metrica: `BLOCKED_MISSING_CREDENTIAL`;
 - YAN Statistics: `BLOCKED_MISSING_CREDENTIAL`.
 
-Required Owner/provider actions in parallel:
-1. securely authorize/store the Profit Engine OAuth token for Direct + Metrica (`direct:api` + `metrika:read`);
-2. securely obtain/store the separate YAN Statistics API OAuth token;
-3. create the private local Dilivox provider mapping config with mode `0600`;
-4. rerun provider doctor.
+This is `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL` and continues in parallel.
 
-Tokens/private provider IDs must never be sent through chat or committed to GitHub.
+## Task 003 — ACCEPTED
 
-This blocker is classified `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL` and does NOT stop parallel engineering.
+Accepted implementation HEAD:
 
-## Public/private core risk
+`3d521ff2d44532035025f31d6de8ea0428dc94fe`
 
-`niknikdym-hue/Dilivox-1` is public.
+Canonical evidence:
 
-Generic interfaces, schemas, site contracts, safety controls and non-secret examples may remain here.
+`profit-engine/evidence/TASK-003-DATA-FOUNDATION.md`
 
-Before proprietary optimizer/scoring/allocation logic expands, the private-core repository boundary must be resolved. Until then, sensitive scoring weights, owner-specific allocation heuristics, confidential provider mappings, production datasets and commercial optimizer implementation must not be added to the public repository.
+Central Brain independently inspected the implementation and accepted:
+- explicit public/private core boundary;
+- gate `PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`;
+- versioned PostgreSQL migration `0001_data_foundation.sql` with 14 provider-neutral site-scoped tables;
+- Decimal-compatible monetary schema using `numeric(20,6)`;
+- immutable raw snapshot envelope/store;
+- atomic create-only raw writes;
+- idempotent same-content replay and conflict rejection;
+- SHA-256 validation at write/read;
+- provider-neutral relational/raw/secret/health/audit interfaces;
+- `DATA_QUALITY_HOLD` primitives preventing held/not-ready data from optimizer use;
+- portable deployment boundaries without paid Cloud apply;
+- 21/21 tests reported PASS;
+- secret scan and `git diff --check` PASS;
+- no production/site/provider write or spend.
 
-Current migration gate:
+## Public/private core boundary
+
+The current repository is public.
+
+Public-safe here:
+- provider adapters/collectors;
+- generic schemas/interfaces;
+- data quality/safety invariants;
+- site adapter contracts;
+- redaction, audit, health and generic storage utilities.
+
+Forbidden here before a private-core repository exists:
+- proprietary profit scoring formulas/weights;
+- learned optimizer thresholds;
+- owner-specific capital allocation heuristics;
+- commercially sensitive creative ranking/generation logic;
+- confidential provider mappings;
+- secrets/production datasets/raw exports.
+
+Mandatory gate:
 
 `PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`.
 
-## Immediate active task — Task 003 / Day 3
+Task 004 remains public-safe because it is strictly READ_ONLY ingestion and normalization without commercial optimization policy.
 
-GitHub issue: `#4 — Profit Engine Task 003 — Data foundation + private-core boundary`
+## Immediate active task — Task 004 / Day 4
 
 Canonical contract:
 
-`profit-engine/tasks/TASK-003-DATA-FOUNDATION-PRIVATE-CORE-BOUNDARY.md`
+`profit-engine/tasks/TASK-004-READ-ONLY-INGESTION.md`
 
 Executor: Codex.
 Acceptance authority: Central Brain.
 
-Task 003 scope:
-- explicit private-core boundary;
-- versioned PostgreSQL schema foundation;
-- immutable raw snapshot contract and local development raw store;
-- provider-neutral relational/raw/secret/health/audit interfaces;
-- data-quality primitives and `DATA_QUALITY_HOLD`;
-- minimal portable collector/deployment structure;
-- rerun provider doctor only if secure credentials become available;
-- tests, secret scan and committed evidence.
+Task 004 objective:
 
-No production Dilivox changes, Direct writes, campaign/budget mutations, spend, real raw provider data in Git, or paid Cloud resource creation are authorized in Task 003.
+`provider read -> immutable raw snapshot -> ingestion metadata -> normalization -> provider-neutral facts -> data-quality state`
+
+Required scope:
+- ingestion-run orchestrator with started/complete/failed/held lifecycle;
+- Direct campaign metadata + Reports spend/performance collector;
+- Metrica traffic/YAN monetization collector;
+- YAN Statistics tree-driven collector;
+- raw-first invariant;
+- deterministic normalization;
+- idempotent replay/conflict protection;
+- normalized `campaign_snapshots`, `traffic_facts`, `monetization_facts` where source semantics are known;
+- freshness/completeness/money-basis quality checks;
+- `DATA_QUALITY_HOLD` propagation;
+- fixture/local execution while live credentials are absent;
+- live READ_ONLY collection only after provider doctor PASS;
+- tests, secret scan and evidence push.
+
+No Direct writes, budget changes, spend, production Dilivox/Tilda changes, paid Cloud resources, or proprietary optimizer logic are authorized.
 
 ## Current launch day
 
-Day 3 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
+Day 4 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
 
-Provider credential certification continues in parallel.
+Provider credential certification continues in parallel and does not justify engineering idle time.
 
-## Expected Task 004 boundary
+## Expected Task 005 boundary after Task 004 acceptance
 
-Day 4 target after Task 003 acceptance:
-- Direct read collector;
-- Metrica read collector;
-- YAN statistics collector;
-- idempotent ingestion-run orchestration;
-- raw snapshot persistence;
-- normalized provider-neutral facts;
-- freshness/retry/error handling;
-- source fidelity checks;
-- no Direct writes.
+Day 5 target:
+- stable Dilivox content/story/page IDs;
+- `DilivoxSiteAgent` first implementation;
+- Direct/UTM/yclid attribution persistence across internal navigation;
+- provider-neutral monetization placement registry foundation;
+- experiment identity hooks;
+- integration design compatible with existing Tilda/T123 implementation;
+- no uncontrolled production deployment.
 
-If provider tokens are still unavailable, collector implementations and fixture/source-contract validation continue while live provider execution remains externally blocked.
+Central Brain will derive the exact Task 005 contract from Task 004 evidence and current Dilivox source state.
 
 ## Launch definition
 
