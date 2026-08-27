@@ -14,13 +14,18 @@
       "management_endpoint": "https://api-metrika.yandex.net/management/v1",
       "reports_endpoint": "https://api-metrika.yandex.net/stat/v1/data",
       "token_source_ref": "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN",
-      "counter_ref": "PRIVATE_LOCAL_VALUE"
+      "counter_ref": "PRIVATE_LOCAL_VALUE",
+      "dimensions": ["ym:s:date"]
     },
     "yan_statistics": {
       "endpoint": "https://partner.yandex.ru/api/statistics2",
       "token_source_ref": "env:PROFIT_ENGINE_YAN_STATS_TOKEN",
       "resource_ref": "PRIVATE_LOCAL_VALUE",
-      "placement_refs": ["PRIVATE_LOCAL_VALUE"]
+      "placement_refs": ["PRIVATE_LOCAL_VALUE"],
+      "revenue_field_ref": "PRIVATE_LOCAL_VALUE",
+      "currency": "RUB",
+      "timezone": "Europe/Moscow",
+      "vat_basis": "PRIVATE_LOCAL_VALUE"
     }
   }
 }

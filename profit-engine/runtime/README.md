@@ -64,3 +64,13 @@ write—the only JSON-RPC method present is `get`.
 and audit interfaces. `raw_store.py` implements a create-only local raw adapter
 whose default root is outside this repository. `data_quality.py` prevents held
 or reconciliation-not-ready datasets from being optimizer-consumable.
+
+Run deterministic fixture ingestion without credentials:
+
+```bash
+PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.collector_cli all --fixture --raw-root /tmp/profit-engine-fixture-raw
+```
+
+The CLI accepts `direct`, `metrica`, `yan`, or `all`. Live mode always runs the
+provider doctor first and proceeds only for providers with `PASS`. Raw storage
+and integrity verification happen before deterministic normalization.

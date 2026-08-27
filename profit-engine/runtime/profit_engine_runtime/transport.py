@@ -51,8 +51,18 @@ class UrllibTransport:
                 raw_request = urllib.request.Request(url, data=body, headers=headers, method=request.method)
                 with urllib.request.urlopen(raw_request, timeout=request.timeout_seconds) as raw:
                     raw_body = raw.read()
-                    parsed = json.loads(raw_body.decode("utf-8")) if raw_body else None
                     response_headers = dict(raw.headers.items())
+                    decoded = raw_body.decode("utf-8") if raw_body else ""
+                    content_type = _header(response_headers, "Content-Type") or ""
+                    if not decoded:
+                        parsed = None
+                    elif "json" in content_type.lower():
+                        parsed = json.loads(decoded)
+                    else:
+                        try:
+                            parsed = json.loads(decoded)
+                        except json.JSONDecodeError:
+                            parsed = decoded
                     request_id = _header(response_headers, "RequestId", "Request-Id", "X-Request-Id")
                     response = HttpResponse(
                         status_code=raw.status,

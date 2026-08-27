@@ -32,8 +32,13 @@
         "account_ref": {"type": "string"},
         "campaign_refs": {"type": "array", "items": {"type": "string"}},
         "counter_ref": {"type": "string"},
+        "dimensions": {"type": "array", "items": {"type": "string"}},
         "resource_ref": {"type": "string"},
-        "placement_refs": {"type": "array", "items": {"type": "string"}}
+        "placement_refs": {"type": "array", "items": {"type": "string"}},
+        "revenue_field_ref": {"type": "string"},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "timezone": {"type": "string"},
+        "vat_basis": {"type": "string"}
       }
     }
   }
