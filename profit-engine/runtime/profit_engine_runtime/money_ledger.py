@@ -56,11 +56,18 @@ def reconcile(metrica:Decimal|None,yan:Decimal|None,*,metrica_scope:str,yan_scop
  delta=abs(metrica-yan); relative=(delta/yan if yan!=0 else (Decimal(0) if delta==0 else None)); state=ReconciliationState.MATCHED if delta<=tolerance else ReconciliationState.DRIFT
  return Reconciliation(state,metrica,yan,delta,relative,() if state==ReconciliationState.MATCHED else ("reconciliation_drift",))
 
+def reconciliation_hold_reasons(state:ReconciliationState)->tuple[str,...]:
+ if state==ReconciliationState.MATCHED:return ()
+ if state==ReconciliationState.DRIFT:return ("reconciliation_drift",)
+ if state==ReconciliationState.BASIS_BLOCKED:return ("reconciliation_basis_blocked",)
+ if state==ReconciliationState.SOURCE_MISSING:return ("reconciliation_source_missing",)
+ return ("reconciliation_pending",)
+
 @dataclass(frozen=True)
 class Measurement:
  kind:str; value:Decimal|None; numerator:Decimal|None; denominator:Decimal|None; currency:str; grade:AttributionGrade; state:MoneyState; reconciliation:ReconciliationState; version:int=1; hold_reasons:tuple[str,...]=(); cohort_ref:str|None=None; site_id:str="dilivox"; window_start:str|None=None; window_end:str|None=None; numerator_source:tuple[str,...]=("metrica-attributed-yan",); denominator_source:tuple[str,...]=("direct-spend",); money_basis:str="explicit-compatible"; calculation_version:str="k5-v1"
  @property
- def optimizer_consumable(self):return self.value is not None and not self.hold_reasons and self.state in {MoneyState.FINAL,MoneyState.RECONCILED}
+ def optimizer_consumable(self):return self.value is not None and not self.hold_reasons and self.state in {MoneyState.FINAL,MoneyState.RECONCILED} and self.reconciliation==ReconciliationState.MATCHED
 
 def period_k5(spend:Decimal|None,revenue:Decimal|None,*,currency_spend="RUB",currency_revenue="RUB",grade=AttributionGrade.A,reconciliation=ReconciliationState.MATCHED,upstream_held=False)->Measurement:
  holds=[]
@@ -69,9 +76,9 @@ def period_k5(spend:Decimal|None,revenue:Decimal|None,*,currency_spend="RUB",cur
  if revenue is None:holds.append("missing_yan_revenue")
  if currency_spend!=currency_revenue:holds.append("currency_mismatch")
  if upstream_held:holds.append("held_upstream_source")
- if reconciliation==ReconciliationState.DRIFT:holds.append("reconciliation_drift")
+ holds.extend(reconciliation_hold_reasons(reconciliation))
  value=None if holds else revenue/spend
- return Measurement("period_K5",value,revenue,spend,currency_spend,grade,MoneyState.NOT_COMPUTABLE if holds else MoneyState.RECONCILED,reconciliation,hold_reasons=tuple(holds))
+ return Measurement("period_K5",value,revenue,spend,currency_spend,grade,MoneyState.NOT_COMPUTABLE if holds else MoneyState.RECONCILED,reconciliation,hold_reasons=tuple(dict.fromkeys(holds)))
 
 def cohort_k5(days:int,original_spend:Decimal|None,cohort_revenue:Decimal|None,*,cohort_ref:str,grade:AttributionGrade,link_proven:bool,as_of:datetime,cohort_start:datetime,late_grace_days=2,reconciliation=ReconciliationState.MATCHED)->Measurement:
  if days not in {1,7,30}:raise ValueError("cohort window must be 1, 7, or 30")
@@ -81,8 +88,9 @@ def cohort_k5(days:int,original_spend:Decimal|None,cohort_revenue:Decimal|None,*
  elif original_spend==0:holds.append("zero_denominator")
  if cohort_revenue is None:holds.append("missing_yan_revenue")
  if not mature:holds.append("late_arrival_window_open")
+ holds.extend(reconciliation_hold_reasons(reconciliation))
  value=None if holds else cohort_revenue/original_spend
- return Measurement(f"K5_{days}D",value,cohort_revenue,original_spend,"RUB",grade,MoneyState.NOT_COMPUTABLE if holds else MoneyState.RECONCILED,reconciliation,hold_reasons=tuple(holds),cohort_ref=cohort_ref)
+ return Measurement(f"K5_{days}D",value,cohort_revenue,original_spend,"RUB",grade,MoneyState.NOT_COMPUTABLE if holds else MoneyState.RECONCILED,reconciliation,hold_reasons=tuple(dict.fromkeys(holds)),cohort_ref=cohort_ref)
 
 def unit_revenue(kind:str,revenue:Decimal|None,count:int|None,scope_compatible:bool)->Measurement:
  holds=[]
