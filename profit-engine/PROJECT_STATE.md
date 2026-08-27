@@ -1,7 +1,7 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION STARTED / DAY 1 — LOCAL BOOTSTRAP + M0
-Updated: 2026-08-26
+Status: IMPLEMENTATION STARTED / DAY 2 — READ-ONLY PROVIDER + DATA FOUNDATION
+Updated: 2026-08-27
 Canonical branch: `profit-engine`
 
 ## Current objective
@@ -32,77 +32,87 @@ This is the optimization target. It is not a claimed current result.
 - Chat is not source of truth.
 - Local workspaces are separated: existing site workspace `~/Documents/New project/Dilivox` remains independent; canonical Profit Engine workspace is `~/Documents/New project/Profit Engine/Dilivox-1`.
 
-## Canonical implementation package now present
+## Day 1 / Task 001 acceptance
 
-- `README.md`
-- `PROJECT_HANDOFF.md`
-- `OWNER_DECISIONS.md`
-- `PROFIT_ENGINE_AUTHORITY.md`
-- `GOVERNANCE_AND_EXECUTION.md`
-- `HARD_12_DAY_LAUNCH_PLAN.md`
-- `ARCHITECTURE.md`
-- `IMPLEMENTATION_PLAN.md`
-- `DILIVOX_SITE_INTEGRATION.md`
-- `MACHINE_ADVERTISING_OPERATIONS.md`
-- `ACQUISITION_STRATEGY_LAB.md`
-- `WORLD_BENCHMARK_AND_DESIGN.md`
-- `WORLD_BEST_PRACTICES_ADOPTION_2026.md`
-- `YANDEX_CLOUD_ARCHITECTURE.md`
-- `SECURITY_AND_ACCESS.md`
-- `ACCESS_SETUP_CHECKLIST.md`
-- `OAUTH_API_SETUP.md`
-- `SITE_ONBOARDING.md`
-- `sites/dilivox/SITE_STATE.md`
-- `tasks/TASK-001-LOCAL-BOOTSTRAP-M0.md`
+Central Brain decision: `ACCEPTED_SUBSTANTIVELY / REPOSITORY_SYNC_REQUIRED`.
 
-## Verified/known state before Task 001
+Codex reported:
+- local workspace exists at `/Users/elenadymova/Documents/New project/Profit Engine/Dilivox-1`;
+- branch `profit-engine`;
+- accepted local evidence commit `dd0f3025335ed174077e9e84b568baa58e21120a`;
+- old origin baseline at execution time `51eb6be7d7fe6cc06d795d33ae2a64c0c965010c`;
+- clean worktree;
+- existing Dilivox site workspace inspected read-only and not modified;
+- Metrica hooks/goals, YAN placement surfaces and current tracking gaps inventoried;
+- UTM/`yclid` persistence, stable immutable content IDs and Profit Engine first-party ingestion are not yet implemented;
+- no safe Direct/Metrica OAuth token or YAN Statistics API token was available;
+- no provider writes/spend occurred;
+- no secrets were exposed.
 
-From repository evidence and Owner updates:
+Task 001 evidence commit remains to be synchronized to current origin because Central Brain advanced `origin/profit-engine` after the Codex local baseline. Task 002 Step 0 owns this fast-forward-safe synchronization. Issue #2 remains open only until that sync is confirmed.
+
+## Central Brain direct implementation after Task 001
+
+Central Brain added a root `.gitignore` to reduce secret/local-state risk before further implementation.
+
+Current safety rule:
+- no secret values or private provider mappings in Git;
+- public repo may contain generic contracts/examples only;
+- competitively sensitive production/scoring implementation must not be expanded in the public repo without resolving the private-core boundary described in `SECURITY_AND_ACCESS.md`.
+
+## Current provider/access state
+
+Known from authority + Task 001 report:
 - dedicated technical Yandex identity exists and is verified;
-- Direct managing-account `Reading` access was confirmed;
-- Metrica counter access was granted;
+- Direct managing-account `Reading` access is confirmed in UI;
+- Metrica counter access was granted in UI;
 - YAN Partner Assistant access for Dilivox/statistics UI was granted;
 - OAuth application `Profit Engine` exists with `direct:api` and `metrika:read` scopes;
-- Direct sandbox creation is unavailable in the current UI;
-- Owner reported on 2026-08-26 that Direct programmatic access is open and the account UI shows 32,000 API points for legacy v4/Live 4;
-- this indicates provider programmatic permission, but production readiness still requires an actual authenticated API read against the current intended Direct API path;
-- Direct write access remains intentionally disabled until guarded-autopilot gates pass;
-- existing local Dilivox site workspace: `~/Documents/New project/Dilivox`;
-- canonical Profit Engine local workspace to be created/certified by Codex: `~/Documents/New project/Profit Engine/Dilivox-1`.
+- Owner reported programmatic access open in Direct UI and legacy API points visible;
+- actual Direct API v5 readiness is NOT yet certified because no OAuth token was safely available to Codex;
+- Metrica API read is NOT yet certified for the same reason;
+- YAN Partner Statistics API read is NOT yet certified because the statistics-specific token was unavailable;
+- Direct write access remains intentionally disabled until guarded-autopilot gates pass.
 
-## Immediate active task
+## Immediate active task — Task 002 / Day 2
 
-`profit-engine/tasks/TASK-001-LOCAL-BOOTSTRAP-M0.md`
+Canonical contract:
+
+`profit-engine/tasks/TASK-002-READ-FOUNDATION-PROVIDER-CERTIFICATION.md`
 
 Executor: Codex.
 Acceptance authority: Central Brain.
 
-Task 001 outcome:
-- create/verify canonical local clone under `~/Documents/New project/Profit Engine/Dilivox-1`;
-- preserve existing `~/Documents/New project/Dilivox` as a separate site workspace;
-- checkout/sync `profit-engine`;
-- map the actual Dilivox implementation surface;
-- classify current analytics/YAN/attribution implementation;
-- safely classify provider credential availability;
-- perform only safe read-only provider checks where credentials already exist;
-- produce evidence for Task 002.
+Task 002 objectives:
+1. safely rebase/cherry-pick and push accepted Task 001 evidence onto current `origin/profit-engine` without force push;
+2. verify root `.gitignore`/secret hygiene;
+3. create minimal provider-neutral READ_ONLY runtime foundation;
+4. create public example/private local configuration boundary;
+5. implement Direct/Metrica/YAN diagnostic read clients with redacted logging and fixture tests;
+6. perform live READ_ONLY provider checks for every securely available credential;
+7. isolate absent credentials as exact Owner/provider actions without blocking engineering work;
+8. commit/push Task 002 evidence.
+
+No production Dilivox changes, campaign writes, budget changes or spend are authorized in Task 002.
 
 ## Current launch day
 
-Day 1 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
+Day 2 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
 
-The engineering schedule continues in parallel around external-provider blockers where possible.
+External token/UI dependencies are treated as `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL` while parallel engineering foundation continues.
 
-## Next task after Task 001 acceptance
+## Expected Task 003 boundary after Task 002 acceptance
 
-Task 002 boundary is Day 2:
-- certify Direct/Metrica/YAN read access with real API calls;
-- map provider IDs to `site_id=dilivox`;
-- capture current weekly Direct budget baseline;
-- verify Metrica YAN monetization visibility;
-- produce the exact missing-access list, if any.
+Primary Day 3 scope remains minimal Cloud/data foundation:
+- decide/confirm private-core repository boundary before competitively sensitive production code expands;
+- establish minimal runtime deployment structure;
+- secret-manager contract / Lockbox integration when Cloud access is available;
+- PostgreSQL/data schema foundation;
+- immutable raw snapshot contract;
+- logging/health checks;
+- no Direct writes.
 
-Central Brain must issue Task 002 immediately after Task 001 acceptance without restarting architecture discussion.
+If provider read tokens remain the sole blocker, provider certification continues in parallel and does not justify idling the engineering schedule.
 
 ## Launch definition
 
