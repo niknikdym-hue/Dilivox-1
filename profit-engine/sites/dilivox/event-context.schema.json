@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dilivox.ru/schemas/profit-engine-event-context-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_schema_version", "site_id", "content_id", "page_type", "session_ref", "timestamp", "deployment_version"],
+  "properties": {
+    "event_schema_version": {"const": "1.0"},
+    "site_id": {"const": "dilivox"},
+    "content_id": {"type": ["string", "null"], "format": "uuid"},
+    "source_content_id": {"type": ["string", "null"], "format": "uuid"},
+    "destination_content_id": {"type": ["string", "null"], "format": "uuid"},
+    "page_type": {"type": ["string", "null"]},
+    "session_ref": {"type": ["string", "null"], "format": "uuid"},
+    "return_ref": {"type": ["string", "null"], "format": "uuid"},
+    "acquisition_ref": {"type": ["string", "null"], "format": "uuid"},
+    "cohort_ref": {"type": ["string", "null"]},
+    "experiment_id": {"type": ["string", "null"], "maxLength": 64},
+    "variant_id": {"type": ["string", "null"], "maxLength": 64},
+    "placement_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "placement_id": {"type": ["string", "null"]},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "schema_version": {"const": "1.0"},
+    "deployment_version": {"type": "string"}
+  }
+}

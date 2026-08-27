@@ -1,0 +1,1039 @@
+{
+  "schema_version": "1.0",
+  "site_id": "dilivox",
+  "identity_rule": "content_id is assigned once and never derived from mutable metadata",
+  "items": [
+    {
+      "site_id": "dilivox",
+      "content_id": "e120d0cb-c947-47aa-8ad2-16113a35c928",
+      "canonical_url": "/",
+      "current_slug": "home",
+      "content_type": "home",
+      "category": null,
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "01-home:/dilivox-glavnaya-t123.txt",
+        "registry_version": "2026-08-27"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "c9c7a5f3-45bd-464b-9955-d1fa18866884",
+      "canonical_url": "/istorii/",
+      "current_slug": "stories-list",
+      "content_type": "catalog",
+      "category": null,
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "06-istorii:/dilivox-istorii-t123.txt",
+        "registry_version": "2026-08-27"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "551cbbd0-62bc-41af-8436-ff97eef81120",
+      "canonical_url": "/o-proekte/",
+      "current_slug": "about",
+      "content_type": "about",
+      "category": null,
+      "active": true,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "03-o-proekte:/dilivox-o-proekte-t123.txt",
+        "registry_version": "2026-08-27"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "b2fe7e44-fc3c-4ddb-83d2-a428a6d9afe7",
+      "canonical_url": "/kontakty/",
+      "current_slug": "contacts",
+      "content_type": "contacts",
+      "category": null,
+      "active": true,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "04-kontakty:/dilivox-kontakty-t123-v2.txt",
+        "registry_version": "2026-08-27"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "9020f1db-f5ce-4e9b-8c64-f4e3007c9744",
+      "canonical_url": "/privacy/",
+      "current_slug": "privacy",
+      "content_type": "privacy",
+      "category": null,
+      "active": true,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "05-privacy:/dilivox-privacy-t123.txt",
+        "registry_version": "2026-08-27"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "50675c31-3c40-4538-925e-6eaab85478e0",
+      "canonical_url": "/istorii/arhiv-budushchih-prestupleniy/",
+      "current_slug": "arhiv-budushchih-prestupleniy",
+      "content_type": "story",
+      "category": "fantastika",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/11-arhiv-budushchih-prestupleniy:/dilivox-story-11-arhiv-budushchih-prestupleniy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "f3684352-1517-4235-9fd8-41ca346946dc",
+      "canonical_url": "/istorii/babushka-protiv-robota-pylesosa/",
+      "current_slug": "babushka-protiv-robota-pylesosa",
+      "content_type": "story",
+      "category": "yumoristicheskaya-literatura",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/44-babushka-protiv-robota-pylesosa:/dilivox-story-44-babushka-protiv-robota-pylesosa-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "047affae-d42c-4481-8f64-261924653e79",
+      "canonical_url": "/istorii/bilet-do-stantsii-vchera/",
+      "current_slug": "bilet-do-stantsii-vchera",
+      "content_type": "story",
+      "category": "popadantsy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/33-bilet-do-stantsii-vchera:/dilivox-story-33-bilet-do-stantsii-vchera-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "89811b55-b3e5-4a0b-9682-93ec6dc95abd",
+      "canonical_url": "/istorii/bumazhnyy-zhuravl-na-mokrom-stekle/",
+      "current_slug": "bumazhnyy-zhuravl-na-mokrom-stekle",
+      "content_type": "story",
+      "category": "trillery",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/18-bumazhnyy-zhuravl-na-mokrom-stekle:/dilivox-story-18-bumazhnyy-zhuravl-na-mokrom-stekle-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "bd8080e9-18e4-4cba-b9c0-a5537248ac75",
+      "canonical_url": "/istorii/chelyusti-u-buyka-4/",
+      "current_slug": "chelyusti-u-buyka-4",
+      "content_type": "story",
+      "category": "uzhasy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/24-chelyusti-u-buyka-4:/dilivox-story-24-chelyusti-u-buyka-4-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "5f58e4dd-dcbd-4904-a2b4-c3e8e217869d",
+      "canonical_url": "/istorii/chernaya-metka-na-zapyastye/",
+      "current_slug": "chernaya-metka-na-zapyastye",
+      "content_type": "story",
+      "category": "trillery",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/16-chernaya-metka-na-zapyastye:/dilivox-story-16-chernaya-metka-na-zapyastye-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "6cbf0fd1-a96d-4da5-8d0a-84023a7ef4bf",
+      "canonical_url": "/istorii/chernaya-tropa/",
+      "current_slug": "chernaya-tropa",
+      "content_type": "story",
+      "category": "uzhasy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/22-chernaya-tropa:/dilivox-story-22-chernaya-tropa-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "0070ec63-7151-440e-a969-1cf0490df7f5",
+      "canonical_url": "/istorii/chernyy-konvoy/",
+      "current_slug": "chernyy-konvoy",
+      "content_type": "story",
+      "category": "boeviki",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/38-chernyy-konvoy:/dilivox-story-38-chernyy-konvoy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "6c88dd6f-44b5-4b83-9c5d-f2deda86358b",
+      "canonical_url": "/istorii/chernyy-yashchik-imperatritsy/",
+      "current_slug": "chernyy-yashchik-imperatritsy",
+      "content_type": "story",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/06-chernyy-yashchik-imperatritsy:/dilivox-story-06-chernyy-yashchik-imperatritsy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "001f8295-9410-4c72-a4aa-9c39b7ed0eae",
+      "canonical_url": "/istorii/chuzhoy-pocherk/",
+      "current_slug": "chuzhoy-pocherk",
+      "content_type": "story",
+      "category": "psikhologicheskaya-proza",
+      "active": false,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/51-chuzhoy-pocherk/dilivox-story-51-chuzhoy-pocherk-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "source-present-not-catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "d28e7da9-7625-4e15-b6d9-183c222d6122",
+      "canonical_url": "/istorii/desyat-minut-do-granitsy/",
+      "current_slug": "desyat-minut-do-granitsy",
+      "content_type": "story",
+      "category": "boeviki",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/42-desyat-minut-do-granitsy:/dilivox-story-42-desyat-minut-do-granitsy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "89823a70-6e44-4319-aee1-d10e9e9b5c9e",
+      "canonical_url": "/istorii/detektivnoe-agentstvo-nu-pochti/",
+      "current_slug": "detektivnoe-agentstvo-nu-pochti",
+      "content_type": "story",
+      "category": "yumoristicheskaya-literatura",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/43-detektivnoe-agentstvo-nu-pochti:/dilivox-story-43-detektivnoe-agentstvo-nu-pochti-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "e8be5709-5c20-4cb3-b036-851e5ef37505",
+      "canonical_url": "/istorii/devushka-iz-zavtrashnego-chata/",
+      "current_slug": "devushka-iz-zavtrashnego-chata",
+      "content_type": "story",
+      "category": "trillery",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/13-devushka-iz-zavtrashnego-chata:/dilivox-story-13-devushka-iz-zavtrashnego-chata-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "d58264de-65c2-41a3-858b-eedb23c1bced",
+      "canonical_url": "/istorii/do-kasaniya/",
+      "current_slug": "do-kasaniya",
+      "content_type": "story",
+      "category": "sportivnaya-romantika",
+      "active": false,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/52-do-kasaniya-2/dilivox-story-52-do-kasaniya-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "source-present-not-catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "f38649ef-035a-4196-9c32-bbf82c97ac89",
+      "canonical_url": "/istorii/feldsher-na-piratskom-korable/",
+      "current_slug": "feldsher-na-piratskom-korable",
+      "content_type": "story",
+      "category": "popadantsy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/35-feldsher-na-piratskom-korable:/dilivox-story-35-feldsher-na-piratskom-korable-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "27b3767e-5c2c-43e7-8b5a-984ec1a8b370",
+      "canonical_url": "/istorii/golos-v-levom-naushnike/",
+      "current_slug": "golos-v-levom-naushnike",
+      "content_type": "story",
+      "category": "trillery",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/17-golos-v-levom-naushnike:/dilivox-story-17-golos-v-levom-naushnike-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "8e827cbc-cd17-4555-9b20-f86e4c55c589",
+      "canonical_url": "/istorii/gorod-pod-chuzhim-nebom/",
+      "current_slug": "gorod-pod-chuzhim-nebom",
+      "content_type": "story",
+      "category": "fantastika",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/08-gorod-pod-chuzhim-nebom:/dilivox-story-08-gorod-pod-chuzhim-nebom-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "40ffdc20-5fa5-4e92-a50b-e25d17d23cd7",
+      "canonical_url": "/istorii/gorod-pod-lednikom/",
+      "current_slug": "gorod-pod-lednikom",
+      "content_type": "story",
+      "category": "priklyucheniya",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/29-gorod-pod-lednikom:/dilivox-story-29-gorod-pod-lednikom-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "d1b82523-f623-4f6e-aaba-45100d9fd892",
+      "canonical_url": "/istorii/inzhener-dlya-osazhdennoy-kreposti/",
+      "current_slug": "inzhener-dlya-osazhdennoy-kreposti",
+      "content_type": "story",
+      "category": "popadantsy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/32-inzhener-dlya-osazhdennoy-kreposti:/dilivox-story-32-inzhener-dlya-osazhdennoy-kreposti-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "3a44d938-4a70-4dba-9644-625f203a01a2",
+      "canonical_url": "/istorii/kayuta-7/",
+      "current_slug": "kayuta-7",
+      "content_type": "story",
+      "category": "uzhasy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/23-kayuta-7:/dilivox-story-23-kayuta-7-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "ba9ad1da-24b9-4d82-8b1f-b67f45c893c2",
+      "canonical_url": "/istorii/komnata-bez-otrazheniy/",
+      "current_slug": "komnata-bez-otrazheniy",
+      "content_type": "story",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/04-komnata-bez-otrazheniy:/dilivox-story-04-komnata-bez-otrazheniy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "58fd4d44-53f5-4e27-8589-d75e7e1d31d5",
+      "canonical_url": "/istorii/kot-kotoryy-sdaval-kvartiru/",
+      "current_slug": "kot-kotoryy-sdaval-kvartiru",
+      "content_type": "story",
+      "category": "yumoristicheskaya-literatura",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/46-kot-kotoryy-sdaval-kvartiru:/dilivox-story-46-kot-kotoryy-sdaval-kvartiru-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "3900358d-4b7f-4d68-9956-f259fd8de334",
+      "canonical_url": "/istorii/krasnaya-voda-pod-kilem/",
+      "current_slug": "krasnaya-voda-pod-kilem",
+      "content_type": "story",
+      "category": "uzhasy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/19-krasnaya-voda-pod-kilem:/dilivox-story-19-krasnaya-voda-pod-kilem-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "66ec419b-1227-4d7f-b493-46aa9736ed7f",
+      "canonical_url": "/istorii/kuryer-dlya-imperatora-drakonov/",
+      "current_slug": "kuryer-dlya-imperatora-drakonov",
+      "content_type": "story",
+      "category": "popadantsy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/31-kuryer-dlya-imperatora-drakonov:/dilivox-story-31-kuryer-dlya-imperatora-drakonov-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "3dfb73ba-757d-443f-a708-ae5b8b8fbe37",
+      "canonical_url": "/istorii/led-nad-bezdnoy/",
+      "current_slug": "led-nad-bezdnoy",
+      "content_type": "story",
+      "category": "nauchnaya-fantastika",
+      "active": false,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/54-led-nad-bezdnoy/dilivox-story-54-led-nad-bezdnoy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "source-present-not-catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "4d811adf-ba72-479d-a6be-1f0ba9d0f4b0",
+      "canonical_url": "/istorii/marshrut-17/",
+      "current_slug": "marshrut-17",
+      "content_type": "story",
+      "category": "boeviki",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/41-marshrut-17:/dilivox-story-41-marshrut-17-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "38ee9cc0-4f6d-49ad-bafa-05238924745c",
+      "canonical_url": "/istorii/maska-dlya-chuzhogo-litsa/",
+      "current_slug": "maska-dlya-chuzhogo-litsa",
+      "content_type": "story",
+      "category": "trillery",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/15-maska-dlya-chuzhogo-litsa:/dilivox-story-15-maska-dlya-chuzhogo-litsa-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "f6276976-be9f-4424-bc9e-e702e510962e",
+      "canonical_url": "/istorii/nulevoy-passazhir/",
+      "current_slug": "nulevoy-passazhir",
+      "content_type": "story",
+      "category": "fantastika",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/07-nulevoy-passazhir:/dilivox-story-07-nulevoy-passazhir-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "a5100218-842a-40e3-aec6-d26253011a86",
+      "canonical_url": "/istorii/ofisnyy-klad/",
+      "current_slug": "ofisnyy-klad",
+      "content_type": "story",
+      "category": "yumoristicheskaya-literatura",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/47-ofisnyy-klad:/dilivox-story-47-ofisnyy-klad-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "080f2de5-be3c-4f76-bf51-ec1539cbc77d",
+      "canonical_url": "/istorii/ona-vyshla-na-stsenu-dvazhdy/",
+      "current_slug": "ona-vyshla-na-stsenu-dvazhdy",
+      "content_type": "comic",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "10-comics-content:/49-ona-vyshla-na-stsenu-dvazhdy:/dilivox-comic-49-ona-vyshla-na-stsenu-dvazhdy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "c668e547-9eef-40da-8e18-72d7a0c2c0d9",
+      "canonical_url": "/istorii/operatsiya-mertvyy-mayak/",
+      "current_slug": "operatsiya-mertvyy-mayak",
+      "content_type": "story",
+      "category": "boeviki",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/37-operatsiya-mertvyy-mayak:/dilivox-story-37-operatsiya-mertvyy-mayak-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "7b7a5366-ad25-4a57-bac9-3d6ee8f04c6d",
+      "canonical_url": "/istorii/ostrov-na-odin-priliv/",
+      "current_slug": "ostrov-na-odin-priliv",
+      "content_type": "story",
+      "category": "priklyucheniya",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/27-ostrov-na-odin-priliv:/dilivox-story-27-ostrov-na-odin-priliv-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "ff1c3fdc-1d73-4394-b315-a37b5139c748",
+      "canonical_url": "/istorii/pansionat-tikhiy-uzhas/",
+      "current_slug": "pansionat-tikhiy-uzhas",
+      "content_type": "story",
+      "category": "yumoristicheskaya-literatura",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/48-pansionat-tikhiy-uzhas:/dilivox-story-48-pansionat-tikhiy-uzhas-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "3a16efcd-3fdc-408a-8ceb-13649afade97",
+      "canonical_url": "/istorii/passazhir-iz-poslednego-vagona/",
+      "current_slug": "passazhir-iz-poslednego-vagona",
+      "content_type": "story",
+      "category": "uzhasy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/20-passazhir-iz-poslednego-vagona:/dilivox-story-20-passazhir-iz-poslednego-vagona-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "21b702f1-b36a-4d64-891f-9bb0805ee28c",
+      "canonical_url": "/istorii/pechat-na-bagrovom-voske/",
+      "current_slug": "pechat-na-bagrovom-voske",
+      "content_type": "comic",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "10-comics-content:/50-pechat-na-bagrovom-voske/dilivox-comic-50-pechat-na-bagrovom-voske-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "5e95d5a1-a432-48a2-b546-9db322404481",
+      "canonical_url": "/istorii/planeta-bez-eha/",
+      "current_slug": "planeta-bez-eha",
+      "content_type": "story",
+      "category": "fantastika",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/12-planeta-bez-eha:/dilivox-story-12-planeta-bez-eha-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "0295b76e-185c-4b0e-b1b3-b6cd8d8b0956",
+      "canonical_url": "/istorii/platforma-sever-9/",
+      "current_slug": "platforma-sever-9",
+      "content_type": "story",
+      "category": "boeviki",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/40-platforma-sever-9:/dilivox-story-40-platforma-sever-9-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "70b5df43-bad2-478e-8657-abb82eb30529",
+      "canonical_url": "/istorii/pod-kamnem-ra/",
+      "current_slug": "pod-kamnem-ra",
+      "content_type": "story",
+      "category": "priklyuchencheskiy-triller",
+      "active": false,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/56-pod-kamnem-ra/dilivox-story-56-pod-kamnem-ra-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "source-present-not-catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "d9d447d7-6c60-41ab-8986-9347b975e4ed",
+      "canonical_url": "/istorii/poezd-cherez-krasnuyu-pustynyu/",
+      "current_slug": "poezd-cherez-krasnuyu-pustynyu",
+      "content_type": "story",
+      "category": "priklyucheniya",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/28-poezd-cherez-krasnuyu-pustynyu:/dilivox-story-28-poezd-cherez-krasnuyu-pustynyu-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "98a24fb3-7d25-4905-88e4-2e9f6e3aac80",
+      "canonical_url": "/istorii/poslednee-mesto-za-stolom/",
+      "current_slug": "poslednee-mesto-za-stolom",
+      "content_type": "story",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/03-poslednee-mesto-za-stolom:/dilivox-story-03-poslednee-mesto-za-stolom-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "d97efa36-69a1-4349-bb80-0fe632952eb3",
+      "canonical_url": "/istorii/posledniy-kadr-strima/",
+      "current_slug": "posledniy-kadr-strima",
+      "content_type": "story",
+      "category": "trillery",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/14-posledniy-kadr-strima:/dilivox-story-14-posledniy-kadr-strima-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "537d0df4-a90c-41c3-9cea-314c45af73c3",
+      "canonical_url": "/istorii/posledniy-lift-bashni-orion/",
+      "current_slug": "posledniy-lift-bashni-orion",
+      "content_type": "story",
+      "category": "boeviki",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/39-posledniy-lift-bashni-orion:/dilivox-story-39-posledniy-lift-bashni-orion-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "1b64b5b2-305f-4d1d-b40f-29651d986968",
+      "canonical_url": "/istorii/posledniy-reys-severnoy-chayki/",
+      "current_slug": "posledniy-reys-severnoy-chayki",
+      "content_type": "story",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/05-posledniy-reys-severnoy-chayki:/dilivox-story-05-posledniy-reys-severnoy-chayki-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "afeec6b0-7751-4c17-8c28-c7408741d1a2",
+      "canonical_url": "/istorii/posledniy-son-androida/",
+      "current_slug": "posledniy-son-androida",
+      "content_type": "story",
+      "category": "fantastika",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/09-posledniy-son-androida:/dilivox-story-09-posledniy-son-androida-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "3188e386-2acb-4dfb-9db4-565df6bc99a0",
+      "canonical_url": "/istorii/sedmoy-vodopad/",
+      "current_slug": "sedmoy-vodopad",
+      "content_type": "story",
+      "category": "priklyucheniya",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/26-sedmoy-vodopad:/dilivox-story-26-sedmoy-vodopad-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "e85d64a2-4d5b-4a8c-b8bd-d7b99426dff8",
+      "canonical_url": "/istorii/sisadmin-pri-dvore-magov/",
+      "current_slug": "sisadmin-pri-dvore-magov",
+      "content_type": "story",
+      "category": "popadantsy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/34-sisadmin-pri-dvore-magov:/dilivox-story-34-sisadmin-pri-dvore-magov-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "64a7411b-bbae-41ca-bc14-bb01171fab37",
+      "canonical_url": "/istorii/spisok-priglashennyh/",
+      "current_slug": "spisok-priglashennyh",
+      "content_type": "story",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/02-spisok-priglashennyh:/dilivox-story-02-spisok-priglashennyh-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "cb28a149-93e7-4168-8078-1e07ded174bb",
+      "canonical_url": "/istorii/stantsiya-kotoraya-molchala/",
+      "current_slug": "stantsiya-kotoraya-molchala",
+      "content_type": "story",
+      "category": "fantastika",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/10-stantsiya-kotoraya-molchala:/dilivox-story-10-stantsiya-kotoraya-molchala-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "04e49803-b395-4d42-9bb1-1b0a0f3ca51d",
+      "canonical_url": "/istorii/sukhoy-grom/",
+      "current_slug": "sukhoy-grom",
+      "content_type": "story",
+      "category": "priklyuchencheskiy-triller",
+      "active": false,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/53-sukhoy-grom/dilivox-story-53-sukhoy-grom-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "source-present-not-catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "601ca384-90ac-4a5d-87f1-30e7436e7fc8",
+      "canonical_url": "/istorii/svadba-s-dostavkoy/",
+      "current_slug": "svadba-s-dostavkoy",
+      "content_type": "story",
+      "category": "yumoristicheskaya-literatura",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/45-svadba-s-dostavkoy:/dilivox-story-45-svadba-s-dostavkoy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "42bee4e7-6ec6-4288-8ec6-fef860089caf",
+      "canonical_url": "/istorii/teatr-kotoryy-igraet-posle-zakrytiya/",
+      "current_slug": "teatr-kotoryy-igraet-posle-zakrytiya",
+      "content_type": "story",
+      "category": "uzhasy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/21-teatr-kotoryy-igraet-posle-zakrytiya:/dilivox-story-21-teatr-kotoryy-igraet-posle-zakrytiya-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "5cb4c76a-6fb7-4bb1-bd85-34dbda115829",
+      "canonical_url": "/istorii/tropa-zolotogo-yaguara/",
+      "current_slug": "tropa-zolotogo-yaguara",
+      "content_type": "story",
+      "category": "priklyucheniya",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/30-tropa-zolotogo-yaguara:/dilivox-story-30-tropa-zolotogo-yaguara-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "69be6467-f50d-4663-832a-31c2fd76d309",
+      "canonical_url": "/istorii/tsena-vtoroy-pechati/",
+      "current_slug": "tsena-vtoroy-pechati",
+      "content_type": "story",
+      "category": "detektivy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/01-tsena-vtoroy-pechati:/dilivox-story-01-tsena-vtoroy-pechati-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "e63561d6-09fe-45ed-8aba-b18599be7cd7",
+      "canonical_url": "/istorii/veter-nad-tortugoy/",
+      "current_slug": "veter-nad-tortugoy",
+      "content_type": "story",
+      "category": "istoricheskoe-priklyuchenie",
+      "active": false,
+      "experiment_eligible": false,
+      "monetization_eligible": false,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/55-veter-nad-tortugoy/dilivox-story-55-veter-nad-tortugoy-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "source-present-not-catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "a6856a5d-3f8d-4a47-aab2-63bd39ce858b",
+      "canonical_url": "/istorii/yurist-v-korolevstve-bez-zakonov/",
+      "current_slug": "yurist-v-korolevstve-bez-zakonov",
+      "content_type": "story",
+      "category": "popadantsy",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/36-yurist-v-korolevstve-bez-zakonov:/dilivox-story-36-yurist-v-korolevstve-bez-zakonov-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    },
+    {
+      "site_id": "dilivox",
+      "content_id": "c59b19f8-bc4f-4ffd-8892-f75eaece8042",
+      "canonical_url": "/istorii/zoloto-chernoy-marii/",
+      "current_slug": "zoloto-chernoy-marii",
+      "content_type": "story",
+      "category": "priklyucheniya",
+      "active": true,
+      "experiment_eligible": true,
+      "monetization_eligible": true,
+      "source": {
+        "workspace": "Dilivox",
+        "reference": "08-stories-content:/25-zoloto-chernoy-marii:/dilivox-story-25-zoloto-chernoy-marii-t123.txt",
+        "registry_version": "2026-08-27",
+        "status": "catalog-discoverable"
+      }
+    }
+  ]
+}

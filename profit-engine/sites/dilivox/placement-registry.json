@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0",
+  "site_id": "dilivox",
+  "provider_rendering_mutation": false,
+  "placements": [
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-3",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "catalog"
+      ],
+      "location_class": "catalog",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "06-istorii:/dilivox-istorii-t123.txt",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-4",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "catalog"
+      ],
+      "location_class": "catalog",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "06-istorii:/dilivox-istorii-t123.txt",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-5",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-start",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-6",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "before-choice",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-7",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "after-reveal",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-8",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "sidebar",
+      "device_eligibility": "desktop",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-9",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-inline",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-10",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-inline",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-11",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-inline",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-12",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-inline",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-13",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-inline",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    },
+    {
+      "provider_id": "yan",
+      "placement_id": "R-A-19563496-14",
+      "site_id": "dilivox",
+      "eligible_content_types": [
+        "story",
+        "comic"
+      ],
+      "location_class": "story-inline",
+      "device_eligibility": "all",
+      "active": true,
+      "version": "2026-08-27",
+      "experiment_eligible": true,
+      "source_reference": "08-stories-content:/ and 10-comics-content:/ T123 sources",
+      "dormant_reason": null
+    }
+  ]
+}
