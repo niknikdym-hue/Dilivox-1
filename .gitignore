@@ -1,0 +1,75 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment and local secret/config files
+.env
+.env.*
+!.env.example
+*.env
+*.secret
+*.secrets
+*.token
+*.tokens
+*.credentials
+credentials.json
+secrets.json
+tokens.json
+
+# Profit Engine private/local state
+.profit-engine.local/
+profit-engine/private/
+profit-engine/runtime/private/
+profit-engine/config/private/
+profit-engine/evidence/private/
+
+# Keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Terraform/local IaC state
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Local logs, caches and temporary outputs
+*.log
+.cache/
+tmp/
+temp/
+
+# Keep intentionally committed examples/templates explicit
+!profit-engine/**/*.example
+!profit-engine/**/*.example.*
+!profit-engine/**/*.template
+!profit-engine/**/*.template.*
