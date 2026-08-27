@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dilivox.ru/schemas/profit-engine-event-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "idempotency_key", "event_type", "occurred_at", "site_id", "content_id", "content_type", "session_id", "acquisition_id", "cohort_ref", "experiment_id", "variant_id", "placement_id", "source_content_id", "destination_content_id", "deployment_version", "properties"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "format": "uuid"},
+    "idempotency_key": {"type": "string", "pattern": "^evt_[a-f0-9]{16}$"},
+    "event_type": {"enum": ["page_view_site", "story_open", "story_progress_25", "story_progress_50", "story_progress_75", "version_section_seen", "version_selected", "reveal_opened", "story_completed", "next_story_seen", "next_story_clicked", "catalog_opened", "return_visit", "session_end_summary", "experiment_exposure", "experiment_conversion"]},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "site_id": {"type": "string"},
+    "content_id": {"type": ["string", "null"]},
+    "content_type": {"type": ["string", "null"]},
+    "session_id": {"type": ["string", "null"]},
+    "acquisition_id": {"type": ["string", "null"]},
+    "cohort_ref": {"type": ["string", "null"]},
+    "experiment_id": {"type": ["string", "null"]},
+    "variant_id": {"type": ["string", "null"]},
+    "placement_id": {"type": ["string", "null"]},
+    "source_content_id": {"type": ["string", "null"]},
+    "destination_content_id": {"type": ["string", "null"]},
+    "deployment_version": {"type": "string"},
+    "properties": {"type": "object", "maxProperties": 8}
+  }
+}

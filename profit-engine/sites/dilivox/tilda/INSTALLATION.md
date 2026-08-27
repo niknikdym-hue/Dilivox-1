@@ -16,6 +16,16 @@ Rollback: set `window.__PROFIT_ENGINE_SITE_AGENT_DISABLED__ = true` before the
 artifact loads, or remove the single artifact block and republish through an
 authorized deployment task. Existing content and YAN behavior remain independent.
 
+## Task 006 successor (also unpublished)
+
+`dilivox-event-layer-task006.js` bundles the accepted SiteAgent plus the event
+controller. For a future controlled unpublished-copy test, install this successor
+instead of (not in addition to) the Task 005 artifact, with `autoStart: true` only
+after validation. It has no endpoint or default transport. Keep
+`window.__PROFIT_ENGINE_EVENT_DISPATCH_DISABLED__ = true` until a separately
+approved first-party endpoint exists. Rollback is removal of this single block;
+the existing T123 and YAN code are not dependencies of its teardown.
+
 Durable return identity is disabled by default. Enabling it requires both
 `enableReturnId: true` and `privacyReviewApproved: true`; that approval is a
 production privacy-review gate, not granted by this artifact. Attribution and
