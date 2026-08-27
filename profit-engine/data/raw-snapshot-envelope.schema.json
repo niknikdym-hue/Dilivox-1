@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/profit-engine/raw-snapshot-envelope-v1.schema.json",
+  "title": "Profit Engine raw snapshot envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "site_id", "provider", "source_object_type",
+    "captured_at", "source_window", "request_fingerprint", "payload_sha256",
+    "provider_request_id", "data_state", "ingestion_run_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "site_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "provider": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "source_object_type": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "source_window": {
+      "type": "object", "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": {"type": ["string", "null"], "format": "date-time"},
+        "end": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "request_fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "provider_request_id": {"type": ["string", "null"]},
+    "data_state": {"enum": ["estimated", "final", "reconciled"]},
+    "ingestion_run_id": {"type": "string", "minLength": 1}
+  }
+}

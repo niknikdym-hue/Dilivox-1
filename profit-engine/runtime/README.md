@@ -57,3 +57,10 @@ Provider endpoints and authorization shapes follow official Yandex contracts:
 Direct uses JSON v5 POST requests whose body method is `get`; Metrica and YAN
 Statistics use GET. HTTP POST in the Direct client does not imply a provider
 write—the only JSON-RPC method present is `get`.
+
+## Data adapters
+
+`contracts.py` defines provider-neutral relational, raw object, secret, health,
+and audit interfaces. `raw_store.py` implements a create-only local raw adapter
+whose default root is outside this repository. `data_quality.py` prevents held
+or reconciliation-not-ready datasets from being optimizer-consumable.

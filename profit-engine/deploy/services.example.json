@@ -1,0 +1,10 @@
+{
+  "rollout_mode": "READ_ONLY",
+  "services": [
+    {"name": "collector-direct", "provider": "yandex-direct", "site_ref": "PRIVATE_LOCAL_VALUE"},
+    {"name": "collector-metrica", "provider": "yandex-metrica", "site_ref": "PRIVATE_LOCAL_VALUE"},
+    {"name": "collector-yan", "provider": "yan-statistics", "site_ref": "PRIVATE_LOCAL_VALUE"},
+    {"name": "event-api", "phase": "later", "site_ref": "PRIVATE_LOCAL_VALUE"},
+    {"name": "reconciliation-worker", "phase": "later", "site_ref": "PRIVATE_LOCAL_VALUE"}
+  ]
+}

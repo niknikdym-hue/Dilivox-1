@@ -1,0 +1,6 @@
+{
+  "adapter": "yandex-lockbox",
+  "endpoint": "https://payload.lockbox.api.cloud.yandex.net",
+  "secret_reference": "lockbox-ref:PRIVATE_LOCAL_VALUE",
+  "service_identity_reference": "identity-ref:PRIVATE_LOCAL_VALUE"
+}
