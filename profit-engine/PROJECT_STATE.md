@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 6 — FIRST-PARTY EVENTS + SITE SAFETY
+Status: IMPLEMENTATION ACTIVE / DAY 7 — MONEY LEDGER + ATTRIBUTION + RECONCILIATION
 Updated: 2026-08-27
 Canonical branch: `profit-engine`
 
@@ -25,69 +25,57 @@ This is an optimization target, not a claimed current result.
 - Routine advertising operations are machine-operated; Owner is not the Direct operator.
 - Acquisition mode is an optimization variable: CPC / conversion / pay-for-conversion / value-DRR / Maximum Profit where eligible.
 - Weekly automatic budget growth above +20% requires explicit Owner approval.
-- Dilivox site-side integration is launch-critical.
+- Full Dilivox site-side integration is launch-critical.
 - Core remains multi-site/provider-neutral.
-- Central Brain leads, performs available work itself, issues Codex tasks, accepts/reworks evidence and immediately advances the plan.
+- Central Brain leads, executes available work itself, issues Codex tasks, accepts/reworks evidence and immediately advances the plan.
 - Chat is not source of truth.
 - Local workspaces remain separated:
   - site/Tilda: `~/Documents/New project/Dilivox`;
   - Profit Engine: `~/Documents/New project/Profit Engine/Dilivox-1`.
 
-## Tasks 001–004 — ACCEPTED
+## Tasks 001–005 — ACCEPTED
 
-Canonical evidence:
-
-- `profit-engine/evidence/TASK-001-M0-INVENTORY.md`
-- `profit-engine/evidence/TASK-002-READ-FOUNDATION.md`
-- `profit-engine/evidence/TASK-003-DATA-FOUNDATION.md`
-- `profit-engine/evidence/TASK-004-READ-ONLY-INGESTION.md`
+Canonical evidence exists under `profit-engine/evidence/`.
 
 Accepted foundation includes:
 
 - local/source inventory;
-- read-only Direct/Metrica/YAN diagnostics;
-- secret-safe configuration/redaction;
-- PostgreSQL schema foundation;
-- immutable raw snapshot store;
-- provider-neutral storage/health/audit/data-quality contracts;
-- `DATA_QUALITY_HOLD`;
-- raw-first Direct/Metrica/YAN ingestion;
-- deterministic/idempotent normalization;
-- 38-test suite reported green by Task 004;
-- no provider/site writes or spend.
+- READ_ONLY Direct/Metrica/YAN diagnostics and collectors;
+- immutable raw storage and provider-neutral PostgreSQL schema foundation;
+- raw-first provider ingestion and deterministic normalization;
+- stable Dilivox content identities and placement registry;
+- strict paid-attribution allowlist and first-party acquisition/session context;
+- generic SiteAgent + `DilivoxSiteAgent`;
+- no provider/site write or spend.
 
-## Task 005 — ACCEPTED
+## Task 006 — ACCEPTED
 
 Accepted implementation HEAD:
 
-`ec3590f9a4daee08fcbdac957269fd77d78c9a15`
+`ff5b0251daeb90e373aa890e2ca198282a533102`
 
 Canonical evidence:
 
-`profit-engine/evidence/TASK-005-DILIVOX-IDENTITY-ATTRIBUTION.md`
+`profit-engine/evidence/TASK-006-FIRST-PARTY-EVENTS.md`
 
 Central Brain independently inspected and accepted:
 
-- 61 immutable opaque content identities;
-- 56/56 source story/comic coverage;
-- 50/50 discoverable active content coverage;
-- immutable ID preservation independent of URL/title/slug changes;
-- 12/12 current YAN `data-dv-ad-block` placement mappings;
-- generic SiteAgent + `DilivoxSiteAgent` adapter;
-- strict acquisition allowlist (`yclid`, approved UTM/Direct identifiers only);
-- paid acquisition persistence across internal navigation;
-- deterministic paid->paid supersession;
-- 30-day hard attribution/return TTL cap;
-- privacy-gated durable return identity;
-- no fingerprinting and no Metrica ClientID identity;
-- experiment/variant identity + kill switches without optimizer logic;
-- event-context schema for Day 6;
-- self-contained unpublished Tilda integration artifact;
-- 11/11 Node simulations and previous 38/38 Python tests reported green;
-- no `fetch` event dispatch or `Ya.Context` mutation in the Task 005 SiteAgent artifact;
-- no Tilda publication, Direct write, spend or secret exposure.
+- all 16 canonical first-party event types;
+- strict event schema/property privacy allowlist;
+- shared text/comic browser event controller;
+- content-relative progress 25/50/75;
+- trusted choice event and strict `version_selected != story_completed` semantics;
+- completion only after reveal open + genuine reveal/final visibility;
+- bounded async queue: 50 events, 8 KiB/event, 64 KiB/batch, 24h TTL, max 3 retries;
+- dispatch kill switch/fail-open behavior;
+- raw-first event batch ingestion with immutable raw put + SHA verification before normalization;
+- authoritative dedupe/idempotency/conflict handling;
+- health/performance signals without raw URL/stack/PII;
+- nine material `DATA_QUALITY_HOLD` classes with `optimizer_consumable=false`;
+- reported Node 22/22 PASS and Python 44/44 PASS;
+- no real event endpoint, no production dispatch, no Tilda publication, no YAN mutation.
 
-Task 005 decision: `ACCEPTED`.
+Task 006 decision: `ACCEPTED`.
 
 ## External provider credentials — parallel blocker only
 
@@ -101,17 +89,17 @@ Classification:
 
 `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL`.
 
-Current safe plan:
+Safe plan remains:
 
-- one existing Profit Engine Yandex OAuth token for technical identity with `direct:api` + `metrika:read` scopes;
+- one existing Profit Engine OAuth token under technical Yandex identity for `direct:api` + `metrika:read`;
 - separate YAN Statistics OAuth token;
-- local macOS Keychain storage during development;
-- private provider mappings in `~/.config/profit-engine/sites/dilivox.json` mode `0600`;
-- later migrate production secrets to Lockbox.
+- macOS Keychain for local development;
+- private provider mappings in local mode-`0600` config;
+- production migration to Lockbox later.
 
-Token values/private provider IDs never enter chat or Git.
+Tokens/private provider IDs never enter chat or Git.
 
-This blocker does not stop Day 6 engineering.
+This blocker does not stop Day 7 fixture/source-contract engineering.
 
 ## Public/private core gate
 
@@ -122,11 +110,10 @@ Public-safe:
 - generic provider/site adapters;
 - schemas/contracts;
 - identity/attribution/event plumbing;
-- data-quality/safety invariants;
-- generic controller interfaces;
-- public-safe registries/fixtures.
+- ledger/reconciliation/data-quality measurement logic;
+- generic safety/controller interfaces.
 
-Forbidden here before private core exists:
+Forbidden before private core exists:
 
 - proprietary profit scoring formulas/weights;
 - learned optimizer thresholds;
@@ -139,66 +126,70 @@ Mandatory gate:
 
 `PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`.
 
-Central Brain has prepared a parallel private-core repository design so this does not become a Day 9/10 surprise blocker; actual private repository creation remains a later explicit implementation step.
+Central Brain continues preparing this boundary in parallel before Days 9–10.
 
-## Canonical Day 6 design
+## Canonical Day 7 design
 
-`profit-engine/DAY6_EVENT_LAYER_DESIGN.md`
+`profit-engine/DAY7_MONEY_LEDGER_DESIGN.md`
 
-Key rule:
+Critical money rules:
 
-`version_selected != story_completed`.
+1. no date-proximity attribution;
+2. every join has explicit `attribution_grade`;
+3. Metrica YAN revenue is the attribution view;
+4. YAN Partner Statistics is a control/reconciliation total;
+5. Metrica + YAN revenue are never double-counted;
+6. `period_K5` and cohort `K5_1D/7D/30D` are different measurements;
+7. cohort K5 is `NOT_COMPUTABLE_ATTRIBUTION_HOLD` if later revenue cannot be proven to belong to the original acquisition cohort;
+8. unknown revenue is never converted to zero;
+9. zero spend never yields infinite K5;
+10. material uncertainty -> `DATA_QUALITY_HOLD`.
 
-Completion requires reveal to be open AND genuinely viewed; a choice click alone is not a completed reader.
+Current official Yandex contracts confirm Metrica attribution-aware Direct campaign/group/UTM dimensions and YAN monetization metrics, while Direct supports dynamic campaign/ad/group/click identifiers in landing URLs. Task 007 therefore cross-checks independent attribution paths rather than trusting one source blindly.
 
-Canonical event path:
-
-`Dilivox DOM -> SiteAgent -> canonical event -> bounded browser queue -> first-party event batch -> immutable raw -> dedupe/validation -> site_events -> data-quality state`.
-
-## Immediate active task — Task 006 / Day 6
+## Immediate active task — Task 007 / Day 7
 
 Canonical contract:
 
-`profit-engine/tasks/TASK-006-FIRST-PARTY-EVENTS-SITE-SAFETY.md`
+`profit-engine/tasks/TASK-007-MONEY-LEDGER-RECONCILIATION.md`
 
 Executor: Codex.
 Acceptance authority: Central Brain.
 
-Task 006 scope:
+Task 007 scope:
 
-- canonical behavior event taxonomy;
-- content-relative story progress 25/50/75;
-- choice/reveal/completion semantics;
-- next-story/catalog/return/experiment events;
-- strict event envelope/privacy allowlist;
-- deterministic idempotency/dedupe;
-- bounded async browser queue with retry/TTL/kill switch;
-- raw-first first-party event batch ingestion;
-- normalization into `site_events`;
-- JS/performance/event-delivery health signals;
-- `DATA_QUALITY_HOLD` for unreliable telemetry;
-- representative text/comic/mobile/desktop tests;
-- Task 006 successor Tilda artifact prepared but NOT published;
-- no provider impression/revenue invention from DOM events.
+- versioned acquisition/money/reconciliation/K5 schema migration;
+- strict privacy-safe acquisition registration contract;
+- Direct spend ledger input;
+- Metrica Direct-attributed YAN report contract;
+- explicit attribution grades and cross-check engine;
+- Metrica-vs-YAN control-total reconciliation;
+- period K5 and distinct cohort K5 1D/7D/30D;
+- source states `ESTIMATED/FINAL/RECONCILED/NOT_COMPUTABLE`;
+- late-arrival/versioned recomputation;
+- revenue/user and revenue/visit with compatible denominator scopes only;
+- comprehensive `DATA_QUALITY_HOLD` matrix;
+- fixture/source-contract execution while provider credentials remain externally blocked;
+- no optimizer or provider/site write.
 
 ## Current launch day
 
-Day 6 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
+Day 7 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
 
-## Expected Task 007 boundary after Task 006 acceptance
+## Expected Task 008 boundary after Task 007 acceptance
 
-Day 7 is the money ledger/reconciliation milestone:
+Day 8 target remains Campaign Factory + Creative Factory foundation in non-spending dry-run mode:
 
-- join Direct spend to acquired Dilivox cohorts;
-- join first-party events/content identity to Metrica/YAN monetization;
-- reconcile Metrica YAN revenue vs Partner Statistics;
-- calculate observed `K5_1D`, `K5_7D`, `K5_30D` where source data exists;
-- calculate revenue/visit and revenue/acquired-user;
-- preserve estimated/final/reconciled states;
-- enforce `DATA_QUALITY_HOLD` on unresolved money or attribution discrepancies;
-- expose evidence-ready money map, not a vanity dashboard.
+- provider-neutral campaign specification;
+- Yandex Direct entity lifecycle adapter contracts;
+- campaign/group/ad/keyword-or-autotargeting construction where supported;
+- tracking-parameter generation aligned with the accepted attribution ledger;
+- creative asset registry/versioning;
+- automated public-safe validation/policy hooks;
+- complete preview/dry-run plan before any provider write;
+- no money spend and no Direct Editing enablement.
 
-Live monetary reconciliation remains fixture-contract capable until OAuth provider reads are unblocked.
+Central Brain is preparing Day-8 public-safe contracts in parallel while Codex executes Task 007.
 
 ## Launch definition
 
@@ -219,7 +210,9 @@ Launch requires:
 
 ## Economic proof after launch
 
-Stable proof of `K5 >= 5.0` requires reconciled live money after launch. Expected observation/optimization phase remains approximately 14–30 days depending on traffic/revenue delay.
+Stable proof of `K5 >= 5.0` requires reconciled live money after launch. Fixture calculations never prove the target.
+
+Expected post-launch observation/optimization phase remains approximately 14–30 days depending on traffic/revenue delay.
 
 ## Resume protocol
 
