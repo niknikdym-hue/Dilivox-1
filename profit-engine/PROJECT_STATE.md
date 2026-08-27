@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION STARTED / DAY 2 — READ-ONLY PROVIDER + DATA FOUNDATION
+Status: IMPLEMENTATION ACTIVE / DAY 3 — DATA FOUNDATION
 Updated: 2026-08-27
 Canonical branch: `profit-engine`
 
@@ -10,13 +10,13 @@ Launch a guarded-production, machine-operated, multi-site Profit Engine whose fi
 
 `Yandex Direct -> Dilivox -> user behavior -> YAN revenue -> attribution/reconciliation -> Profit Engine -> guarded Direct + Dilivox actions -> measured outcome`.
 
-First production site: Dilivox (`site_id=dilivox`).
+First production site: `site_id=dilivox` / `dilivox.ru`.
 
 Primary launch target:
 
 `1 RUB Yandex Direct spend -> 5 RUB YAN/RСЯ advertising revenue attributable to the acquired Dilivox audience`.
 
-This is the optimization target. It is not a claimed current result.
+This is the optimization target, not a claimed current result.
 
 ## Locked Owner decisions
 
@@ -30,89 +30,115 @@ This is the optimization target. It is not a claimed current result.
 - Full Dilivox site-side integration is launch-critical.
 - Central Brain leads, executes available work, issues Codex tasks, accepts results and immediately advances the plan.
 - Chat is not source of truth.
-- Local workspaces are separated: existing site workspace `~/Documents/New project/Dilivox` remains independent; canonical Profit Engine workspace is `~/Documents/New project/Profit Engine/Dilivox-1`.
+- Local workspaces are separated: `~/Documents/New project/Dilivox` remains the site workspace; `~/Documents/New project/Profit Engine/Dilivox-1` is the Profit Engine workspace.
 
-## Day 1 / Task 001 acceptance
+## Task 001 — ACCEPTED
 
-Central Brain decision: `ACCEPTED_SUBSTANTIVELY / REPOSITORY_SYNC_REQUIRED`.
+Canonical evidence is now on origin:
 
-Codex reported:
-- local workspace exists at `/Users/elenadymova/Documents/New project/Profit Engine/Dilivox-1`;
-- branch `profit-engine`;
-- accepted local evidence commit `dd0f3025335ed174077e9e84b568baa58e21120a`;
-- old origin baseline at execution time `51eb6be7d7fe6cc06d795d33ae2a64c0c965010c`;
-- clean worktree;
-- existing Dilivox site workspace inspected read-only and not modified;
-- Metrica hooks/goals, YAN placement surfaces and current tracking gaps inventoried;
-- UTM/`yclid` persistence, stable immutable content IDs and Profit Engine first-party ingestion are not yet implemented;
-- no safe Direct/Metrica OAuth token or YAN Statistics API token was available;
-- no provider writes/spend occurred;
-- no secrets were exposed.
+`profit-engine/evidence/TASK-001-M0-INVENTORY.md`
 
-Task 001 evidence commit remains to be synchronized to current origin because Central Brain advanced `origin/profit-engine` after the Codex local baseline. Task 002 Step 0 owns this fast-forward-safe synchronization. Issue #2 remains open only until that sync is confirmed.
+Accepted findings:
+- local Profit Engine clone exists and is cleanly separated from the site workspace;
+- current Dilivox implementation surface, Metrica hooks and YAN placements were inventoried;
+- no production/site/provider writes occurred;
+- current gaps include UTM/yclid persistence, stable immutable content IDs and Profit Engine first-party ingestion;
+- provider live API checks were blocked by missing secure tokens.
 
-## Central Brain direct implementation after Task 001
+## Task 002 — ENGINEERING ACCEPTED / LIVE CERTIFICATION BLOCKED EXTERNALLY
 
-Central Brain added a root `.gitignore` to reduce secret/local-state risk before further implementation.
+Evidence-bearing HEAD reviewed by Central Brain:
 
-Current safety rule:
-- no secret values or private provider mappings in Git;
-- public repo may contain generic contracts/examples only;
-- competitively sensitive production/scoring implementation must not be expanded in the public repo without resolving the private-core boundary described in `SECURITY_AND_ACCESS.md`.
+`a5de1b32a8460fb18428625e01b09509686d158a`
 
-## Current provider/access state
+Canonical evidence:
 
-Known from authority + Task 001 report:
-- dedicated technical Yandex identity exists and is verified;
-- Direct managing-account `Reading` access is confirmed in UI;
-- Metrica counter access was granted in UI;
-- YAN Partner Assistant access for Dilivox/statistics UI was granted;
-- OAuth application `Profit Engine` exists with `direct:api` and `metrika:read` scopes;
-- Owner reported programmatic access open in Direct UI and legacy API points visible;
-- actual Direct API v5 readiness is NOT yet certified because no OAuth token was safely available to Codex;
-- Metrica API read is NOT yet certified for the same reason;
-- YAN Partner Statistics API read is NOT yet certified because the statistics-specific token was unavailable;
-- Direct write access remains intentionally disabled until guarded-autopilot gates pass.
+`profit-engine/evidence/TASK-002-READ-FOUNDATION.md`
 
-## Immediate active task — Task 002 / Day 2
+Accepted engineering deliverables:
+- Task 001 evidence safely rebased/pushed without force push;
+- root `.gitignore` and secret hygiene in place;
+- provider-neutral READ_ONLY runtime foundation;
+- Direct/Metrica/YAN diagnostic read clients;
+- public-example/private-local configuration boundary;
+- redacted logging and bounded retries;
+- fixture/unit test suite reported 11 PASS;
+- no provider write methods, spend, Tilda publication or production mutation.
+
+Central Brain independently checked the request shapes against current official Yandex documentation: Direct Clients/Campaigns read pattern, Metrica `ym:s:yanPartnerPrice`, and YAN Statistics API structure are consistent with current provider contracts.
+
+### D2 live certification blocker
+
+Current status:
+- Direct: `BLOCKED_MISSING_CREDENTIAL`;
+- Metrica: `BLOCKED_MISSING_CREDENTIAL`;
+- YAN Statistics: `BLOCKED_MISSING_CREDENTIAL`.
+
+Required Owner/provider actions in parallel:
+1. securely authorize/store the Profit Engine OAuth token for Direct + Metrica (`direct:api` + `metrika:read`);
+2. securely obtain/store the separate YAN Statistics API OAuth token;
+3. create the private local Dilivox provider mapping config with mode `0600`;
+4. rerun provider doctor.
+
+Tokens/private provider IDs must never be sent through chat or committed to GitHub.
+
+This blocker is classified `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL` and does NOT stop parallel engineering.
+
+## Public/private core risk
+
+`niknikdym-hue/Dilivox-1` is public.
+
+Generic interfaces, schemas, site contracts, safety controls and non-secret examples may remain here.
+
+Before proprietary optimizer/scoring/allocation logic expands, the private-core repository boundary must be resolved. Until then, sensitive scoring weights, owner-specific allocation heuristics, confidential provider mappings, production datasets and commercial optimizer implementation must not be added to the public repository.
+
+Current migration gate:
+
+`PRIVATE_CORE_REPOSITORY_REQUIRED_BEFORE_SENSITIVE_OPTIMIZER_IMPLEMENTATION`.
+
+## Immediate active task — Task 003 / Day 3
+
+GitHub issue: `#4 — Profit Engine Task 003 — Data foundation + private-core boundary`
 
 Canonical contract:
 
-`profit-engine/tasks/TASK-002-READ-FOUNDATION-PROVIDER-CERTIFICATION.md`
+`profit-engine/tasks/TASK-003-DATA-FOUNDATION-PRIVATE-CORE-BOUNDARY.md`
 
 Executor: Codex.
 Acceptance authority: Central Brain.
 
-Task 002 objectives:
-1. safely rebase/cherry-pick and push accepted Task 001 evidence onto current `origin/profit-engine` without force push;
-2. verify root `.gitignore`/secret hygiene;
-3. create minimal provider-neutral READ_ONLY runtime foundation;
-4. create public example/private local configuration boundary;
-5. implement Direct/Metrica/YAN diagnostic read clients with redacted logging and fixture tests;
-6. perform live READ_ONLY provider checks for every securely available credential;
-7. isolate absent credentials as exact Owner/provider actions without blocking engineering work;
-8. commit/push Task 002 evidence.
+Task 003 scope:
+- explicit private-core boundary;
+- versioned PostgreSQL schema foundation;
+- immutable raw snapshot contract and local development raw store;
+- provider-neutral relational/raw/secret/health/audit interfaces;
+- data-quality primitives and `DATA_QUALITY_HOLD`;
+- minimal portable collector/deployment structure;
+- rerun provider doctor only if secure credentials become available;
+- tests, secret scan and committed evidence.
 
-No production Dilivox changes, campaign writes, budget changes or spend are authorized in Task 002.
+No production Dilivox changes, Direct writes, campaign/budget mutations, spend, real raw provider data in Git, or paid Cloud resource creation are authorized in Task 003.
 
 ## Current launch day
 
-Day 2 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
+Day 3 of `HARD_12_DAY_LAUNCH_PLAN.md` is active.
 
-External token/UI dependencies are treated as `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL` while parallel engineering foundation continues.
+Provider credential certification continues in parallel.
 
-## Expected Task 003 boundary after Task 002 acceptance
+## Expected Task 004 boundary
 
-Primary Day 3 scope remains minimal Cloud/data foundation:
-- decide/confirm private-core repository boundary before competitively sensitive production code expands;
-- establish minimal runtime deployment structure;
-- secret-manager contract / Lockbox integration when Cloud access is available;
-- PostgreSQL/data schema foundation;
-- immutable raw snapshot contract;
-- logging/health checks;
+Day 4 target after Task 003 acceptance:
+- Direct read collector;
+- Metrica read collector;
+- YAN statistics collector;
+- idempotent ingestion-run orchestration;
+- raw snapshot persistence;
+- normalized provider-neutral facts;
+- freshness/retry/error handling;
+- source fidelity checks;
 - no Direct writes.
 
-If provider read tokens remain the sole blocker, provider certification continues in parallel and does not justify idling the engineering schedule.
+If provider tokens are still unavailable, collector implementations and fixture/source-contract validation continue while live provider execution remains externally blocked.
 
 ## Launch definition
 
@@ -138,4 +164,4 @@ Only reconciled live money may prove `K5 >= 5.0`.
 
 ## Resume protocol
 
-Read `PROJECT_HANDOFF.md` and follow its exact read order. Verify actual `profit-engine` branch HEAD and continue the first incomplete task. Never ask the Owner to reconstruct project history from chat.
+Read `PROJECT_HANDOFF.md`, follow its exact read order, verify actual `origin/profit-engine` HEAD, and continue the first incomplete task. Never reconstruct state from chat memory when repository evidence exists.
