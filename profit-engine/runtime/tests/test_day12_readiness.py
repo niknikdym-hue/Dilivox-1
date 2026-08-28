@@ -7,13 +7,21 @@ from profit_engine_runtime.day12_readiness import (
     Day12ReadinessState,
     DirectPermissionState,
     build_day12_launch_readiness,
+    observed_direct_permission,
 )
 from profit_engine_runtime.models import DiagnosticResult, DoctorStatus
 
 
-def diagnostics(*, direct=DoctorStatus.PASS, metrica=DoctorStatus.PASS, yan=DoctorStatus.PASS):
+def diagnostics(
+    *,
+    direct=DoctorStatus.PASS,
+    metrica=DoctorStatus.PASS,
+    yan=DoctorStatus.PASS,
+    direct_permission: str | None = None,
+):
+    direct_checks = () if direct_permission is None else (f"direct.permission={direct_permission}",)
     return (
-        DiagnosticResult("direct", direct),
+        DiagnosticResult("direct", direct, checks=direct_checks),
         DiagnosticResult("metrica", metrica),
         DiagnosticResult("yan_statistics", yan),
     )
@@ -34,10 +42,40 @@ class Day12ReadinessTests(unittest.TestCase):
 
     def test_unknown_permission_fails_closed(self):
         result = build_day12_launch_readiness(
-            direct_permission=DirectPermissionState.UNKNOWN,
             diagnostics=diagnostics(),
         )
         self.assertEqual(Day12ReadinessState.BLOCKED_OWNER_PERMISSION, result.state)
+        self.assertEqual(DirectPermissionState.UNKNOWN, result.direct_permission)
+
+    def test_observed_permission_is_extracted_from_direct_doctor(self):
+        self.assertEqual(
+            DirectPermissionState.EDITING,
+            observed_direct_permission(diagnostics(direct_permission="EDITING")),
+        )
+        self.assertEqual(
+            DirectPermissionState.READING,
+            observed_direct_permission(diagnostics(direct_permission="READING")),
+        )
+        self.assertEqual(
+            DirectPermissionState.UNKNOWN,
+            observed_direct_permission(diagnostics(direct_permission="unexpected")),
+        )
+
+    def test_observed_reading_cannot_be_overridden_by_manual_editing(self):
+        result = build_day12_launch_readiness(
+            direct_permission=DirectPermissionState.EDITING,
+            diagnostics=diagnostics(direct_permission="READING"),
+        )
+        self.assertEqual(DirectPermissionState.READING, result.direct_permission)
+        self.assertEqual(Day12ReadinessState.BLOCKED_OWNER_PERMISSION, result.state)
+
+    def test_observed_editing_advances_without_manual_permission_flag(self):
+        result = build_day12_launch_readiness(
+            diagnostics=diagnostics(direct_permission="EDITING"),
+        )
+        self.assertEqual(DirectPermissionState.EDITING, result.direct_permission)
+        self.assertEqual(Day12ReadinessState.READY_FOR_LIVE_CANDIDATE_SELECTION, result.state)
+        self.assertFalse(result.provider_write_allowed)
 
     def test_wrong_controller_sha_blocks_before_permission(self):
         result = build_day12_launch_readiness(
