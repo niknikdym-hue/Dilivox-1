@@ -49,6 +49,15 @@ class YandexDirectReadClient(ProviderReadClient):
             ))
             _require_success(client)
             checks.append("clients.get")
+            if self.config.direct_client_login and not _direct_client_present(client.json_body, self.config.direct_client_login):
+                return DiagnosticResult(
+                    provider,
+                    DoctorStatus.BLOCKED_ACCESS,
+                    tuple(checks),
+                    client.status_code,
+                    client.request_id,
+                    detail="configured Direct client login is not visible to this OAuth identity",
+                )
             campaigns = self.transport.send(HttpRequest(
                 "POST", f"{self.config.direct_endpoint}/campaigns", headers,
                 json_body={"method": "get", "params": {"SelectionCriteria": {}, "FieldNames": ["Id", "Name", "State", "Status"], "Page": {"Limit": 1}}},
@@ -78,6 +87,11 @@ class YandexMetricaReadClient(ProviderReadClient):
             counter_id = str(counter.get("id"))
             permission = counter.get("permission", "unknown")
             checks.append(f"counter.permission={permission}")
+            goals = self.transport.send(HttpRequest(
+                "GET", f"{self.config.metrica_management_endpoint}/counter/{counter_id}/goals", headers,
+            ))
+            _require_success(goals)
+            checks.append("counter.goals.list")
             report = self.transport.send(HttpRequest(
                 "GET", self.config.metrica_reports_endpoint, headers,
                 query={"ids": counter_id, "metrics": "ym:s:visits,ym:s:yanPartnerPrice", "date1": "yesterday", "date2": "yesterday", "limit": "1"},
@@ -104,20 +118,60 @@ class YanPartnerStatsReadClient(ProviderReadClient):
             _require_success(tree)
             checks.append("statistics.tree")
             query: dict[str, str | list[str]] = {
-                "lang": "en", "stat_type": "main", "period": "yesterday",
-                "dimension_field": "date|day", "entity_field": "page_id",
-                "field": ["shows", "hits_render"], "limits": "1",
+                "lang": "en",
+                "stat_type": "main",
+                "period": "30days",
+                "entity_field": "domain",
+                "field": [
+                    "partner_wo_nds",
+                    "shows",
+                    "hits",
+                    "hits_render",
+                    "fillrate",
+                    "cpmv_partner_wo_nds",
+                    "ecpm_partner_wo_nds",
+                    "rpm_partner_wo_nds",
+                ],
+                "filter": f'["domain","=","{self.config.canonical_domain}"]',
+                "currency": self.config.yan_currency or "RUB",
+                "timezone": self.config.yan_timezone or "Europe/Moscow",
             }
-            if self.config.yan_resource_id:
-                query["filter"] = f'["page_id","=","{self.config.yan_resource_id}"]'
             report = self.transport.send(HttpRequest(
                 "GET", f"{self.config.yan_stats_endpoint}/get.json", headers, query=query,
             ))
             _require_success(report)
-            checks.append("statistics.report(yesterday,limit=1)")
+            if not _yan_domain_present(report.json_body, self.config.canonical_domain):
+                return DiagnosticResult(
+                    provider,
+                    DoctorStatus.BLOCKED_ACCESS,
+                    tuple(checks),
+                    report.status_code,
+                    report.request_id,
+                    detail="Dilivox domain is not present in YAN Statistics report scope",
+                )
+            checks.append("statistics.report(domain,30days,money)")
             return DiagnosticResult(provider, DoctorStatus.PASS, tuple(checks), report.status_code, report.request_id)
         except TransportError as exc:
             return self._error(provider, exc, tuple(checks))
+
+
+def _direct_client_present(body: Any, expected_login: str) -> bool:
+    clients = body.get("result", {}).get("Clients", []) if isinstance(body, dict) else []
+    return any(str(item.get("Login", "")).lower() == expected_login.lower() for item in clients)
+
+
+def _yan_domain_present(body: Any, expected_domain: str) -> bool:
+    if not isinstance(body, dict):
+        return False
+    data = body.get("data") or {}
+    points = data.get("points") or []
+    expected = expected_domain.lower().removeprefix("www.").rstrip("/")
+    for point in points:
+        dimensions = point.get("dimensions") or {}
+        domain = str(dimensions.get("domain", "")).lower().removeprefix("www.").rstrip("/")
+        if domain == expected:
+            return True
+    return False
 
 
 def _select_counter(body: Any, config: SiteConfig) -> dict[str, Any] | None:
