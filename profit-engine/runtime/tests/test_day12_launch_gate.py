@@ -15,10 +15,7 @@ from profit_engine_runtime.day12_launch_gate import (
     build_inert_writer_arm_intent,
     build_live_candidate_selection,
 )
-from profit_engine_runtime.day12_readiness import (
-    DirectPermissionState,
-    build_day12_launch_readiness,
-)
+from profit_engine_runtime.day12_readiness import build_day12_launch_readiness
 from profit_engine_runtime.direct_controller import (
     ExecutionLockRegistry,
     MutationCadenceEvidence,
@@ -36,9 +33,9 @@ from profit_engine_runtime.models import DiagnosticResult, DoctorStatus
 NOW = datetime(2026, 8, 28, 18, tzinfo=timezone.utc)
 
 
-def all_pass_diagnostics():
+def all_pass_diagnostics(permission: str = "EDITING"):
     return (
-        DiagnosticResult("direct", DoctorStatus.PASS),
+        DiagnosticResult("direct", DoctorStatus.PASS, checks=(f"direct.permission={permission}",)),
         DiagnosticResult("metrica", DoctorStatus.PASS),
         DiagnosticResult("yan_statistics", DoctorStatus.PASS),
     )
@@ -120,7 +117,6 @@ class Day12LaunchGateTests(unittest.TestCase):
             locks=ExecutionLockRegistry(),
         )
         self.ready = build_day12_launch_readiness(
-            direct_permission=DirectPermissionState.EDITING,
             diagnostics=all_pass_diagnostics(),
         )
 
@@ -136,8 +132,7 @@ class Day12LaunchGateTests(unittest.TestCase):
 
     def test_blocked_readiness_cannot_create_candidate(self):
         blocked = build_day12_launch_readiness(
-            direct_permission=DirectPermissionState.READING,
-            diagnostics=all_pass_diagnostics(),
+            diagnostics=all_pass_diagnostics("READING"),
         )
         with self.assertRaises(ValueError):
             build_live_candidate_selection(
