@@ -108,3 +108,17 @@ attribution facts, deterministic money-ledger materialization, public-safe actio
 proposals, Budget Governor decisions, and inert site-experiment intents. It has
 no provider/site transport and cannot mutate a budget. The exact Owner boundary
 is enforced at `+20.00%` versus `+20.01%` weekly growth.
+
+## Day-11 guarded Direct controller dry-run
+
+`direct_controller.py` turns an exactly bound Governor-ready proposal, registered
+provider target, fresh read-only preflight, and all authorization evidence into
+an immutable `READY_FOR_DAY12_EXECUTION` plan. It enforces explicit weekly-to-
+provider budget mapping, the Owner approval boundary above 20%, hierarchical
+kill switches, one autonomous budget mutation per campaign/day, one object per
+request, target locks, TOCTOU comparison, read-back, preflight-derived rollback,
+and a hash-linked redacted audit chain.
+
+The only write transport is an in-memory test fake. The default runtime has no
+real writer, provider request, credential requirement, or production execution
+state; `PRODUCTION_WRITER_ENABLED` is hard-coded `False` for Day 11.
