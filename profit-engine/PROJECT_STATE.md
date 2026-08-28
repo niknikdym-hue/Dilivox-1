@@ -95,7 +95,7 @@ Canonical task:
 
 ## Day-12 pre-Editing readiness harness — VERIFIED / GREEN
 
-Current verified public implementation before Owner permission transition:
+Verified readiness implementation:
 `4419f14f0f1a74f00077f46bed268f2027b30d44`
 
 Profit Engine CI `33200909842`: GREEN.
@@ -103,18 +103,46 @@ Profit Engine CI `33200909842`: GREEN.
 Evidence:
 `profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`
 
-The runtime now includes:
+The runtime includes:
 - `day12_readiness.py` fail-closed launch-readiness state machine;
 - `day12_readiness_cli.py` read-only CLI reusing the existing Direct/Metrica/YAN doctor;
 - negative tests for wrong controller SHA, Reading/UNKNOWN permission, missing/failed providers and digest tamper.
 
 Even when all doctor checks pass and Editing is later confirmed, this harness can only produce `READY_FOR_LIVE_CANDIDATE_SELECTION`; it does not grant provider write authority. `provider_write_allowed=false`, real provider requests remain 0, advertising spend remains 0 and the production writer remains disabled.
 
-## Owner permission gate — CURRENT FIRST BLOCKER
+## Day-12 candidate binding + inert writer-arm scaffold — CENTRAL BRAIN ACCEPTED PRE-LIVE
 
-Central Brain has accepted the controller and pre-Editing readiness harness as ready for the permission upgrade.
+New implementation chain reviewed after the previous verified state:
 
-The single next Owner action is:
+- `e09731a277c68acd9426f3a9d296444cec44a9df` — candidate binding + inert writer-arm contract;
+- `a4a0e492e17d4d953195fbf3180293ae9d0654fd` — tests;
+- `3fbfae2090b89af17813e8d70e9920e90726e8e7` — executor evidence.
+
+Exact reviewed HEAD CI: Profit Engine run `33201727671` — GREEN.
+
+Central Brain acceptance:
+`profit-engine/evidence/TASK-012-CENTRAL-BRAIN-PRELIVE-ACCEPTANCE.md`
+
+Acceptance commit:
+`d45abca6e6c2311cc4aacb04db27f4cf0a6aef5a`
+
+Accepted scope is deliberately narrow:
+- exact candidate/ControllerPlan/digest binding;
+- measurement/provenance refs required;
+- public runtime candidate structure remains non-authorizing;
+- writer-arm intent is one-shot but explicitly inert/non-executable;
+- no provider transport added;
+- provider requests/spend remain 0;
+- production writer remains disabled;
+- >20% weekly budget increases remain gated by the already-accepted exact trusted Owner approval chain in the ControllerPlan.
+
+Important interpretation: `selected_by="CENTRAL_BRAIN"` is an audit marker, not cryptographic caller authentication. The runtime object alone is never proof of Central Brain live candidate acceptance. Exact live selection authority must still be recorded separately from accepted live evidence before any executable writer arming.
+
+## Owner permission gate — CURRENT FIRST CANONICAL BLOCKER
+
+Central Brain has accepted the controller, pre-Editing readiness harness and inert pre-live candidate/writer-arm scaffold as ready for the permission upgrade.
+
+The single next canonical Owner action is:
 
 `Yandex Direct access: Reading -> Editing`.
 
@@ -131,7 +159,12 @@ Before the first real write:
 - token values remain outside Git/chat/issues/logs/screenshots;
 - local secrets use Keychain; production target is Lockbox.
 
-Current historic classification before Day-12 certification was `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL`; Day 12 must replace that with live doctor evidence rather than assumptions.
+Latest redacted Owner-side terminal observation on 2026-08-28:
+- Metrica management read returned HTTP `403` with error class `invalid_token` / `Invalid oauth_token`;
+- YAN Statistics doctor reported `BLOCKED_MISSING_CREDENTIAL` for its separate OAuth token;
+- no token/secret value is recorded here.
+
+These observations mean current provider certification is not PASS. They do not authorize changing Yandex account permissions or credentials automatically. Day 12 must replace blockers with explicit live doctor PASS evidence before candidate selection or write arming.
 
 ## First real mutation boundary
 
@@ -174,10 +207,11 @@ Read `PROJECT_HANDOFF.md`, verify actual `origin/profit-engine` HEAD and private
 1. `profit-engine/PROJECT_STATE.md`;
 2. `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`;
 3. `profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`;
-4. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
-5. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
-6. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
-7. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
-8. issue #19.
+4. `profit-engine/evidence/TASK-012-CENTRAL-BRAIN-PRELIVE-ACCEPTANCE.md`;
+5. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+6. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+7. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+8. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
+9. issue #19.
 
-Current first incomplete gate: Owner Direct permission transition Reading -> Editing.
+Current first incomplete canonical gate: Owner Direct permission transition Reading -> Editing.
