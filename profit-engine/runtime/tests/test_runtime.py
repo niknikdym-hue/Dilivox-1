@@ -70,25 +70,50 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual("req-campaign", result.request_id)
         self.assertEqual("1/100/1000", result.provider_units)
 
+    def test_direct_configured_login_must_be_visible(self):
+        config = SiteConfig(direct_client_login="reklamadymova")
+        visible = {"result": {"Clients": [{"ClientId": 100716697, "Login": "reklamadymova", "Type": "CLIENT"}]}}
+        result = YandexDirectReadClient(FakeTransport([ok(visible), ok({})]), config).diagnose(TOKEN)
+        self.assertEqual(DoctorStatus.PASS, result.status)
+        missing = {"result": {"Clients": [{"Login": "other"}]}}
+        result = YandexDirectReadClient(FakeTransport([ok(missing)]), config).diagnose(TOKEN)
+        self.assertEqual(DoctorStatus.BLOCKED_ACCESS, result.status)
+
     def test_metrica_read_shapes(self):
         counters = {"counters": [{"id": 123, "site": "dilivox.ru", "permission": "view"}]}
-        transport = FakeTransport([ok(counters), ok({"data": []}, RequestId="metrica-report")])
+        transport = FakeTransport([
+            ok(counters),
+            ok({"goals": []}, RequestId="metrica-goals"),
+            ok({"data": []}, RequestId="metrica-report"),
+        ])
         result = YandexMetricaReadClient(transport, self.config).diagnose(TOKEN)
         self.assertEqual(DoctorStatus.PASS, result.status)
-        self.assertEqual(["GET", "GET"], [request.method for request in transport.requests])
+        self.assertEqual(["GET", "GET", "GET"], [request.method for request in transport.requests])
         self.assertTrue(transport.requests[0].url.endswith("/counters"))
-        self.assertEqual("ym:s:visits,ym:s:yanPartnerPrice", transport.requests[1].query["metrics"])
+        self.assertTrue(transport.requests[1].url.endswith("/counter/123/goals"))
+        self.assertEqual("ym:s:visits,ym:s:yanPartnerPrice", transport.requests[2].query["metrics"])
         self.assertEqual(f"OAuth {TOKEN}", transport.requests[0].headers["Authorization"])
 
     def test_yan_statistics_read_shapes(self):
-        transport = FakeTransport([ok({"result": "ok", "data": {"tree": []}}), ok({"result": "ok", "data": {"points": []}})])
+        report = {"result": "ok", "data": {"points": [{"dimensions": {"domain": "dilivox.ru"}, "measures": [{"partner_wo_nds": 1.0}]}]}}
+        transport = FakeTransport([ok({"result": "ok", "data": {"tree": []}}), ok(report)])
         result = YanPartnerStatsReadClient(transport, self.config).diagnose(TOKEN)
         self.assertEqual(DoctorStatus.PASS, result.status)
         self.assertEqual(["GET", "GET"], [request.method for request in transport.requests])
         self.assertTrue(transport.requests[0].url.endswith("/tree.json"))
         self.assertTrue(transport.requests[1].url.endswith("/get.json"))
-        self.assertEqual("yesterday", transport.requests[1].query["period"])
+        self.assertEqual("30days", transport.requests[1].query["period"])
+        self.assertEqual("domain", transport.requests[1].query["entity_field"])
+        self.assertIn("dilivox.ru", transport.requests[1].query["filter"])
+        self.assertIn("partner_wo_nds", transport.requests[1].query["field"])
         self.assertEqual(f"OAuth {TOKEN}", transport.requests[0].headers["Authorization"])
+
+    def test_yan_statistics_requires_exact_domain_scope(self):
+        report = {"result": "ok", "data": {"points": [{"dimensions": {"domain": "other.example"}, "measures": [{}]}]}}
+        result = YanPartnerStatsReadClient(
+            FakeTransport([ok({"result": "ok", "data": {"tree": []}}), ok(report)]), self.config
+        ).diagnose(TOKEN)
+        self.assertEqual(DoctorStatus.BLOCKED_ACCESS, result.status)
 
     def test_missing_tokens_are_classified_without_transport_calls(self):
         for client_type in (YandexDirectReadClient, YandexMetricaReadClient, YanPartnerStatsReadClient):
