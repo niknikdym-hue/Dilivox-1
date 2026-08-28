@@ -100,8 +100,11 @@ sensitive keyed fields are redacted before hashing/logging.
 - Task-010R tests remain included and green.
 - Node regression: `22/22 PASS`.
 - Python compile: `PASS`.
-- JSON validation, `git diff --check`, secret/private-data scan, and provider-write
-  reachability scan are required before commit.
+- JSON validation (`11` artifacts): `PASS`.
+- `git diff --check`: `PASS`.
+- secret/private-data scan: `PASS`.
+- provider-write reachability scan: `PASS`; no network/provider writer import,
+  production writer flag is false, and real request/spend counters are zero.
 - final exact-origin Profit Engine CI is recorded after push.
 
 Fixtures and synthetic execution do not constitute a provider write or evidence
