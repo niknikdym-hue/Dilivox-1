@@ -36,9 +36,12 @@ Implementation chain:
 - `50a06cb4437fbca562ea39bc73af2f78298a3133` — Day-12 readiness consumes provider-observed permission and fails closed on UNKNOWN/READING; an observed READ_ONLY result cannot be overridden by a manual EDITING assertion;
 - `756fb0980a6e5038096559cf5eda611ccbf33166` — Day-12 CLI removes the manual permission flag and uses `DIRECT_CLIENTS_GET` as the permission source;
 - `9a271f6680e945166deb9992125025c319db9964` — runtime tests for exact read-only permission derivation;
-- `438342976a2a60013366aca93e0f43fae3633e31` — readiness tests proving observed permission is authoritative and write authority remains false.
+- `438342976a2a60013366aca93e0f43fae3633e31` — readiness tests proving observed permission is authoritative and write authority remains false;
+- `696e9c41515f2f0ce77b3300620fd2143a6c221a` — one-command Owner entrypoint `profit-engine/scripts/day12-live-readiness.sh`, which creates only a temporary 0600 config containing Keychain references, runs the read-only readiness probe, and removes the temporary config on exit.
 
 Profit Engine CI run `33209777119`, job `98979872594`: all Python tests, Node tests, JSON validation and diff checks SUCCESS on `438342976a2a60013366aca93e0f43fae3633e31`.
+
+State synchronization commit `cd6ea800883478e70af23efe1ce3df6086bbc58d` CI run `33209876455`: SUCCESS.
 
 ## Safety invariants
 
@@ -46,6 +49,7 @@ Profit Engine CI run `33209777119`, job `98979872594`: all Python tests, Node te
 - no Yandex account permission is changed;
 - no Direct campaign/budget mutation is performed;
 - no token value is written to Git, issues, logs, or evidence;
+- the one-command script writes only Keychain reference names to a temporary local config, never token values;
 - `provider_write_allowed=false` remains hard-coded in Day-12 readiness;
 - production writer remains disabled;
 - private core remains proposal-only;
@@ -60,6 +64,10 @@ This is not live launch acceptance. A real live run from the Owner environment m
 
 ## Remaining external boundary
 
-The repository no longer needs a human to *declare* Reading vs Editing. The next external step is only to execute the read-only Day-12 readiness command in the Owner environment where the existing Keychain credentials are available.
+The repository no longer needs a human to *declare* Reading vs Editing. The next external step is only to execute, from an up-to-date local checkout of branch `profit-engine`:
+
+`bash profit-engine/scripts/day12-live-readiness.sh`
+
+The script uses the existing macOS Keychain credentials and performs read-only provider calls only.
 
 If the observed result is `READING`, the single Owner-only action is to change the relevant Yandex Direct access to Editing. If it is already `EDITING`, no permission change is needed and the system can continue to live candidate selection after the remaining provider checks PASS.
