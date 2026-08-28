@@ -38,13 +38,44 @@ class YandexDirectReadClient(ProviderReadClient):
         provider = "direct"
         if not token:
             return DiagnosticResult(provider, DoctorStatus.BLOCKED_MISSING_CREDENTIAL, detail="missing shared Yandex OAuth read token")
-        headers = {"Authorization": f"Bearer {token}", "Accept-Language": "en"}
-        if self.config.direct_client_login:
-            headers["Client-Login"] = self.config.direct_client_login
+        if self.config.direct_operator_login and not self.config.direct_client_login:
+            return DiagnosticResult(
+                provider,
+                DoctorStatus.BLOCKED_ACCESS,
+                detail="managed Direct target login is required when an operator/manager login is configured",
+            )
+
+        base_headers = {"Authorization": f"Bearer {token}", "Accept-Language": "en"}
         checks: list[str] = []
         try:
+            if self.config.direct_operator_login:
+                operator = self.transport.send(HttpRequest(
+                    "POST",
+                    f"{self.config.direct_endpoint}/clients",
+                    base_headers,
+                    json_body={
+                        "method": "get",
+                        "params": {"FieldNames": ["ClientId", "Login", "Type"]},
+                    },
+                ))
+                _require_success(operator)
+                checks.append("clients.get(operator)")
+                if not _direct_client_present(operator.json_body, self.config.direct_operator_login):
+                    return DiagnosticResult(
+                        provider,
+                        DoctorStatus.BLOCKED_ACCESS,
+                        tuple(checks),
+                        operator.status_code,
+                        operator.request_id,
+                        detail="configured Direct operator login is not the OAuth identity returned by Direct",
+                    )
+                checks.append("direct.operator_identity=PASS")
+
+            target_headers = dict(base_headers)
+            if self.config.direct_client_login:
+                target_headers["Client-Login"] = self.config.direct_client_login
             client = self.transport.send(HttpRequest(
-                "POST", f"{self.config.direct_endpoint}/clients", headers,
+                "POST", f"{self.config.direct_endpoint}/clients", target_headers,
                 json_body={
                     "method": "get",
                     "params": {
@@ -53,7 +84,7 @@ class YandexDirectReadClient(ProviderReadClient):
                 },
             ))
             _require_success(client)
-            checks.append("clients.get")
+            checks.append("clients.get(target)")
             if self.config.direct_client_login and not _direct_client_present(client.json_body, self.config.direct_client_login):
                 return DiagnosticResult(
                     provider,
@@ -61,16 +92,25 @@ class YandexDirectReadClient(ProviderReadClient):
                     tuple(checks),
                     client.status_code,
                     client.request_id,
-                    detail="configured Direct client login is not visible to this OAuth identity",
+                    detail="configured Direct managed target login is not visible to this OAuth identity",
                 )
-            permission = _direct_edit_permission(client.json_body, self.config.direct_client_login)
+
+            if self.config.direct_operator_login:
+                # The documented Direct API exposes advertiser/agency grants and representative roles,
+                # but not the Reading/Editing level of a separate Managing Account relationship.
+                # Never infer manager write authority from the managed advertiser's Grants/Representatives.
+                permission = "UNKNOWN"
+                checks.append("direct.permission_source=MANAGER_ACCOUNT_UI_REQUIRED")
+            else:
+                permission = _direct_edit_permission(client.json_body, self.config.direct_client_login)
             checks.append(f"direct.permission={permission}")
+
             campaigns = self.transport.send(HttpRequest(
-                "POST", f"{self.config.direct_endpoint}/campaigns", headers,
+                "POST", f"{self.config.direct_endpoint}/campaigns", target_headers,
                 json_body={"method": "get", "params": {"SelectionCriteria": {}, "FieldNames": ["Id", "Name", "State", "Status"], "Page": {"Limit": 1}}},
             ))
             _require_success(campaigns)
-            checks.append("campaigns.get(limit=1)")
+            checks.append("campaigns.get(target,limit=1)")
             units = _header(campaigns, "Units")
             return DiagnosticResult(provider, DoctorStatus.PASS, tuple(checks), campaigns.status_code, campaigns.request_id, units)
         except TransportError as exc:
