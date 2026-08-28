@@ -74,3 +74,16 @@ PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.collector_cli 
 The CLI accepts `direct`, `metrica`, `yan`, or `all`. Live mode always runs the
 provider doctor first and proceeds only for providers with `PASS`. Raw storage
 and integrity verification happen before deterministic normalization.
+
+## Campaign Factory Day-8 dry-run
+
+Build a deterministic credential-free fixture preview (no provider requests or spend):
+
+```bash
+PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.campaign_factory_cli valid \
+  --registry profit-engine/sites/dilivox/content-registry.json
+```
+
+Fixture scenarios are `valid`, `missing-content`, `invalid-tracking`, and
+`invalid-capability`. Future provider operations are represented only as inert
+data intents with `executable=false`.
