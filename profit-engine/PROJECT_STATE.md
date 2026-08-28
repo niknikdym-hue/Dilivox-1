@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 10 — TWO-REPO PROFIT ALLOCATOR + GUARDRAILS
+Status: IMPLEMENTATION ACTIVE / DAY 10 REWORK — COHORT MATERIALIZATION TRUTH GATE
 Updated: 2026-08-28
 Canonical public branch: `profit-engine`
 Private core branch: `main`
@@ -32,19 +32,20 @@ This is a target, not a claimed current result.
 
 Canonical evidence exists under `profit-engine/evidence/`.
 
-Task 007 was accepted after a Central Brain reconciliation/K5 hotfix.
-Task 008 Campaign/Creative Factory dry-run is accepted.
-Task 009 Acquisition Strategy Lab public contracts is accepted at:
+Key accepted milestones:
+- raw-first provider ingestion and data-quality holds;
+- stable Dilivox content/placement identity and privacy-minimal attribution;
+- first-party event layer;
+- reconciled money/K5 contracts with Central Brain reconciliation hotfix;
+- Campaign + Creative Factory dry-run;
+- Acquisition Strategy Lab public-safe contracts;
+- permanent Profit Engine CI.
+
+Task 009 accepted HEAD:
 
 `668680fdbd214854b16307e68f1ad8c7207f645c`
 
-Final Task-009 Profit Engine CI run `33155891533`: GREEN.
-
-Accepted Task-009 invariants:
-- only reconciled/mature/consumable evidence can become experiment-eligible;
-- C/E/UNJOINABLE or otherwise weak attribution cannot masquerade as proven cohort linkage;
-- public Strategy Lab validates cells/experiments but does not rank/select/allocate;
-- provider requests/spend/write authority remain zero/false.
+Final Task-009 CI `33155891533`: GREEN.
 
 ## Private core — GATE COMPLETE
 
@@ -56,22 +57,64 @@ Visibility: PRIVATE.
 Connected GitHub integration: read/write available.
 Owner Gate #11: COMPLETED.
 
-Private core now contains:
-- `PROJECT_AUTHORITY.md`;
-- `PROJECT_STATE.md`;
-- `PUBLIC_CONTRACT_VERSION.md`;
-- secret-safe `.gitignore`;
-- Python package skeleton/tests;
-- private CI.
-
-Private Core CI run `33157344499`: GREEN.
-
 Hard split:
 - public repo owns measurement, provider/site adapters, public safety contracts, Budget Governor and guarded execution boundary;
-- private core owns proprietary ranking, learned/private thresholds, expected-value/LTV calibration and owner-specific allocation heuristics;
-- private core outputs proposals only and never writes to providers.
+- private core owns proprietary ranking, private thresholds, expected-value/confidence and owner-specific allocation heuristics;
+- private core emits proposals only and never writes to providers.
 
-## External provider credentials — parallel blocker
+## Task 010 — IMPLEMENTED BUT REWORK REQUIRED BEFORE ACCEPTANCE
+
+Codex reported:
+
+Public implementation:
+`739da5d6e4d57b56678cebca2f11502f9dcfe5d2`
+
+Public CI `33166448432`: GREEN.
+
+Private implementation:
+`92b58d54793835799dbd1c63f19fccedafbf8a66`
+
+Private CI `33166774369`: GREEN.
+
+Accepted-in-principle Task-010 components that are NOT being redesigned:
+- named Metrica campaign/day attribution fact;
+- period K5 path;
+- ActionProposal v1;
+- Budget Governor v1 including exact +20.00% / +20.01% Owner boundary;
+- public data-quality / stop-loss / kill-switch structural guards;
+- inert site experiment intent;
+- private ProfitAllocator/ranking/selection/allocation policy;
+- public/private repository split and no provider write authority.
+
+### Launch-critical defect found by Central Brain
+
+Current public `LedgerMaterializer` passes one daily campaign-level `MetricaAttributionFact.attributed_yan_revenue` into all cohort windows `K5_1D`, `K5_7D`, and `K5_30D`.
+
+This violates the canonical Day-7 invariant:
+
+`campaign/day period attribution != proof that later revenue belongs to the original D0 acquisition cohort`.
+
+If later revenue cannot be proven as belonging to the original cohort, cohort K5 MUST be:
+
+`NOT_COMPUTABLE_ATTRIBUTION_HOLD`.
+
+It must never reuse/replicate a daily period numerator as a cohort numerator.
+
+Canonical bounded rework contract:
+
+`profit-engine/tasks/TASK-010-REWORK-COHORT-MATERIALIZATION.md`
+
+Required correction:
+- campaign/day Metrica facts feed period K5 only;
+- cohort K5 requires explicit immutable cohort-revenue evidence for each 1D/7D/30D window;
+- missing/unproven cohort evidence -> value `None`, `NOT_COMPUTABLE`, `NOT_COMPUTABLE_ATTRIBUTION_HOLD`, `optimizer_consumable=false`;
+- explicit valid cohort evidence must preserve cohort ref, window, timezone, currency/basis, source/reconciliation/maturity provenance;
+- late cohort evidence creates a new derived version without rewriting history;
+- after public fix + GREEN CI, private core must pin the new exact public SHA and run GREEN private CI.
+
+Task 010 remains OPEN until Central Brain verifies this correction in both repositories.
+
+## External provider credentials — launch-critical parallel blocker
 
 Live certification remains:
 - Direct: `BLOCKED_MISSING_CREDENTIAL`;
@@ -80,70 +123,26 @@ Live certification remains:
 
 Classification: `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL`.
 
-This does not block Day-10 fixture/contracts work, but must be resolved before real closed-loop production launch.
-
-## Immediate active task — Task 010 / Day 10
-
-Canonical design:
-
-`profit-engine/DAY10_PROFIT_ALLOCATOR_AND_GUARDRAILS_DESIGN.md`
-
-Canonical coordinated task:
-
-`profit-engine/tasks/TASK-010-TWO-REPO-PROFIT-ALLOCATOR.md`
-
-Private mirror:
-
-`profit-engine-core/tasks/TASK-010-PRIVATE-PROFIT-ALLOCATOR.md`
-
-Mandatory phase order:
-
-1. PUBLIC Phase A:
-   - attribution-aware Metrica materialization;
-   - deterministic ledger materializer;
-   - ActionProposal v1;
-   - Budget Governor v1;
-   - public data-quality/kill-switch/stop-loss structural guards;
-   - site experiment action-intent contract;
-   - GREEN public CI.
-2. Pin exact public Phase-A SHA in private `PUBLIC_CONTRACT_VERSION.md`.
-3. PRIVATE Phase B:
-   - sensitive strategy ranking/winner selection;
-   - private expected-value/confidence model;
-   - private scale/reduce/stop/test thresholds;
-   - allocation proposal logic;
-   - public-safe ActionProposal adapter;
-   - GREEN private CI.
-
-Hard budget boundary:
-- `<= +20%` weekly increase can only become ready for Day-11 controller when all public evidence/safety guards pass;
-- `> +20%` is always `PENDING_OWNER_APPROVAL` until explicit Owner approval exists.
-
-Day 10 never performs provider writes or spend.
-
-## Public materialization gap — included in Task 010
-
-Task 007 defined Metrica attribution semantics, but the accepted earlier Metrica collector still materializes generic dimensions rather than a dedicated named campaign-attribution fact.
-
-Task 010 Phase A must close this gap before real production money can feed private decisions. No date-only or campaign-name inference is allowed.
+This does not block the bounded Task-010 rework or Day-11 design prework, but it must be resolved before Day-12 real closed-loop production launch.
 
 ## Expected Task 011 boundary
 
-Day 11:
+After Task-010 rework acceptance:
 - guarded Direct Controller;
-- Budget Governor integration with real controller intents;
-- kill switches / audit / rollback;
-- Owner may upgrade Direct access from Reading to Editing only after the write gate is ready;
-- no action >20% weekly increase without explicit Owner approval.
+- immutable execution intent/audit/rollback;
+- kill-switch enforcement;
+- exact Owner-approval evidence validation for >20% weekly increase;
+- no write can originate from private core;
+- Direct Editing remains disabled until the Day-11 controller is accepted.
 
 ## Launch definition
 
 Target engineering launch = Day 12 `GUARDED_PRODUCTION_LAUNCHED`.
 
-Launch still requires provider read certification, Dilivox production instrumentation, reconciled live money, accepted Day-10 decision/proposal chain, Day-11 guarded write controller and one bounded auditable real closed-loop action.
+Launch still requires provider read certification, Dilivox production instrumentation, reconciled live money, accepted Task-010 proposal chain, accepted Day-11 guarded controller, and one bounded auditable real closed-loop action.
 
 Stable proof of `K5 >= 5.0` requires reconciled live money after launch; fixtures never prove the target.
 
 ## Resume protocol
 
-Read `PROJECT_HANDOFF.md`, verify actual public/private HEADs, inspect active Task 010 contracts, preserve the repository split, and continue the first incomplete gate.
+Read `PROJECT_HANDOFF.md`, verify actual public/private HEADs, inspect open Task-010 issues and the rework contract, preserve the repository split, and continue the first incomplete gate. Never substitute campaign/day revenue for cohort evidence.
