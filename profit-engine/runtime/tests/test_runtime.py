@@ -66,7 +66,12 @@ class RuntimeTests(unittest.TestCase):
             self.assertNotIn(TOKEN, logged)
             self.assertIn(REDACTED, logged)
         self.assertTrue(transport.requests[0].url.endswith("/clients"))
+        self.assertEqual(
+            ["ClientId", "Login", "Type", "Grants", "Representatives"],
+            transport.requests[0].json_body["params"]["FieldNames"],
+        )
         self.assertTrue(transport.requests[1].url.endswith("/campaigns"))
+        self.assertIn("direct.permission=UNKNOWN", result.checks)
         self.assertEqual("req-campaign", result.request_id)
         self.assertEqual("1/100/1000", result.provider_units)
 
@@ -75,9 +80,55 @@ class RuntimeTests(unittest.TestCase):
         visible = {"result": {"Clients": [{"ClientId": 100716697, "Login": "reklamadymova", "Type": "CLIENT"}]}}
         result = YandexDirectReadClient(FakeTransport([ok(visible), ok({})]), config).diagnose(TOKEN)
         self.assertEqual(DoctorStatus.PASS, result.status)
+        self.assertIn("direct.permission=UNKNOWN", result.checks)
         missing = {"result": {"Clients": [{"Login": "other"}]}}
         result = YandexDirectReadClient(FakeTransport([ok(missing)]), config).diagnose(TOKEN)
         self.assertEqual(DoctorStatus.BLOCKED_ACCESS, result.status)
+
+    def test_direct_permission_is_derived_without_write(self):
+        config = SiteConfig(direct_client_login="reklamadymova")
+        editing = {
+            "result": {
+                "Clients": [{
+                    "ClientId": 100716697,
+                    "Login": "reklamadymova",
+                    "Type": "CLIENT",
+                    "Grants": [{"Privilege": "EDIT_CAMPAIGNS", "Value": "YES"}],
+                    "Representatives": [],
+                }]
+            }
+        }
+        transport = FakeTransport([ok(editing), ok({})])
+        result = YandexDirectReadClient(transport, config).diagnose(TOKEN)
+        self.assertEqual(DoctorStatus.PASS, result.status)
+        self.assertIn("direct.permission=EDITING", result.checks)
+        self.assertTrue(all(request.json_body["method"] == "get" for request in transport.requests))
+
+        reading = {
+            "result": {
+                "Clients": [{
+                    "ClientId": 100716697,
+                    "Login": "reklamadymova",
+                    "Type": "CLIENT",
+                    "Grants": [{"Privilege": "EDIT_CAMPAIGNS", "Value": "NO"}],
+                }]
+            }
+        }
+        result = YandexDirectReadClient(FakeTransport([ok(reading), ok({})]), config).diagnose(TOKEN)
+        self.assertIn("direct.permission=READING", result.checks)
+
+    def test_direct_representative_role_fallback_is_fail_closed(self):
+        config = SiteConfig(direct_client_login="reklamadymova")
+        readonly = {
+            "result": {
+                "Clients": [{
+                    "Login": "reklamadymova",
+                    "Representatives": [{"Login": "reklamadymova", "Role": "READONLY"}],
+                }]
+            }
+        }
+        result = YandexDirectReadClient(FakeTransport([ok(readonly), ok({})]), config).diagnose(TOKEN)
+        self.assertIn("direct.permission=READING", result.checks)
 
     def test_metrica_read_shapes(self):
         counters = {"counters": [{"id": 123, "site": "dilivox.ru", "permission": "view"}]}
