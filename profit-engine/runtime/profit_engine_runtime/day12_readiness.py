@@ -74,7 +74,6 @@ def observed_direct_permission(diagnostics: Sequence[DiagnosticResult]) -> Direc
 def build_day12_launch_readiness(
     *,
     diagnostics: Sequence[DiagnosticResult],
-    direct_permission: DirectPermissionState | None = None,
     controller_sha: str = ACCEPTED_TASK_011R_SHA,
 ) -> Day12LaunchReadiness:
     by_provider = {item.provider: item for item in diagnostics}
@@ -83,12 +82,7 @@ def build_day12_launch_readiness(
         for name in REQUIRED_PROVIDERS
     )
 
-    observed_permission = observed_direct_permission(diagnostics)
-    effective_permission = (
-        observed_permission
-        if observed_permission != DirectPermissionState.UNKNOWN
-        else (direct_permission or DirectPermissionState.UNKNOWN)
-    )
+    effective_permission = observed_direct_permission(diagnostics)
 
     reasons: list[str] = []
     if controller_sha != ACCEPTED_TASK_011R_SHA:
@@ -96,7 +90,7 @@ def build_day12_launch_readiness(
         reasons.append("accepted_task_011r_sha_mismatch")
     elif effective_permission != DirectPermissionState.EDITING:
         state = Day12ReadinessState.BLOCKED_OWNER_PERMISSION
-        reasons.append("direct_editing_permission_not_confirmed")
+        reasons.append("direct_editing_permission_not_provider_confirmed")
     elif any(status != DoctorStatus.PASS.value for _, status in statuses):
         state = Day12ReadinessState.BLOCKED_PROVIDER_CERTIFICATION
         for provider, status in statuses:
@@ -106,7 +100,7 @@ def build_day12_launch_readiness(
         state = Day12ReadinessState.READY_FOR_LIVE_CANDIDATE_SELECTION
 
     core = {
-        "readiness_version": "1.1",
+        "readiness_version": "1.2",
         "state": state,
         "reasons": tuple(reasons),
         "direct_permission": effective_permission,
