@@ -1,7 +1,7 @@
 # PROFIT ENGINE — PROJECT STATE
 
 Status: IMPLEMENTATION ACTIVE / DAY 12 — LIVE GUARDED PRODUCTION LAUNCH GATE
-Updated: 2026-08-28
+Updated: 2026-08-29
 Canonical public branch: `profit-engine`
 Private core branch: `main`
 
@@ -13,17 +13,15 @@ Launch a guarded-production, machine-operated, multi-site Profit Engine whose fi
 
 First production site: `site_id=dilivox` / `dilivox.ru`.
 
-Primary target:
-
-`1 RUB Yandex Direct spend -> 5 RUB YAN advertising revenue attributable to the acquired Dilivox audience`.
+Primary target: `1 RUB Yandex Direct spend -> 5 RUB YAN advertising revenue attributable to the acquired Dilivox audience`.
 
 This remains a target, not a claimed result.
 
 ## Locked governance
 
 - `PROTECT CAPITAL -> MEASURE MONEY -> STOP LOSSES -> FIND PROFIT -> SCALE PROFIT -> REPEAT`;
-- automatic weekly budget increase above +20% requires exact explicit Owner approval;
 - private core emits proposals only and never writes to providers;
+- automatic weekly budget increase above +20% requires exact explicit Owner approval;
 - one autonomous campaign budget mutation per campaign/day at launch;
 - exactly one provider object per first launch write;
 - no blind retry;
@@ -35,23 +33,27 @@ This remains a target, not a claimed result.
 
 Public repository: `niknikdym-hue/Dilivox-1`, branch `profit-engine`.
 
-Latest verified Day-12 permission-probe implementation HEAD before this state update:
-`438342976a2a60013366aca93e0f43fae3633e31`.
+Verified pre-state-update HEAD:
+`86d917cc8b3165a6b7b2da1749fe044a122b0183` — `Add one-command Owner live readiness entrypoint`.
 
-Profit Engine CI run `33209777119`, job `98979872594`: SUCCESS across Python tests, Node tests, JSON validation and diff whitespace check.
+Profit Engine CI run `33209962789`: SUCCESS.
+
+The immediately preceding read-only entrypoint chain is:
+- `696e9c41515f2f0ce77b3300620fd2143a6c221a` — one-command Day-12 live read-only readiness probe;
+- `86d917cc8b3165a6b7b2da1749fe044a122b0183` — Owner-facing entrypoint wrapper.
 
 Private repository: `niknikdym-hue/profit-engine-core`, branch `main`:
 `76b1b8670690f102a045243760dfe3d1e58513d5`.
 
 Private CI `33182663547`: SUCCESS.
 
-Private core remains proposal-only and unchanged by Day 12. It has no provider transport or provider write authority.
+Private core remains proposal-only, unchanged by Day 12, and has no provider transport or provider write authority.
 
 Open launch-critical issues:
 - public: `#19 — Profit Engine Task 012 — Live guarded production launch`;
 - private core: none.
 
-No new Codex implementation was present after the previously accepted Day-12 pre-live scaffold at the start of the current verification pass. Current new Day-12 permission-probe work was advanced by Central Brain directly on the canonical public branch.
+No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. The current Direct permission/readiness probe and Owner entrypoint were advanced by Central Brain directly on the canonical public branch.
 
 ## Tasks 001–010R — ACCEPTED
 
@@ -74,14 +76,14 @@ Accepted controller implementation chain:
 
 Final Profit Engine CI `33187660342`: GREEN.
 
-Accepted controller properties include exact proposal/Governor binding, trusted Owner approval >20%, provider identity, fresh preflight + TOCTOU, kill-switch recheck, current-day cadence, per-target lock, exact one-object request binding, read-back, no blind retry, immutable-preflight rollback source, audit/redaction and production writer disabled by default.
+Accepted controller properties include exact proposal/Governor binding, trusted Owner approval >20%, exact provider identity, fresh preflight + TOCTOU, kill-switch recheck, current-day cadence, per-target lock, exact one-object request binding, read-back, no blind retry, immutable-preflight rollback source, audit/redaction and production writer disabled by default.
 
 ## Immediate active task — Day 12
 
 Tracking issue:
 `#19 — Profit Engine Task 012 — Live guarded production launch`.
 
-Canonical design:
+Canonical authority:
 - `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
 - `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
 - `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
@@ -89,11 +91,9 @@ Canonical design:
 
 ## Day-12 pre-live scaffold — ACCEPTED
 
-Pre-Editing readiness harness evidence:
-`profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`.
-
-Candidate binding + inert writer-arm acceptance:
-`profit-engine/evidence/TASK-012-CENTRAL-BRAIN-PRELIVE-ACCEPTANCE.md`.
+Evidence:
+- `profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`;
+- `profit-engine/evidence/TASK-012-CENTRAL-BRAIN-PRELIVE-ACCEPTANCE.md`.
 
 Accepted scope remains deliberately non-authorizing:
 - exact candidate/ControllerPlan/digest binding;
@@ -110,14 +110,12 @@ Accepted scope remains deliberately non-authorizing:
 Evidence:
 `profit-engine/evidence/TASK-012-LIVE-PROVIDER-BINDING.md`.
 
-Owner-side live proofs already recorded without secret values:
+Recorded Owner-side live proofs, without secret values:
 - YAN Statistics API: HTTP 200, exact `dilivox.ru` statistics readable;
 - Yandex Metrica: HTTP 200, exact counter `110349067`, provider permission `edit`;
 - Yandex Direct: HTTP 200, exact client `reklamadymova` / ClientId `100716697` visible.
 
-Therefore the earlier Metrica `invalid_token` and YAN missing-credential observations are superseded for read access. Credential/read availability is no longer the blocker.
-
-These read proofs do not by themselves authorize a Direct mutation.
+Credential/read availability is therefore no longer the blocker. These read proofs do not authorize a Direct mutation.
 
 ## Direct permission gate — PROVIDER-OBSERVED READ PROBE IMPLEMENTED
 
@@ -125,26 +123,30 @@ Evidence:
 `profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`.
 
 Implementation chain:
-- `1b79bcd941ef01d81c761734407978500634f3a9` — Direct doctor requests `Grants` and `Representatives` using `Clients.get` and derives `direct.permission=EDITING|READING|UNKNOWN`;
-- `50a06cb4437fbca562ea39bc73af2f78298a3133` — Day-12 readiness consumes the provider-observed permission and fails closed;
-- `756fb0980a6e5038096559cf5eda611ccbf33166` — CLI removes the manual permission assertion and uses Direct read evidence;
+- `1b79bcd941ef01d81c761734407978500634f3a9` — Direct doctor requests permission evidence via `Clients.get` and derives `direct.permission=EDITING|READING|UNKNOWN`;
+- `50a06cb4437fbca562ea39bc73af2f78298a3133` — Day-12 readiness consumes provider-observed permission and fails closed;
+- `756fb0980a6e5038096559cf5eda611ccbf33166` — CLI removes manual permission assertion;
 - `9a271f6680e945166deb9992125025c319db9964` — runtime tests;
-- `438342976a2a60013366aca93e0f43fae3633e31` — readiness tests.
+- `438342976a2a60013366aca93e0f43fae3633e31` — readiness tests;
+- `696e9c41515f2f0ce77b3300620fd2143a6c221a` — one-command live read-only probe;
+- `86d917cc8b3165a6b7b2da1749fe044a122b0183` — Owner entrypoint.
 
-The observed provider permission now outranks any manual value. A read result of `READING` cannot be overridden to `EDITING` by an operator flag. UNKNOWN also fails closed.
+Latest entrypoint CI `33209962789`: SUCCESS.
 
-This removes the need for a human to declare Reading vs Editing and preserves zero provider writes.
+The observed provider permission outranks any manual value. `READING` cannot be overridden to `EDITING`; `UNKNOWN` also fails closed. The entrypoint only reads providers and uses references to already stored Keychain credentials; it does not write provider state or secret values.
 
 ## Current first incomplete canonical gate
 
-Run the read-only Day-12 readiness command in the Owner environment where the already-stored Keychain credentials are available.
+Execute the read-only Day-12 readiness entrypoint in the Owner environment where the existing Keychain credentials are available:
 
-The command must return the provider-observed Direct permission together with Direct/Metrica/YAN doctor statuses.
+`bash profit-engine/scripts/day12-live-readiness.sh`
 
 Branching rule:
 - observed `READING` => the single Owner-only action is to change the relevant Yandex Direct access to Editing; no other action is authorized;
-- observed `EDITING` + all three doctors PASS => advance to exact live candidate selection;
+- observed `EDITING` + all three doctors PASS => Central Brain may advance to exact live candidate selection;
 - observed `UNKNOWN` or any provider failure => remain blocked and diagnose read-only; zero dispatches.
+
+Until that provider-observed result exists, production write remains blocked and no permission change should be assumed necessary.
 
 ## First real mutation boundary
 
