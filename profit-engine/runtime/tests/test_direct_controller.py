@@ -19,6 +19,7 @@ class ControllerFixtures(unittest.TestCase):
             "advertiser-fixture", "campaign", "entity-fixture-101")
         self.registry.register(self.target)
         self.locks = ExecutionLockRegistry()
+        self.authorities = TrustedOwnerAuthorityRegistry(frozenset({"owner-authority-fixture"}))
 
     def proposal(self, proposed="110.00", current="100.00"):
         return build_action_proposal(proposal_id="proposal-fixture", site_id="dilivox",
@@ -62,11 +63,24 @@ class ControllerFixtures(unittest.TestCase):
         budget=changes.pop("budget_plan",None)
         if budget is None and changes.get("method","campaign.update_budget") == "campaign.update_budget":
             budget=self.budget(proposal,governor,preflight,owner)
-        cadence=changes.pop("cadence",MutationCadenceEvidence(self.target.target_ref,"2026-08-28",0,"audit-fixture"))
+        cadence=changes.pop("cadence",build_mutation_cadence_evidence(
+            campaign_ref=self.target.target_ref,day="2026-08-28",timezone_offset_minutes=180,
+            day_basis_ref="moscow-day-v1",prior_autonomous_mutations=0,
+            audit_ref="audit-fixture",source_refs=("source-fixture",)))
+        method=changes.get("method","campaign.update_budget")
+        request=changes.pop("request_objects",None)
+        if request is None and method == "campaign.update_budget":
+            request=({"provider_entity_id":self.target.provider_entity_id,
+                      "daily_budget":budget.proposed_provider_daily_budget,
+                      "provider_integer_micros":budget.provider_integer_micros},)
+        elif request is None:
+            request=({"provider_entity_id":self.target.provider_entity_id,
+                      "desired_state":"SUSPENDED" if method.endswith(".suspend") else "ACTIVE"},)
         defaults=dict(proposal=proposal,governor=governor,registry=self.registry,
             target_ref=self.target.target_ref,preflight=preflight,method="campaign.update_budget",
-            request_objects=({"entity_ref":self.target.target_ref},),now=NOW,budget_plan=budget,
-            owner_approval=owner,cadence=cadence,locks=self.locks)
+            request_objects=request,now=NOW,budget_plan=budget,
+            owner_approval=owner,cadence=cadence,locks=self.locks,
+            trusted_owner_authorities=self.authorities)
         defaults.update(changes); return build_controller_plan(**defaults)
 
 
@@ -138,7 +152,9 @@ class TestAuthorization(ControllerFixtures):
         with self.assertRaises(ValueError): self.budget(p,g,pre,owner,daily=Decimal("19"),days=(1,2,3,4,5,6,7))
 
     def test_cadence_kills_and_lock(self):
-        cadence=MutationCadenceEvidence(self.target.target_ref,"2026-08-28",1,"audit")
+        cadence=build_mutation_cadence_evidence(campaign_ref=self.target.target_ref,
+            day="2026-08-28",timezone_offset_minutes=180,day_basis_ref="moscow-day-v1",
+            prior_autonomous_mutations=1,audit_ref="audit",source_refs=("source",))
         self.assertEqual(ControllerState.BLOCKED_MUTATION_CADENCE,self.plan(cadence=cadence)[0].state)
         refs={"global":"profit-engine","site":"dilivox","provider":"yandex_direct",
               "advertiser":"advertiser-fixture","target":self.target.target_ref,
@@ -155,27 +171,40 @@ class TestAuthorization(ControllerFixtures):
 
 
 class TestSimulationAndAudit(ControllerFixtures):
+    def transport(self, plan, response, readback, fresh=None):
+        return InMemoryDirectTransport(response,readback,fresh or self.preflight())
+
+    def run_fake(self, plan, audit, tx, *, locks=None, expected=None, switches=()):
+        return simulate_with_fake(plan,tx,self.preflight(),
+            {"provider_entity_id":self.target.provider_entity_id,"daily_budget":Decimal("20"),
+             "provider_integer_micros":20_000_000},audit,NOW,
+            self.locks if locks is None else locks,switches,expected)
+
     def test_success_requires_exact_readback(self):
-        plan,audit=self.plan(); expected={"daily_budget":Decimal("22")}
-        tx=InMemoryDirectTransport(FakeResponse("RESPONSE",200,object_state="SUCCESS",request_id="req",units=2),expected)
-        result=simulate_with_fake(plan,tx,expected,{"daily_budget":Decimal("20")},audit,NOW)
+        plan,audit=self.plan(); expected=derive_expected_readback(plan)
+        tx=self.transport(plan,FakeResponse("RESPONSE",200,object_state="SUCCESS",request_id="req",units=2),expected)
+        result=self.run_fake(plan,audit,tx,expected=expected)
         self.assertEqual("SYNTHETIC_COMPLETED",result.state); self.assertEqual((1,1),(tx.dispatch_count,tx.read_count)); self.assertTrue(audit.valid())
+        self.assertFalse(self.locks.is_locked(self.target.lock_key,NOW))
+        self.assertIn("EXECUTION_LOCK_ACQUIRED",[r.event for r in audit.records])
+        self.assertIn("EXECUTION_LOCK_RELEASED",[r.event for r in audit.records])
 
     def test_http_200_object_failure_is_not_success(self):
-        plan,audit=self.plan(); expected={"daily_budget":Decimal("22")}
-        tx=InMemoryDirectTransport(FakeResponse("RESPONSE",200,object_state="ERROR"),expected)
-        self.assertEqual("EXECUTION_UNCERTAIN_REVIEW",simulate_with_fake(plan,tx,expected,{},audit,NOW).state)
+        plan,audit=self.plan(); expected=derive_expected_readback(plan)
+        tx=self.transport(plan,FakeResponse("RESPONSE",200,object_state="ERROR"),expected)
+        self.assertEqual("EXECUTION_UNCERTAIN_REVIEW",self.run_fake(plan,audit,tx).state)
 
     def test_timeout_never_blind_retries(self):
-        plan,audit=self.plan(); desired={"daily_budget":Decimal("22")}; before={"daily_budget":Decimal("20")}
-        tx=InMemoryDirectTransport(FakeResponse("TIMEOUT",None,request_id="req-timeout"),desired)
-        self.assertEqual("RECOVERED_APPLIED",simulate_with_fake(plan,tx,desired,before,audit,NOW).state)
+        plan,audit=self.plan(); desired=derive_expected_readback(plan)
+        before={"provider_entity_id":self.target.provider_entity_id,"daily_budget":Decimal("20"),"provider_integer_micros":20_000_000}
+        tx=self.transport(plan,FakeResponse("TIMEOUT",None,request_id="req-timeout"),desired)
+        self.assertEqual("RECOVERED_APPLIED",self.run_fake(plan,audit,tx).state)
         self.assertEqual(1,tx.dispatch_count)
-        plan,audit=self.plan(); tx=InMemoryDirectTransport(FakeResponse("TIMEOUT",None),before)
-        self.assertEqual("EXPLICIT_RETRY_PLAN_REQUIRED",simulate_with_fake(plan,tx,desired,before,audit,NOW).state)
+        plan,audit=self.plan(); tx=self.transport(plan,FakeResponse("TIMEOUT",None),before)
+        self.assertEqual("EXPLICIT_RETRY_PLAN_REQUIRED",self.run_fake(plan,audit,tx).state)
         self.assertEqual(1,tx.dispatch_count)
-        plan,audit=self.plan(); tx=InMemoryDirectTransport(FakeResponse("TIMEOUT",None),{"daily_budget":Decimal("21")})
-        self.assertEqual("EXECUTION_UNCERTAIN_REVIEW",simulate_with_fake(plan,tx,desired,before,audit,NOW).state)
+        plan,audit=self.plan(); tx=self.transport(plan,FakeResponse("TIMEOUT",None),{"daily_budget":Decimal("21")})
+        self.assertEqual("EXECUTION_UNCERTAIN_REVIEW",self.run_fake(plan,audit,tx).state)
 
     def test_rollback_only_from_exact_preflight(self):
         pre=self.preflight(); rollback=derive_rollback("campaign.update_budget",pre)
@@ -200,6 +229,104 @@ class TestSimulationAndAudit(ControllerFixtures):
         self.assertEqual(0,REAL_PROVIDER_REQUESTS); self.assertEqual(0,ADVERTISING_SPEND)
         self.assertFalse(PRODUCTION_WRITER_ENABLED)
         self.assertNotIn("EXECUTED",{state.value for state in ControllerState})
+
+
+class TestExecutionBindingRework(ControllerFixtures):
+    def cadence(self, **changes):
+        values={"campaign_ref":self.target.target_ref,"day":"2026-08-28",
+            "timezone_offset_minutes":180,"day_basis_ref":"moscow-day-v1",
+            "prior_autonomous_mutations":0,"audit_ref":"audit-fixture",
+            "source_refs":("source-fixture",)}
+        values.update(changes); return build_mutation_cadence_evidence(**values)
+
+    def transport(self, plan, *, fresh=None, readback=None, response=None):
+        return InMemoryDirectTransport(response or FakeResponse("RESPONSE",200,object_state="SUCCESS"),
+            readback or derive_expected_readback(plan),fresh or self.preflight())
+
+    def execute(self, plan, audit, tx, *, locks=True, switches=(), caller_expected=None):
+        before={"provider_entity_id":self.target.provider_entity_id,
+            "daily_budget":Decimal("20"),"provider_integer_micros":20_000_000}
+        return simulate_with_fake(plan,tx,self.preflight(),before,audit,NOW,
+            self.locks if locks else None,switches,caller_expected)
+
+    def test_no_lock_registry_and_held_lock_never_dispatch(self):
+        self.assertEqual(ControllerState.BLOCKED_EXECUTION_LOCK,self.plan(locks=None)[0].state)
+        plan,audit=self.plan(); tx=self.transport(plan)
+        self.assertEqual("BLOCKED_EXECUTION_LOCK",self.execute(plan,audit,tx,locks=False).state)
+        self.assertEqual(0,tx.dispatch_count)
+        self.assertTrue(self.locks.acquire(self.target.lock_key,NOW,timedelta(minutes=2)))
+        tx=self.transport(plan); self.assertEqual("BLOCKED_EXECUTION_LOCK",self.execute(plan,audit,tx).state)
+        self.assertEqual(0,tx.dispatch_count)
+
+    def test_dispatch_path_toctou_changed_budget_state_stale_and_held(self):
+        variants=[self.preflight(state="SUSPENDED"),
+            build_preflight(target=self.target,normalized_state="ACTIVE",status="ACCEPTED",
+                current_provider_daily_budget=Decimal("21"),currency="RUB",strategy_subtype="fixture-strategy",
+                fetched_at=NOW,ttl=timedelta(minutes=5),source_ref="raw"),
+            self.preflight(fetched=NOW-timedelta(hours=1)),
+            build_preflight(target=self.target,normalized_state="ACTIVE",status="ACCEPTED",
+                current_provider_daily_budget=Decimal("20"),currency="RUB",strategy_subtype="fixture-strategy",
+                fetched_at=NOW,ttl=timedelta(minutes=5),source_ref="raw",dq_holds=("held",))]
+        for fresh in variants:
+            plan,audit=self.plan(); tx=self.transport(plan,fresh=fresh)
+            self.assertEqual("BLOCKED_STALE_PROVIDER_STATE",self.execute(plan,audit,tx).state)
+            self.assertEqual(0,tx.dispatch_count); self.assertEqual(1,tx.preflight_read_count)
+            self.assertFalse(self.locks.is_locked(self.target.lock_key,NOW))
+
+    def test_runtime_kill_activation_after_plan_blocks_dispatch(self):
+        plan,audit=self.plan(); tx=self.transport(plan)
+        result=self.execute(plan,audit,tx,switches=(KillSwitch("target",self.target.target_ref,True),))
+        self.assertEqual("BLOCKED_KILL_SWITCH",result.state); self.assertEqual(0,tx.dispatch_count)
+
+    def test_cadence_current_day_integrity_and_sources(self):
+        self.assertEqual(ControllerState.READY_FOR_DAY12_EXECUTION,self.plan(cadence=self.cadence())[0].state)
+        for cadence in (self.cadence(day="2026-08-27"),self.cadence(day="2026-08-29"),
+                        self.cadence(campaign_ref="other"),self.cadence(prior_autonomous_mutations=1),
+                        self.cadence(audit_ref=""),self.cadence(source_refs=())):
+            self.assertEqual(ControllerState.BLOCKED_MUTATION_CADENCE,self.plan(cadence=cadence)[0].state)
+        forged=replace(self.cadence(),evidence_digest="0"*64)
+        self.assertEqual(ControllerState.BLOCKED_MUTATION_CADENCE,self.plan(cadence=forged)[0].state)
+
+    def test_budget_request_exact_target_amount_micros_and_no_extras(self):
+        plan,_=self.plan(); exact=plan.request_objects[0]
+        self.assertEqual(ControllerState.READY_FOR_DAY12_EXECUTION,plan.state)
+        variants=[exact|{"provider_entity_id":"wrong"},exact|{"daily_budget":Decimal("21")},
+                  exact|{"provider_integer_micros":21_000_000},exact|{"extra":"forbidden"}]
+        for request in variants:
+            self.assertEqual(ControllerState.CONTROLLER_PLAN_INVALID,
+                self.plan(request_objects=(request,))[0].state)
+
+    def test_lifecycle_request_exact_binding(self):
+        self.assertEqual(ControllerState.READY_FOR_DAY12_EXECUTION,
+            self.plan(method="campaign.suspend",budget_plan=None)[0].state)
+        for request in ({"provider_entity_id":"wrong","desired_state":"SUSPENDED"},
+                        {"provider_entity_id":self.target.provider_entity_id,"desired_state":"SUSPENDED","extra":1},
+                        {"provider_entity_id":self.target.provider_entity_id,"desired_state":"ACTIVE"}):
+            self.assertEqual(ControllerState.CONTROLLER_PLAN_INVALID,
+                self.plan(method="campaign.suspend",budget_plan=None,request_objects=(request,))[0].state)
+
+    def test_owner_authority_must_be_trusted_and_not_future_dated(self):
+        proposal=self.proposal("120.01"); governor=self.governor(proposal,Decimal("20.01")); pre=self.preflight()
+        for approval,authorities in (
+            (self.approval(proposal,authority_ref="self-declared"),self.authorities),
+            (self.approval(proposal,approved_at=(NOW+timedelta(seconds=1)).isoformat()),self.authorities),
+            (self.approval(proposal),TrustedOwnerAuthorityRegistry(frozenset()))):
+            budget=self.budget(proposal,governor,pre,approval)
+            self.assertEqual(ControllerState.BLOCKED_OWNER_APPROVAL,
+                self.plan(proposal=proposal,governor=governor,preflight=pre,
+                    owner_approval=approval,budget_plan=budget,trusted_owner_authorities=authorities)[0].state)
+        approval=self.approval(proposal); budget=self.budget(proposal,governor,pre,approval)
+        self.assertEqual(ControllerState.READY_FOR_DAY12_EXECUTION,
+            self.plan(proposal=proposal,governor=governor,preflight=pre,
+                owner_approval=approval,budget_plan=budget)[0].state)
+
+    def test_readback_expectation_is_plan_derived_before_dispatch(self):
+        plan,audit=self.plan(); tx=self.transport(plan)
+        wrong={"provider_entity_id":self.target.provider_entity_id,"daily_budget":Decimal("999"),
+               "provider_integer_micros":999_000_000}
+        result=self.execute(plan,audit,tx,caller_expected=wrong)
+        self.assertEqual("BLOCKED_READBACK_EXPECTATION",result.state)
+        self.assertEqual(0,tx.dispatch_count); self.assertEqual(0,tx.preflight_read_count)
 
 
 if __name__ == "__main__": unittest.main()

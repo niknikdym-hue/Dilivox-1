@@ -122,3 +122,9 @@ and a hash-linked redacted audit chain.
 The only write transport is an in-memory test fake. The default runtime has no
 real writer, provider request, credential requirement, or production execution
 state; `PRODUCTION_WRITER_ENABLED` is hard-coded `False` for Day 11.
+
+Task 011R binds the fake dispatch path itself: an exact-target lock is atomically
+acquired, a fresh read-only preflight is compared, and kill switches are rechecked
+before the single dispatch. Cadence evidence is digest/current-day bound; mutation
+objects are exact-target/exact-budget normalized; >20% approvals require a trusted
+authority reference; and read-back expectations are derived from the immutable plan.
