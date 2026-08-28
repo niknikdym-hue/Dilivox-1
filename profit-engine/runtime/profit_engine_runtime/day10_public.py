@@ -5,7 +5,7 @@ No object in this module can call a provider or mutate a site/budget.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field, replace
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
 from enum import StrEnum
 from typing import Any, Mapping, Sequence
@@ -181,6 +181,72 @@ class YanControlInput:
 
 
 @dataclass(frozen=True)
+class CohortRevenueEvidence:
+    evidence_version: str
+    site_id: str
+    cohort_ref: str
+    window_days: int
+    window_start: str
+    window_end: str
+    attributed_cohort_revenue: Decimal | None
+    currency: str
+    money_basis: str
+    timezone: str
+    source_state: str
+    reconciliation_state: ReconciliationState
+    source_refs: tuple[str, ...]
+    linkage_evidence_refs: tuple[str, ...]
+    linkage_basis: str
+    mature: bool
+    late_arrival_open: bool
+    hold_reasons: tuple[str, ...]
+    evidence_digest: str
+
+    @property
+    def optimizer_consumable(self) -> bool:
+        return (self.attributed_cohort_revenue is not None and not self.hold_reasons
+            and self.reconciliation_state == ReconciliationState.MATCHED
+            and self.source_state in {"FINAL", "RECONCILED"} and self.mature
+            and not self.late_arrival_open)
+
+    @property
+    def integrity_valid(self) -> bool:
+        value = asdict(self)
+        recorded = value.pop("evidence_digest")
+        return recorded == digest(value)
+
+
+def build_cohort_revenue_evidence(
+    *, site_id: str, cohort_ref: str, window_days: int, window_start: str,
+    window_end: str, attributed_cohort_revenue: Decimal | None, currency: str,
+    money_basis: str, timezone: str, source_state: str,
+    reconciliation_state: ReconciliationState, source_refs: Sequence[str],
+    linkage_evidence_refs: Sequence[str], linkage_basis: str,
+    mature: bool, late_arrival_open: bool = False,
+) -> CohortRevenueEvidence:
+    holds: list[str] = []
+    if window_days not in {1, 7, 30}: holds.append("cohort_window_invalid")
+    if attributed_cohort_revenue is None: holds.append("cohort_revenue_missing")
+    elif not isinstance(attributed_cohort_revenue, Decimal): holds.append("cohort_revenue_not_decimal")
+    if not source_refs: holds.append("cohort_source_provenance_missing")
+    if not linkage_evidence_refs or not linkage_basis: holds.append("cohort_linkage_proof_missing")
+    if source_state not in {"FINAL", "RECONCILED"}: holds.append("cohort_source_state_not_final")
+    if reconciliation_state != ReconciliationState.MATCHED: holds.append("cohort_reconciliation_not_matched")
+    if not mature: holds.append("cohort_window_immature")
+    if late_arrival_open: holds.append("late_arrival_window_open")
+    if not currency or not money_basis or not timezone: holds.append("cohort_money_basis_incomplete")
+    core = {"evidence_version":"1.0","site_id":site_id,"cohort_ref":cohort_ref,
+        "window_days":window_days,"window_start":window_start,"window_end":window_end,
+        "attributed_cohort_revenue":attributed_cohort_revenue,"currency":currency,
+        "money_basis":money_basis,"timezone":timezone,"source_state":source_state,
+        "reconciliation_state":reconciliation_state,"source_refs":tuple(source_refs),
+        "linkage_evidence_refs":tuple(linkage_evidence_refs),"linkage_basis":linkage_basis,
+        "mature":mature,"late_arrival_open":late_arrival_open,
+        "hold_reasons":tuple(sorted(set(holds)))}
+    return CohortRevenueEvidence(**core,evidence_digest=digest(core))
+
+
+@dataclass(frozen=True)
 class MaterializedLedger:
     materializer_version: str
     source_digest: str
@@ -205,9 +271,11 @@ class LedgerMaterializer:
         self, *, acquisition: Mapping[str, Any], direct: DirectSpendInput,
         metrica: MetricaAttributionFact, yan: YanControlInput,
         direct_campaigns: set[str], as_of: datetime, cohort_start: datetime,
+        cohort_evidence: Sequence[CohortRevenueEvidence] = (),
         tolerance: Decimal = Decimal("0.01"),
     ) -> MaterializedLedger:
-        source = {"acquisition": acquisition, "direct": asdict(direct), "metrica": asdict(metrica), "yan": asdict(yan)}
+        source = {"acquisition": acquisition, "direct": asdict(direct), "metrica": asdict(metrica),
+            "yan": asdict(yan), "cohort_evidence": tuple(asdict(item) for item in cohort_evidence)}
         source_digest = digest(source)
         existing = self.outputs.get(source_digest)
         if existing:
@@ -232,10 +300,13 @@ class LedgerMaterializer:
             currency_spend=direct.currency or "UNKNOWN", currency_revenue=metrica.currency or "UNKNOWN",
             grade=attribution.grade, reconciliation=rec.state, upstream_held=bool(upstream_holds),
         )
-        cohort_values = tuple(cohort_k5(
-            days, direct.spend, metrica.attributed_yan_revenue, cohort_ref=str(acquisition.get("cohort_ref")),
-            grade=attribution.grade, link_proven=attribution.cohort_link_proven,
-            as_of=as_of, cohort_start=cohort_start, reconciliation=rec.state,
+        evidence_by_window = {item.window_days: item for item in cohort_evidence}
+        duplicate_windows = {days for days in evidence_by_window
+            if sum(item.window_days == days for item in cohort_evidence) > 1}
+        cohort_values = tuple(self._cohort_measurement(
+            days=days, evidence=evidence_by_window.get(days), acquisition=acquisition,
+            direct=direct, metrica=metrica, attribution=attribution,
+            as_of=as_of, cohort_start=cohort_start, duplicate=days in duplicate_windows,
         ) for days in (1, 7, 30))
         key = f"{acquisition.get('acquisition_id')}:{metrica.window_date}"
         period = self.versions.recompute(f"{key}:period", period)
@@ -256,6 +327,44 @@ class LedgerMaterializer:
         )
         self.outputs.setdefault(source_digest, []).append(output)
         return output
+
+    @staticmethod
+    def _cohort_measurement(*, days: int, evidence: CohortRevenueEvidence | None,
+        acquisition: Mapping[str, Any], direct: DirectSpendInput,
+        metrica: MetricaAttributionFact, attribution: AttributionResult,
+        as_of: datetime, cohort_start: datetime, duplicate: bool) -> Measurement:
+        expected_ref = str(acquisition.get("cohort_ref"))
+        contextual_holds: list[str] = []
+        if evidence is None:
+            contextual_holds.append("explicit_cohort_revenue_evidence_missing")
+        else:
+            if not evidence.integrity_valid: contextual_holds.append("cohort_evidence_digest_mismatch")
+            if duplicate: contextual_holds.append("conflicting_cohort_evidence")
+            if evidence.site_id != acquisition.get("site_id"): contextual_holds.append("cohort_site_mismatch")
+            if evidence.cohort_ref != expected_ref: contextual_holds.append("cohort_ref_mismatch")
+            expected_start = cohort_start.date().isoformat()
+            expected_end = (cohort_start + timedelta(days=days-1)).date().isoformat()
+            if evidence.window_start != expected_start or evidence.window_end != expected_end:
+                contextual_holds.append("cohort_window_boundary_mismatch")
+            if evidence.currency != (direct.currency or "UNKNOWN"): contextual_holds.append("cohort_currency_mismatch")
+            if evidence.money_basis != metrica.money_basis: contextual_holds.append("cohort_money_basis_mismatch")
+            if evidence.timezone != metrica.timezone: contextual_holds.append("cohort_timezone_mismatch")
+            contextual_holds.extend(evidence.hold_reasons)
+        valid = evidence is not None and evidence.optimizer_consumable and not contextual_holds
+        result = cohort_k5(days, direct.spend,
+            evidence.attributed_cohort_revenue if valid else None,
+            cohort_ref=expected_ref, grade=attribution.grade,
+            link_proven=valid and attribution.cohort_link_proven,
+            as_of=as_of, cohort_start=cohort_start,
+            reconciliation=evidence.reconciliation_state if evidence is not None else ReconciliationState.SOURCE_MISSING)
+        if not valid:
+            reasons = tuple(dict.fromkeys((*result.hold_reasons,
+                "NOT_COMPUTABLE_ATTRIBUTION_HOLD", *contextual_holds)))
+            return replace(result, value=None, numerator=None, state=MoneyState.NOT_COMPUTABLE,
+                hold_reasons=reasons)
+        return replace(result, numerator_source=evidence.source_refs,
+            money_basis=evidence.money_basis,
+            window_start=evidence.window_start, window_end=evidence.window_end)
 
 
 class ProposalKind(StrEnum):
