@@ -33,14 +33,13 @@ This remains a target, not a claimed result.
 
 Public repository: `niknikdym-hue/Dilivox-1`, branch `profit-engine`.
 
-Verified pre-state-update HEAD:
-`86d917cc8b3165a6b7b2da1749fe044a122b0183` — `Add one-command Owner live readiness entrypoint`.
+Latest code HEAD verified by CI:
+`b66050fc8dc7b5b42e8b19ebbb2f8043b5869b37` — provider-only Day-12 permission authority reflected through launch-gate tests.
 
-Profit Engine CI run `33209962789`: SUCCESS.
+Profit Engine CI run `33218249298`: all Python tests, Node tests, JSON validation and diff whitespace checks SUCCESS.
 
-The immediately preceding read-only entrypoint chain is:
-- `696e9c41515f2f0ce77b3300620fd2143a6c221a` — one-command Day-12 live read-only readiness probe;
-- `86d917cc8b3165a6b7b2da1749fe044a122b0183` — Owner-facing entrypoint wrapper.
+Follow-up evidence commit:
+`d64bef6aaf964dceb7336ea8d4db22a9881913bd` — records the fail-closed Direct permission fix; no provider mutation or secret value.
 
 Private repository: `niknikdym-hue/profit-engine-core`, branch `main`:
 `76b1b8670690f102a045243760dfe3d1e58513d5`.
@@ -53,7 +52,7 @@ Open launch-critical issues:
 - public: `#19 — Profit Engine Task 012 — Live guarded production launch`;
 - private core: none.
 
-No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. The current Direct permission/readiness probe and Owner entrypoint were advanced by Central Brain directly on the canonical public branch.
+No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. The current permission/readiness hardening was advanced by Central Brain directly on the canonical public branch.
 
 ## Tasks 001–010R — ACCEPTED
 
@@ -117,23 +116,24 @@ Recorded Owner-side live proofs, without secret values:
 
 Credential/read availability is therefore no longer the blocker. These read proofs do not authorize a Direct mutation.
 
-## Direct permission gate — PROVIDER-OBSERVED READ PROBE IMPLEMENTED
+## Direct permission gate — PROVIDER-OBSERVED AND API-ENFORCED
 
 Evidence:
-`profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`.
+- `profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`;
+- `profit-engine/evidence/TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`.
 
-Implementation chain:
-- `1b79bcd941ef01d81c761734407978500634f3a9` — Direct doctor requests permission evidence via `Clients.get` and derives `direct.permission=EDITING|READING|UNKNOWN`;
-- `50a06cb4437fbca562ea39bc73af2f78298a3133` — Day-12 readiness consumes provider-observed permission and fails closed;
+Permission/readiness implementation chain:
+- `1b79bcd941ef01d81c761734407978500634f3a9` — Direct doctor derives `direct.permission=EDITING|READING|UNKNOWN` from provider data;
 - `756fb0980a6e5038096559cf5eda611ccbf33166` — CLI removes manual permission assertion;
-- `9a271f6680e945166deb9992125025c319db9964` — runtime tests;
-- `438342976a2a60013366aca93e0f43fae3633e31` — readiness tests;
 - `696e9c41515f2f0ce77b3300620fd2143a6c221a` — one-command live read-only probe;
-- `86d917cc8b3165a6b7b2da1749fe044a122b0183` — Owner entrypoint.
+- `86d917cc8b3165a6b7b2da1749fe044a122b0183` — Owner entrypoint;
+- `4dd17793283961fe1df99a9cc1ea60e1affc09e9` — remove the remaining internal manual permission fallback; readiness v1.2 now accepts provider-observed permission only;
+- `2c94fe7575f954c18591ed89a4e4e702e035d410` — regression tests prove manual override is not an API;
+- `b66050fc8dc7b5b42e8b19ebbb2f8043b5869b37` — candidate-selection tests require provider-observed Editing.
 
-Latest entrypoint CI `33209962789`: SUCCESS.
+CI `33218249298` on `b66050fc8dc7b5b42e8b19ebbb2f8043b5869b37`: SUCCESS across all test/validation steps.
 
-The observed provider permission outranks any manual value. `READING` cannot be overridden to `EDITING`; `UNKNOWN` also fails closed. The entrypoint only reads providers and uses references to already stored Keychain credentials; it does not write provider state or secret values.
+Canonical invariant is now enforced in the runtime API, not merely by the CLI: `UNKNOWN` cannot be promoted by caller assertion, `READING` remains blocked, and only provider-observed `EDITING` can satisfy the permission stage. Readiness still cannot authorize writes: `provider_write_allowed=false`, production writer remains disabled, and no real provider request/spend is introduced by this layer.
 
 ## Current first incomplete canonical gate
 
@@ -193,8 +193,9 @@ Verify actual public/private HEADs first, then read:
 4. `profit-engine/evidence/TASK-012-CENTRAL-BRAIN-PRELIVE-ACCEPTANCE.md`;
 5. `profit-engine/evidence/TASK-012-LIVE-PROVIDER-BINDING.md`;
 6. `profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`;
-7. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
-8. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
-9. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
-10. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
-11. issue #19.
+7. `profit-engine/evidence/TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`;
+8. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+9. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+10. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+11. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
+12. issue #19.
