@@ -100,3 +100,11 @@ PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.strategy_lab_c
 The public lab validates accepted money evidence and creates inert experiment
 previews. It never compares strategy outcomes or makes a commercial decision;
 sensitive decision requests fail closed with `BLOCKED_PRIVATE_CORE_REQUIRED`.
+
+## Day-10 public materialization and guards
+
+`day10_public.py` provides the provider-neutral public boundary for named Metrica
+attribution facts, deterministic money-ledger materialization, public-safe action
+proposals, Budget Governor decisions, and inert site-experiment intents. It has
+no provider/site transport and cannot mutate a budget. The exact Owner boundary
+is enforced at `+20.00%` versus `+20.01%` weekly growth.
