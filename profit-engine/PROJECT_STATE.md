@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 11 REWORK — GUARDED DIRECT CONTROLLER EXECUTION BINDINGS
+Status: IMPLEMENTATION ACTIVE / DAY 12 — LIVE GUARDED PRODUCTION LAUNCH GATE
 Updated: 2026-08-28
 Canonical public branch: `profit-engine`
 Private core branch: `main`
@@ -9,7 +9,7 @@ Private core branch: `main`
 
 Launch a guarded-production, machine-operated, multi-site Profit Engine whose first closed loop is:
 
-`Yandex Direct -> Dilivox -> behavior -> YAN revenue -> attribution/reconciliation -> private decision core -> public ActionProposal -> Budget Governor -> guarded Direct/Site controller -> measured outcome`.
+`Yandex Direct -> Dilivox -> behavior -> YAN revenue -> attribution/reconciliation -> private decision core -> public ActionProposal -> Budget Governor -> guarded Direct controller -> measured outcome`.
 
 First production site: `site_id=dilivox` / `dilivox.ru`.
 
@@ -21,114 +21,142 @@ This remains a target, not a claimed result.
 
 ## Locked governance
 
-- `PROTECT CAPITAL -> MEASURE MONEY -> STOP LOSSES -> FIND PROFIT -> SCALE PROFIT -> REPEAT`.
-- automatic weekly budget increase above +20% requires explicit Owner approval bound to the exact proposal;
+- `PROTECT CAPITAL -> MEASURE MONEY -> STOP LOSSES -> FIND PROFIT -> SCALE PROFIT -> REPEAT`;
+- automatic weekly budget increase above +20% requires exact explicit Owner approval;
 - private core emits proposals only and never writes to providers;
-- Direct Editing remains disabled until Central Brain accepts Task 011/011R;
-- no real provider/site write is authorized during Day 11;
+- one autonomous campaign budget mutation per campaign/day at launch;
+- exactly one provider object per first launch write;
+- no blind retry;
 - chat is not source of truth.
 
 ## Tasks 001–010R — ACCEPTED
 
 Day-10 final public contract:
-
 `98c6d3f0c0105c30cfc90a6d5fdf653c2aceb8d6`
 
 Public CI `33180647500`: GREEN.
 
 Private core accepted contract:
-
 `1709925f5b2d29f9c038dde7caca8054b51eea6f`
 
 Private CI `33180767637`: GREEN.
 
-Accepted Day-10 chain includes:
-- campaign/day Metrica attribution for `period_K5` only;
-- explicit `CohortRevenueEvidence v1` for 1D/7D/30D cohort K5;
-- missing/unproven cohort revenue -> `NOT_COMPUTABLE_ATTRIBUTION_HOLD`;
-- public `ActionProposal v1`;
-- Budget Governor with exact +20.00% / +20.01% Owner boundary;
-- private ProfitAllocator exclusively in private `profit-engine-core`;
-- no provider write authority in private core.
+Accepted Day-10 chain includes period-vs-cohort truth, `CohortRevenueEvidence v1`, ActionProposal v1, Budget Governor, exact +20.00/+20.01 Owner boundary and private ProfitAllocator in private core only.
 
-## Task 011 initial implementation — REWORK REQUIRED
+## Task 011 + 011R — ACCEPTED / DAY 11 COMPLETE
 
-Codex implementation reviewed:
+Central Brain acceptance:
 
-`d8d3a9887d4a3e38d90ac0cfb7567092aaf3997a`
+`profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`
 
-Reported CI `33183653872`: GREEN.
+Accepted controller implementation chain:
+- initial Task 011: `d8d3a9887d4a3e38d90ac0cfb7567092aaf3997a`;
+- final Task 011R rework: `a494d30b49c8d11687be56cdab870a5d83356e02`.
 
-The implementation correctly introduced the Day-11 controller state model, governor/proposal binding, preflight contract, allowlist, budget mapping, kill switches, one-object rule, retry/read-back model, rollback plan, hash-linked audit, secret redaction and a default-disabled production writer.
+Final Profit Engine CI `33187660342`: GREEN.
 
-Central Brain did NOT accept Task 011 because launch-critical execution-binding bypasses remain.
+Accepted controller properties include:
+- exact proposal/Governor binding;
+- trusted Owner approval >20%;
+- exact provider identity;
+- fresh preflight + actual dispatch-path TOCTOU;
+- runtime kill-switch recheck;
+- integrity/current-day cadence evidence;
+- exact per-target lock acquire/release;
+- exact one-object request target/budget binding;
+- plan-derived read-back;
+- no blind retry;
+- rollback from immutable preflight only;
+- hash-linked audit/redaction;
+- production writer disabled by default;
+- zero real provider requests/spend during Day 11.
 
-Central Brain review:
+Issues #17 and #18 are completed.
 
-`profit-engine/evidence/TASK-011-CENTRAL-BRAIN-REVIEW.md`
+## Immediate active task — Day 12
 
-Canonical bounded rework:
+Canonical design:
 
-`profit-engine/tasks/TASK-011-REWORK-EXECUTION-BINDINGS.md`
+`profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`
 
-Tracking issue:
+Canonical provider certification:
 
-`#18 — Profit Engine Task 011R — execution-binding safety rework`.
+`profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`
 
-Task #17 remains unaccepted until #18 is accepted.
+Canonical first-write matrix:
 
-## Task 011R required fixes
+`profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`
 
-1. actual exact-target lock acquisition must be on the dispatch path; `locks=None` cannot bypass it;
-2. fresh pre-dispatch snapshot/TOCTOU comparison must be on the actual dispatch path;
-3. applicable kill switches must be rechecked immediately before dispatch;
-4. mutation-cadence evidence must be immutable/integrity-bound and valid for the current campaign/day;
-5. the one normalized mutation object must be bound to the exact provider entity and exact ProviderBudgetPlan amount/micros;
-6. >20% Owner approval must resolve through a trusted exact Owner-authority boundary, not an arbitrary self-declared authority string;
-7. successful read-back expectation must be derived from the immutable plan/method/request, not arbitrary caller input.
+Canonical task:
 
-All accepted Task-011 components not required for these fixes should be preserved.
+`profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`
 
-## External provider blockers
+## Owner permission gate — CURRENT FIRST BLOCKER
 
-Live certification remains:
-- Direct: `BLOCKED_MISSING_CREDENTIAL`;
-- Metrica: `BLOCKED_MISSING_CREDENTIAL`;
-- YAN Statistics: `BLOCKED_MISSING_CREDENTIAL`.
+Central Brain has accepted the controller as ready for permission upgrade.
 
-Classification: `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL`.
+The next Owner action may now be:
 
-These blockers do not stop Task 011R dry-run engineering but must be resolved before any Day-12 real mutation.
+`Yandex Direct access: Reading -> Editing`.
 
-## Editing-access gate
+This permission change is necessary for Day-12 readiness but DOES NOT authorize a write by itself.
 
-Do NOT change Direct access from Reading to Editing yet.
+After the change, exact account/client permission state must be re-read and live certification must run before any mutation.
 
-Only after Central Brain accepts Task 011R may the next Owner action become:
+## External provider credential/live-certification gate
 
-`Direct access: Reading -> Editing`.
+Before the first real write:
+- Direct OAuth/read doctor must pass for exact advertiser/client/target;
+- Metrica read doctor must pass for exact counter/site;
+- YAN Statistics uses separate OAuth and must pass exact partner/site reconciliation scope where required;
+- token values remain outside Git/chat/issues/logs/screenshots;
+- local secrets use Keychain; production target is Lockbox.
 
-## Day 12 boundary
+Current historic classification before Day-12 certification was `BLOCKED_EXTERNAL_PROVIDER_CREDENTIAL`; Day 12 must replace that with live doctor evidence rather than assumptions.
 
-After Task 011R acceptance, Editing enablement and live credential/read certification:
-- one bounded real mutation only;
-- exactly one provider object;
-- all Governor/Owner/kill/preflight/lock/cadence gates revalidated immediately before dispatch;
-- write -> read-back -> immutable audit;
-- rollback only when exact prior state and current guards prove it safe.
+## First real mutation boundary
 
-## Launch definition
+After Editing and live doctors:
 
-Engineering launch target remains Day 12 `GUARDED_PRODUCTION_LAUNCHED`.
+1. Central Brain selects exactly one live candidate from accepted evidence;
+2. fresh provider preflight;
+3. current proposal/Governor/Owner approval revalidation;
+4. current-day cadence;
+5. exact execution lock;
+6. fresh TOCTOU read;
+7. runtime kill-switch recheck;
+8. exact one-object request derived from immutable plan;
+9. narrow single-plan production writer arming;
+10. one Direct dispatch;
+11. read-back;
+12. immutable audit;
+13. rollback only if separately guarded/authorized.
 
-Stable proof of `K5 >= 5.0` requires reconciled live money after launch; fixtures never prove the target.
+Any failed gate => zero dispatches.
+
+## Launch states
+
+- `GUARDED_PRODUCTION_LAUNCHED`
+- `PRODUCTION_WRITE_BLOCKED`
+- `PRODUCTION_EXECUTION_UNCERTAIN`
+- `PRODUCTION_ROLLBACK_VERIFIED`
+- `PRODUCTION_ROLLBACK_BLOCKED`
+
+Only a real bounded mutation that is applied and verified counts as engineering launch.
+
+## Economic proof boundary
+
+Engineering launch does not prove `K5 >= 5.0`.
+Economic proof requires later reconciled live Direct spend + Metrica-attributed YAN revenue + YAN control totals over mature periods/cohorts.
 
 ## Resume protocol
 
 Read `PROJECT_HANDOFF.md`, verify actual `origin/profit-engine` HEAD, then read:
 1. `profit-engine/PROJECT_STATE.md`;
-2. `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-REVIEW.md`;
-3. `profit-engine/tasks/TASK-011-REWORK-EXECUTION-BINDINGS.md`;
-4. GitHub issue #18.
+2. `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`;
+3. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+4. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+5. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+6. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`.
 
-Continue Task 011R. Never enable Direct Editing before Central Brain acceptance.
+Current first incomplete gate: Owner Direct permission transition Reading -> Editing.
