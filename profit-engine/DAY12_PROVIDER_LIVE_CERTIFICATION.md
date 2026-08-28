@@ -1,7 +1,7 @@
 # PROFIT ENGINE — DAY 12 PROVIDER LIVE CERTIFICATION
 
 Status: CANONICAL
-Updated: 2026-08-28
+Updated: 2026-08-29
 Depends on: Task 011/011R accepted
 
 ## Purpose
@@ -19,8 +19,23 @@ Current Direct API v5 contract:
 - API capabilities are limited by the user's actual Direct permissions;
 - read-only Direct access remains read-only through API;
 - requests use `Authorization: Bearer <OAuth token>`;
-- `Client-Login` is used where agency-client access requires it;
+- `Client-Login` is documented for advertiser/agency representative targeting; it must never be assumed to prove a separate Managing Account relationship;
 - Direct permission transition Reading -> Editing is an explicit Owner/account gate, not a runtime inference.
+
+### Managing Account boundary
+
+The canonical Dilivox delegation uses a separate Yandex Direct Managing Account as the technical operator. That relationship has its own `Administering` / `Editing` / `Reading` level in the Direct web interface.
+
+The documented Direct API `Clients.get` response exposes advertiser/agency `Grants` and `Representatives`. Those fields describe the advertiser/agency client and its representatives; they do not document the access level of a separate Managing Account relationship.
+
+Therefore:
+
+- the technical Managing Account login and the managed owner advertiser login are distinct identities and must never be aliased in runtime configuration;
+- a successful `Clients.get` for the technical operator proves only the OAuth/operator identity;
+- a successful read of the managed advertiser/campaign scope proves read visibility only;
+- advertiser `Grants` or `Representatives` must not be used to infer that the separate Managing Account has Editing authority;
+- Managing Account Reading -> Editing remains an Owner-controlled web-interface gate until Yandex exposes a documented API field that directly represents that relationship;
+- if the runtime cannot prove the managed target identity separately from the operator, certification fails closed.
 
 ## Yandex Metrica authorization truth
 
@@ -52,14 +67,16 @@ Any future Direct Editing credential remains inside the same secret-safe boundar
 
 After Owner enables Editing:
 
-1. re-read exact Direct account/client permission state;
+1. bind the exact technical operator login and a distinct exact managed owner advertiser login in private configuration;
 2. load credentials from secret-safe storage without printing values;
 3. run Direct READ_ONLY doctor first;
-4. prove acting login/client and exact advertiser/target identity;
-5. run Metrica READ_ONLY doctor for exact counter/site;
-6. run YAN Statistics READ_ONLY doctor for exact partner/site scope;
-7. archive secret-safe certification evidence: status, timestamp, scope refs, provider request IDs where available, redacted error class;
-8. do not write merely because all doctors pass.
+4. prove OAuth operator identity separately from managed advertiser/target identity;
+5. prove exact managed advertiser/campaign read visibility;
+6. keep Managing Account write authority fail-closed unless accepted Owner-side Editing evidence exists;
+7. run Metrica READ_ONLY doctor for exact counter/site;
+8. run YAN Statistics READ_ONLY doctor for exact partner/site scope;
+9. archive secret-safe certification evidence: status, timestamp, scope refs, provider request IDs where available, redacted error class;
+10. do not write merely because all doctors pass.
 
 ## Direct response metadata
 
@@ -94,10 +111,13 @@ For SCALE/TEST production actions:
 
 Safety STOP/HOLD/QUARANTINE follows separate structural rules but still requires exact target/preflight/write-safety gates.
 
-## Official references verified 2026-08-28
+## Official references verified 2026-08-29
 
 - Direct access: `https://yandex.com/dev/direct/doc/en/concepts/access`
 - Direct request auth: `https://yandex.com/dev/direct/doc/en/format`
+- Direct Clients.get: `https://yandex.com/dev/direct/doc/en/clients/get`
+- Direct roles/access: `https://yandex.com/dev/direct/doc/en/objects/roles`
+- Direct manager accounts: `https://yandex.com/support/direct/en/campaigns/mcc`
 - Direct Campaigns.update: `https://yandex.com/dev/direct/doc/en/campaigns/update`
 - Direct headers: `https://yandex.com/dev/direct/doc/en/concepts/headers`
 - Metrica auth: `https://yandex.com/dev/metrika/en/intro/authorization`
