@@ -4,7 +4,8 @@
 
 - Engineering status: `COMPLETE`; acceptance remains with Central Brain.
 - Baseline: `3ee086a3a7e12c1d28a238768c527ff320a32520`.
-- Final implementation/origin SHA: reported after commit and push because a commit cannot contain its own SHA.
+- Implementation SHA: `0edc97eb62208a602dbf4c2596fcc8f49be73ded`.
+- Evidence-publication/final origin SHA: reported in the final Task-008 report because a commit cannot contain its own SHA.
 - Branch: `profit-engine`.
 - Workspace: `/Users/elenadymova/Documents/New project/Profit Engine/Dilivox-1`.
 - Separate Dilivox/Tilda workspace was not modified.
@@ -81,7 +82,8 @@ Forward order is campaign → group → targeting/asset → ad → tracking → 
 - Node: `22/22 PASS`.
 - CLI valid and three invalid fixture scenarios: PASS.
 - `git diff --check`, secret/private-data scan, provider-write reachability scan, and proprietary-logic scan: required before commit and recorded in final report.
-- Final GitHub Actions `Profit Engine CI`: required on final origin HEAD and recorded after push.
+- GitHub Actions `Profit Engine CI` run `33146171153` on implementation SHA `0edc97eb62208a602dbf4c2596fcc8f49be73ded`: `GREEN` ([run](https://github.com/niknikdym-hue/Dilivox-1/actions/runs/33146171153)).
+- The evidence-publication commit must independently finish GREEN before the final report.
 
 ## Files changed
 
