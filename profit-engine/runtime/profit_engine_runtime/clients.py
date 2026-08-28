@@ -45,7 +45,12 @@ class YandexDirectReadClient(ProviderReadClient):
         try:
             client = self.transport.send(HttpRequest(
                 "POST", f"{self.config.direct_endpoint}/clients", headers,
-                json_body={"method": "get", "params": {"FieldNames": ["ClientId", "Login", "Type"]}},
+                json_body={
+                    "method": "get",
+                    "params": {
+                        "FieldNames": ["ClientId", "Login", "Type", "Grants", "Representatives"]
+                    },
+                },
             ))
             _require_success(client)
             checks.append("clients.get")
@@ -58,6 +63,8 @@ class YandexDirectReadClient(ProviderReadClient):
                     client.request_id,
                     detail="configured Direct client login is not visible to this OAuth identity",
                 )
+            permission = _direct_edit_permission(client.json_body, self.config.direct_client_login)
+            checks.append(f"direct.permission={permission}")
             campaigns = self.transport.send(HttpRequest(
                 "POST", f"{self.config.direct_endpoint}/campaigns", headers,
                 json_body={"method": "get", "params": {"SelectionCriteria": {}, "FieldNames": ["Id", "Name", "State", "Status"], "Page": {"Limit": 1}}},
@@ -158,6 +165,33 @@ class YanPartnerStatsReadClient(ProviderReadClient):
 def _direct_client_present(body: Any, expected_login: str) -> bool:
     clients = body.get("result", {}).get("Clients", []) if isinstance(body, dict) else []
     return any(str(item.get("Login", "")).lower() == expected_login.lower() for item in clients)
+
+
+def _direct_edit_permission(body: Any, expected_login: str | None) -> str:
+    clients = body.get("result", {}).get("Clients", []) if isinstance(body, dict) else []
+    if expected_login:
+        clients = [item for item in clients if str(item.get("Login", "")).lower() == expected_login.lower()]
+    if not clients:
+        return "UNKNOWN"
+
+    client = clients[0]
+    for grant in client.get("Grants") or []:
+        if grant.get("Privilege") == "EDIT_CAMPAIGNS":
+            return "EDITING" if grant.get("Value") == "YES" else "READING"
+
+    representatives = client.get("Representatives") or []
+    if expected_login:
+        representatives = [
+            item for item in representatives
+            if str(item.get("Login", "")).lower() == expected_login.lower()
+        ]
+    for representative in representatives:
+        role = representative.get("Role")
+        if role in {"CHIEF", "DELEGATE"}:
+            return "EDITING"
+        if role == "READONLY":
+            return "READING"
+    return "UNKNOWN"
 
 
 def _yan_domain_present(body: Any, expected_domain: str) -> bool:
