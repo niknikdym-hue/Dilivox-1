@@ -87,3 +87,16 @@ PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.campaign_facto
 Fixture scenarios are `valid`, `missing-content`, `invalid-tracking`, and
 `invalid-capability`. Future provider operations are represented only as inert
 data intents with `executable=false`.
+
+## Acquisition Strategy Lab Day-9 public contracts
+
+Build deterministic, credential-free StrategyCell fixtures:
+
+```bash
+PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.strategy_lab_cli eligible
+PYTHONPATH=profit-engine/runtime python3 -m profit_engine_runtime.strategy_lab_cli private-decision
+```
+
+The public lab validates accepted money evidence and creates inert experiment
+previews. It never compares strategy outcomes or makes a commercial decision;
+sensitive decision requests fail closed with `BLOCKED_PRIVATE_CORE_REQUIRED`.
