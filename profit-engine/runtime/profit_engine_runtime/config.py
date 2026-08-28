@@ -19,6 +19,7 @@ class SiteConfig:
     rollout_mode: str = "READ_ONLY"
     yandex_oauth_token_ref: str = "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN"
     yan_stats_token_ref: str = "env:PROFIT_ENGINE_YAN_STATS_TOKEN"
+    direct_operator_login: str | None = None
     direct_client_login: str | None = None
     metrica_counter_id: str | None = None
     metrica_dimensions: tuple[str, ...] = ("ym:s:date",)
@@ -46,13 +47,18 @@ def load_site_config(path: Path = DEFAULT_CONFIG_PATH) -> tuple[SiteConfig, bool
     direct = providers.get("direct", {})
     metrica = providers.get("metrica", {})
     yan = providers.get("yan_statistics", {})
+    operator_login = _private_value(direct.get("operator_login_ref"))
+    client_login = _private_value(direct.get("client_login_ref"))
+    if operator_login and client_login and operator_login.casefold() == client_login.casefold():
+        raise ValueError("Direct managed target login must differ from the operator/manager login")
     return SiteConfig(
         site_id=data.get("site_id", "dilivox"),
         canonical_domain=data.get("canonical_domain", "dilivox.ru"),
         rollout_mode=data["rollout_mode"],
         yandex_oauth_token_ref=direct.get("token_source_ref", "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN"),
         yan_stats_token_ref=yan.get("token_source_ref", "env:PROFIT_ENGINE_YAN_STATS_TOKEN"),
-        direct_client_login=_private_value(direct.get("client_login_ref")),
+        direct_operator_login=operator_login,
+        direct_client_login=client_login,
         metrica_counter_id=_private_value(metrica.get("counter_ref")),
         metrica_dimensions=tuple(metrica.get("dimensions", ("ym:s:date",))),
         yan_resource_id=_private_value(yan.get("resource_ref")),
