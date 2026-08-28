@@ -55,10 +55,26 @@ class Day12LaunchReadiness:
         return recorded == _digest(value)
 
 
+def observed_direct_permission(diagnostics: Sequence[DiagnosticResult]) -> DirectPermissionState:
+    direct = next((item for item in diagnostics if item.provider == "direct"), None)
+    if direct is None:
+        return DirectPermissionState.UNKNOWN
+    for check in direct.checks:
+        prefix = "direct.permission="
+        if not check.startswith(prefix):
+            continue
+        value = check.removeprefix(prefix)
+        try:
+            return DirectPermissionState(value)
+        except ValueError:
+            return DirectPermissionState.UNKNOWN
+    return DirectPermissionState.UNKNOWN
+
+
 def build_day12_launch_readiness(
     *,
-    direct_permission: DirectPermissionState,
     diagnostics: Sequence[DiagnosticResult],
+    direct_permission: DirectPermissionState | None = None,
     controller_sha: str = ACCEPTED_TASK_011R_SHA,
 ) -> Day12LaunchReadiness:
     by_provider = {item.provider: item for item in diagnostics}
@@ -67,11 +83,18 @@ def build_day12_launch_readiness(
         for name in REQUIRED_PROVIDERS
     )
 
+    observed_permission = observed_direct_permission(diagnostics)
+    effective_permission = (
+        observed_permission
+        if observed_permission != DirectPermissionState.UNKNOWN
+        else (direct_permission or DirectPermissionState.UNKNOWN)
+    )
+
     reasons: list[str] = []
     if controller_sha != ACCEPTED_TASK_011R_SHA:
         state = Day12ReadinessState.BLOCKED_CONTROLLER_ACCEPTANCE
         reasons.append("accepted_task_011r_sha_mismatch")
-    elif direct_permission != DirectPermissionState.EDITING:
+    elif effective_permission != DirectPermissionState.EDITING:
         state = Day12ReadinessState.BLOCKED_OWNER_PERMISSION
         reasons.append("direct_editing_permission_not_confirmed")
     elif any(status != DoctorStatus.PASS.value for _, status in statuses):
@@ -83,10 +106,10 @@ def build_day12_launch_readiness(
         state = Day12ReadinessState.READY_FOR_LIVE_CANDIDATE_SELECTION
 
     core = {
-        "readiness_version": "1.0",
+        "readiness_version": "1.1",
         "state": state,
         "reasons": tuple(reasons),
-        "direct_permission": direct_permission,
+        "direct_permission": effective_permission,
         "controller_sha": controller_sha,
         "provider_statuses": statuses,
         "real_provider_requests": REAL_PROVIDER_REQUESTS,
