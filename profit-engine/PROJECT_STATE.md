@@ -33,13 +33,12 @@ This remains a target, not a claimed result.
 
 Public repository: `niknikdym-hue/Dilivox-1`, branch `profit-engine`.
 
-Latest code HEAD verified by CI:
-`b66050fc8dc7b5b42e8b19ebbb2f8043b5869b37` — provider-only Day-12 permission authority reflected through launch-gate tests.
+Current reviewed Day-12 rework/evidence HEAD:
+`9841c27eff7ce64250d163c78e27b8a2f5dadb13`.
 
-Profit Engine CI run `33218249298`: all Python tests, Node tests, JSON validation and diff whitespace checks SUCCESS.
+Profit Engine CI run `33221266711`: SUCCESS.
 
-Follow-up evidence commit:
-`d64bef6aaf964dceb7336ea8d4db22a9881913bd` — records the fail-closed Direct permission fix; no provider mutation or secret value.
+This head includes the fail-closed Direct Managing Account / managed advertiser separation and the evidence that supersedes the previous manager-permission inference.
 
 Private repository: `niknikdym-hue/profit-engine-core`, branch `main`:
 `76b1b8670690f102a045243760dfe3d1e58513d5`.
@@ -52,7 +51,7 @@ Open launch-critical issues:
 - public: `#19 — Profit Engine Task 012 — Live guarded production launch`;
 - private core: none.
 
-No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. The current permission/readiness hardening was advanced by Central Brain directly on the canonical public branch.
+No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. The current permission/identity rework was advanced by Central Brain directly on the canonical public branch.
 
 ## Tasks 001–010R — ACCEPTED
 
@@ -104,7 +103,7 @@ Accepted scope remains deliberately non-authorizing:
 - `selected_by="CENTRAL_BRAIN"` is only an audit marker, not authentication;
 - >20% weekly budget increases remain gated by exact trusted Owner approval.
 
-## Live provider read certification — VERIFIED FOR CREDENTIAL/IDENTITY ACCESS
+## Live provider read certification — VERIFIED FOR METRICA/YAN AND DIRECT OPERATOR READ ACCESS
 
 Evidence:
 `profit-engine/evidence/TASK-012-LIVE-PROVIDER-BINDING.md`.
@@ -112,45 +111,61 @@ Evidence:
 Recorded Owner-side live proofs, without secret values:
 - YAN Statistics API: HTTP 200, exact `dilivox.ru` statistics readable;
 - Yandex Metrica: HTTP 200, exact counter `110349067`, provider permission `edit`;
-- Yandex Direct: HTTP 200, exact client `reklamadymova` / ClientId `100716697` visible.
+- Yandex Direct: HTTP 200 for the technical Direct identity.
 
-Credential/read availability is therefore no longer the blocker. These read proofs do not authorize a Direct mutation.
+Important correction: the earlier Direct result `Login=reklamadymova` identifies the technical Managing Account/operator, not by itself the distinct managed owner advertiser account. That result proves OAuth/operator read access only and must not be treated as exact owner-target certification.
 
-## Direct permission gate — PROVIDER-OBSERVED AND API-ENFORCED
+## Direct Managing Account / managed target gate — REWORKED / FAIL CLOSED
+
+Canonical access setup records:
+- main Direct advertiser/chief representative is the owner account;
+- technical Direct identity `reklamadymova` is a separate Managing Account;
+- the Managing Account relationship was deliberately set to `Reading` during staged rollout.
 
 Evidence:
 - `profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`;
-- `profit-engine/evidence/TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`.
+- `profit-engine/evidence/TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`;
+- `profit-engine/evidence/TASK-012-DIRECT-MANAGER-TARGET-MISBINDING-REWORK.md`.
 
-Permission/readiness implementation chain:
-- `1b79bcd941ef01d81c761734407978500634f3a9` — Direct doctor derives `direct.permission=EDITING|READING|UNKNOWN` from provider data;
-- `756fb0980a6e5038096559cf5eda611ccbf33166` — CLI removes manual permission assertion;
-- `696e9c41515f2f0ce77b3300620fd2143a6c221a` — one-command live read-only probe;
-- `86d917cc8b3165a6b7b2da1749fe044a122b0183` — Owner entrypoint;
-- `4dd17793283961fe1df99a9cc1ea60e1affc09e9` — remove the remaining internal manual permission fallback; readiness v1.2 now accepts provider-observed permission only;
-- `2c94fe7575f954c18591ed89a4e4e702e035d410` — regression tests prove manual override is not an API;
-- `b66050fc8dc7b5b42e8b19ebbb2f8043b5869b37` — candidate-selection tests require provider-observed Editing.
+Launch-critical finding on 2026-08-29:
+- the previous live bootstrap aliased `client_login_ref` to `reklamadymova`;
+- that could certify the technical operator's own Direct client instead of the distinct managed owner advertiser;
+- `Clients.get` advertiser `Grants` / `Representatives` are not documented as the access-level source for a separate Managing Account relationship;
+- therefore the previous claim that Managing Account Editing could be provider-derived from those fields is REWORKED and superseded.
 
-CI `33218249298` on `b66050fc8dc7b5b42e8b19ebbb2f8043b5869b37`: SUCCESS across all test/validation steps.
+Rework chain:
+- `9153f0ee8d9bc5977d52c6459383deef9411d098` — private config separates Direct operator and managed target and rejects aliasing;
+- `85a75da129e05e8e171384b39b46c6944d6e8ab0` — live bootstrap requires an explicit managed owner advertiser login and refuses the technical operator as target;
+- `d425a72939f2ab5b0fcd79d9800d215308bac0c9` — Direct doctor proves operator and target separately; manager path never infers Editing from managed advertiser grants/representatives;
+- `538fe0172f13472735b9a69031f6d209df2d1c4e` — Owner readiness script requires `PROFIT_ENGINE_DIRECT_TARGET_LOGIN` and cannot silently certify the operator as target;
+- `a7bc3ae3f70f3c4196d97dc2863e68b9ab3c602f` + `bb858c075a04ad6e4970483bf39680ac786dab00` — regression tests for target separation and manager-permission fail-closed behavior;
+- `78430f1b85a726179d14661867b269475202a8cb` — canonical provider certification corrected for the Managing Account boundary;
+- `9841c27eff7ce64250d163c78e27b8a2f5dadb13` — rework evidence.
 
-Canonical invariant is now enforced in the runtime API, not merely by the CLI: `UNKNOWN` cannot be promoted by caller assertion, `READING` remains blocked, and only provider-observed `EDITING` can satisfy the permission stage. Readiness still cannot authorize writes: `provider_write_allowed=false`, production writer remains disabled, and no real provider request/spend is introduced by this layer.
+CI `33221266711` on `9841c27eff7ce64250d163c78e27b8a2f5dadb13`: SUCCESS.
+
+Safety interpretation:
+- operator identity PASS != managed owner advertiser identity PASS;
+- managed owner advertiser read PASS != Managing Account Editing authority;
+- Managing Account permission remains an explicit Owner-controlled Direct UI gate;
+- runtime remains fail-closed at `UNKNOWN` for manager permission;
+- no provider/site mutation, Yandex permission change, real Direct dispatch, budget action or secret disclosure occurred in this rework.
 
 ## Current first incomplete canonical gate
 
-Execute the read-only Day-12 readiness entrypoint in the Owner environment where the existing Keychain credentials are available:
+The Managing Account relationship is still canonically recorded as `Reading` and no later accepted evidence shows it was changed.
 
-`bash profit-engine/scripts/day12-live-readiness.sh`
+Single next Owner-only action:
 
-Branching rule:
-- observed `READING` => the single Owner-only action is to change the relevant Yandex Direct access to Editing; no other action is authorized;
-- observed `EDITING` + all three doctors PASS => Central Brain may advance to exact live candidate selection;
-- observed `UNKNOWN` or any provider failure => remain blocked and diagnose read-only; zero dispatches.
+`Yandex Direct: for the owner advertiser account managed by reklamadymova, change Managing Account access from Reading to Editing.`
 
-Until that provider-observed result exists, production write remains blocked and no permission change should be assumed necessary.
+Do not perform any other Direct mutation.
+
+After the Owner confirms that change, Central Brain will continue with private exact managed-target binding, read-only operator/target certification, Metrica/YAN certification, and only then exact live candidate selection. The readiness script must never use `reklamadymova` as `PROFIT_ENGINE_DIRECT_TARGET_LOGIN`.
 
 ## First real mutation boundary
 
-Only after provider-observed Editing, all live doctors PASS, exact Central Brain live candidate acceptance and all accepted controller gates:
+Only after accepted Owner Editing evidence, exact managed target binding, all live doctors PASS, exact Central Brain live candidate acceptance and all accepted controller gates:
 
 1. exact candidate selection from accepted evidence;
 2. fresh provider preflight;
@@ -194,8 +209,9 @@ Verify actual public/private HEADs first, then read:
 5. `profit-engine/evidence/TASK-012-LIVE-PROVIDER-BINDING.md`;
 6. `profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`;
 7. `profit-engine/evidence/TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`;
-8. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
-9. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
-10. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
-11. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
-12. issue #19.
+8. `profit-engine/evidence/TASK-012-DIRECT-MANAGER-TARGET-MISBINDING-REWORK.md`;
+9. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+10. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+11. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+12. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
+13. issue #19.
