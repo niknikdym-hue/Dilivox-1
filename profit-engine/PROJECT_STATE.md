@@ -39,9 +39,12 @@ Public CI `33180647500`: GREEN.
 Private core accepted contract:
 `1709925f5b2d29f9c038dde7caca8054b51eea6f`
 
-Private CI `33180767637`: GREEN.
+Current private-core main:
+`76b1b8670690f102a045243760dfe3d1e58513d5`
 
-Accepted Day-10 chain includes period-vs-cohort truth, `CohortRevenueEvidence v1`, ActionProposal v1, Budget Governor, exact +20.00/+20.01 Owner boundary and private ProfitAllocator in private core only.
+Private CI `33182663547`: GREEN.
+
+Accepted Day-10 chain includes period-vs-cohort truth, `CohortRevenueEvidence v1`, ActionProposal v1, Budget Governor, exact +20.00/+20.01 Owner boundary and private ProfitAllocator in private core only. The private core remains proposal-only and has no provider write authority.
 
 ## Task 011 + 011R — ACCEPTED / DAY 11 COMPLETE
 
@@ -75,33 +78,49 @@ Issues #17 and #18 are completed.
 
 ## Immediate active task — Day 12
 
-Canonical design:
+Tracking issue:
+`#19 — Profit Engine Task 012 — Live guarded production launch`.
 
+Canonical design:
 `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`
 
 Canonical provider certification:
-
 `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`
 
 Canonical first-write matrix:
-
 `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`
 
 Canonical task:
-
 `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`
+
+## Day-12 pre-Editing readiness harness — VERIFIED / GREEN
+
+Current verified public implementation before Owner permission transition:
+`4419f14f0f1a74f00077f46bed268f2027b30d44`
+
+Profit Engine CI `33200909842`: GREEN.
+
+Evidence:
+`profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`
+
+The runtime now includes:
+- `day12_readiness.py` fail-closed launch-readiness state machine;
+- `day12_readiness_cli.py` read-only CLI reusing the existing Direct/Metrica/YAN doctor;
+- negative tests for wrong controller SHA, Reading/UNKNOWN permission, missing/failed providers and digest tamper.
+
+Even when all doctor checks pass and Editing is later confirmed, this harness can only produce `READY_FOR_LIVE_CANDIDATE_SELECTION`; it does not grant provider write authority. `provider_write_allowed=false`, real provider requests remain 0, advertising spend remains 0 and the production writer remains disabled.
 
 ## Owner permission gate — CURRENT FIRST BLOCKER
 
-Central Brain has accepted the controller as ready for permission upgrade.
+Central Brain has accepted the controller and pre-Editing readiness harness as ready for the permission upgrade.
 
-The next Owner action may now be:
+The single next Owner action is:
 
 `Yandex Direct access: Reading -> Editing`.
 
-This permission change is necessary for Day-12 readiness but DOES NOT authorize a write by itself.
+This permission change is necessary for Day-12 live certification but DOES NOT authorize a write by itself.
 
-After the change, exact account/client permission state must be re-read and live certification must run before any mutation.
+After the change, exact account/client permission state must be re-read and the prepared read-only Direct/Metrica/YAN certification must run before any live candidate can be selected.
 
 ## External provider credential/live-certification gate
 
@@ -151,12 +170,14 @@ Economic proof requires later reconciled live Direct spend + Metrica-attributed 
 
 ## Resume protocol
 
-Read `PROJECT_HANDOFF.md`, verify actual `origin/profit-engine` HEAD, then read:
+Read `PROJECT_HANDOFF.md`, verify actual `origin/profit-engine` HEAD and private `main`, then read:
 1. `profit-engine/PROJECT_STATE.md`;
 2. `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`;
-3. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
-4. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
-5. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
-6. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`.
+3. `profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`;
+4. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+5. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+6. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+7. `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
+8. issue #19.
 
 Current first incomplete gate: Owner Direct permission transition Reading -> Editing.
