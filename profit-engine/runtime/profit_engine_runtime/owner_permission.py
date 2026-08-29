@@ -4,8 +4,10 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import stat
+import tempfile
 
 
 DEFAULT_OWNER_PERMISSION_PATH = Path(
@@ -37,6 +39,74 @@ def evidence_digest(payload: dict[str, object]) -> str:
     return sha256(
         json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
+
+
+def build_owner_permission_payload(
+    *,
+    operator_login: str,
+    target_login: str,
+    confirmed_at: datetime,
+    owner_confirmed: bool,
+) -> dict[str, object]:
+    operator = operator_login.strip()
+    target = target_login.strip()
+    if not operator or not target:
+        raise ValueError("exact Direct operator and managed target logins are required")
+    if operator.casefold() == target.casefold():
+        raise ValueError("Direct operator and managed target must differ")
+    if owner_confirmed is not True:
+        raise ValueError("explicit Owner confirmation of Editing is required")
+    if confirmed_at.tzinfo is None:
+        raise ValueError("confirmed_at must be timezone-aware")
+
+    value: dict[str, object] = {
+        "schema_version": SCHEMA_VERSION,
+        "permission": "EDITING",
+        "operator_login": operator,
+        "target_login_sha256": target_login_sha256(target),
+        "source": SOURCE,
+        "owner_confirmed": True,
+        "confirmed_at": confirmed_at.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+    return {**value, "evidence_digest": evidence_digest(value)}
+
+
+def record_owner_permission_evidence(
+    path: Path = DEFAULT_OWNER_PERMISSION_PATH,
+    *,
+    operator_login: str,
+    target_login: str,
+    confirmed_at: datetime | None = None,
+    owner_confirmed: bool,
+) -> Path:
+    """Atomically record Owner-confirmed Direct Managing Account Editing evidence.
+
+    This records local authority evidence only. It does not call Yandex and does not
+    grant provider write authority. Plaintext managed-target login is never written.
+    """
+    payload = build_owner_permission_payload(
+        operator_login=operator_login,
+        target_login=target_login,
+        confirmed_at=confirmed_at or datetime.now(timezone.utc),
+        owner_confirmed=owner_confirmed,
+    )
+    path = path.expanduser()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent, text=True)
+    tmp_path = Path(tmp_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=False, indent=2, sort_keys=True)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.chmod(tmp_path, 0o600)
+        os.replace(tmp_path, path)
+        os.chmod(path, 0o600)
+    finally:
+        if tmp_path.exists():
+            tmp_path.unlink()
+    return path
 
 
 def load_owner_permission_evidence(
