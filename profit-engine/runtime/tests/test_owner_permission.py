@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import json
+import stat
 import tempfile
 import unittest
 from pathlib import Path
@@ -9,8 +10,10 @@ from pathlib import Path
 from profit_engine_runtime.owner_permission import (
     SCHEMA_VERSION,
     SOURCE,
+    build_owner_permission_payload,
     evidence_digest,
     load_owner_permission_evidence,
+    record_owner_permission_evidence,
     target_login_sha256,
 )
 
@@ -39,6 +42,54 @@ class OwnerPermissionEvidenceTests(unittest.TestCase):
         path.write_text(json.dumps(value), encoding="utf-8")
         path.chmod(mode)
         return path
+
+    def test_recorder_requires_explicit_owner_confirmation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "permission.json"
+            with self.assertRaises(ValueError):
+                record_owner_permission_evidence(
+                    path,
+                    operator_login=OPERATOR,
+                    target_login=TARGET,
+                    confirmed_at=NOW,
+                    owner_confirmed=False,
+                )
+            self.assertFalse(path.exists())
+
+    def test_recorder_writes_atomic_0600_hash_bound_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "nested" / "permission.json"
+            recorded = record_owner_permission_evidence(
+                path,
+                operator_login=OPERATOR,
+                target_login=TARGET,
+                confirmed_at=NOW,
+                owner_confirmed=True,
+            )
+            self.assertEqual(path, recorded)
+            self.assertEqual(0o600, stat.S_IMODE(path.stat().st_mode))
+            text = path.read_text(encoding="utf-8")
+            self.assertNotIn(TARGET, text)
+            self.assertIn(target_login_sha256(TARGET), text)
+            evidence = load_owner_permission_evidence(
+                path,
+                operator_login=OPERATOR,
+                target_login=TARGET,
+                now=NOW,
+            )
+            self.assertEqual("EDITING", evidence.permission)
+            self.assertTrue(evidence.owner_confirmed)
+            leftovers = [item.name for item in path.parent.iterdir() if item != path]
+            self.assertEqual([], leftovers)
+
+    def test_recorder_rejects_operator_target_alias(self):
+        with self.assertRaises(ValueError):
+            build_owner_permission_payload(
+                operator_login=OPERATOR,
+                target_login="ReklamaDymova",
+                confirmed_at=NOW,
+                owner_confirmed=True,
+            )
 
     def test_valid_fresh_exact_evidence_loads(self):
         with tempfile.TemporaryDirectory() as directory:
