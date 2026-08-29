@@ -7,7 +7,7 @@ is absent or ambiguous across strategy placements.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 from decimal import Decimal, InvalidOperation
 from enum import StrEnum
 from hashlib import sha256
@@ -213,7 +213,18 @@ def _inspection(
     return WeeklyBudgetInspection(**core, inspection_digest=_digest(core))
 
 
+def _json_default(value: object) -> object:
+    if is_dataclass(value):
+        return asdict(value)
+    return str(value)
+
+
 def _digest(value: object) -> str:
     return sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            default=_json_default,
+        ).encode("utf-8")
     ).hexdigest()
