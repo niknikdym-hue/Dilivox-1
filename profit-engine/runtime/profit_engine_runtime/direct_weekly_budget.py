@@ -3,7 +3,7 @@
 This module replaces assumptions around legacy Campaign.DailyBudget with an explicit
 read-only model of WeeklySpendLimit embedded in the campaign bidding strategy.
 It never sends provider writes and deliberately fails closed when budget ownership
-is absent or ambiguous across strategy placements.
+is absent, ambiguous across placements, or owned by a package/portfolio strategy.
 """
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ class WeeklyBudgetCapability(StrEnum):
     EXACT_ONE_SLOT = "EXACT_ONE_SLOT"
     NO_WEEKLY_SPEND_LIMIT = "NO_WEEKLY_SPEND_LIMIT"
     AMBIGUOUS_MULTIPLE_SLOTS = "AMBIGUOUS_MULTIPLE_SLOTS"
+    PACKAGE_STRATEGY_REQUIRES_SEPARATE_SCOPE = "PACKAGE_STRATEGY_REQUIRES_SEPARATE_SCOPE"
     INVALID_PROVIDER_SHAPE = "INVALID_PROVIDER_SHAPE"
 
 
@@ -87,11 +88,22 @@ def inspect_weekly_budget(campaign: Mapping[str, Any]) -> WeeklyBudgetInspection
     if not campaign_id:
         return _inspection("", WeeklyBudgetCapability.INVALID_PROVIDER_SHAPE, (), ("campaign_id_missing",))
 
+    typed_campaigns = [
+        (type_field, typed_value)
+        for type_field, typed_value in campaign.items()
+        if type_field.endswith("Campaign") and isinstance(typed_value, Mapping)
+    ]
+    if any(_package_strategy_present(typed_value.get("PackageBiddingStrategy")) for _, typed_value in typed_campaigns):
+        return _inspection(
+            campaign_id,
+            WeeklyBudgetCapability.PACKAGE_STRATEGY_REQUIRES_SEPARATE_SCOPE,
+            (),
+            ("package_bidding_strategy_owns_budget_scope",),
+        )
+
     slots: list[WeeklySpendLimitSlot] = []
     malformed = False
-    for type_field, typed_value in campaign.items():
-        if not type_field.endswith("Campaign") or not isinstance(typed_value, Mapping):
-            continue
+    for type_field, typed_value in typed_campaigns:
         bidding = typed_value.get("BiddingStrategy")
         if not isinstance(bidding, Mapping):
             continue
@@ -156,7 +168,7 @@ def build_weekly_budget_plan(
     if not inspection.integrity_valid:
         raise ValueError("weekly-budget inspection integrity invalid")
     if inspection.capability != WeeklyBudgetCapability.EXACT_ONE_SLOT or len(inspection.slots) != 1:
-        raise ValueError("exactly one observed WeeklySpendLimit slot is required")
+        raise ValueError("exactly one campaign-owned WeeklySpendLimit slot is required")
     if not isinstance(proposed_weekly_spend_limit, Decimal):
         raise ValueError("proposed weekly spend limit must be Decimal")
     if proposed_weekly_spend_limit <= 0:
@@ -194,6 +206,12 @@ def build_weekly_budget_plan(
         "provider_write_allowed": False,
     }
     return WeeklyBudgetPlan(**core, plan_digest=_digest(core))
+
+
+def _package_strategy_present(value: Any) -> bool:
+    if value is None or value == "" or value == {} or value == []:
+        return False
+    return True
 
 
 def _inspection(
