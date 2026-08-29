@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 12 — LIVE GUARDED PRODUCTION LAUNCH GATE
+Status: IMPLEMENTATION ACTIVE / DAY 12 — PRODUCTION WRITER READY / OWNER EDITING GATE
 Updated: 2026-08-29
 Canonical public branch: `profit-engine`
 Private core branch: `main`
@@ -13,42 +13,23 @@ Launch the guarded production loop:
 
 First production site: `site_id=dilivox` / `dilivox.ru`.
 Target: `1 RUB Direct spend -> 5 RUB YAN advertising revenue attributable to the acquired Dilivox audience`.
-This is a target, not a claimed result.
+This remains a target, not a claimed result.
 
 ## Locked governance
 
 - private core emits proposals only and never writes to providers;
-- no provider/site mutation before the canonical Day-12 live gates pass;
 - automatic weekly budget increase above +20% requires exact explicit Owner approval;
-- one autonomous campaign budget mutation per campaign/day at launch;
-- exactly one provider object per first launch write;
-- no blind retry;
+- exactly one provider object for the first launch write;
+- no blind mutation retry;
+- exact target identity only; no fuzzy inference;
 - no secret values in Git/chat/issues/logs;
 - chat is not source of truth.
 
-## Current verified repository state
+## Executor state
 
-Public: `niknikdym-hue/Dilivox-1`, branch `profit-engine`.
+Codex is currently paused because its usage limit is exhausted. Owner instructed Central Brain not to issue new Codex tasks until Owner explicitly reports that the limit has been restored.
 
-Current Central-Brain implementation chain after the latest safety fix:
-- `2520838a4138212c8cbf2a70791955da86fd4d63` — local fail-closed Owner UI permission evidence loader;
-- `79e587ad20b7412f006d32cc5aaf04eb5f9102a9` — readiness binds Managing Account permission to Owner UI evidence rather than an impossible provider-derived value;
-- `130dd1c49f998813bed8a30650dc6172dc394551` — readiness CLI evidence intake;
-- `0295321ee412b28b3095d4c807886aa679e28839` — readiness regressions;
-- `141251114b2e9590b9a982c4e4755cee9ed5dc06` — evidence-loader negative tests;
-- `ff14bc5204695c320b2173c794a3b9f0ecb9ac53` — canonical evidence for this fix.
-
-CI `33224867707` on `141251114b2e9590b9a982c4e4755cee9ed5dc06`: SUCCESS. The evidence-only commit that follows does not change runtime behavior.
-
-Private core: `niknikdym-hue/profit-engine-core`, `main` = `76b1b8670690f102a045243760dfe3d1e58513d5`.
-Private CI `33182663547`: SUCCESS.
-Private core remains proposal-only, unchanged by Day 12, with no provider write authority.
-
-Open launch-critical issues:
-- public: `#19 — Profit Engine Task 012 — Live guarded production launch`;
-- private core: none.
-
-No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. Current Day-12 safety/reconciliation work was advanced directly by Central Brain.
+No new Codex implementation exists after the previously accepted Day-12 pre-live scaffold. Current launch-critical engineering is being advanced directly by Central Brain on canonical `profit-engine`.
 
 ## Accepted baseline
 
@@ -57,97 +38,142 @@ Tasks 001–010R: ACCEPTED.
 - private accepted contract: `1709925f5b2d29f9c038dde7caca8054b51eea6f`.
 
 Task 011 + 011R: ACCEPTED / DAY 11 COMPLETE.
-- Central Brain evidence: `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`;
 - final controller: `a494d30b49c8d11687be56cdab870a5d83356e02`;
-- CI `33187660342`: GREEN.
+- CI `33187660342`: GREEN;
+- exact proposal/Governor binding, trusted Owner >20% gate, preflight, TOCTOU, kill switch, lock, one-object binding, read-back, audit and no-blind-retry invariants accepted.
 
-Accepted controller invariants include exact proposal/Governor binding, trusted Owner approval >20%, exact target identity, fresh preflight + TOCTOU, kill-switch recheck, current-day cadence, per-target lock, one-object request binding, read-back, no blind retry, immutable-preflight rollback source and production writer disabled by default.
+Private core:
+- `niknikdym-hue/profit-engine-core/main` = `76b1b8670690f102a045243760dfe3d1e58513d5`;
+- CI `33182663547`: SUCCESS;
+- proposal-only / no provider write authority.
 
-## Day-12 canonical authority
+## Provider access — VERIFIED
 
-Tracking issue: `#19`.
+Working credentials are stored locally and have already produced live read success:
+- YAN Statistics: live `dilivox.ru` statistics readable;
+- Metrica: counter `110349067` readable, permission `edit`;
+- Direct: OAuth/operator identity readable.
 
-Authority:
-- `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
-- `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
-- `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
-- `profit-engine/tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`.
+Canonical live evidence:
+`profit-engine/evidence/TASK-012-LIVE-PROVIDER-BINDING.md`.
 
-Accepted pre-live evidence:
-- `profit-engine/evidence/TASK-012-PRE-EDITING-READINESS-HARNESS.md`;
-- `profit-engine/evidence/TASK-012-CENTRAL-BRAIN-PRELIVE-ACCEPTANCE.md`.
+## Direct identity truth
 
-Live read evidence:
-- `profit-engine/evidence/TASK-012-LIVE-PROVIDER-BINDING.md`.
+Technical Direct Managing Account/operator: `reklamadymova`.
 
-Direct permission/identity rework evidence:
-- `profit-engine/evidence/TASK-012-DIRECT-PERMISSION-READ-PROBE.md`;
-- `profit-engine/evidence/TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`;
-- `profit-engine/evidence/TASK-012-DIRECT-MANAGER-TARGET-MISBINDING-REWORK.md`;
-- `profit-engine/evidence/TASK-012-OWNER-UI-PERMISSION-EVIDENCE-GATE.md`.
+The owner advertiser managed target is a distinct private login. The previous bootstrap that treated `reklamadymova` as the managed target is REWORKED and is not valid launch evidence.
 
-## Current Direct truth
+Runtime now:
+- separates operator and managed target;
+- rejects operator/target aliasing;
+- requires exact private target binding;
+- keeps the Managing Account Reading/Editing relationship fail-closed unless fresh Owner UI evidence exists.
 
-The owner advertiser account is distinct from the technical Direct Managing Account/operator `reklamadymova`.
+Relevant evidence:
+- `TASK-012-DIRECT-PERMISSION-READ-PROBE.md`;
+- `TASK-012-PROVIDER-PERMISSION-FAIL-CLOSED-FIX.md`;
+- `TASK-012-DIRECT-MANAGER-TARGET-MISBINDING-REWORK.md`;
+- `TASK-012-OWNER-UI-PERMISSION-EVIDENCE-GATE.md`.
 
-The previous bootstrap that treated `reklamadymova` as the managed target is REWORKED and must never be used as launch evidence.
+## Day-12 production writer — VERIFIED / READY IN CODE
 
-Current runtime rules:
-- operator and managed target must be distinct;
-- exact managed target login is private and never printed by the bootstrap;
-- Direct doctor proves OAuth/operator identity and managed-target read visibility separately;
-- advertiser `Clients.get` Grants/Representatives are not used to infer the separate Managing Account `Reading/Editing` relationship;
-- manager permission remains fail-closed unless there is fresh explicit Owner UI evidence.
+The previously missing real provider path is now implemented but remains disabled until live gates pass.
 
-## Owner UI permission evidence gate — VERIFIED / GREEN
+Runtime/test chain:
+- `f3bdae1a0790a955b1d6c4142e013bf38b179ff3` — fail-closed one-shot Direct production writer;
+- `6d65812cb2c1ae9fa43c1874ce5780dd12c4b080` — writer tests;
+- `c6a8031c5976d9015ac7e4cc9577073f676f910b` + `36b7799dc8f082053ce0c515347aab362fd64ac1` — Direct v501 runtime/bootstrap alignment;
+- `5c3c07e577c682f99add9ea1e09804a0b6fbd6f0` — guarded production execution harness;
+- `7b8fc3204a770f049fd29952e513a1cb3c7a14a6` — execution regression tests.
 
-Launch-critical finding: after the manager-target REWORK, the doctor correctly returned manager permission `UNKNOWN`, but readiness still required provider-derived `EDITING`. That made the Day-12 transition unreachable even after a real Owner UI permission change.
+CI `33264804958` on exact runtime/test HEAD `7b8fc3204a770f049fd29952e513a1cb3c7a14a6`: SUCCESS.
 
-Fix:
-- local Owner evidence lives outside the repository and must be `0600`;
-- it binds exact operator, SHA-256 of exact managed target, permission exactly `EDITING`, Direct UI source, explicit Owner confirmation, fresh timezone-aware timestamp and integrity digest;
-- missing/stale/future/tampered/mismatched evidence fails closed;
-- plaintext managed target is not stored in the evidence;
-- Owner evidence is accepted only on the Managing Account UI path;
-- provider-derived `READING` outside that path cannot be overridden.
+Evidence:
+`profit-engine/evidence/TASK-012-PRODUCTION-WRITER-READY.md`.
 
-Authority boundary: this evidence is NOT cryptographic authentication and NOT write authorization. It may only let readiness reach `READY_FOR_LIVE_CANDIDATE_SELECTION` after all read doctors PASS. `provider_write_allowed=false`, production writer remains disabled, real provider requests remain 0, advertising spend remains 0.
+Production execution now enforces:
+1. exact integrity-valid arm/plan binding;
+2. exact target lock;
+3. fresh provider preflight;
+4. TOCTOU comparison;
+5. runtime kill-switch recheck;
+6. `DISPATCH_STARTED` audit before send;
+7. exactly one mutation network attempt;
+8. exactly one provider object ID;
+9. immediate exact read-back;
+10. terminal classification with no blind retry.
 
-## Current first incomplete canonical gate
+Production writer default remains disabled. No live mutation was sent while building/testing this path.
 
-The Managing Account relationship is still canonically recorded as `Reading`; no later accepted evidence shows it changed.
+## Current Direct API compatibility decision
 
-Single next Owner-only action:
+Canonical Direct JSON endpoint is now `/json/v501`.
 
-`Yandex Direct: for the owner advertiser account managed by reklamadymova, change Managing Account access from Reading to Editing.`
+Allowed first-live methods only:
+- `campaign.suspend`;
+- `campaign.resume`;
+- `ad.suspend`;
+- `ad.resume`.
+
+`campaign.update_budget` is NOT enabled for the first production write.
+
+Current Direct documentation deprecates the old campaign `DailyBudget` path; strategy-aware budget control uses `WeeklySpendLimit`. The Day-11 DailyBudget mapping remains synthetic safety evidence only.
+
+Budget automation is fail-closed until a separate strategy-aware `WeeklySpendLimit` implementation + tests + Central Brain acceptance are complete. This does not block the Day-12 engineering launch because the first live action is intentionally the lowest-downside reversible accepted suspend/resume action.
+
+Canonical first-write matrix:
+`profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`.
+
+## Current first incomplete canonical gate — OWNER ONLY
+
+The Managing Account relationship is still canonically recorded as `Reading`; no accepted evidence shows it changed.
+
+Single next Owner action:
+
+`Yandex Direct: for the exact owner advertiser account managed by reklamadymova, change Managing Account access from Reading to Editing.`
 
 Do not perform any other Direct mutation.
 
 That UI change alone authorizes no provider write.
 
-After explicit Owner confirmation, Central Brain will bind fresh Owner UI evidence to the private exact managed target, run operator/target + Metrica + YAN read-only certification, and only then consider exactly one live candidate.
-
-## First real mutation boundary
-
-Only after accepted Owner Editing evidence, exact managed-target binding, all live doctors PASS, exact Central Brain candidate acceptance and all controller gates:
-1. fresh provider preflight;
-2. proposal/Governor/Owner approval revalidation;
-3. cadence + exact lock;
-4. fresh TOCTOU read;
-5. runtime kill-switch recheck;
-6. exact one-object request from immutable plan;
-7. narrow one-shot writer arming;
-8. one Direct dispatch;
-9. read-back;
-10. immutable audit;
-11. rollback only if separately guarded/authorized.
+After Owner explicitly confirms the change, Central Brain will:
+1. bind fresh Owner UI Editing evidence to the exact private target;
+2. run exact Direct operator/target + Metrica + YAN live read certification;
+3. obtain current Direct spend/state evidence and accepted money/data-quality inputs;
+4. select exactly one reversible live candidate;
+5. reconstruct exact ActionProposal/Governor/ControllerPlan;
+6. arm the one-shot writer for that exact plan only;
+7. perform one guarded Direct mutation;
+8. exact read-back + immutable audit;
+9. classify engineering launch.
 
 Any failed gate => zero dispatches.
 
-## Economic proof boundary
+## Launch terminal states
 
-Engineering launch does not prove `K5 >= 5.0`. Economic proof requires reconciled live Direct spend + Metrica-attributed YAN revenue + YAN control totals over mature periods/cohorts.
+- `GUARDED_PRODUCTION_LAUNCHED`;
+- `PRODUCTION_WRITE_BLOCKED`;
+- `PRODUCTION_EXECUTION_UNCERTAIN`;
+- rollback states remain separately guarded if ever needed.
 
-## Resume protocol
+Only an applied and verified bounded real mutation counts as engineering launch.
 
-Verify actual public/private HEADs first, then read this file, the four Day-12 authority documents, the four latest Direct/Owner evidence files above, and issue #19. Never infer authority from chat or stale status text.
+## Post-launch economic proof
+
+Engineering launch does not prove `K5 >= 5.0`.
+Economic proof requires reconciled live Direct spend + Metrica-attributed YAN revenue + YAN control totals over mature periods/cohorts.
+
+M7 after launch continuously optimizes yield, recirculation and acquisition economics toward K5=5 without incentivized clicks or artificial engagement.
+
+## Current launch authority
+
+Tracking issue: `#19 — Profit Engine Task 012 — Live guarded production launch`.
+
+Read in this order on resume:
+1. this file;
+2. `DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+3. `DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+4. `DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+5. `tasks/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`;
+6. latest Task-012 evidence;
+7. issue #19.
