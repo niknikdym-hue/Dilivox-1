@@ -59,7 +59,7 @@ class YandexDirectLiveStateReader:
         item, request_id, units = self._read_exact(plan=plan, token=token)
         return build_preflight(
             target=plan.target,
-            normalized_state=str(item.get("State", "UNKNOWN")),
+            normalized_state=_normalize_direct_state(item.get("State")),
             status=str(item.get("Status", "UNKNOWN")),
             current_provider_daily_budget=None,
             currency=None,
@@ -76,7 +76,7 @@ class YandexDirectLiveStateReader:
         item, _, _ = self._read_exact(plan=plan, token=token)
         return {
             "provider_entity_id": str(item["Id"]),
-            "normalized_state": str(item.get("State", "UNKNOWN")),
+            "normalized_state": _normalize_direct_state(item.get("State")),
             "status": str(item.get("Status", "UNKNOWN")),
         }
 
@@ -135,11 +135,14 @@ def execute_guarded_production_once(
     runtime_kill_switches: Sequence[KillSwitch] = (),
     lock_ttl: timedelta = timedelta(minutes=2),
 ) -> ProductionExecutionOutcome:
-    if not arm.integrity_valid or not plan.integrity_valid:
-        audit.append("BLOCKED", now, {"state": "INVALID_ARM_OR_PLAN"})
+    if not arm.integrity_valid or not plan.integrity_valid or not expected_preflight.integrity_valid:
+        audit.append("BLOCKED", now, {"state": "INVALID_ARM_PLAN_OR_PREFLIGHT"})
         return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
     if arm.controller_plan_digest != plan.plan_digest or expected_preflight.snapshot_digest != plan.preflight_digest:
         audit.append("BLOCKED", now, {"state": "PLAN_PREFLIGHT_BINDING_MISMATCH"})
+        return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
+    if not _transition_coherent(plan, expected_preflight):
+        audit.append("BLOCKED", now, {"state": "INCOHERENT_REVERSIBLE_TRANSITION"})
         return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
     if not locks.acquire(plan.target.lock_key, now, lock_ttl):
         audit.append("BLOCKED", now, {"state": "BLOCKED_EXECUTION_LOCK"})
@@ -161,6 +164,8 @@ def execute_guarded_production_once(
             audit.append("PREFLIGHT_RECHECKED", now, {"snapshot_digest": fresh.snapshot_digest})
             if not pre_dispatch_snapshot_matches(expected_preflight, fresh, now):
                 audit.append("BLOCKED", now, {"state": "BLOCKED_STALE_PROVIDER_STATE"})
+            elif not _transition_coherent(plan, fresh):
+                audit.append("BLOCKED", now, {"state": "LIVE_TRANSITION_NO_LONGER_COHERENT"})
             elif any(_kill_switch_applies(item, plan) for item in runtime_kill_switches):
                 audit.append("BLOCKED", now, {"state": "BLOCKED_KILL_SWITCH"})
             else:
@@ -223,6 +228,21 @@ def execute_guarded_production_once(
         uncertain_transport and terminal == ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED,
         audit,
     )
+
+
+def _normalize_direct_state(value: object) -> str:
+    state = str(value or "UNKNOWN").upper()
+    if state == "ON":
+        return "ACTIVE"
+    return state
+
+
+def _transition_coherent(plan: ControllerPlan, preflight: ProviderPreflightSnapshot) -> bool:
+    if plan.method.endswith(".suspend"):
+        return preflight.normalized_state == "ACTIVE"
+    if plan.method.endswith(".resume"):
+        return preflight.normalized_state == "SUSPENDED"
+    return False
 
 
 def _readback_matches_expected(readback: Mapping[str, str], expected: Mapping[str, object]) -> bool:
