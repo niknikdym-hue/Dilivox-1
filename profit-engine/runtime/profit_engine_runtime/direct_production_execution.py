@@ -17,10 +17,7 @@ from .direct_controller import (
     derive_expected_readback,
     pre_dispatch_snapshot_matches,
 )
-from .direct_production_writer import (
-    ProductionWriterArm,
-    YandexDirectProductionWriter,
-)
+from .direct_production_writer import ProductionWriterArm, YandexDirectProductionWriter
 from .models import HttpRequest
 from .transport import HttpTransport, TransportError
 
@@ -35,7 +32,7 @@ class ProductionTerminalState(StrEnum):
 class ProductionExecutionOutcome:
     state: ProductionTerminalState
     dispatch_attempts: int
-    readback_attempts: int
+    provider_read_attempts: int
     request_id: str | None
     units: str | None
     recovered_from_uncertain_transport: bool
@@ -149,104 +146,83 @@ def execute_guarded_production_once(
         return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
 
     audit.append("EXECUTION_LOCK_ACQUIRED", now, {"lock_key": plan.target.lock_key})
+    terminal = ProductionTerminalState.PRODUCTION_WRITE_BLOCKED
     request_id: str | None = None
     units: str | None = None
     uncertain_transport = False
     mutation_success: bool | None = None
+
     try:
         try:
             fresh = state_reader.preflight(plan=plan, token=token, now=now)
         except (TransportError, ValueError):
             audit.append("BLOCKED", now, {"state": "LIVE_PREFLIGHT_UNAVAILABLE"})
-            return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
-        audit.append("PREFLIGHT_RECHECKED", now, {"snapshot_digest": fresh.snapshot_digest})
-        if not pre_dispatch_snapshot_matches(expected_preflight, fresh, now):
-            audit.append("BLOCKED", now, {"state": "BLOCKED_STALE_PROVIDER_STATE"})
-            return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
-        if any(_kill_switch_applies(item, plan) for item in runtime_kill_switches):
-            audit.append("BLOCKED", now, {"state": "BLOCKED_KILL_SWITCH"})
-            return _outcome(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, writer, state_reader, None, None, False, audit)
+        else:
+            audit.append("PREFLIGHT_RECHECKED", now, {"snapshot_digest": fresh.snapshot_digest})
+            if not pre_dispatch_snapshot_matches(expected_preflight, fresh, now):
+                audit.append("BLOCKED", now, {"state": "BLOCKED_STALE_PROVIDER_STATE"})
+            elif any(_kill_switch_applies(item, plan) for item in runtime_kill_switches):
+                audit.append("BLOCKED", now, {"state": "BLOCKED_KILL_SWITCH"})
+            else:
+                audit.append("DISPATCH_STARTED", now, {
+                    "method": plan.method,
+                    "object_count": 1,
+                    "arm_digest": arm.arm_digest,
+                    "plan_digest": plan.plan_digest,
+                })
+                try:
+                    result = writer.dispatch_once(arm=arm, plan=plan, token=token, now=now)
+                    mutation_success = result.object_success
+                    request_id = result.request_id
+                    units = result.units
+                    audit.append("PROVIDER_RESPONSE_RECEIVED", now, {
+                        "http_status": result.http_status,
+                        "object_success": result.object_success,
+                        "warnings": result.warnings,
+                        "errors": result.errors,
+                        "RequestId": result.request_id,
+                        "Units": result.units,
+                    })
+                except TransportError:
+                    uncertain_transport = True
+                    audit.append("PROVIDER_RESPONSE_UNCERTAIN", now, {
+                        "reason": "transport_error_after_single_attempt"
+                    })
 
-        audit.append("DISPATCH_STARTED", now, {
-            "method": plan.method,
-            "object_count": 1,
-            "arm_digest": arm.arm_digest,
-            "plan_digest": plan.plan_digest,
-        })
-        try:
-            result = writer.dispatch_once(arm=arm, plan=plan, token=token, now=now)
-            mutation_success = result.object_success
-            request_id = result.request_id
-            units = result.units
-            audit.append("PROVIDER_RESPONSE_RECEIVED", now, {
-                "http_status": result.http_status,
-                "object_success": result.object_success,
-                "warnings": result.warnings,
-                "errors": result.errors,
-                "RequestId": result.request_id,
-                "Units": result.units,
-            })
-        except TransportError:
-            uncertain_transport = True
-            audit.append("PROVIDER_RESPONSE_UNCERTAIN", now, {"reason": "transport_error_after_single_attempt"})
-
-        try:
-            readback = state_reader.readback(plan=plan, token=token)
-            audit.append("READBACK_CAPTURED", now, readback)
-        except (TransportError, ValueError):
-            audit.append("EXECUTION_UNCERTAIN", now, {"state": "READBACK_UNAVAILABLE"})
-            return _outcome(
-                ProductionTerminalState.PRODUCTION_EXECUTION_UNCERTAIN,
-                writer,
-                state_reader,
-                request_id,
-                units,
-                uncertain_transport,
-                audit,
-            )
-
-        expected = derive_expected_readback(plan)
-        if _readback_matches_expected(readback, expected):
-            audit.append("READBACK_VERIFIED", now, {"state": "DESIRED_STATE_PRESENT"})
-            audit.append("COMPLETED", now, {"state": ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED.value})
-            return _outcome(
-                ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED,
-                writer,
-                state_reader,
-                request_id,
-                units,
-                uncertain_transport,
-                audit,
-            )
-
-        if mutation_success is False and readback.get("normalized_state") == expected_preflight.normalized_state:
-            audit.append("BLOCKED", now, {"state": "PROVIDER_REJECTED_UNCHANGED"})
-            return _outcome(
-                ProductionTerminalState.PRODUCTION_WRITE_BLOCKED,
-                writer,
-                state_reader,
-                request_id,
-                units,
-                False,
-                audit,
-            )
-
-        audit.append("EXECUTION_UNCERTAIN", now, {
-            "state": "READBACK_NOT_DESIRED",
-            "transport_uncertain": uncertain_transport,
-        })
-        return _outcome(
-            ProductionTerminalState.PRODUCTION_EXECUTION_UNCERTAIN,
-            writer,
-            state_reader,
-            request_id,
-            units,
-            uncertain_transport,
-            audit,
-        )
+                try:
+                    readback = state_reader.readback(plan=plan, token=token)
+                    audit.append("READBACK_CAPTURED", now, readback)
+                except (TransportError, ValueError):
+                    terminal = ProductionTerminalState.PRODUCTION_EXECUTION_UNCERTAIN
+                    audit.append("EXECUTION_UNCERTAIN", now, {"state": "READBACK_UNAVAILABLE"})
+                else:
+                    expected = derive_expected_readback(plan)
+                    if _readback_matches_expected(readback, expected):
+                        terminal = ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED
+                        audit.append("READBACK_VERIFIED", now, {"state": "DESIRED_STATE_PRESENT"})
+                        audit.append("COMPLETED", now, {"state": terminal.value})
+                    elif mutation_success is False and readback.get("normalized_state") == expected_preflight.normalized_state:
+                        terminal = ProductionTerminalState.PRODUCTION_WRITE_BLOCKED
+                        audit.append("BLOCKED", now, {"state": "PROVIDER_REJECTED_UNCHANGED"})
+                    else:
+                        terminal = ProductionTerminalState.PRODUCTION_EXECUTION_UNCERTAIN
+                        audit.append("EXECUTION_UNCERTAIN", now, {
+                            "state": "READBACK_NOT_DESIRED",
+                            "transport_uncertain": uncertain_transport,
+                        })
     finally:
         locks.release(plan.target.lock_key)
         audit.append("EXECUTION_LOCK_RELEASED", now, {"lock_key": plan.target.lock_key})
+
+    return _outcome(
+        terminal,
+        writer,
+        state_reader,
+        request_id,
+        units,
+        uncertain_transport and terminal == ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED,
+        audit,
+    )
 
 
 def _readback_matches_expected(readback: Mapping[str, str], expected: Mapping[str, object]) -> bool:
@@ -295,7 +271,7 @@ def _outcome(
     return ProductionExecutionOutcome(
         state=state,
         dispatch_attempts=writer.dispatch_count,
-        readback_attempts=state_reader.read_count,
+        provider_read_attempts=state_reader.read_count,
         request_id=request_id,
         units=units,
         recovered_from_uncertain_transport=recovered,
