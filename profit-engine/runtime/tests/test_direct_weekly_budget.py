@@ -43,6 +43,30 @@ class WeeklyBudgetPlannerTests(unittest.TestCase):
         self.assertEqual("WbMaximumClicks", slot.strategy_field)
         self.assertEqual(Decimal("100"), slot.weekly_spend_limit)
 
+    def test_package_strategy_requires_separate_scope_and_blocks_campaign_plan(self):
+        campaign = self.single_campaign()
+        campaign["TextCampaign"]["PackageBiddingStrategy"] = {"StrategyId": 777}
+        inspection = inspect_weekly_budget(campaign)
+        self.assertEqual(
+            WeeklyBudgetCapability.PACKAGE_STRATEGY_REQUIRES_SEPARATE_SCOPE,
+            inspection.capability,
+        )
+        self.assertEqual((), inspection.slots)
+        self.assertTrue(inspection.integrity_valid)
+        self.assertFalse(inspection.provider_write_allowed)
+        self.assertIn("package_bidding_strategy_owns_budget_scope", inspection.reasons)
+        with self.assertRaises(ValueError):
+            build_weekly_budget_plan(
+                inspection=inspection,
+                proposed_weekly_spend_limit=Decimal("110"),
+            )
+
+    def test_empty_package_strategy_does_not_create_false_hold(self):
+        campaign = self.single_campaign()
+        campaign["TextCampaign"]["PackageBiddingStrategy"] = {}
+        inspection = inspect_weekly_budget(campaign)
+        self.assertEqual(WeeklyBudgetCapability.EXACT_ONE_SLOT, inspection.capability)
+
     def test_exact_20_percent_needs_no_extra_owner_approval_but_20_01_does(self):
         inspection = inspect_weekly_budget(self.single_campaign())
         exact = build_weekly_budget_plan(
