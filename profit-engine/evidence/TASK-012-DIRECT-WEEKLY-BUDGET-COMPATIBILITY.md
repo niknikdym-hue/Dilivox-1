@@ -55,12 +55,14 @@ The probe:
 
 ## Verification
 
-Implementation/test chain includes:
+Exact verified implementation/test chain:
+- `60d8823dbf861ae00c13124fe8f144019bdeaf20` — initial fail-closed `WeeklySpendLimit` capability planner;
+- `1883c38f42f8f0aeb96dec80527a9f0148d2c4a9` — initial planner regression tests;
 - `4847276189a7695732d29e17d10e6da61d7bdccd` — canonical digest fix for planner integrity;
-- `8cbf0be3...` predecessor package-strategy hold implementation is represented by the current canonical module;
+- `9dcba64307b2e3d03ecfd33cb8113121032887ea` — package/portfolio strategy ownership fails closed at individual campaign scope;
 - `bf050ad02f3f18ed9e16f73e5c3c81fd8181adce` — package-strategy regression tests;
 - `0270fd7b2ba68b04ddd552bbd38a7a165547e00e` — exact read-only campaign probe;
-- `734f8a76f10c81f4a3e341fe1019e39feeebe268` — probe tests.
+- `734f8a76f10c81f4a3e341fe1019e39feeebe268` — exact probe regression tests.
 
 CI:
 - `33265419324`: SUCCESS after planner digest correction;
