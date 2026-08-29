@@ -6,7 +6,7 @@ bound managed advertiser.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 from hashlib import sha256
 import json
 from typing import Any, Mapping
@@ -186,7 +186,18 @@ def _header(headers: Mapping[str, str], name: str) -> str | None:
     return next((value for key, value in headers.items() if key.lower() == name.lower()), None)
 
 
+def _json_default(value: object) -> object:
+    if is_dataclass(value):
+        return asdict(value)
+    return str(value)
+
+
 def _digest(value: object) -> str:
     return sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            default=_json_default,
+        ).encode("utf-8")
     ).hexdigest()
