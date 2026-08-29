@@ -141,7 +141,7 @@ class ExecutionFixtures(unittest.TestCase):
 
 
 class TestGuardedExecution(ExecutionFixtures):
-    def test_exact_success_launches_with_one_dispatch_and_readback(self):
+    def test_exact_success_launches_with_one_dispatch_and_complete_audit(self):
         writer = self.writer()
         reader = self.reader()
         result = execute_guarded_production_once(
@@ -157,8 +157,9 @@ class TestGuardedExecution(ExecutionFixtures):
         )
         self.assertEqual(ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED, result.state)
         self.assertEqual(1, result.dispatch_attempts)
-        self.assertEqual(2, result.readback_attempts)
+        self.assertEqual(2, result.provider_read_attempts)
         self.assertTrue(result.audit_valid)
+        self.assertEqual("EXECUTION_LOCK_RELEASED", self.audit.records[-1].event)
         self.assertFalse(self.locks.is_locked(self.target.lock_key, NOW))
 
     def test_toctou_mismatch_blocks_before_dispatch(self):
@@ -171,6 +172,7 @@ class TestGuardedExecution(ExecutionFixtures):
         )
         self.assertEqual(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, result.state)
         self.assertEqual(0, result.dispatch_attempts)
+        self.assertTrue(result.audit_valid)
 
     def test_runtime_kill_switch_blocks_before_dispatch(self):
         writer = self.writer()
@@ -183,6 +185,7 @@ class TestGuardedExecution(ExecutionFixtures):
         )
         self.assertEqual(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, result.state)
         self.assertEqual(0, result.dispatch_attempts)
+        self.assertTrue(result.audit_valid)
 
     def test_uncertain_transport_can_recover_only_from_exact_desired_readback(self):
         writer = self.writer(TransportError("timeout"))
@@ -195,6 +198,7 @@ class TestGuardedExecution(ExecutionFixtures):
         self.assertEqual(ProductionTerminalState.GUARDED_PRODUCTION_LAUNCHED, result.state)
         self.assertEqual(1, result.dispatch_attempts)
         self.assertTrue(result.recovered_from_uncertain_transport)
+        self.assertTrue(result.audit_valid)
 
     def test_provider_object_error_with_unchanged_state_is_blocked(self):
         writer = self.writer(ok({"result": {"SuspendResults": [{"Id": 101, "Errors": [{"Code": 9999}]}]}}))
@@ -206,6 +210,7 @@ class TestGuardedExecution(ExecutionFixtures):
         )
         self.assertEqual(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, result.state)
         self.assertEqual(1, result.dispatch_attempts)
+        self.assertTrue(result.audit_valid)
 
     def test_timeout_with_unchanged_state_is_uncertain_and_never_retried(self):
         writer = self.writer(TransportError("timeout"))
@@ -217,6 +222,7 @@ class TestGuardedExecution(ExecutionFixtures):
         )
         self.assertEqual(ProductionTerminalState.PRODUCTION_EXECUTION_UNCERTAIN, result.state)
         self.assertEqual(1, result.dispatch_attempts)
+        self.assertTrue(result.audit_valid)
 
     def test_existing_lock_blocks_without_provider_reads_or_dispatch(self):
         self.assertTrue(self.locks.acquire(self.target.lock_key, NOW, timedelta(minutes=2)))
@@ -229,7 +235,8 @@ class TestGuardedExecution(ExecutionFixtures):
         )
         self.assertEqual(ProductionTerminalState.PRODUCTION_WRITE_BLOCKED, result.state)
         self.assertEqual(0, result.dispatch_attempts)
-        self.assertEqual(0, result.readback_attempts)
+        self.assertEqual(0, result.provider_read_attempts)
+        self.assertTrue(result.audit_valid)
 
 
 if __name__ == "__main__":
