@@ -31,6 +31,15 @@ The helper collision was corrected in:
 
 Exact CI `33266404903` on `a72f9060c6089e12f5647e70840bbdd14beae439`: SUCCESS.
 
+Secret-safe local CLI:
+`profit-engine/runtime/profit_engine_runtime/day12_money_preflight_cli.py`
+
+CLI implementation/test chain:
+- `8e6bb52af38c6c02d75c5ef5f361704c4949e4ea` — loads the exact private Dilivox configuration and existing credential references, runs the read-only three-provider money preflight and prints only safe economics/evidence;
+- `bc2126e61990d9b230d7677e1c5bd671632c88c3` — tests prove missing config/credentials and operator-target aliasing fail before provider calls, while token values never appear in output.
+
+Exact CLI CI `33266505126` on `bc2126e61990d9b230d7677e1c5bd671632c88c3`: SUCCESS.
+
 ## Direct spend authority
 
 The Day-12 money preflight does not rely on the older ingestion collector URL.
@@ -92,6 +101,21 @@ Zero spend never becomes an infinite/fake K5; the result is `NO_DIRECT_SPEND` an
 
 Metrica attributed revenue is reconciled against the independent YAN site control total. Material impossible excess, ambiguous money/currency basis, sampled Metrica data or sensitive-data restrictions produce `HOLD_DATA_QUALITY`.
 
+## CLI output contract
+
+The local CLI outputs only:
+- exact campaign/date identity;
+- state and HOLD reasons;
+- Direct spend;
+- Metrica-attributed YAN revenue;
+- YAN control revenue;
+- observed K5 and attributed share;
+- secret-safe Direct RequestId/Units where available;
+- evidence digest;
+- explicit `provider_write_allowed=false`.
+
+No OAuth/token value is printed.
+
 ## Safety result
 
 - provider_write_allowed: always false;
@@ -103,4 +127,4 @@ Metrica attributed revenue is reconciled against the independent YAN site contro
 
 ## Launch interpretation
 
-After Owner Editing is confirmed and exact live readiness passes, this preflight is the canonical Day-12 money input for candidate evaluation. A campaign with money HOLD is not eligible for SCALE/TEST. Safety STOP/HOLD remains governed by the accepted safety chain and exact live evidence.
+After Owner Editing is confirmed and exact live readiness passes, this preflight/CLI is the canonical Day-12 money input for candidate evaluation. A campaign with money HOLD is not eligible for SCALE/TEST. Safety STOP/HOLD remains governed by the accepted safety chain and exact live evidence.
