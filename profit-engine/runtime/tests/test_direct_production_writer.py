@@ -118,7 +118,7 @@ class WriterFixtures(unittest.TestCase):
         self.assertEqual("READY_FOR_DAY12_EXECUTION", plan.state.value)
         return plan
 
-    def readiness(self):
+    def readiness_and_selection(self, plan):
         diagnostics = (
             DiagnosticResult("direct", DoctorStatus.PASS, ("direct.permission=EDITING",), 200),
             DiagnosticResult("metrica", DoctorStatus.PASS, (), 200),
@@ -126,10 +126,6 @@ class WriterFixtures(unittest.TestCase):
         )
         readiness = build_day12_launch_readiness(diagnostics=diagnostics)
         self.assertEqual("READY_FOR_LIVE_CANDIDATE_SELECTION", readiness.state.value)
-        return readiness
-
-    def arm(self, plan):
-        readiness = self.readiness()
         selection = build_live_candidate_selection(
             readiness=readiness,
             plan=plan,
@@ -138,6 +134,10 @@ class WriterFixtures(unittest.TestCase):
             measurement_refs=("measurement-fixture",),
             provenance_refs=("provenance-fixture",),
         )
+        return readiness, selection
+
+    def arm(self, plan):
+        readiness, selection = self.readiness_and_selection(plan)
         return build_production_writer_arm(
             readiness=readiness,
             selection=selection,
@@ -159,15 +159,7 @@ class TestProductionWriter(WriterFixtures):
 
     def test_explicit_arm_is_required(self):
         plan = self.plan()
-        readiness = self.readiness()
-        selection = build_live_candidate_selection(
-            readiness=readiness,
-            plan=plan,
-            private_decision_ref="private-fixture",
-            private_decision_digest="d" * 64,
-            measurement_refs=("measurement-fixture",),
-            provenance_refs=("provenance-fixture",),
-        )
+        readiness, selection = self.readiness_and_selection(plan)
         with self.assertRaises(ValueError):
             build_production_writer_arm(
                 readiness=readiness,
@@ -176,6 +168,23 @@ class TestProductionWriter(WriterFixtures):
                 prepared_at=NOW,
                 expires_at=NOW + timedelta(minutes=2),
             )
+
+    def test_arm_requires_timezone_aware_timestamps_and_max_five_minute_ttl(self):
+        plan = self.plan()
+        readiness, selection = self.readiness_and_selection(plan)
+        for prepared, expires in (
+            (datetime(2026, 8, 29, 10, 0), datetime(2026, 8, 29, 10, 2)),
+            (NOW, NOW + timedelta(minutes=5, seconds=1)),
+        ):
+            with self.subTest(prepared=prepared, expires=expires), self.assertRaises(ValueError):
+                build_production_writer_arm(
+                    readiness=readiness,
+                    selection=selection,
+                    plan=plan,
+                    prepared_at=prepared,
+                    expires_at=expires,
+                    explicit_enable=True,
+                )
 
     def test_campaign_suspend_request_is_exact_one_object(self):
         plan = self.plan()
@@ -198,26 +207,29 @@ class TestProductionWriter(WriterFixtures):
         with self.assertRaises(RuntimeError):
             writer.dispatch_once(arm=self.arm(plan), plan=plan, token=TOKEN, now=NOW)
 
-    def test_object_error_is_not_success(self):
+    def test_object_error_is_not_success_and_idless_single_result_keeps_code(self):
         plan = self.plan()
-        transport = FakeTransport([
-            ok({"result": {"SuspendResults": [{"Id": 101, "Errors": [{"Code": 9999}]}]}})
-        ])
-        writer = YandexDirectProductionWriter(transport=transport, config=self.config, enabled=True)
-        result = writer.dispatch_once(arm=self.arm(plan), plan=plan, token=TOKEN, now=NOW)
-        self.assertFalse(result.object_success)
-        self.assertEqual(("9999",), result.errors)
+        for item in (
+            {"Id": 101, "Errors": [{"Code": 9999}]},
+            {"Errors": [{"Code": 8800}]},
+        ):
+            with self.subTest(item=item):
+                transport = FakeTransport([ok({"result": {"SuspendResults": [item]}})])
+                writer = YandexDirectProductionWriter(transport=transport, config=self.config, enabled=True)
+                result = writer.dispatch_once(arm=self.arm(plan), plan=plan, token=TOKEN, now=NOW)
+                self.assertFalse(result.object_success)
+                self.assertEqual((str(item["Errors"][0]["Code"]),), result.errors)
 
-    def test_exact_readback_uses_get_and_returns_state(self):
-        plan = self.plan()
+    def test_exact_readback_normalizes_provider_on_to_active(self):
+        plan = self.plan(method="campaign.resume", state="SUSPENDED")
         transport = FakeTransport([
-            ok({"result": {"Campaigns": [{"Id": 101, "State": "SUSPENDED", "Status": "ACCEPTED"}]}})
+            ok({"result": {"Campaigns": [{"Id": 101, "State": "ON", "Status": "ACCEPTED"}]}})
         ])
         writer = YandexDirectProductionWriter(transport=FakeTransport([]), config=self.config, enabled=True)
         value = writer.read_back(plan=plan, token=TOKEN, transport=transport)
         self.assertEqual({
             "provider_entity_id": "101",
-            "normalized_state": "SUSPENDED",
+            "normalized_state": "ACTIVE",
             "status": "ACCEPTED",
         }, value)
         request = transport.requests[0]
