@@ -77,21 +77,24 @@ Relevant evidence:
 
 ## Day-12 production writer — VERIFIED / READY IN CODE
 
-The previously missing real provider path is now implemented but remains disabled until live gates pass.
+The previously missing real provider path is implemented but remains disabled until live gates pass.
 
 Runtime/test chain:
 - `f3bdae1a0790a955b1d6c4142e013bf38b179ff3` — fail-closed one-shot Direct production writer;
 - `6d65812cb2c1ae9fa43c1874ce5780dd12c4b080` — writer tests;
 - `c6a8031c5976d9015ac7e4cc9577073f676f910b` + `36b7799dc8f082053ce0c515347aab362fd64ac1` — Direct v501 runtime/bootstrap alignment;
 - `5c3c07e577c682f99add9ea1e09804a0b6fbd6f0` — guarded production execution harness;
-- `7b8fc3204a770f049fd29952e513a1cb3c7a14a6` — execution regression tests.
+- `7b8fc3204a770f049fd29952e513a1cb3c7a14a6` — execution regressions;
+- `cbd537ea978e1781098bca56442e91f4c7cf56fe` + `c582a2475d64e831e6decd9b47a242e6e9727f91` — complete-audit fix: final outcome validity is calculated only after `EXECUTION_LOCK_RELEASED` is appended.
 
-CI `33264804958` on exact runtime/test HEAD `7b8fc3204a770f049fd29952e513a1cb3c7a14a6`: SUCCESS.
+CI:
+- `33264804958` on `7b8fc3204a770f049fd29952e513a1cb3c7a14a6`: SUCCESS;
+- `33264960239` on `c582a2475d64e831e6decd9b47a242e6e9727f91`: SUCCESS.
 
 Evidence:
 `profit-engine/evidence/TASK-012-PRODUCTION-WRITER-READY.md`.
 
-Production execution now enforces:
+Production execution enforces:
 1. exact integrity-valid arm/plan binding;
 2. exact target lock;
 3. fresh provider preflight;
@@ -101,13 +104,29 @@ Production execution now enforces:
 7. exactly one mutation network attempt;
 8. exactly one provider object ID;
 9. immediate exact read-back;
-10. terminal classification with no blind retry.
+10. lock release before final audit-valid outcome;
+11. terminal classification with no blind retry.
 
 Production writer default remains disabled. No live mutation was sent while building/testing this path.
 
+## Owner Editing evidence / one-command readiness — VERIFIED
+
+Owner permission evidence can now be recorded safely after the real UI change:
+- `b0ad04fe4c60b360c9fa674d029103a2099b021f` — atomic 0600 recorder; explicit Owner confirmation required; plaintext target login never stored;
+- `582c6c81b8439e918d011407744f30180af8ae04` — CLI;
+- `fd0ba9de197569d0ef3134e7f6a33280826c504a` + `5cff11c52e54c90df10e0416930dc8fe7490b4e2` — macOS one-command confirmation + readiness wrapper, compatible with the system Bash path;
+- `5ccf1db08dcd475e05d72cc262e4cea628f5f103` — recorder regression tests.
+
+CI `33265203655` on `5ccf1db08dcd475e05d72cc262e4cea628f5f103`: SUCCESS.
+
+After Owner actually changes the Direct UI relationship to Editing, the prepared entrypoint is:
+`bash profit-engine/scripts/day12-confirm-editing-and-readiness.sh`
+
+It prompts for the exact managed advertiser login if not supplied, requires explicit Owner confirmation that the UI change already happened, records local evidence, then runs the read-only Day-12 readiness doctor. It does not itself change any Yandex permission and cannot authorize a provider write.
+
 ## Current Direct API compatibility decision
 
-Canonical Direct JSON endpoint is now `/json/v501`.
+Canonical Direct JSON endpoint is `/json/v501`.
 
 Allowed first-live methods only:
 - `campaign.suspend`;
@@ -137,7 +156,7 @@ Do not perform any other Direct mutation.
 That UI change alone authorizes no provider write.
 
 After Owner explicitly confirms the change, Central Brain will:
-1. bind fresh Owner UI Editing evidence to the exact private target;
+1. record fresh exact Owner UI Editing evidence with the prepared one-command flow;
 2. run exact Direct operator/target + Metrica + YAN live read certification;
 3. obtain current Direct spend/state evidence and accepted money/data-quality inputs;
 4. select exactly one reversible live candidate;
