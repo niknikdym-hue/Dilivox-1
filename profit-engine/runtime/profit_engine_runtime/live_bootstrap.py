@@ -23,7 +23,7 @@ def build_live_config(direct_target_login: str) -> dict[str, object]:
         "rollout_mode": "READ_ONLY",
         "providers": {
             "direct": {
-                "endpoint": "https://api.direct.yandex.com/json/v5",
+                "endpoint": "https://api.direct.yandex.com/json/v501",
                 "token_source_ref": "keychain:ProfitEngine-YandexOAuth-Read/profit-engine",
                 "operator_login_ref": DIRECT_OPERATOR_LOGIN,
                 "client_login_ref": target,
