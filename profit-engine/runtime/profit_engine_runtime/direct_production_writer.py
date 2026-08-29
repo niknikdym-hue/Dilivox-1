@@ -1,14 +1,14 @@
 """Day-12 production Direct writer.
 
-This module is intentionally narrow.  It can only perform one-object suspend/resume
+This module is intentionally narrow. It can only perform one-object suspend/resume
 mutations after the already accepted Day-12 readiness, candidate-selection and
-controller-plan gates have passed.  Budget writes are deliberately unavailable in
+controller-plan gates have passed. Budget writes are deliberately unavailable in
 this production path: current Direct API budget control is strategy-aware and uses
 WeeklySpendLimit rather than the legacy DailyBudget model.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from hashlib import sha256
 import json
@@ -129,7 +129,9 @@ def build_production_writer_arm(
 class SingleAttemptDirectWriteTransport:
     """HTTP transport for mutations: exactly one network attempt, never a retry."""
 
-    _transport: UrllibTransport = UrllibTransport(max_attempts=1, backoff_seconds=0)
+    _transport: UrllibTransport = field(
+        default_factory=lambda: UrllibTransport(max_attempts=1, backoff_seconds=0)
+    )
 
     def send(self, request: HttpRequest) -> HttpResponse:
         if request.method != "POST":
@@ -235,9 +237,8 @@ class YandexDirectProductionWriter:
         token: str,
         now: datetime,
     ) -> None:
-        if not self.enabled or PRODUCTION_WRITER_DEFAULT_ENABLED:
-            if not self.enabled:
-                raise RuntimeError("production writer is disabled")
+        if not self.enabled:
+            raise RuntimeError("production writer is disabled")
         if not token:
             raise ValueError("Direct OAuth token required")
         if not self.config.direct_client_login:
