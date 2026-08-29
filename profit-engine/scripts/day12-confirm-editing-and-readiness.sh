@@ -16,7 +16,8 @@ if [[ -z "$target" ]]; then
   echo "BLOCKED: exact managed owner advertiser login is required." >&2
   exit 2
 fi
-if [[ "${target,,}" == "reklamadymova" ]]; then
+target_lower="$(printf '%s' "$target" | tr '[:upper:]' '[:lower:]')"
+if [[ "$target_lower" == "reklamadymova" ]]; then
   echo "BLOCKED: reklamadymova is the Managing Account/operator, not the managed advertiser target." >&2
   exit 2
 fi
