@@ -28,7 +28,7 @@ class SiteConfig:
     yan_currency: str | None = None
     yan_timezone: str | None = None
     yan_vat_basis: str | None = None
-    direct_endpoint: str = "https://api.direct.yandex.com/json/v5"
+    direct_endpoint: str = "https://api.direct.yandex.com/json/v501"
     metrica_management_endpoint: str = "https://api-metrika.yandex.net/management/v1"
     metrica_reports_endpoint: str = "https://api-metrika.yandex.net/stat/v1/data"
     yan_stats_endpoint: str = "https://partner.yandex.ru/api/statistics2"
