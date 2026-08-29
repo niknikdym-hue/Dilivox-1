@@ -14,9 +14,12 @@ This evidence records the missing Day-12 executable Direct path prepared before 
 - `c6a8031c5976d9015ac7e4cc9577073f676f910b` + `36b7799dc8f082053ce0c515347aab362fd64ac1` — Direct runtime/live bootstrap aligned to canonical JSON v501 endpoint;
 - `1ba2a36320e2de4de88d28493bc7d5fe46c7c874` — first-write acceptance narrowed to current reversible Direct methods;
 - `5c3c07e577c682f99add9ea1e09804a0b6fbd6f0` — guarded production execution harness;
-- `7b8fc3204a770f049fd29952e513a1cb3c7a14a6` — guarded execution regression tests.
+- `7b8fc3204a770f049fd29952e513a1cb3c7a14a6` — guarded execution regression tests;
+- `cbd537ea978e1781098bca56442e91f4c7cf56fe` + `c582a2475d64e831e6decd9b47a242e6e9727f91` — outcome audit validation moved after `EXECUTION_LOCK_RELEASED`, with regression proof that the reported audit validity covers the complete terminal chain.
 
-Profit Engine CI run `33264804958` on exact runtime/test HEAD `7b8fc3204a770f049fd29952e513a1cb3c7a14a6`: SUCCESS.
+Profit Engine CI:
+- `33264804958` on `7b8fc3204a770f049fd29952e513a1cb3c7a14a6`: SUCCESS;
+- `33264960239` on `c582a2475d64e831e6decd9b47a242e6e9727f91`: SUCCESS.
 
 ## First-live writer contract
 
@@ -35,8 +38,9 @@ The production writer:
 - uses exactly one Direct object ID;
 - uses JSON v501 service endpoints;
 - never automatically retries a mutation, including timeout/429/5xx paths;
-- immediately performs exact read-back;
-- preserves target lock, TOCTOU and runtime kill-switch gates;
+- performs fresh preflight + target lock + TOCTOU + runtime kill-switch checks;
+- immediately performs exact read-back after the dispatch attempt;
+- releases the target lock before final audit validity is reported;
 - classifies only `GUARDED_PRODUCTION_LAUNCHED`, `PRODUCTION_WRITE_BLOCKED`, or `PRODUCTION_EXECUTION_UNCERTAIN` in this first-write executor.
 
 ## Current Direct API compatibility decision
