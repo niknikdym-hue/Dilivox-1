@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 12 — PRODUCTION WRITER READY / OWNER EDITING GATE
+Status: IMPLEMENTATION ACTIVE / DAY 12 — PRODUCTION WRITER + LIVE MONEY PREFLIGHT READY / OWNER EDITING GATE
 Updated: 2026-08-29
 Canonical public branch: `profit-engine`
 Private core branch: `main`
@@ -172,6 +172,29 @@ Canonical evidence:
 `profit-engine/evidence/TASK-012-DIRECT-WEEKLY-BUDGET-COMPATIBILITY.md`.
 Evidence commit chain was corrected in `12bca0e2d9ce952a95c5f0b8bc56ca00c1579a24`; it contains only verified SHAs.
 
+## WeeklySpendLimit advisory + Governor bridge — VERIFIED / READ-ONLY
+
+Advisory implementation:
+- `fa25382faebe94011c56475c83d22b727bdeb208` — exact budget inspection -> shadow/PENDING/HOLD state;
+- `828bbe14544efe38236672669b1cee567b2aefe4` — advisory regressions;
+- CI `33266082953`: SUCCESS.
+
+Governor bridge:
+- `569519bafd144e9e9416849a5dcbb3849d915e89` — exact ProviderTarget + ActionProposal + advisory + Governor binding;
+- `acfd0fb7920502383809795b2bada56396deac16` — bridge regressions;
+- CI `33266159339`: SUCCESS.
+
+Canonical evidence:
+`profit-engine/evidence/TASK-012-WEEKLY-BUDGET-SHADOW-GOVERNOR.md`.
+
+The bridge proves exact identity and money agreement only. It never creates a Direct request and always keeps `provider_write_allowed=false`.
+
+Owner boundary remains exact:
+- +20.00% may be `SHADOW_GOVERNOR_READY`;
+- +20.01% must remain `PENDING_OWNER_APPROVAL`;
+- a ready Governor above +20% is rejected;
+- package/portfolio HOLD cannot be overridden by the bridge.
+
 ### Live budget decision
 
 `campaign.update_budget` is NOT enabled for the first production write.
@@ -179,6 +202,49 @@ Evidence commit chain was corrected in `12bca0e2d9ce952a95c5f0b8bc56ca00c1579a24
 No live `Campaigns.update` budget request builder/transport is accepted yet. A future budget-write phase must separately prove exact strategy-specific update shape, package-strategy ownership, fresh provider state, Governor binding, trusted Owner >20% approval, one-shot dispatch, read-back and rollback/recovery.
 
 This does not block engineering launch because the first live mutation remains limited to reversible suspend/resume.
+
+## Day-12 live money preflight — VERIFIED / READY IN CODE
+
+Canonical money runtime:
+`profit-engine/runtime/profit_engine_runtime/day12_money_preflight.py`
+
+Implementation:
+- `bfd517ab1a654c14edc0880c55bbdc014c6d267e` — exact three-provider read-only money preflight;
+- `c3e751c09566ae5871e1d19ad7c928450b6cde63` — initial test harness commit; CI `33266341506` failed before tests executed because the helper name collided with `unittest.TestCase.run`; this failed run is NOT acceptance evidence;
+- `a72f9060c6089e12f5647e70840bbdd14beae439` — test harness correction;
+- CI `33266404903`: SUCCESS.
+
+Secret-safe CLI:
+- `8e6bb52af38c6c02d75c5ef5f361704c4949e4ea` — private-config/Keychain-aware read-only CLI;
+- `bc2126e61990d9b230d7677e1c5bd671632c88c3` — CLI regressions proving tokens are not printed and missing bindings fail before provider calls;
+- CI `33266505126`: SUCCESS.
+
+Canonical evidence:
+`profit-engine/evidence/TASK-012-LIVE-MONEY-PREFLIGHT-READY.md`.
+
+Day-12 Direct spend authority uses the current official JSON Reports endpoint:
+`https://api.direct.yandex.com/json/v501/reports`.
+
+It requires:
+- exact managed advertiser `Client-Login`;
+- exact one-campaign `CampaignId` filter;
+- explicit date window;
+- RUB cost basis (`returnMoneyInMicros=false`);
+- bounded read-only report polling;
+- exact campaign identity in every returned row.
+
+Metrica attribution uses exact counter `110349067`, full accuracy and exact last-Direct-click campaign dimension. YAN Statistics supplies the independent exact-domain control total for `dilivox.ru`.
+
+Money states:
+- `READY_FOR_CANDIDATE_EVALUATION`;
+- `NO_DIRECT_SPEND`;
+- `HOLD_DATA_QUALITY`.
+
+Observed K5 is computed only when Direct spend is strictly positive. Zero Direct spend never becomes fake/infinite K5. Sampled/sensitive Metrica data, ambiguous money basis, impossible reconciliation or identity mismatch fail closed.
+
+The older `DirectCollector` Reports URL in `collectors.py` is not Day-12 launch authority until separately reworked; the new money preflight/CLI is canonical for first-launch economics.
+
+No money preflight state grants write authority.
 
 ## First-live method allowlist
 
@@ -208,8 +274,8 @@ That UI change alone authorizes no provider write.
 After Owner explicitly confirms the change, Central Brain will:
 1. record fresh exact Owner UI Editing evidence with the prepared one-command flow;
 2. run exact Direct operator/target + Metrica + YAN live read certification;
-3. obtain current Direct spend/state evidence and accepted money/data-quality inputs;
-4. select exactly one reversible live candidate;
+3. run the canonical money preflight for exact campaign candidate IDs;
+4. select exactly one reversible live candidate from accepted state + money evidence;
 5. reconstruct exact ActionProposal/Governor/ControllerPlan;
 6. arm the one-shot writer for that exact plan only;
 7. perform one guarded Direct mutation;
