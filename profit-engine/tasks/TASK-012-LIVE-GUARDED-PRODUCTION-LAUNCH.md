@@ -1,129 +1,117 @@
-# CODEX TASK 012 — LIVE GUARDED PRODUCTION LAUNCH
+# TASK 012 — LIVE GUARDED PRODUCTION LAUNCH
 
 Status: OWNER GATE BEFORE LIVE EXECUTION
-Owner: Central Brain
-Executor: Codex
+Owner / current executor: Central Brain
+Codex: paused; no new Codex work until Owner restores its usage limit
 Launch day: Day 12
 
 ## Repository
 
 `niknikdym-hue/Dilivox-1`
 branch `profit-engine`
-local `~/Documents/New project/Profit Engine/Dilivox-1`
 
-## Read first
+## Authority
 
-1. `profit-engine/PROJECT_STATE.md`
-2. `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`
-3. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`
-4. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`
-5. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`
-6. accepted Day-10 money/decision evidence
-7. current provider access/security docs
+Read current `profit-engine/PROJECT_STATE.md` first, then:
+1. `profit-engine/evidence/TASK-011-CENTRAL-BRAIN-ACCEPTANCE.md`;
+2. `profit-engine/DAY12_LIVE_PRODUCTION_LAUNCH_DESIGN.md`;
+3. `profit-engine/DAY12_PROVIDER_LIVE_CERTIFICATION.md`;
+4. `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`;
+5. latest Task-012 evidence files;
+6. issue #19.
 
-## Owner gate
+## Current Owner gate
 
-DO NOT execute Task 012 live write until Central Brain records that Owner has explicitly changed the relevant Yandex Direct access from Reading to Editing.
+DO NOT execute a live write until Owner explicitly changes the exact Yandex Direct Managing Account relationship for the owner advertiser managed by `reklamadymova` from Reading to Editing.
 
-Editing access is necessary but not sufficient for write authorization.
+That permission change is necessary but not sufficient for write authorization.
 
 ## Phase A — live certification, no mutation
 
 After Owner permission transition:
+- bind fresh Owner UI Editing evidence to the exact private managed target;
+- load Direct/Metrica/YAN credentials from existing secret-safe local storage;
+- prove exact Direct operator + exact distinct managed advertiser + exact target visibility;
+- run Metrica doctor for exact Dilivox counter and goals;
+- run YAN Statistics doctor for exact `dilivox.ru` scope;
+- keep production writer disabled during certification;
+- any ambiguity/failure => `PRODUCTION_WRITE_BLOCKED`.
 
-- load Direct/Metrica/YAN credentials from secret-safe local storage without printing values;
-- run Direct READ_ONLY doctor;
-- prove exact acting login/client/advertiser identity and exact registered target visibility;
-- run Metrica READ_ONLY doctor for exact site/counter scope;
-- run YAN Statistics READ_ONLY doctor for exact partner/site scope;
-- produce secret-safe evidence with status/timestamps/scope refs/provider RequestId/Units where available;
-- keep production writer disabled;
-- provider mutation count remains 0.
+## Phase B — exact live candidate selection
 
-If any required live scope is missing/ambiguous, stop `PRODUCTION_WRITE_BLOCKED`.
+Central Brain selects exactly one live candidate from accepted evidence.
 
-## Phase B — live candidate selection
+First-launch preference: the lowest-downside, most reversible accepted safety action.
 
-Central Brain selects exactly one production candidate from accepted live evidence.
+Allowed first-live methods only:
+- `campaign.suspend`;
+- `campaign.resume`;
+- `ad.suspend`;
+- `ad.resume`.
 
-No fixture may select the target.
-No campaign-name/URL/date/fuzzy inference.
+No create/add/delete/archive/moderate/strategy migration.
+No fuzzy campaign-name/URL/date inference.
 
-Preferred first action is the most reversible and lowest-downside accepted action, with safety STOP/suspend considered before budget growth.
+`campaign.update_budget` is not live-enabled in this phase. Current Direct budget control is strategy-aware and uses `WeeklySpendLimit`; the legacy Day-11 DailyBudget mapping is synthetic only until separately reworked and accepted.
 
 ## Phase C — final guarded authorization
 
-For the selected candidate, reconstruct/revalidate the exact accepted chain:
-
+For the selected candidate revalidate:
 - current public/private decision refs;
 - ActionProposal digest;
 - Governor evidence;
-- trusted Owner approval if >20%;
 - exact registered provider target;
 - fresh provider preflight;
-- integrity-valid current-day cadence if budget update;
 - exact execution lock;
-- fresh pre-dispatch TOCTOU comparison;
+- fresh TOCTOU comparison;
 - runtime kill-switch recheck;
-- exact one-object normalized request derived from immutable plan;
-- production writer arming scoped to exact plan/target/method and one dispatch attempt.
+- exact one-object normalized request;
+- one-shot production writer arm bound to readiness + candidate + ControllerPlan + exact target/method.
 
 Any failed gate => zero dispatches.
 
 ## Phase D — one bounded real mutation
 
-Send exactly one Direct mutation request containing exactly one provider object.
+Send exactly one Direct mutation request with exactly one object ID through JSON v501.
 
-No create/add/delete/archive/moderate/strategy migration for first launch write.
+Mutation transport is single-attempt: no automatic retry on timeout, 429 or 5xx.
 
-Before send append `DISPATCH_STARTED` audit record.
-
-Capture secret-safe:
-- transport/HTTP state;
-- per-object provider result;
-- Direct RequestId/Units where returned.
-
-No blind retry.
+Append `DISPATCH_STARTED` before send and capture secret-safe provider response / RequestId / Units where available.
 
 ## Phase E — read-back and classification
 
-Immediately perform READ_ONLY read-back.
+Immediately perform exact read-only state read-back.
 
-Expected state must be plan-derived.
+Terminal classification:
+- exact desired state verified => `GUARDED_PRODUCTION_LAUNCHED`;
+- provider rejected and exact prior state remains => `PRODUCTION_WRITE_BLOCKED`;
+- timeout/unexpected/unverifiable state => `PRODUCTION_EXECUTION_UNCERTAIN`.
 
-Classify:
-- exact desired state verified -> `GUARDED_PRODUCTION_LAUNCHED`;
-- dispatch prevented -> `PRODUCTION_WRITE_BLOCKED`;
-- uncertain/unverifiable -> `PRODUCTION_EXECUTION_UNCERTAIN`;
-- rollback, if separately authorized and verified -> `PRODUCTION_ROLLBACK_VERIFIED`;
-- unsafe/unavailable rollback -> `PRODUCTION_ROLLBACK_BLOCKED`.
+No blind retry.
 
 ## Rollback
 
-Never blind/automatic. Use exact immutable prior preflight only. Rollback is a separate guarded mutation requiring current authorization/kill/lock/preflight/audit/read-back gates.
+Never blind/automatic. Use exact immutable prior preflight only. Rollback is a separate guarded mutation with fresh authorization/kill/lock/preflight/audit/read-back gates.
 
 ## Global safety
 
 - no secrets in Git/chat/issues/evidence/logs;
 - no multi-object writes;
 - no automatic retry loops;
-- no private-core provider calls;
-- no Tilda/site mutation in this task unless separately accepted;
-- no paid Cloud apply without explicit Owner authorization;
-- weekly budget increase >20% requires exact trusted Owner approval;
-- at most one autonomous campaign budget mutation per campaign/day.
+- private core remains proposal-only and never calls providers;
+- no Tilda/site mutation in Task 012 unless separately accepted;
+- weekly budget increase >20% still requires exact explicit Owner approval;
+- production writer remains disabled until all live gates pass.
 
 ## Evidence
 
-Create:
-
+Final live execution creates:
 `profit-engine/evidence/TASK-012-LIVE-GUARDED-PRODUCTION-LAUNCH.md`
 
-Evidence must state whether a real provider request was sent, exact terminal classification, secret-safe RequestId/Units where available, read-back result, audit digest and rollback disposition.
+It must record whether a provider mutation was sent, exact terminal classification, secret-safe RequestId/Units where available, read-back, audit digest and rollback disposition.
 
 ## Acceptance
 
-Codex does not self-accept.
-Central Brain independently verifies live evidence and decides whether engineering launch is `GUARDED_PRODUCTION_LAUNCHED`.
+Central Brain independently verifies final live evidence and alone decides whether engineering launch is `GUARDED_PRODUCTION_LAUNCHED`.
 
-A successful write does not prove `K5 >= 5.0`; economic proof is post-launch reconciled live measurement.
+A successful engineering write does not prove `K5 >= 5.0`; economic proof is post-launch reconciled live measurement.
