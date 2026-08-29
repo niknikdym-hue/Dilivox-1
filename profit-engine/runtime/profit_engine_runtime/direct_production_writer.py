@@ -9,7 +9,7 @@ WeeklySpendLimit rather than the legacy DailyBudget model.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from hashlib import sha256
 import json
 from typing import Any, Mapping
@@ -23,6 +23,7 @@ from .transport import HttpTransport, TransportError, UrllibTransport
 
 
 PRODUCTION_WRITER_DEFAULT_ENABLED = False
+MAX_ARM_TTL = timedelta(minutes=5)
 LIVE_WRITE_METHODS = frozenset({
     "campaign.suspend",
     "campaign.resume",
@@ -65,9 +66,11 @@ class ProductionWriterArm:
         try:
             prepared = datetime.fromisoformat(self.prepared_at)
             expires = datetime.fromisoformat(self.expires_at)
-        except ValueError:
+            if prepared.tzinfo is None or expires.tzinfo is None or now.tzinfo is None:
+                return False
+            return prepared <= now < expires and expires - prepared <= MAX_ARM_TTL
+        except (ValueError, TypeError):
             return False
-        return prepared <= now < expires
 
 
 def build_production_writer_arm(
@@ -103,8 +106,12 @@ def build_production_writer_arm(
         raise ValueError("candidate is not bound to exact target/method")
     if plan.method not in LIVE_WRITE_METHODS:
         raise ValueError("method is not enabled for first production write")
+    if prepared_at.tzinfo is None or expires_at.tzinfo is None:
+        raise ValueError("production writer arm timestamps must be timezone-aware")
     if expires_at <= prepared_at:
         raise ValueError("production writer arm expiry must be after preparation")
+    if expires_at - prepared_at > MAX_ARM_TTL:
+        raise ValueError("production writer arm TTL exceeds five-minute launch bound")
 
     core = {
         "arm_version": "1.0",
@@ -225,7 +232,7 @@ class YandexDirectProductionWriter:
             raise TransportError("Direct read-back did not return exact provider object")
         return {
             "provider_entity_id": str(provider_id),
-            "normalized_state": str(exact.get("State", "UNKNOWN")),
+            "normalized_state": _normalize_direct_state(exact.get("State")),
             "status": str(exact.get("Status", "UNKNOWN")),
         }
 
@@ -300,8 +307,7 @@ def _parse_mutation_response(
     provider_id: int,
 ) -> DirectMutationResult:
     body = response.json_body if isinstance(response.json_body, dict) else {}
-    top_error = body.get("error")
-    if top_error:
+    if body.get("error"):
         return DirectMutationResult(
             method, str(provider_id), response.status_code, response.request_id,
             _header(response, "Units"), False, (), ("top_level_error",),
@@ -310,6 +316,11 @@ def _parse_mutation_response(
     result_key = "SuspendResults" if action == "suspend" else "ResumeResults"
     objects = body.get("result", {}).get(result_key, [])
     exact = next((item for item in objects if item.get("Id") == provider_id), None)
+    if exact is None and len(objects) == 1 and objects[0].get("Errors"):
+        # ActionResult omits Id when the single requested object fails. Because the
+        # production request contains exactly one Id, this error result is still
+        # unambiguously bound to the requested object.
+        exact = objects[0]
     if exact is None:
         return DirectMutationResult(
             method, str(provider_id), response.status_code, response.request_id,
@@ -317,11 +328,16 @@ def _parse_mutation_response(
         )
     warnings = tuple(str(item.get("Code", "warning")) for item in (exact.get("Warnings") or []))
     errors = tuple(str(item.get("Code", "error")) for item in (exact.get("Errors") or []))
-    success = 200 <= response.status_code < 300 and not errors
+    success = 200 <= response.status_code < 300 and not errors and exact.get("Id") == provider_id
     return DirectMutationResult(
         method, str(provider_id), response.status_code, response.request_id,
         _header(response, "Units"), success, warnings, errors,
     )
+
+
+def _normalize_direct_state(value: object) -> str:
+    state = str(value or "UNKNOWN").upper()
+    return "ACTIVE" if state == "ON" else state
 
 
 def _header(response: HttpResponse, name: str) -> str | None:
