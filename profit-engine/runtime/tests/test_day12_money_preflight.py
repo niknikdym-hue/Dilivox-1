@@ -76,7 +76,7 @@ class MoneyPreflightTests(unittest.TestCase):
             config=self.config,
         )
 
-    def run(self, probe=None):
+    def run_probe(self, probe=None):
         return (probe or self.probe()).run(
             campaign_id="101",
             date_from="2026-08-28",
@@ -87,7 +87,7 @@ class MoneyPreflightTests(unittest.TestCase):
         )
 
     def test_ready_preflight_computes_observed_k5_and_control_share(self):
-        preflight = self.run()
+        preflight = self.run_probe()
         self.assertEqual(MoneyPreflightState.READY_FOR_CANDIDATE_EVALUATION, preflight.state)
         self.assertEqual(Decimal("5.00"), preflight.direct_spend_rub)
         self.assertEqual(Decimal("10.0"), preflight.metrica_attributed_yan_revenue_rub)
@@ -100,7 +100,7 @@ class MoneyPreflightTests(unittest.TestCase):
 
     def test_direct_request_uses_official_v501_reports_and_exact_campaign_filter(self):
         probe = self.probe()
-        self.run(probe)
+        self.run_probe(probe)
         request = probe.transport.requests[0]
         self.assertEqual(DIRECT_REPORTS_ENDPOINT, request.url)
         self.assertEqual("https://api.direct.yandex.com/json/v501/reports", request.url)
@@ -115,7 +115,7 @@ class MoneyPreflightTests(unittest.TestCase):
 
     def test_metrica_request_is_exact_counter_and_direct_campaign_attribution(self):
         probe = self.probe()
-        self.run(probe)
+        self.run_probe(probe)
         request = probe.transport.requests[1]
         self.assertEqual("GET", request.method)
         self.assertEqual("110349067", request.query["ids"])
@@ -125,7 +125,7 @@ class MoneyPreflightTests(unittest.TestCase):
 
     def test_yan_request_uses_exact_domain_and_two_date_period(self):
         probe = self.probe()
-        self.run(probe)
+        self.run_probe(probe)
         request = probe.transport.requests[2]
         self.assertEqual(["2026-08-28", "2026-08-28"], request.query["period"])
         self.assertEqual("domain", request.query["entity_field"])
@@ -224,7 +224,7 @@ class MoneyPreflightTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_money_preflight(site_id="dilivox", direct=direct, metrica=metrica, yan=yan)
         with self.assertRaises(ValueError):
-            self.run(self.probe()) if False else self.probe().run(
+            self.probe().run(
                 campaign_id="101", date_from="2026-08-29", date_to="2026-08-28",
                 direct_token="d", metrica_token="m", yan_token="y",
             )
