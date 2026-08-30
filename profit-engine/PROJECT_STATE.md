@@ -125,16 +125,19 @@ Owner permission evidence can be recorded safely only after the real UI change:
 - `fd0ba9de197569d0ef3134e7f6a33280826c504a` + `5cff11c52e54c90df10e0416930dc8fe7490b4e2` — macOS one-command confirmation + readiness wrapper;
 - `5ccf1db08dcd475e05d72cc262e4cea628f5f103` — recorder regression tests;
 - `31fdd29fe70431a1e063273fc30804704a3be45a` — exact campaign inventory CLI redaction boundary repair, preserving public exact campaign IDs without weakening shared secret redaction;
-- `7d256a4494adfa52683706048687e2b3761220c1` — one-command read-only chain extended from provider readiness to exact campaign inventory.
+- `7d256a4494adfa52683706048687e2b3761220c1` — one-command read-only chain extended from provider readiness to exact campaign inventory;
+- `db69c390c22be3da5a2d26f4cf63fd3ab9a6274e` — readiness CLI now returns nonzero for every blocked state, so shell chaining is fail-closed;
+- `0e53ddae1c9fcaf49be797549a109cae5d1ca8bb` — readiness CLI exit-code regression tests.
 
 CI:
 - `33310356480`: SUCCESS;
-- `33310521366`: SUCCESS.
+- `33310521366`: SUCCESS;
+- `33322056832`: SUCCESS.
 
 Owner has now confirmed the real UI change to Editing. Prepared local entrypoint:
 `bash profit-engine/scripts/day12-confirm-editing-and-readiness.sh`
 
-It asks for the exact managed advertiser login if needed, requires explicit Owner confirmation that the UI change already happened, records local evidence, runs the read-only Day-12 provider doctor, and then emits the exact read-only Direct campaign inventory. It cannot change Yandex permission and cannot authorize a provider write by itself.
+It asks for the exact managed advertiser login if needed, requires explicit Owner confirmation that the UI change already happened, records local evidence, runs the read-only Day-12 provider doctor, and only if readiness reaches the exact candidate-selection-ready state continues to the exact read-only Direct campaign inventory. It cannot change Yandex permission and cannot authorize a provider write by itself.
 
 ## Current Direct budget compatibility — READ-ONLY REWORK VERIFIED
 
@@ -277,6 +280,8 @@ This confirmation alone is not accepted provider/API proof and authorizes zero w
 
 Canonical entrypoint:
 `bash profit-engine/scripts/day12-confirm-editing-and-readiness.sh`
+
+The readiness CLI is now fail-closed at process level: only `READY_FOR_LIVE_CANDIDATE_SELECTION` returns exit code 0. Any blocked readiness state returns nonzero and shell execution stops before campaign inventory.
 
 Expected fail-closed progression after that local gate succeeds:
 1. fresh exact Owner UI Editing evidence is recorded locally;
