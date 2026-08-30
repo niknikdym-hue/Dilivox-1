@@ -14,6 +14,21 @@ from .transport import HttpTransport, UrllibTransport
 SecretResolver = Callable[[str], str | None]
 
 
+def _redact_public_values(value: object, secrets: tuple[str, ...]) -> object:
+    """Redact secret occurrences while preserving this CLI's explicit public field names.
+
+    The campaign inventory is an allowlisted Day-12 operator view whose exact positive
+    numeric campaign IDs are required for one-object candidate binding. Global mapping
+    redaction intentionally masks campaign_id elsewhere, so this boundary recursively
+    redacts values only and never weakens the shared redaction policy.
+    """
+    if isinstance(value, dict):
+        return {key: _redact_public_values(item, secrets) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_redact_public_values(item, secrets) for item in value]
+    return redact(value, secrets)
+
+
 def run_campaign_inventory(
     *,
     config_path: Path,
@@ -61,7 +76,10 @@ def run_campaign_inventory(
         "inventory_digest": inventory.inventory_digest,
         "credential_values_printed": False,
     }
-    return redact(public, (token,))
+    sanitized = _redact_public_values(public, (token,))
+    if not isinstance(sanitized, dict):
+        raise RuntimeError("campaign inventory public projection is invalid")
+    return sanitized
 
 
 def main() -> int:
