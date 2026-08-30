@@ -5,10 +5,19 @@ import json
 from pathlib import Path
 
 from .config import DEFAULT_CONFIG_PATH, load_site_config
-from .day12_readiness import ACCEPTED_TASK_011R_SHA, build_day12_launch_readiness
+from .day12_readiness import (
+    ACCEPTED_TASK_011R_SHA,
+    Day12ReadinessState,
+    build_day12_launch_readiness,
+)
 from .doctor import run as run_doctor
 from .owner_permission import DEFAULT_OWNER_PERMISSION_PATH, load_owner_permission_evidence
 from .redaction import redact
+
+
+def readiness_exit_code(state: Day12ReadinessState) -> int:
+    """Return success only for the exact candidate-selection-ready state."""
+    return 0 if state == Day12ReadinessState.READY_FOR_LIVE_CANDIDATE_SELECTION else 2
 
 
 def main() -> int:
@@ -70,7 +79,7 @@ def main() -> int:
         },
     }
     print(json.dumps(redact(public), ensure_ascii=False, indent=2, sort_keys=True))
-    return 0
+    return readiness_exit_code(readiness.state)
 
 
 if __name__ == "__main__":
