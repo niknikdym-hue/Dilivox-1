@@ -24,5 +24,11 @@ write_live_config(
 )
 PY
 
+# Gate 1: exact read-only provider readiness. Any failure stops before inventory.
 PYTHONPATH="$repo_root/profit-engine/runtime" \
   python3 -m profit_engine_runtime.day12_readiness_cli --config "$tmp_config"
+
+# Gate 2: exact read-only Direct campaign inventory for Central Brain candidate binding.
+# This CLI never selects a candidate and never grants provider write authority.
+PYTHONPATH="$repo_root/profit-engine/runtime" \
+  python3 -m profit_engine_runtime.day12_campaign_inventory_cli --config "$tmp_config"
