@@ -1,7 +1,7 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: IMPLEMENTATION ACTIVE / DAY 12 — PRODUCTION WRITER + LIVE MONEY PREFLIGHT READY / OWNER EDITING GATE
-Updated: 2026-08-29
+Status: IMPLEMENTATION ACTIVE / DAY 12 — OWNER EDITING CONFIRMED / FRESH LOCAL READ-ONLY CERTIFICATION PENDING
+Updated: 2026-08-30
 Canonical public branch: `profit-engine`
 Private core branch: `main`
 
@@ -63,6 +63,8 @@ Technical Direct Managing Account/operator: `reklamadymova`.
 
 The owner advertiser managed target is a distinct private login. The previous bootstrap that treated `reklamadymova` as the managed target is REWORKED and is not valid launch evidence.
 
+Owner confirmed on 2026-08-30 that the exact Managing Account relationship in Yandex Direct was changed in the UI from `Reading` to `Editing`. This Owner confirmation closes the UI-change action but is not by itself provider/API evidence and grants no write authority. Runtime remains fail-closed until fresh local Owner evidence plus read-only provider certification succeed.
+
 Runtime now:
 - separates operator and managed target;
 - rejects operator/target aliasing;
@@ -121,14 +123,18 @@ Owner permission evidence can be recorded safely only after the real UI change:
 - `b0ad04fe4c60b360c9fa674d029103a2099b021f` — atomic 0600 recorder; explicit Owner confirmation required; plaintext target login never stored;
 - `582c6c81b8439e918d011407744f30180af8ae04` — CLI;
 - `fd0ba9de197569d0ef3134e7f6a33280826c504a` + `5cff11c52e54c90df10e0416930dc8fe7490b4e2` — macOS one-command confirmation + readiness wrapper;
-- `5ccf1db08dcd475e05d72cc262e4cea628f5f103` — recorder regression tests.
+- `5ccf1db08dcd475e05d72cc262e4cea628f5f103` — recorder regression tests;
+- `31fdd29fe70431a1e063273fc30804704a3be45a` — exact campaign inventory CLI redaction boundary repair, preserving public exact campaign IDs without weakening shared secret redaction;
+- `7d256a4494adfa52683706048687e2b3761220c1` — one-command read-only chain extended from provider readiness to exact campaign inventory.
 
-CI `33265203655`: SUCCESS.
+CI:
+- `33310356480`: SUCCESS;
+- `33310521366`: SUCCESS.
 
-After Owner actually changes the Direct UI relationship to Editing, prepared entrypoint:
+Owner has now confirmed the real UI change to Editing. Prepared local entrypoint:
 `bash profit-engine/scripts/day12-confirm-editing-and-readiness.sh`
 
-It asks for the exact managed advertiser login if needed, requires explicit Owner confirmation that the UI change already happened, records local evidence, then runs the read-only Day-12 doctor. It cannot change Yandex permission and cannot authorize a provider write by itself.
+It asks for the exact managed advertiser login if needed, requires explicit Owner confirmation that the UI change already happened, records local evidence, runs the read-only Day-12 provider doctor, and then emits the exact read-only Direct campaign inventory. It cannot change Yandex permission and cannot authorize a provider write by itself.
 
 ## Current Direct budget compatibility — READ-ONLY REWORK VERIFIED
 
@@ -248,39 +254,41 @@ No money preflight state grants write authority.
 
 ## First-live method allowlist
 
-Allowed only:
+Writer code supports:
 - `campaign.suspend`;
 - `campaign.resume`;
 - `ad.suspend`;
 - `ad.resume`.
+
+Central Brain first-smoke policy is narrower: the first real production mutation must use exactly one campaign from the fresh exact campaign inventory and only `campaign.suspend` or `campaign.resume`. `ad.*` is deferred until equivalent exact Ads inventory evidence exists.
 
 No create/add/delete/archive/moderate/strategy migration and no budget mutation for the first launch write.
 
 Canonical first-write matrix:
 `profit-engine/DAY12_FIRST_WRITE_ACCEPTANCE_MATRIX.md`.
 
-## Current first incomplete canonical gate — OWNER ONLY
+## Current first incomplete canonical gate — FRESH LOCAL READ-ONLY CERTIFICATION
 
-The Managing Account relationship is still canonically recorded as `Reading`; no accepted evidence shows it changed.
+The Owner UI action is complete: Owner explicitly confirmed on 2026-08-30 that the exact Managing Account access was changed from Reading to Editing.
 
-Single next Owner action:
+This confirmation alone is not accepted provider/API proof and authorizes zero writes. The current first incomplete gate is now:
 
-`Yandex Direct: for the exact owner advertiser account managed by reklamadymova, change Managing Account access from Reading to Editing.`
+`Run the prepared local Owner-evidence + read-only readiness + exact campaign inventory flow using the existing private target binding and local Keychain credentials.`
 
-Do not perform any other Direct mutation.
+Canonical entrypoint:
+`bash profit-engine/scripts/day12-confirm-editing-and-readiness.sh`
 
-That UI change alone authorizes no provider write.
-
-After Owner explicitly confirms the change, Central Brain will:
-1. record fresh exact Owner UI Editing evidence with the prepared one-command flow;
-2. run exact Direct operator/target + Metrica + YAN live read certification;
-3. run the canonical money preflight for exact campaign candidate IDs;
-4. select exactly one reversible live candidate from accepted state + money evidence;
-5. reconstruct exact ActionProposal/Governor/ControllerPlan;
-6. arm the one-shot writer for that exact plan only;
-7. perform one guarded Direct mutation;
-8. exact read-back + immutable audit;
-9. classify engineering launch.
+Expected fail-closed progression after that local gate succeeds:
+1. fresh exact Owner UI Editing evidence is recorded locally;
+2. exact Direct operator/target + Metrica + YAN live read certification passes;
+3. exact Direct campaign inventory is emitted without selecting a candidate;
+4. Central Brain runs the canonical money preflight for exact campaign candidate IDs;
+5. Central Brain selects exactly one lowest-downside reversible campaign candidate from accepted state + money evidence;
+6. reconstruct exact ActionProposal/Governor/ControllerPlan;
+7. arm the one-shot writer for that exact plan only;
+8. perform one guarded Direct mutation;
+9. exact read-back + immutable audit;
+10. classify engineering launch.
 
 Any failed gate => zero dispatches.
 
