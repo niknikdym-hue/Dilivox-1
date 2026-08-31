@@ -36,29 +36,35 @@ class DirectManagerBindingTests(unittest.TestCase):
             direct_client_login=TARGET,
         )
         operator = {"result": {"Clients": [{"ClientId": 1, "Login": OPERATOR, "Type": "CLIENT"}]}}
-        target = {
-            "result": {
-                "Clients": [{
-                    "ClientId": 2,
-                    "Login": TARGET,
-                    "Type": "CLIENT",
-                    "Grants": [{"Privilege": "EDIT_CAMPAIGNS", "Value": "YES"}],
-                    "Representatives": [{"Login": TARGET, "Role": "CHIEF"}],
-                }]
-            }
-        }
-        transport = FakeTransport([ok(operator), ok(target), ok({}, RequestId="campaigns", Units="1/100/1000")])
+        campaign_probe = {"result": {"Campaigns": [{"Id": 101, "Name": "Probe", "State": "ON", "Status": "ACCEPTED"}]}}
+        transport = FakeTransport([
+            ok(operator),
+            ok(campaign_probe, RequestId="campaigns", Units="1/100/1000", **{"Units-Used-Login": TARGET}),
+        ])
         result = YandexDirectReadClient(transport, config).diagnose(TOKEN)
 
         self.assertEqual(DoctorStatus.PASS, result.status)
-        self.assertEqual(3, len(transport.requests))
+        self.assertEqual(2, len(transport.requests))
         self.assertNotIn("Client-Login", transport.requests[0].headers)
+        self.assertTrue(transport.requests[0].url.endswith("/clients"))
+        self.assertTrue(transport.requests[1].url.endswith("/campaigns"))
         self.assertEqual(TARGET, transport.requests[1].headers["Client-Login"])
-        self.assertEqual(TARGET, transport.requests[2].headers["Client-Login"])
         self.assertIn("direct.operator_identity=PASS", result.checks)
         self.assertIn("direct.permission_source=MANAGER_ACCOUNT_UI_REQUIRED", result.checks)
         self.assertIn("direct.permission=UNKNOWN", result.checks)
+        self.assertIn("campaigns.get(target,limit=1)", result.checks)
+        self.assertIn("direct.target_units_login=PASS", result.checks)
         self.assertNotIn("direct.permission=EDITING", result.checks)
+
+    def test_manager_path_rejects_mismatched_units_used_login(self):
+        config = SiteConfig(direct_operator_login=OPERATOR, direct_client_login=TARGET)
+        operator = {"result": {"Clients": [{"ClientId": 1, "Login": OPERATOR, "Type": "CLIENT"}]}}
+        transport = FakeTransport([
+            ok(operator),
+            ok({"result": {"Campaigns": []}}, **{"Units-Used-Login": "different-target"}),
+        ])
+        result = YandexDirectReadClient(transport, config).diagnose(TOKEN)
+        self.assertEqual(DoctorStatus.BLOCKED_ACCESS, result.status)
 
     def test_manager_path_requires_distinct_target_before_network(self):
         config = SiteConfig(direct_operator_login=OPERATOR)
