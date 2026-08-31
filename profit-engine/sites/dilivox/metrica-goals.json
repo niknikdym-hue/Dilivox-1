@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "site_id": "dilivox",
+  "counter_id": "110349067",
+  "policy": {
+    "primary_economic_metric": "K5",
+    "goals_are_proxies_not_money_truth": true,
+    "native_bidding_use_requires_revenue_validation": true
+  },
+  "goals": [
+    {
+      "key": "story_progress_75",
+      "name": "PE · История 75%",
+      "identifier": "pe_story_progress_75",
+      "metrica_type": "action",
+      "condition_type": "exact",
+      "source_event": "story_progress_75",
+      "role": "engagement_proxy",
+      "native_bidding_eligible": false
+    },
+    {
+      "key": "version_selected",
+      "name": "PE · Выбрана версия",
+      "identifier": "pe_version_selected",
+      "metrica_type": "action",
+      "condition_type": "exact",
+      "source_event": "version_selected",
+      "role": "interaction_proxy",
+      "native_bidding_eligible": false
+    },
+    {
+      "key": "story_completed",
+      "name": "PE · История завершена",
+      "identifier": "pe_story_completed",
+      "metrica_type": "action",
+      "condition_type": "exact",
+      "source_event": "story_completed",
+      "role": "high_value_proxy",
+      "native_bidding_eligible": false
+    },
+    {
+      "key": "next_story_clicked",
+      "name": "PE · Следующая история",
+      "identifier": "pe_next_story_clicked",
+      "metrica_type": "action",
+      "condition_type": "exact",
+      "source_event": "next_story_clicked",
+      "role": "recirculation_proxy",
+      "native_bidding_eligible": false
+    },
+    {
+      "key": "return_visit",
+      "name": "PE · Возвратный визит",
+      "identifier": "pe_return_visit",
+      "metrica_type": "action",
+      "condition_type": "exact",
+      "source_event": "return_visit",
+      "role": "return_value_proxy",
+      "native_bidding_eligible": false
+    }
+  ]
+}
