@@ -14,6 +14,9 @@ YAN_METRICS = "ym:s:yanPartnerPrice,ym:s:yanRequests,ym:s:yanRenders,ym:s:yanSho
 DIRECT_DIM = "ym:s:last_yandex_direct_clickDirectClickOrder"
 YAN_SOURCE_DIMS = "ym:s:last_yandex_direct_clickTrafficSource,ym:s:last_yandex_direct_clickSourceEngine"
 DILIVOX_CAMPAIGNS = ("712203524", "712791195")
+MONETIZATION_LINK_NOT_ENABLED = "NOT_ENABLED"
+MONETIZATION_LINK_ENABLED = "ENABLED"
+MONETIZATION_LINK_UNKNOWN = "UNKNOWN"
 
 
 def build_probe_queries(*, counter_id: str, date_from: str, date_to: str) -> list[tuple[str, dict[str, str]]]:
@@ -57,6 +60,24 @@ def _provider_error(body: bytes) -> tuple[str | None, str | None, str | None]:
         str(first.get("code")) if first.get("code") is not None else None,
         str(first.get("message")) if first.get("message") is not None else None,
     )
+
+
+def classify_monetization_link(results: list[dict[str, object]]) -> tuple[str, str | None]:
+    yan_results = [item for item in results if item.get("probe") != "direct_campaign_dimension_visits"]
+    if yan_results and any(item.get("status") == "PASS" for item in yan_results):
+        return MONETIZATION_LINK_ENABLED, None
+
+    messages = [
+        str(item.get("error_message", ""))
+        for item in yan_results
+        if item.get("status") == "HTTP_ERROR"
+    ]
+    if messages and all("partner is not enabled" in message.casefold() for message in messages):
+        return (
+            MONETIZATION_LINK_NOT_ENABLED,
+            "Enable 'Show YAN reports in Yandex Metrica' for dilivox.ru in the YAN site settings and bind Metrica tag 110349067; provider docs say monetization data can appear within 24 hours.",
+        )
+    return MONETIZATION_LINK_UNKNOWN, None
 
 
 def run_probe(*, config_path: Path, date_from: str, date_to: str) -> dict[str, object]:
@@ -111,6 +132,7 @@ def run_probe(*, config_path: Path, date_from: str, date_to: str) -> dict[str, o
                 "error_type": type(exc).__name__,
             })
 
+    link_state, next_owner_action = classify_monetization_link(results)
     public = {
         "mode": "DAY12_METRICA_YAN_COMPATIBILITY_READ_ONLY",
         "date_from": date_from,
@@ -119,6 +141,8 @@ def run_probe(*, config_path: Path, date_from: str, date_to: str) -> dict[str, o
         "provider_write_requests": 0,
         "provider_write_allowed": False,
         "credential_values_printed": False,
+        "metrica_yan_monetization_link": link_state,
+        "next_owner_action": next_owner_action,
         "results": results,
     }
     return redact(public, (token,))
@@ -130,8 +154,9 @@ def main() -> int:
     parser.add_argument("--date-from", required=True)
     parser.add_argument("--date-to", required=True)
     args = parser.parse_args()
-    print(json.dumps(run_probe(config_path=args.config, date_from=args.date_from, date_to=args.date_to), ensure_ascii=False, indent=2, sort_keys=True))
-    return 0
+    public = run_probe(config_path=args.config, date_from=args.date_from, date_to=args.date_to)
+    print(json.dumps(public, ensure_ascii=False, indent=2, sort_keys=True))
+    return 2 if public.get("metrica_yan_monetization_link") == MONETIZATION_LINK_NOT_ENABLED else 0
 
 
 if __name__ == "__main__":
