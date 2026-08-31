@@ -53,6 +53,25 @@ PY
 fi
 
 printf 'DAY12_DILIVOX_MONEY_WINDOW %s %s\n' "$date_from" "$date_to"
+printf '\n=== METRICA YAN MONETIZATION LINK GATE ===\n'
+set +e
+compatibility_output="$(
+  PYTHONPATH="$repo_root/profit-engine/runtime" \
+    python3 -m profit_engine_runtime.day12_metrica_yan_compatibility_cli \
+    --config "$tmp_config" \
+    --date-from "$date_from" \
+    --date-to "$date_to" 2>&1
+)"
+compatibility_status=$?
+set -e
+printf '%s\n' "$compatibility_output"
+
+if [[ $compatibility_status -ne 0 ]]; then
+  echo "BLOCKED_METRICA_YAN_NOT_ENABLED: no Direct/YAN money attribution will run until the YAN site dilivox.ru is linked to Metrica tag 110349067 via 'Show YAN reports in Yandex Metrica'." >&2
+  echo "Provider documentation says monetization data can appear within 24 hours after enabling the tag." >&2
+  echo "PROVIDER_WRITE_REQUESTS=0" >&2
+  exit 2
+fi
 
 for campaign_id in 712203524 712791195; do
   printf '\n=== DILIVOX MONEY PREFLIGHT campaign_id=%s ===\n' "$campaign_id"
