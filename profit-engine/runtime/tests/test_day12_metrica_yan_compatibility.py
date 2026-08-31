@@ -6,9 +6,13 @@ import unittest
 from profit_engine_runtime.day12_metrica_yan_compatibility_cli import (
     DIRECT_DIM,
     DILIVOX_CAMPAIGNS,
+    MONETIZATION_LINK_ENABLED,
+    MONETIZATION_LINK_NOT_ENABLED,
+    MONETIZATION_LINK_UNKNOWN,
     YAN_METRICS,
     _provider_error,
     build_probe_queries,
+    classify_monetization_link,
 )
 
 
@@ -53,6 +57,52 @@ class MetricaYanCompatibilityTests(unittest.TestCase):
             _provider_error(body),
         )
         self.assertEqual((None, None, None), _provider_error(b"not-json"))
+
+    def test_partner_not_enabled_is_exact_owner_action_blocker(self):
+        results = [
+            {
+                "probe": "direct_campaign_dimension_visits",
+                "status": "PASS",
+                "http_status": 200,
+            },
+        ]
+        for probe in (
+            "yan_total_by_date",
+            "yan_sources_supported_preset_shape",
+            "direct_campaign_dimension_yan",
+            "direct_campaign_filter_yan_1",
+            "direct_campaign_filter_yan_2",
+        ):
+            results.append({
+                "probe": probe,
+                "status": "HTTP_ERROR",
+                "http_status": 400,
+                "error_message": "Wrong parameter: metric ym:s:yanPartnerPrice, message: partner is not enabled for 110349067",
+            })
+        state, action = classify_monetization_link(results)
+        self.assertEqual(MONETIZATION_LINK_NOT_ENABLED, state)
+        self.assertIsNotNone(action)
+        self.assertIn("110349067", action or "")
+        self.assertIn("24 hours", action or "")
+
+    def test_any_yan_pass_means_link_is_enabled(self):
+        state, action = classify_monetization_link([
+            {"probe": "yan_total_by_date", "status": "PASS"},
+            {"probe": "direct_campaign_dimension_visits", "status": "PASS"},
+        ])
+        self.assertEqual(MONETIZATION_LINK_ENABLED, state)
+        self.assertIsNone(action)
+
+    def test_other_failures_remain_unknown(self):
+        state, action = classify_monetization_link([
+            {
+                "probe": "yan_total_by_date",
+                "status": "HTTP_ERROR",
+                "error_message": "incompatible dimensions and metrics",
+            },
+        ])
+        self.assertEqual(MONETIZATION_LINK_UNKNOWN, state)
+        self.assertIsNone(action)
 
 
 if __name__ == "__main__":
