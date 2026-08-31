@@ -50,21 +50,31 @@ python3 -m profit_engine_runtime.control_panel --refresh-once
 panel_rc=$?
 set -e
 
+printf '\n=== P0: CURRENT DILIVOX PRODUCTION SITE CHECK ===\n'
+set +e
+python3 -m profit_engine_runtime.site_live_probe_cli
+site_rc=$?
+set -e
+
 printf '\n=== P0: PREPARE ONE-PASTE TILDA PRODUCTION PACKAGE ===\n'
 bash "$root/profit-engine/scripts/prepare-dilivox-tilda-production-head.sh"
 
 snapshot="$HOME/.config/profit-engine/control-panel/snapshot.json"
 if [[ -f "$snapshot" ]]; then
   printf '\n=== P0: RESOLVED NEXT STATE ===\n'
-  python3 - "$snapshot" <<'PY'
+  python3 - "$snapshot" "$site_rc" <<'PY'
 import json, sys
 v=json.load(open(sys.argv[1], encoding='utf-8'))
+site_rc=int(sys.argv[2])
 state=v.get('state')
 print('state=' + str(state))
 print('writer_state=' + str(v.get('writer_state')))
 print('provider_write_allowed=' + str(v.get('provider_write_allowed')))
+print('site_instrumentation_live=' + ('true' if site_rc == 0 else 'false'))
+if site_rc != 0:
+    print('site_next=Paste the prepared Profit Engine v1 block into Tilda site-wide HEAD and publish all pages; rerun this bootstrap for automatic live verification.')
 if state == 'WAITING_METRICA_YAN_PROPAGATION':
-    print('next=Provider propagation is still pending; keep fail-closed. Tilda site instrumentation can be published in parallel.')
+    print('next=Provider monetization propagation is still pending; keep Direct fail-closed. Site instrumentation may be published in parallel.')
 elif state == 'METRICA_GOALS_REWORK':
     print('next=Close Metrica goal audit/readback, then refresh panel.')
 elif state == 'MONEY_PREFLIGHT_REWORK':
@@ -84,6 +94,7 @@ P0_BOOTSTRAP_COMPLETE
 control_panel=$HOME/Applications/Profit Engine.app
 tilda_package=$HOME/.config/profit-engine/tilda/dilivox-profit-engine-head-v1.html
 panel_exit_code=$panel_rc
+site_probe_exit_code=$site_rc
 direct_provider_write_requests=0
 direct_writer_authorized=false
 
