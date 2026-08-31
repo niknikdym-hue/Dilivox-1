@@ -142,7 +142,8 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(["GET", "GET", "GET"], [request.method for request in transport.requests])
         self.assertTrue(transport.requests[0].url.endswith("/counters"))
         self.assertTrue(transport.requests[1].url.endswith("/counter/123/goals"))
-        self.assertEqual("ym:s:visits,ym:s:yanPartnerPrice", transport.requests[2].query["metrics"])
+        self.assertEqual("ym:s:visits", transport.requests[2].query["metrics"])
+        self.assertIn("traffic.report_probe", result.checks)
         self.assertEqual(f"OAuth {TOKEN}", transport.requests[0].headers["Authorization"])
 
     def test_yan_statistics_read_shapes(self):
