@@ -82,6 +82,14 @@ Only after endpoint acceptance, the Tilda event layer may receive a transport th
 
 ## Privacy / compliance
 
+Current public `/privacy/` already discloses Yandex Metrica, cookies, source of visit and actions on pages. That is sufficient for the Task-013 Metrica `reachGoal` layer currently being prepared.
+
+Before Task-015 network dispatch is enabled, publish the prepared first-party analytics delta:
+
+`profit-engine/sites/dilivox/privacy-policy-profit-engine-v2.md`
+
+It must be merged into the public privacy page, publication date updated, Tilda page republished, and live text verified. **No first-party network dispatch is authorized before this privacy publication gate passes.**
+
 Do not collect:
 
 - email/phone/name;
@@ -97,16 +105,17 @@ Identifiers remain first-party pseudonymous/session/acquisition references as al
 
 Task 015 is accepted only after:
 
-1. durable endpoint deployed;
-2. CORS/rate/size/schema negative tests pass;
-3. live one-batch browser smoke accepted;
-4. exact raw SHA + normalized event materialization verified;
-5. duplicate replay is idempotent;
-6. malformed replay is held/rejected;
-7. site reader flow remains unaffected on endpoint failure;
-8. kill switch tested;
-9. no Direct/YAN/provider mutation occurs from ingestion;
-10. production evidence is recorded.
+1. Privacy v2 first-party analytics disclosure is live and verified;
+2. durable endpoint deployed;
+3. CORS/rate/size/schema negative tests pass;
+4. live one-batch browser smoke accepted;
+5. exact raw SHA + normalized event materialization verified;
+6. duplicate replay is idempotent;
+7. malformed replay is held/rejected;
+8. site reader flow remains unaffected on endpoint failure;
+9. kill switch tested;
+10. no Direct/YAN/provider mutation occurs from ingestion;
+11. production evidence is recorded.
 
 Terminal state:
 `DILIVOX_FIRST_PARTY_EVENT_ENDPOINT_ACCEPTED`.
