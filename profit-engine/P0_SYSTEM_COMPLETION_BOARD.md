@@ -29,13 +29,13 @@ K5 is not yet proven. CTR, CPC, visit depth, completion and ad impressions are s
 | 5 | Metrica conversion goals | CODE_READY / LIVE_AUDIT_PENDING | canonical 5-goal registry + audit/apply runtime implemented | live audit; create only missing exact goals; read-back PASS |
 | 6 | Dilivox Metrica goal bridge | CODE_READY / NOT_PUBLISHED | tested production-safe JS maps existing `data-dv-*` hooks to canonical goals | publish globally in Tilda; verify live goal arrivals |
 | 7 | SiteAgent + first-party event layer | CODE_ACCEPTED / NOT_PUBLISHED | Task 005/006 artifacts exist; historical evidence explicitly says publication was not performed | publish accepted event layer in Tilda with dispatch disabled until endpoint is live |
-| 8 | First-party event endpoint | NOT_CONFIGURED | browser event controller has no production transport/endpoint | deploy bounded ingestion endpoint + persistent raw/normalized store + secret-safe ops |
+| 8 | First-party event endpoint | SPECIFIED / NOT_DEPLOYED | Task 015 now requires durable raw-first endpoint; current browser controller has no production transport | publish Privacy v2 first; deploy endpoint/persistent store; then bounded live event smoke |
 | 9 | Money preflight | CODE_READY / BLOCKED_BY_GATE_4 | Direct spend read works; Metrica monetization read blocked until propagation | run same-window money preflight on both exact Dilivox campaigns |
 | 10 | First reversible Direct smoke | READY_IN_CODE / NOT_AUTHORIZED_YET | one-shot suspend/resume writer accepted; no live mutation sent | after money evidence select exactly one candidate, rebuild exact proposal/Governor/plan, arm and dispatch once |
-| 11 | Local control panel | CODE_READY / NOT_INSTALLED | localhost-only app + installer exist; provider writes physically absent | install `~/Applications/Profit Engine.app`; refresh read model |
-| 12 | Manual Search Profit Control | P0 BUILD_FIRST | strategy canon updated; no search read model or bid controller yet | Tasks 014+ sequence below |
-| 13 | Dedicated manual-search campaign | NOT_CREATED | concept only: `DILIVOX | SEARCH | PROFIT ENGINE` | dry-run exact factory; separate guarded create acceptance; Owner-fixed weekly budget first |
-| 14 | Keyword bid automation | NOT_IMPLEMENTED | Direct supports `KeywordBids.get/set`; no accepted Profit Engine writer yet | read model → shadow controller → guarded one/few-bid writer → supervised live learning |
+| 11 | Local control panel | CODE_READY / NOT_INSTALLED | localhost-only app + installer/bootstrap exist; provider writes physically absent | run P0 Mac bootstrap; install `~/Applications/Profit Engine.app`; refresh read model |
+| 12 | Manual Search Profit Control | MS1+MS2+MS3 CODE_ACCEPTED | read model + attribution grain + non-executable shadow controller are CI-green; no live dedicated campaign exists | MS4 panel integration, then guarded create/bid gates |
+| 13 | Dedicated manual-search campaign | MS5 DRY-RUN ACCEPTED / NOT_CREATED | exact inert proposal `DILIVOX | SEARCH | PROFIT ENGINE` is CI-green | MS6 separate guarded create acceptance; Owner-fixed weekly budget first |
+| 14 | Keyword bid automation | SHADOW CONTROLLER READY / WRITER ABSENT | controller can `LEARN/HOLD/RAISE/LOWER/PAUSE/QUARANTINE`; `KeywordBids.set` not implemented/authorized | MS7 guarded one/few-bid writer → supervised live learning → only then automation |
 | 15 | Site-side optimization experiments | DESIGN/ARTIFACTS ONLY | placement/experiment registries exist, production closed-loop site actions not proven | instrument first, establish K5 data, then controlled landing/recirculation/ad-layout experiments |
 
 ## Canonical Dilivox campaigns for current Day-12 closure
@@ -71,6 +71,10 @@ New goal bridge:
 
 `profit-engine/sites/dilivox/tilda/dilivox-metrica-goals-v1.js`
 
+One-paste global package builder:
+
+`profit-engine/scripts/prepare-dilivox-tilda-production-head.sh`
+
 Required production order:
 
 1. keep current YAN ad-block code unchanged;
@@ -78,7 +82,7 @@ Required production order:
 3. publish `dilivox-metrica-goals-v1.js` after Metrica is present;
 4. validate no layout/choice/reveal/YAN regression;
 5. validate canonical goals in Metrica;
-6. later enable first-party event dispatch only after endpoint acceptance.
+6. later enable first-party event dispatch only after Privacy v2 + endpoint acceptance.
 
 Tilda production publication is an unavoidable external UI step with the currently available project tools. Code preparation, tests and exact publication package are Central Brain responsibility; Owner should only perform the final Tilda paste/publish action when instructed.
 
@@ -86,17 +90,23 @@ Tilda production publication is an unavoidable external UI step with the current
 
 This sequence outranks CPA/DRR/Maximum-Profit feature work until a manual-search baseline exists.
 
-1. **MS0 — money truth:** close YAN→Metrica propagation and K5 preflight.
-2. **MS1 — read model:** exact campaign/ad-group/keyword/autotargeting inventory, `KeywordBids.get`, Direct Reports join, search-query/landing evidence.
-3. **MS2 — attribution grain:** determine the finest defensible revenue grain; no fabricated keyword K5.
-4. **MS3 — shadow bid controller:** deterministic `LEARN/HOLD/RAISE/LOWER/PAUSE/QUARANTINE` proposals with sample thresholds and bid ceilings.
-5. **MS4 — operator panel integration:** show current bid, spend, revenue evidence, K5/confidence and recommended move.
-6. **MS5 — dedicated campaign dry-run:** `DILIVOX | SEARCH | PROFIT ENGINE`, search-only, `HIGHEST_POSITION`, network off, Owner-fixed `WeeklySpendLimit`.
-7. **MS6 — guarded create:** separately accept campaign/ad-group/ad/keyword creation; Task-012 suspend/resume authority does not cover create.
-8. **MS7 — guarded `KeywordBids.set`:** exact bounded targets, max-step gate, one-shot/no-blind-retry/read-back/audit.
-9. **MS8 — supervised live learning:** Owner-fixed weekly budget, bounded bid movements only.
-10. **MS9 — automatic bid loop:** only after accepted evidence; budget growth remains independently governed.
-11. **MS10 — benchmark:** compare manual controller to provider-native CPC/CPA/DRR/Maximum Profit by reconciled economics.
+1. **MS0 — money truth:** close YAN→Metrica propagation and K5 preflight. `LIVE PENDING`.
+2. **MS1 — read model:** exact campaign/ad-group/keyword inventory, `KeywordBids.get`, auction levels and Direct Reports cost/CPC. `CODE_ACCEPTED`.
+3. **MS2 — attribution grain:** exact criterion/query-cluster revenue only; campaign/landing revenue cannot be fabricated into keyword K5. `CODE_ACCEPTED`.
+4. **MS3 — shadow bid controller:** bounded deterministic `LEARN/HOLD/RAISE/LOWER/PAUSE/QUARANTINE`; no provider writes. `CODE_ACCEPTED`.
+5. **MS4 — operator panel integration:** show current bid, spend, revenue evidence, K5/confidence and recommended move. `NEXT MANUAL-SEARCH BUILD`.
+6. **MS5 — dedicated campaign dry-run:** exact inert `DILIVOX | SEARCH | PROFIT ENGINE`, search-only, `HIGHEST_POSITION`, network off, Owner-fixed `WeeklySpendLimit`. `CODE_ACCEPTED`.
+7. **MS6 — guarded create:** separately accept campaign/ad-group/ad/keyword creation; Task-012 suspend/resume authority does not cover create. `NOT AUTHORIZED`.
+8. **MS7 — guarded `KeywordBids.set`:** exact bounded targets, max-step gate, one-shot/no-blind-retry/read-back/audit. `NOT IMPLEMENTED`.
+9. **MS8 — supervised live learning:** Owner-fixed weekly budget, bounded bid movements only. `NOT STARTED`.
+10. **MS9 — automatic bid loop:** only after accepted live evidence; budget growth remains independently governed. `NOT STARTED`.
+11. **MS10 — benchmark:** compare manual controller to provider-native CPC/CPA/DRR/Maximum Profit by reconciled economics. `NOT STARTED`.
+
+Accepted evidence:
+
+- `evidence/TASK-014-MS1-MANUAL-SEARCH-READ-MODEL.md`;
+- `evidence/TASK-014-MS2-MS3-ATTRIBUTION-AND-SHADOW-CONTROLLER.md`;
+- `evidence/TASK-014-MS5-DEDICATED-MANUAL-SEARCH-DRY-RUN.md`.
 
 ## Control-panel minimum contract
 
@@ -111,7 +121,7 @@ Must show without clutter:
 - spend, YAN revenue and K5 when computable;
 - canonical Metrica goals and live audit state;
 - manual-search P0 state;
-- latest controller recommendation;
+- latest controller recommendation when a dedicated/manual campaign cell exists;
 - kill switch / writer lock / latest read-back.
 
 No unguarded provider-write endpoint is allowed in the panel.
@@ -137,10 +147,11 @@ Always take the first unresolved item below; do not skip forward because a later
 4. restore exact money preflight;
 5. complete first reversible Direct smoke;
 6. install/refresh local control panel;
-7. build manual-search read model and shadow controller;
-8. deploy first-party endpoint and turn site event dispatch from local queue into production evidence;
-9. create dedicated manual-search campaign under separate guarded acceptance;
-10. graduate bid controller from shadow → supervised → automatic only on evidence.
+7. integrate MS1/MS2/MS3 shadow output into the panel;
+8. publish Privacy v2 and deploy first-party event endpoint;
+9. accept/create dedicated manual-search campaign under MS6;
+10. accept guarded bid writer MS7;
+11. graduate bid controller supervised → bounded automatic only on evidence.
 
 ## Definition of complete first-site ecosystem
 
