@@ -49,6 +49,13 @@ class YandexDirectReadClient(ProviderReadClient):
         checks: list[str] = []
         try:
             if self.config.direct_operator_login:
+                # A Managing Account is not an advertising agency. The documented
+                # Clients.get Client-Login semantics are for agency clients (or another
+                # representative of the same advertiser), so do not use Clients.get on
+                # the managed advertiser as a manager-account access gate. Instead,
+                # prove the OAuth operator identity here and prove exact managed-target
+                # data access with Campaigns.get below. Editing authority remains bound
+                # to separate fresh Owner UI evidence and is never inferred here.
                 operator = self.transport.send(HttpRequest(
                     "POST",
                     f"{self.config.direct_endpoint}/clients",
@@ -70,47 +77,57 @@ class YandexDirectReadClient(ProviderReadClient):
                         detail="configured Direct operator login is not the OAuth identity returned by Direct",
                     )
                 checks.append("direct.operator_identity=PASS")
+                permission = "UNKNOWN"
+                checks.append("direct.permission_source=MANAGER_ACCOUNT_UI_REQUIRED")
+            else:
+                client_headers = dict(base_headers)
+                if self.config.direct_client_login:
+                    client_headers["Client-Login"] = self.config.direct_client_login
+                client = self.transport.send(HttpRequest(
+                    "POST", f"{self.config.direct_endpoint}/clients", client_headers,
+                    json_body={
+                        "method": "get",
+                        "params": {
+                            "FieldNames": ["ClientId", "Login", "Type", "Grants", "Representatives"]
+                        },
+                    },
+                ))
+                _require_success(client)
+                checks.append("clients.get(target)")
+                if self.config.direct_client_login and not _direct_client_present(client.json_body, self.config.direct_client_login):
+                    return DiagnosticResult(
+                        provider,
+                        DoctorStatus.BLOCKED_ACCESS,
+                        tuple(checks),
+                        client.status_code,
+                        client.request_id,
+                        detail="configured Direct target login is not visible to this OAuth identity",
+                    )
+                permission = _direct_edit_permission(client.json_body, self.config.direct_client_login)
+
+            checks.append(f"direct.permission={permission}")
 
             target_headers = dict(base_headers)
             if self.config.direct_client_login:
                 target_headers["Client-Login"] = self.config.direct_client_login
-            client = self.transport.send(HttpRequest(
-                "POST", f"{self.config.direct_endpoint}/clients", target_headers,
-                json_body={
-                    "method": "get",
-                    "params": {
-                        "FieldNames": ["ClientId", "Login", "Type", "Grants", "Representatives"]
-                    },
-                },
-            ))
-            _require_success(client)
-            checks.append("clients.get(target)")
-            if self.config.direct_client_login and not _direct_client_present(client.json_body, self.config.direct_client_login):
-                return DiagnosticResult(
-                    provider,
-                    DoctorStatus.BLOCKED_ACCESS,
-                    tuple(checks),
-                    client.status_code,
-                    client.request_id,
-                    detail="configured Direct managed target login is not visible to this OAuth identity",
-                )
-
-            if self.config.direct_operator_login:
-                # The documented Direct API exposes advertiser/agency grants and representative roles,
-                # but not the Reading/Editing level of a separate Managing Account relationship.
-                # Never infer manager write authority from the managed advertiser's Grants/Representatives.
-                permission = "UNKNOWN"
-                checks.append("direct.permission_source=MANAGER_ACCOUNT_UI_REQUIRED")
-            else:
-                permission = _direct_edit_permission(client.json_body, self.config.direct_client_login)
-            checks.append(f"direct.permission={permission}")
-
             campaigns = self.transport.send(HttpRequest(
                 "POST", f"{self.config.direct_endpoint}/campaigns", target_headers,
                 json_body={"method": "get", "params": {"SelectionCriteria": {}, "FieldNames": ["Id", "Name", "State", "Status"], "Page": {"Limit": 1}}},
             ))
             _require_success(campaigns)
             checks.append("campaigns.get(target,limit=1)")
+            units_used_login = _header(campaigns, "Units-Used-Login")
+            if units_used_login and self.config.direct_client_login and units_used_login.casefold() != self.config.direct_client_login.casefold():
+                return DiagnosticResult(
+                    provider,
+                    DoctorStatus.BLOCKED_ACCESS,
+                    tuple(checks),
+                    campaigns.status_code,
+                    campaigns.request_id,
+                    detail="Direct response was not accounted to the exact managed target login",
+                )
+            if units_used_login:
+                checks.append("direct.target_units_login=PASS")
             units = _header(campaigns, "Units")
             return DiagnosticResult(provider, DoctorStatus.PASS, tuple(checks), campaigns.status_code, campaigns.request_id, units)
         except TransportError as exc:
@@ -139,12 +156,18 @@ class YandexMetricaReadClient(ProviderReadClient):
             ))
             _require_success(goals)
             checks.append("counter.goals.list")
+
+            # Readiness only certifies Metrica traffic/report access. YAN money metrics
+            # belong to the separate Day-12 money preflight, where attribution and YAN
+            # control totals are reconciled. Keeping them out of the generic doctor
+            # prevents monetization-report availability from masquerading as a Metrica
+            # access failure.
             report = self.transport.send(HttpRequest(
                 "GET", self.config.metrica_reports_endpoint, headers,
-                query={"ids": counter_id, "metrics": "ym:s:visits,ym:s:yanPartnerPrice", "date1": "yesterday", "date2": "yesterday", "limit": "1"},
+                query={"ids": counter_id, "metrics": "ym:s:visits", "date1": "yesterday", "date2": "yesterday", "limit": "1"},
             ))
             _require_success(report)
-            checks.append("yan_monetization.report_probe")
+            checks.append("traffic.report_probe")
             return DiagnosticResult(provider, DoctorStatus.PASS, tuple(checks), report.status_code, report.request_id)
         except TransportError as exc:
             return self._error(provider, exc, tuple(checks))
