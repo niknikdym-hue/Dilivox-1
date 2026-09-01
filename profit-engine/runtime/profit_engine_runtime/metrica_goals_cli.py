@@ -57,6 +57,25 @@ def _goal_identifiers(goal: dict[str, Any]) -> set[str]:
     return values
 
 
+def _action_goal_create_payload(spec: dict[str, Any]) -> dict[str, Any]:
+    """Return the minimal live-compatible create shape for a JS-event goal.
+
+    The live Metrica management endpoint for counter 110349067 rejected the
+    optional ``goal.is_favorite`` member with HTTP 400 on 2026-09-01 even though
+    the published OpenAPI schema documents it.  Launch code therefore sends only
+    fields required to identify and define the action goal. Optional response/
+    preference fields must not be added here without a fresh live compatibility
+    proof.
+    """
+    return {
+        "goal": {
+            "name": str(spec["name"]),
+            "type": "action",
+            "conditions": [{"type": "exact", "url": str(spec["identifier"])}],
+        }
+    }
+
+
 def audit_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
     config, present = load_site_config(config_path)
     if not present:
@@ -157,21 +176,14 @@ def apply_missing_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any
         identifier = str(spec["identifier"])
         if identifier not in missing:
             continue
-        body = json.dumps({
-            "goal": {
-                "name": spec["name"],
-                "type": "action",
-                "conditions": [{"type": "exact", "url": identifier}],
-                "is_favorite": False,
-            }
-        }, ensure_ascii=False).encode("utf-8")
+        body = json.dumps(_action_goal_create_payload(spec), ensure_ascii=False).encode("utf-8")
         request = urllib.request.Request(
             f"{config.metrica_management_endpoint}/counter/{config.metrica_counter_id}/goals",
             data=body,
             headers={
                 "Authorization": f"OAuth {token}",
                 "Accept": "application/json",
-                "Content-Type": "application/json",
+                "Content-Type": "application/json; charset=utf-8",
             },
             method="POST",
         )
