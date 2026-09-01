@@ -20,15 +20,16 @@ def run(config_path: Path = DEFAULT_CONFIG_PATH) -> list[DiagnosticResult]:
 
     transport = UrllibTransport()
     try:
-        shared_token = resolve_secret(config.yandex_oauth_token_ref)
+        direct_token = resolve_secret(config.yandex_oauth_token_ref)
+        metrica_token = resolve_secret(config.metrica_oauth_token_ref)
         yan_token = resolve_secret(config.yan_stats_token_ref)
     except ValueError as exc:
         detail = str(exc)
         return [DiagnosticResult(name, DoctorStatus.NOT_ATTEMPTED, detail=detail) for name in ("direct", "metrica", "yan_statistics")]
 
     results = [
-        YandexDirectReadClient(transport, config).diagnose(shared_token),
-        YandexMetricaReadClient(transport, config).diagnose(shared_token),
+        YandexDirectReadClient(transport, config).diagnose(direct_token),
+        YandexMetricaReadClient(transport, config).diagnose(metrica_token),
         YanPartnerStatsReadClient(transport, config).diagnose(yan_token),
     ]
     if not config_present:
