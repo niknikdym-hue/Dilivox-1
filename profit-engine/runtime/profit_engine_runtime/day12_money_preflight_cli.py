@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import asdict
 from decimal import Decimal
 import json
 from pathlib import Path
@@ -37,10 +36,13 @@ def run_money_preflight(
     if not config.metrica_counter_id:
         raise ValueError("exact Metrica counter binding is required")
 
-    yandex_token = secret_resolver(config.yandex_oauth_token_ref)
+    direct_token = secret_resolver(config.yandex_oauth_token_ref)
+    metrica_token = secret_resolver(config.metrica_oauth_token_ref)
     yan_token = secret_resolver(config.yan_stats_token_ref)
-    if not yandex_token:
-        raise ValueError("shared Direct/Metrica OAuth credential is unavailable")
+    if not direct_token:
+        raise ValueError("Direct OAuth credential is unavailable")
+    if not metrica_token:
+        raise ValueError("Metrica read OAuth credential is unavailable")
     if not yan_token:
         raise ValueError("YAN Statistics OAuth credential is unavailable")
 
@@ -52,8 +54,8 @@ def run_money_preflight(
         campaign_id=campaign_id,
         date_from=date_from,
         date_to=date_to,
-        direct_token=yandex_token,
-        metrica_token=yandex_token,
+        direct_token=direct_token,
+        metrica_token=metrica_token,
         yan_token=yan_token,
     )
     public = {
@@ -79,7 +81,7 @@ def run_money_preflight(
         "preflight_digest": result.preflight_digest,
         "credential_values_printed": False,
     }
-    return redact(public, (yandex_token, yan_token))
+    return redact(public, (direct_token, metrica_token, yan_token))
 
 
 def _decimal_text(value: Decimal | None) -> str | None:
