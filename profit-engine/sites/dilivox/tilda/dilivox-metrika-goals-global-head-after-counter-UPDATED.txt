@@ -1,0 +1,1324 @@
+<!-- =========================================================
+DILIVOX / ГЛОБАЛЬНАЯ СИСТЕМА UX + ЯНДЕКС.МЕТРИКА
+НЕ УДАЛЯТЬ.
+Ставится один раз в глобальный HEAD сайта сразу после рабочего счётчика Яндекс.Метрики 110349067.
+Счётчик не дублировать. Этот код не вставлять в отдельные T123-блоки и не переносить на страницы вручную.
+
+Что делает:
+- отправляет JS-цели Метрики;
+- обновляет статусы историй в каталоге;
+- сохраняет started/read и прогресс чтения в localStorage;
+- показывает прогресс чтения на страницах историй;
+- раскрывает развязку после выбора версии;
+- восстанавливает раскрытую развязку после перезагрузки страницы.
+========================================================= -->
+
+<style>
+  :root {
+    --dv-bg: #F6F0E4;
+    --dv-bg-soft: #FFF9EF;
+    --dv-paper: #EFE3D0;
+    --dv-text: #221B14;
+    --dv-muted: #6F6253;
+    --dv-gold: #B88A3B;
+    --dv-gold-deep: #8A6428;
+    --dv-ink: #263248;
+    --dv-blue: #2F4C73;
+    --dv-teal: #3C746E;
+  }
+  .dv-story__tag--age {
+    color: #6F6253;
+    background: rgba(255, 249, 239, .55);
+    border: 1px solid rgba(111, 98, 83, .22);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    padding: 7px 10px;
+  }
+
+
+  .dv-reading-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 2147483000;
+    height: 4px;
+    pointer-events: none;
+    background: rgba(34, 27, 20, .08);
+  }
+
+  .dv-reading-progress__bar {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--dv-gold) 0%, var(--dv-teal) 100%);
+    box-shadow: 0 0 18px rgba(184, 138, 59, .28);
+    transition: width .18s ease;
+  }
+
+  .dv-story-card__progress {
+    display: flex;
+    align-items: center;
+    flex: 1 0 100%;
+    width: 100%;
+    min-height: 18px;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--dv-blue);
+    background: transparent;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .dv-story-card__meta .dv-story-card__progress {
+    display: flex;
+    flex: 1 0 100%;
+    width: 100%;
+    min-height: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .dv-story-card__meta .dv-story-card__progress-label {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-height: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--dv-blue);
+    background: transparent;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .dv-story-card__meta .dv-story-card__progress-track {
+    display: block;
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 72px;
+    height: 7px;
+    min-height: 7px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgba(47, 76, 115, .14);
+    border-radius: 999px;
+    background: rgba(47, 76, 115, .08);
+  }
+
+  .dv-story-card__meta .dv-story-card__progress-fill {
+    display: block;
+    width: var(--dv-card-progress, 0%);
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--dv-gold) 0%, var(--dv-teal) 100%);
+    box-shadow: 0 0 14px rgba(60, 116, 110, .18);
+  }
+
+  .dv-story-card__progress.is-read .dv-story-card__progress-label {
+    color: var(--dv-teal);
+  }
+
+  .dv-story-card__progress.is-read .dv-story-card__progress-track {
+    border-color: rgba(60, 116, 110, .22);
+    background: rgba(60, 116, 110, .10);
+  }
+
+  .dv-story-card__progress[hidden] {
+    display: none !important;
+  }
+
+  .dv-story__image-section {
+    padding: 0 18px clamp(24px, 4vw, 42px);
+  }
+
+  .dv-story__image-section .dv-story__image-shell {
+    width: min(920px, calc(100% - 36px));
+  }
+
+  .dv-story__image-card {
+    position: relative;
+    margin: clamp(24px, 4vw, 36px) 0 0;
+    overflow: hidden;
+    border: 1px solid rgba(138, 100, 40, .26);
+    border-radius: 28px;
+    aspect-ratio: 16 / 9;
+    background:
+      radial-gradient(circle at 50% 24%, rgba(255, 249, 239, .32), transparent 48%),
+      rgba(239, 227, 208, .72);
+    box-shadow: 0 24px 70px rgba(46, 34, 20, .12);
+  }
+
+  .dv-story__image-section .dv-story__image-card {
+    margin: 0;
+  }
+
+  .dv-story__image-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .dv-story__answer.is-selected,
+  .dv-story-choice__button.is-selected {
+    border-color: rgba(47, 76, 115, .46) !important;
+    background: rgba(47, 76, 115, .08) !important;
+  }
+
+  .dv-story__answer.is-correct,
+  .dv-story-choice__button.is-correct {
+    border-color: rgba(60, 116, 110, .46) !important;
+    box-shadow: 0 12px 28px rgba(60, 116, 110, .10);
+  }
+
+  .dv-story__answer.is-wrong,
+  .dv-story-choice__button.is-wrong {
+    border-color: rgba(138, 100, 40, .42) !important;
+    opacity: .82;
+  }
+
+  @media (max-width: 640px) {
+    .dv-story__image-section {
+      padding-inline: 14px;
+    }
+
+    .dv-story__image-card {
+      border-radius: 22px;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  .dv-story-final.dv-is-revealed,
+  .dv-story-proof.dv-is-revealed,
+  .dv-story__reveal.dv-is-revealed,
+  .dv-story__facts.dv-is-revealed {
+    animation: dvRevealSoft .34s ease both;
+  }
+
+  @keyframes dvRevealSoft {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dv-reading-progress__bar,
+    .dv-story-final.dv-is-revealed,
+    .dv-story-proof.dv-is-revealed,
+    .dv-story__reveal.dv-is-revealed,
+    .dv-story__facts.dv-is-revealed {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  if (window.DILIVOX_SYSTEM_V1 && window.DILIVOX_SYSTEM_V1.ready) return;
+
+  window.DILIVOX_SYSTEM_V1 = {
+    ready: true
+  };
+
+  var DILIVOX_COUNTER_ID = 110349067;
+  var STATUS_PREFIX = 'dilivox_story_status_v1_';
+  var PROGRESS_PREFIX = 'dilivox_story_progress_v1_';
+  var CHOICE_PREFIX = 'dilivox_story_choice_v1_';
+  var sentGoals = {};
+
+  var statusText = {
+    'new': 'Новая',
+    'started': 'Читается',
+    'read': 'Прочитана'
+  };
+
+  var statusClass = {
+    'new': 'is-new',
+    'started': 'is-started',
+    'read': 'is-read'
+  };
+
+  var storyFormats = {
+    'short': 'Короткие',
+    'medium': 'Средние',
+    'series': 'Серийные'
+  };
+
+  var storyAssets = {
+    'tsena-vtoroy-pechati': {
+      title: 'Цена второй печати',
+      image: 'https://optim.tildacdn.com/tild6363-6633-4532-b734-346332386639/-/format/webp/tsena-vtoroy-pechati.png.webp'
+    },
+    'spisok-priglashennyh': {
+      title: 'Список приглашённых',
+      image: 'https://optim.tildacdn.com/tild3437-3465-4665-a562-616435636364/-/format/webp/spisok-priglashennyh.png.webp'
+    },
+    'poslednee-mesto-za-stolom': {
+      title: 'Последнее место за столом',
+      image: 'https://optim.tildacdn.com/tild6634-3233-4565-a233-343532616634/-/format/webp/poslednee-mesto-za-s.png.webp'
+    },
+    'komnata-bez-otrazheniy': {
+      title: 'Комната без отражений',
+      image: 'https://optim.tildacdn.com/tild6562-3830-4835-b537-383938323738/-/format/webp/komnata-bez-otrazhen.png.webp'
+    },
+    'posledniy-reys-severnoy-chayki': {
+      title: 'Последний рейс Северной чайки',
+      image: 'https://optim.tildacdn.com/tild6237-3364-4465-b062-303963303761/-/format/webp/posledniy-reys-sever.png.webp'
+    },
+    'chernyy-yashchik-imperatritsy': {
+      title: 'Чёрный ящик императрицы',
+      image: 'https://optim.tildacdn.com/tild6436-6564-4261-b566-393637303466/-/format/webp/chernyy-yashchik-imp.png.webp'
+    },
+    'nulevoy-passazhir': {
+      title: 'Нулевой пассажир',
+      image: 'https://optim.tildacdn.com/tild3466-3637-4462-b663-336235303031/-/format/webp/nulevoy-passazhir.png.webp'
+    },
+    'gorod-pod-chuzhim-nebom': {
+      title: 'Город под чужим небом',
+      image: 'https://optim.tildacdn.com/tild3533-3837-4137-b834-613363316132/-/format/webp/gorod-pod-chuzhim-ne.png.webp'
+    },
+    'posledniy-son-androida': {
+      title: 'Последний сон андроида',
+      image: 'https://optim.tildacdn.com/tild6566-3939-4566-b161-633636366662/-/format/webp/posledniy-son-androi.png.webp'
+    },
+    'stantsiya-kotoraya-molchala': {
+      title: 'Станция, которая молчала',
+      image: 'https://optim.tildacdn.com/tild3533-3534-4437-b734-643765363663/-/format/webp/stantsiya-kotoraya-m.png.webp'
+    },
+    'arhiv-budushchih-prestupleniy': {
+      title: 'Архив будущих преступлений',
+      image: 'https://optim.tildacdn.com/tild3266-3230-4663-b565-326536316536/-/format/webp/arhiv-budushchih-pre.png.webp'
+    },
+    'planeta-bez-eha': {
+      title: 'Планета без эха',
+      image: 'https://optim.tildacdn.com/tild3764-3539-4333-b639-613831626566/-/format/webp/planeta-bez-eha.png.webp'
+    },
+    'devushka-iz-zavtrashnego-chata': {
+      title: 'Девушка из завтрашнего чата',
+      image: 'https://optim.tildacdn.com/tild3034-3164-4264-b962-623962333065/-/format/webp/13-devushka-iz-zavtr.png.webp'
+    },
+    'posledniy-kadr-strima': {
+      title: 'Последний кадр стрима',
+      image: 'https://optim.tildacdn.com/tild6461-3036-4235-b263-646435306665/-/format/webp/14-posledniy-kadr-st.png.webp'
+    },
+    'maska-dlya-chuzhogo-litsa': {
+      title: 'Маска для чужого лица',
+      image: 'https://optim.tildacdn.com/tild3763-3436-4662-a531-356166626461/-/format/webp/15-maska-dlya-chuzho.png.webp'
+    },
+    'chernaya-metka-na-zapyastye': {
+      title: 'Чёрная метка на запястье',
+      image: 'https://optim.tildacdn.com/tild6463-3362-4236-a133-306639376436/-/format/webp/16-chernaya-metka-na.png.webp'
+    },
+    'golos-v-levom-naushnike': {
+      title: 'Голос в левом наушнике',
+      image: 'https://optim.tildacdn.com/tild6564-3865-4438-a336-643566393635/-/format/webp/17-golos-v-levom-nau.png.webp'
+    },
+    'bumazhnyy-zhuravl-na-mokrom-stekle': {
+      title: 'Бумажный журавль на мокром стекле',
+      image: 'https://optim.tildacdn.com/tild3733-3638-4062-b330-393334373735/-/format/webp/18-bumazhnyy-zhuravl.png.webp'
+    },
+    'krasnaya-voda-pod-kilem': {
+      title: 'Красная вода под килем',
+      image: 'https://optim.tildacdn.com/tild6238-3662-4062-a562-306439646233/-/format/webp/19-krasnaya-voda-pod.png.webp'
+    },
+    'passazhir-iz-poslednego-vagona': {
+      title: 'Пассажир из последнего вагона',
+      image: 'https://optim.tildacdn.com/tild3839-6432-4365-a462-366565326261/-/format/webp/20-passazhir-iz-posl.png.webp'
+    },
+    'teatr-kotoryy-igraet-posle-zakrytiya': {
+      title: 'Театр, который играет после закрытия',
+      image: 'https://optim.tildacdn.com/tild6138-3364-4731-a436-323135323931/-/format/webp/21-teatr-kotoryy-igr.png.webp'
+    },
+    'chernaya-tropa': {
+      title: 'Чёрная тропа',
+      image: 'https://optim.tildacdn.com/tild6430-6232-4434-a634-313334383662/-/format/webp/22-chernaya-tropa.png.webp'
+    },
+    'kayuta-7': {
+      title: 'Каюта № 7',
+      image: 'https://optim.tildacdn.com/tild3361-3464-4165-b035-393263653164/-/format/webp/23-kayuta-7.png.webp'
+    },
+    'chelyusti-u-buyka-4': {
+      title: 'Челюсти у буйка № 4',
+      image: 'https://optim.tildacdn.com/tild3465-3138-4034-a463-343230653038/-/format/webp/24-chelyusti-u-buyka.png.webp'
+    },
+    'zoloto-chernoy-marii': {
+      title: 'Золото «Чёрной Марии»',
+      image: 'https://optim.tildacdn.com/tild6638-3834-4164-a137-353261373663/-/format/webp/25-zoloto-chernoy-ma.png.webp'
+    },
+    'sedmoy-vodopad': {
+      title: 'Седьмой водопад',
+      image: 'https://optim.tildacdn.com/tild6537-6132-4035-a565-333161366134/-/format/webp/26-sedmoy-vodopad.png.webp'
+    },
+    'ostrov-na-odin-priliv': {
+      title: 'Остров на один прилив',
+      image: 'https://optim.tildacdn.com/tild6466-3731-4138-b634-383637336266/-/format/webp/27-ostrov-na-odin-pr.png.webp'
+    },
+    'poezd-cherez-krasnuyu-pustynyu': {
+      title: 'Поезд через Красную пустыню',
+      image: 'https://optim.tildacdn.com/tild6333-6531-4133-a436-643966313032/-/format/webp/28-poezd-cherez-kras.png.webp'
+    },
+    'gorod-pod-lednikom': {
+      title: 'Город под ледником',
+      image: 'https://optim.tildacdn.com/tild3563-6164-4965-b936-373962393730/-/format/webp/29-gorod-pod-ledniko.png.webp'
+    },
+    'tropa-zolotogo-yaguara': {
+      title: 'Тропа золотого ягуара',
+      image: 'https://optim.tildacdn.com/tild6433-3465-4332-a462-333030353637/-/format/webp/30-tropa-zolotogo-ya.png.webp'
+    }
+  };
+
+  function onReady(callback) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
+  }
+
+  function storageGet(key, fallback) {
+    try {
+      var value = localStorage.getItem(key);
+      return value === null ? fallback : value;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function storageSet(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {}
+  }
+
+  function initReturnVisitGoal() {
+    var visitorKey = 'dv_profit_engine_return_visitor_v1';
+    var sessionKey = 'dv_profit_engine_return_session_v1';
+
+    try {
+      if (sessionStorage.getItem(sessionKey)) return;
+
+      var hasVisited = localStorage.getItem(visitorKey) !== null;
+      sessionStorage.setItem(sessionKey, '1');
+      localStorage.setItem(visitorKey, '1');
+
+      if (hasVisited) sendGoal('pe_return_visit');
+    } catch (e) {}
+  }
+
+  function sendGoal(goalId) {
+    if (sentGoals[goalId]) return;
+    sentGoals[goalId] = true;
+
+    if (typeof ym === 'function') {
+      ym(DILIVOX_COUNTER_ID, 'reachGoal', goalId);
+    }
+  }
+
+  function getScrollPercentForPage() {
+    var doc = document.documentElement;
+    var body = document.body;
+
+    var scrollTop = window.pageYOffset || doc.scrollTop || body.scrollTop || 0;
+    var scrollHeight = Math.max(
+      body.scrollHeight,
+      doc.scrollHeight,
+      body.offsetHeight,
+      doc.offsetHeight,
+      body.clientHeight,
+      doc.clientHeight
+    );
+
+    var windowHeight = window.innerHeight || doc.clientHeight;
+    var scrollable = scrollHeight - windowHeight;
+
+    if (scrollable <= 0) return 100;
+
+    return Math.round((scrollTop / scrollable) * 100);
+  }
+
+  function getReadingPercent(article) {
+    if (!article) return 0;
+
+    var rect = article.getBoundingClientRect();
+    var articleTop = rect.top + window.pageYOffset;
+    var articleHeight = article.offsetHeight;
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var readPosition = scrollTop + windowHeight - articleTop;
+    var percent = Math.round((readPosition / articleHeight) * 100);
+
+    if (percent < 0) return 0;
+    if (percent > 100) return 100;
+
+    return percent;
+  }
+
+  function watchElement(selector, goalId, threshold) {
+    var element = document.querySelector(selector);
+    if (!element || !('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          sendGoal(goalId);
+          observer.disconnect();
+        }
+      });
+    }, {
+      threshold: threshold || 0.35
+    });
+
+    observer.observe(element);
+  }
+
+  function bindClick(selector, goalId, additionalGoalId) {
+    var elements = document.querySelectorAll(selector);
+    if (!elements.length) return;
+
+    elements.forEach(function (element) {
+      if (element.dataset.dvGoalBound === goalId) return;
+      element.dataset.dvGoalBound = goalId;
+
+      element.addEventListener('click', function () {
+        sendGoal(goalId);
+        if (additionalGoalId) sendGoal(additionalGoalId);
+      });
+    });
+  }
+
+  function isHomePage() {
+    return location.pathname === '/' || location.pathname === '';
+  }
+
+  function isStoriesListPage() {
+    return Boolean(
+      document.querySelector('[data-dv-page="stories-list"], .dv-stories-list')
+    );
+  }
+
+  function getStoryRoot() {
+    return document.querySelector(
+      '[data-dv-page="story"], main.dv-story, [data-dv-choice-group]'
+    );
+  }
+
+  function isStoryPage() {
+    return Boolean(getStoryRoot());
+  }
+
+  function inferStorySlugFromPath() {
+    var parts = location.pathname.split('/').filter(Boolean);
+
+    if (parts[0] === 'istorii' && parts[1]) {
+      return parts[1];
+    }
+
+    return '';
+  }
+
+  function getStorySlug(root) {
+    var slug = root.getAttribute('data-dv-story-slug') || inferStorySlugFromPath();
+
+    if (slug && !root.getAttribute('data-dv-story-slug')) {
+      root.setAttribute('data-dv-story-slug', slug);
+    }
+
+    return slug;
+  }
+
+  function getStoryStatus(slug) {
+    var status = storageGet(STATUS_PREFIX + slug, 'new');
+    return statusText[status] ? status : 'new';
+  }
+
+  function setStoryStatus(slug, status) {
+    if (!slug || !statusText[status]) return;
+
+    var current = getStoryStatus(slug);
+    if (current === 'read' && status !== 'read') return;
+
+    storageSet(STATUS_PREFIX + slug, status);
+  }
+
+  function getStoryProgress(slug) {
+    var raw = parseInt(storageGet(PROGRESS_PREFIX + slug, '0'), 10);
+    if (!Number.isFinite(raw)) return 0;
+    if (raw < 0) return 0;
+    if (raw > 100) return 100;
+    return raw;
+  }
+
+  function setStoryProgress(slug, percent) {
+    if (!slug) return;
+
+    var status = getStoryStatus(slug);
+    var current = getStoryProgress(slug);
+    var rounded = Math.round(percent || 0);
+
+    if (status !== 'read' && current >= 100) current = 95;
+    if (status !== 'read' && rounded >= 100) rounded = 95;
+
+    var next = Math.max(current, rounded);
+
+    if (next > 100) next = 100;
+    storageSet(PROGRESS_PREFIX + slug, String(next));
+  }
+
+  function getSavedChoice(slug) {
+    var raw = storageGet(CHOICE_PREFIX + slug, '');
+    if (!raw) return null;
+
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveChoice(slug, data) {
+    if (!slug) return;
+    storageSet(CHOICE_PREFIX + slug, JSON.stringify(data));
+  }
+
+  function initHomeGoals() {
+    setTimeout(function () {
+      sendGoal('dv_home_time_30');
+    }, 30000);
+
+    setTimeout(function () {
+      sendGoal('dv_home_time_60');
+    }, 60000);
+
+    function checkHomeScrollGoals() {
+      var percent = getScrollPercentForPage();
+
+      if (percent >= 50) sendGoal('dv_home_scroll_50');
+      if (percent >= 75) sendGoal('dv_home_scroll_75');
+      if (percent >= 90) sendGoal('dv_home_scroll_90');
+    }
+
+    window.addEventListener('scroll', checkHomeScrollGoals, { passive: true });
+    window.addEventListener('resize', checkHomeScrollGoals);
+
+    checkHomeScrollGoals();
+
+    watchElement('.dv-cards', 'dv_home_cards_seen', 0.25);
+    watchElement('.dv-final', 'dv_home_final_seen', 0.35);
+
+    bindClick(
+      '[data-dv-goal="home-to-stories"], [data-dv-goal="home-final-stories"], [data-dv-goal="home-all-stories"], [data-dv-goal="home-to-detective"], [data-dv-goal="home-to-fantasy"], [data-dv-goal="home-to-thriller"]',
+      'dv_home_to_stories_click'
+    );
+
+    bindClick(
+      '[data-dv-goal="home-to-first-story"]',
+      'dv_home_first_story_click'
+    );
+
+    bindClick(
+      '[data-dv-goal="home-story-card"]',
+      'dv_home_story_card_click'
+    );
+  }
+
+  function ensureCatalogProgressBadge(card, statusBadge) {
+    var progressBadge = card.querySelector('[data-dv-story-progress]');
+
+    if (!progressBadge) {
+      var meta = card.querySelector('.dv-story-card__meta');
+      progressBadge = document.createElement('span');
+      progressBadge.className = 'dv-story-card__progress';
+      progressBadge.setAttribute('data-dv-story-progress', '');
+      progressBadge.hidden = true;
+
+      if (meta) {
+        meta.appendChild(progressBadge);
+      } else {
+        statusBadge.insertAdjacentElement('afterend', progressBadge);
+      }
+    }
+
+    return progressBadge;
+  }
+
+  function renderCatalogProgress(progressBadge, status, progress) {
+    if (!progressBadge) return;
+
+    progressBadge.textContent = '';
+    progressBadge.classList.remove('is-started', 'is-read');
+
+    if (status !== 'started' && status !== 'read') {
+      progressBadge.hidden = true;
+      progressBadge.removeAttribute('aria-label');
+      progressBadge.style.removeProperty('--dv-card-progress');
+      return;
+    }
+
+    var fillPercent = status === 'read'
+      ? 100
+      : Math.min(Math.max(progress || 18, 18), 78);
+
+    var label = document.createElement('span');
+    label.className = 'dv-story-card__progress-label';
+    label.textContent = status === 'read' ? 'готово' : 'в процессе';
+
+    var track = document.createElement('span');
+    track.className = 'dv-story-card__progress-track';
+    track.setAttribute('aria-hidden', 'true');
+
+    var fill = document.createElement('span');
+    fill.className = 'dv-story-card__progress-fill';
+
+    track.appendChild(fill);
+    progressBadge.appendChild(label);
+    progressBadge.appendChild(track);
+
+    progressBadge.classList.add(status === 'read' ? 'is-read' : 'is-started');
+    progressBadge.style.setProperty('--dv-card-progress', fillPercent + '%');
+    progressBadge.setAttribute(
+      'aria-label',
+      status === 'read' ? 'История прочитана' : 'История начата'
+    );
+    progressBadge.hidden = false;
+  }
+
+  function applyCatalogStatuses() {
+    var badges = document.querySelectorAll('[data-dv-story-status]');
+
+    badges.forEach(function (badge) {
+      var slug = badge.getAttribute('data-dv-story-status');
+      var status = getStoryStatus(slug);
+      var progress = getStoryProgress(slug);
+      var card = badge.closest('.dv-story-card');
+      var progressBadge = card ? ensureCatalogProgressBadge(card, badge) : null;
+
+      badge.textContent = statusText[status];
+      badge.classList.remove('is-new', 'is-started', 'is-read');
+      badge.classList.add(statusClass[status]);
+
+      renderCatalogProgress(progressBadge, status, progress);
+    });
+  }
+
+  function getCatalogRoot() {
+    return document.querySelector('[data-dv-page="stories-list"], .dv-stories-list');
+  }
+
+  function normalizeStoriesFilter(mode) {
+    var value = mode || 'all';
+    var aliases = {
+      detective: 'detektivy',
+      detektivnye: 'detektivy',
+      fantasy: 'fantastika',
+      fantasticheskie: 'fantastika',
+      thriller: 'trillery',
+      triller: 'trillery',
+      trillery: 'trillery',
+      horror: 'uzhasy',
+      uzhas: 'uzhasy',
+      uzhasy: 'uzhasy',
+      adventure: 'priklyucheniya',
+      adventures: 'priklyucheniya',
+      priklyuchenie: 'priklyucheniya',
+      priklyucheniya: 'priklyucheniya'
+    };
+
+    return aliases[value] || value;
+  }
+
+  function normalizeStoryFormat(mode) {
+    var value = mode || 'all';
+    return value === 'all' || storyFormats[value] ? value : 'all';
+  }
+
+  function getRequestedStoriesFilter() {
+    try {
+      return normalizeStoriesFilter(new URLSearchParams(location.search).get('filter') || 'all');
+    } catch (e) {
+      return 'all';
+    }
+  }
+
+  function getActiveStoriesFilter() {
+    var root = getCatalogRoot();
+    if (!root) return 'all';
+
+    var active = root.querySelector('[data-dv-filter-control][aria-pressed="true"]');
+    return active ? normalizeStoriesFilter(active.getAttribute('data-dv-filter') || 'all') : 'all';
+  }
+
+  function getRequestedStoriesFormat() {
+    try {
+      return normalizeStoryFormat(new URLSearchParams(location.search).get('format') || 'all');
+    } catch (e) {
+      return 'all';
+    }
+  }
+
+  function getActiveStoryFormatFilter() {
+    var root = getCatalogRoot();
+    if (!root) return 'all';
+
+    var active = root.querySelector('[data-dv-format-control][aria-pressed="true"]');
+    return active ? normalizeStoryFormat(active.getAttribute('data-dv-format-filter') || 'all') : 'all';
+  }
+
+  function getStoryCardGenre(card) {
+    return normalizeStoriesFilter(
+      card.getAttribute('data-dv-genre') ||
+      card.getAttribute('data-dv-category') ||
+      'detektivy'
+    );
+  }
+
+  function getStoryCardFormat(card) {
+    return normalizeStoryFormat(card.getAttribute('data-dv-format') || 'short');
+  }
+
+  function hasMultipleStoryFormats(root) {
+    var formats = {};
+    Array.prototype.slice.call(root.querySelectorAll('.dv-story-card')).forEach(function (card) {
+      formats[getStoryCardFormat(card)] = true;
+    });
+
+    return Object.keys(formats).length > 1;
+  }
+
+  function syncStoryFormatFilterVisibility(root) {
+    var formatTools = Array.prototype.slice.call(root.querySelectorAll('[data-dv-format-tools]'));
+    if (!formatTools.length) return;
+
+    var shouldShow = hasMultipleStoryFormats(root);
+    formatTools.forEach(function (tool) {
+      tool.hidden = !shouldShow;
+    });
+  }
+
+  function applyStoriesCatalogFilters(genreMode, formatMode) {
+    var root = getCatalogRoot();
+    if (!root) return;
+
+    var cards = Array.prototype.slice.call(root.querySelectorAll('.dv-story-card'));
+    var activeGenre = normalizeStoriesFilter(genreMode || 'all');
+    var activeFormat = normalizeStoryFormat(formatMode || getActiveStoryFormatFilter());
+
+    cards.forEach(function (card) {
+      var genre = getStoryCardGenre(card);
+      var format = getStoryCardFormat(card);
+      var genreMatches = activeGenre === 'all' || genre === activeGenre;
+      var formatMatches = activeFormat === 'all' || format === activeFormat;
+      card.hidden = !genreMatches || !formatMatches;
+    });
+
+  }
+
+  function applyStoriesCategoryFilter(mode) {
+    applyStoriesCatalogFilters(mode || getActiveStoriesFilter(), getActiveStoryFormatFilter());
+  }
+
+  function sortStoriesCatalog(mode) {
+    var root = getCatalogRoot();
+    if (!root) return;
+
+    var grid = root.querySelector('[data-dv-stories-grid], .dv-stories__grid');
+    if (!grid) return;
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.dv-story-card'));
+    var attribute = mode === 'popular' ? 'data-dv-popular' : 'data-dv-order';
+
+    cards.sort(function (first, second) {
+      var firstValue = parseFloat(first.getAttribute(attribute) || '0') || 0;
+      var secondValue = parseFloat(second.getAttribute(attribute) || '0') || 0;
+      return secondValue - firstValue;
+    });
+
+    if (mode === 'new' && getActiveStoriesFilter() === 'all') {
+      var fixedSlugs = ['ona-vyshla-na-stsenu-dvazhdy', 'pansionat-tikhiy-uzhas'];
+      var fixedCards = fixedSlugs.map(function (slug) {
+        return cards.find(function (card) {
+          return card.getAttribute('data-dv-story-slug') === slug;
+        });
+      }).filter(Boolean);
+      var usedCards = fixedCards.slice();
+      var usedGenres = {};
+
+      fixedCards.forEach(function (card) {
+        usedGenres[getStoryCardGenre(card)] = true;
+      });
+
+      var genreHighlights = [];
+      cards.forEach(function (card) {
+        var genre = getStoryCardGenre(card);
+        if (genreHighlights.length >= 6 || usedCards.indexOf(card) !== -1 || usedGenres[genre]) return;
+        genreHighlights.push(card);
+        usedCards.push(card);
+        usedGenres[genre] = true;
+      });
+
+      cards = fixedCards.concat(genreHighlights, cards.filter(function (card) {
+        return usedCards.indexOf(card) === -1;
+      }));
+    }
+
+    cards.forEach(function (card) {
+      grid.appendChild(card);
+    });
+
+    applyStoriesCategoryFilter(getActiveStoriesFilter());
+  }
+
+  function initStoriesListFilters() {
+    var root = getCatalogRoot();
+    if (!root) return;
+
+    syncStoryFormatFilterVisibility(root);
+
+    var controls = Array.prototype.slice.call(root.querySelectorAll('[data-dv-filter-control]'));
+    if (!controls.length) return;
+
+    var requestedFilter = getRequestedStoriesFilter();
+    var requestedControl = controls.find(function (control) {
+      return normalizeStoriesFilter(control.getAttribute('data-dv-filter') || 'all') === requestedFilter;
+    });
+
+    if (requestedControl) {
+      controls.forEach(function (item) {
+        var isActive = item === requestedControl;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    controls.forEach(function (control) {
+      if (control.dataset.dvFilterBound === 'true') return;
+      control.dataset.dvFilterBound = 'true';
+
+      control.addEventListener('click', function () {
+        var mode = normalizeStoriesFilter(control.getAttribute('data-dv-filter') || 'all');
+
+        controls.forEach(function (item) {
+          var isActive = item === control;
+          item.classList.toggle('is-active', isActive);
+          item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        applyStoriesCategoryFilter(mode);
+        applyCatalogStatuses();
+        sendGoal('dv_stories_filter_' + mode);
+      });
+    });
+
+    applyStoriesCategoryFilter(getActiveStoriesFilter());
+  }
+
+  function initStoriesFormatFilters() {
+    var root = getCatalogRoot();
+    if (!root) return;
+
+    syncStoryFormatFilterVisibility(root);
+
+    var controls = Array.prototype.slice.call(root.querySelectorAll('[data-dv-format-control]'));
+    if (!controls.length) return;
+
+    var requestedFormat = getRequestedStoriesFormat();
+    var requestedControl = controls.find(function (control) {
+      return normalizeStoryFormat(control.getAttribute('data-dv-format-filter') || 'all') === requestedFormat;
+    });
+
+    if (requestedControl) {
+      controls.forEach(function (item) {
+        var isActive = item === requestedControl;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    controls.forEach(function (control) {
+      if (control.dataset.dvFormatBound === 'true') return;
+      control.dataset.dvFormatBound = 'true';
+
+      control.addEventListener('click', function () {
+        var mode = normalizeStoryFormat(control.getAttribute('data-dv-format-filter') || 'all');
+
+        controls.forEach(function (item) {
+          var isActive = item === control;
+          item.classList.toggle('is-active', isActive);
+          item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        applyStoriesCatalogFilters(getActiveStoriesFilter(), mode);
+        applyCatalogStatuses();
+        sendGoal('dv_stories_format_' + mode);
+      });
+    });
+
+    applyStoriesCatalogFilters(getActiveStoriesFilter(), getActiveStoryFormatFilter());
+  }
+
+  function initStoriesFilterJumps() {
+    var root = getCatalogRoot();
+    if (!root) return;
+
+    Array.prototype.slice.call(root.querySelectorAll('[data-dv-filter-jump]')).forEach(function (button) {
+      if (button.dataset.dvFilterJumpBound === 'true') return;
+      button.dataset.dvFilterJumpBound = 'true';
+
+      button.addEventListener('click', function () {
+        var filter = normalizeStoriesFilter(button.getAttribute('data-dv-filter-jump') || 'all');
+        var control = root.querySelector('[data-dv-filter-control][data-dv-filter="' + filter + '"]');
+
+        if (control) {
+          control.click();
+          var catalog = root.querySelector('[data-dv-stories-grid], .dv-stories__grid');
+          if (catalog && catalog.scrollIntoView) {
+            catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+  }
+
+  function initStoriesListControls() {
+    var root = getCatalogRoot();
+    if (!root) return;
+
+    var controls = Array.prototype.slice.call(root.querySelectorAll('[data-dv-sort-control]'));
+    if (!controls.length) return;
+
+    controls.forEach(function (control) {
+      if (control.dataset.dvSortBound === 'true') return;
+      control.dataset.dvSortBound = 'true';
+
+      control.addEventListener('click', function () {
+        var mode = control.getAttribute('data-dv-sort') || 'new';
+
+        controls.forEach(function (item) {
+          var isActive = item === control;
+          item.classList.toggle('is-active', isActive);
+          item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        sortStoriesCatalog(mode);
+        applyCatalogStatuses();
+      });
+    });
+
+    var active = controls.find(function (control) {
+      return control.getAttribute('aria-pressed') === 'true';
+    }) || controls[0];
+
+    if (active) {
+      sortStoriesCatalog(active.getAttribute('data-dv-sort') || 'new');
+    }
+  }
+
+  function ensureStoryImage(root, slug) {
+    var asset = storyAssets[slug];
+    if (!asset || root.querySelector('[data-dv-story-image]')) return;
+
+    var alt = 'Иллюстрация к истории «' + asset.title + '»';
+    var hero = root.querySelector('.dv-story__hero');
+
+    if (hero) {
+      var section = document.createElement('section');
+      section.className = 'dv-story__image-section';
+      section.setAttribute('data-dv-story-image', '');
+      section.setAttribute('aria-label', alt);
+
+      var shell = document.createElement('div');
+      shell.className = 'dv-story__shell dv-story__image-shell';
+
+      var figure = document.createElement('figure');
+      figure.className = 'dv-story__image-card';
+
+      var image = document.createElement('img');
+      image.src = asset.image;
+      image.alt = alt;
+      image.loading = 'lazy';
+
+      figure.appendChild(image);
+      shell.appendChild(figure);
+      section.appendChild(shell);
+      hero.insertAdjacentElement('afterend', section);
+      return;
+    }
+
+    var wrap = root.querySelector('.dv-story__wrap') || root;
+    var anchor = wrap.querySelector('.dv-story__meta') || wrap.querySelector('.dv-story__lead');
+    if (!anchor) return;
+
+    var fallbackFigure = document.createElement('figure');
+    fallbackFigure.className = 'dv-story__image-card';
+    fallbackFigure.setAttribute('data-dv-story-image', '');
+    fallbackFigure.setAttribute('aria-label', alt);
+
+    var fallbackImage = document.createElement('img');
+    fallbackImage.src = asset.image;
+    fallbackImage.alt = alt;
+    fallbackImage.loading = 'lazy';
+
+    fallbackFigure.appendChild(fallbackImage);
+    anchor.insertAdjacentElement('afterend', fallbackFigure);
+  }
+
+  function initStoriesListGoals() {
+    sendGoal('dv_stories_list_open');
+
+    bindClick(
+      '[data-dv-goal="story-card"], .dv-story-card, .dv-story-link',
+      'dv_story_card_click'
+    );
+  }
+
+  function createReadingProgressBar() {
+    var existing = document.querySelector('[data-dv-reading-progress]');
+    if (existing) return existing.querySelector('.dv-reading-progress__bar');
+
+    var progress = document.createElement('div');
+    progress.className = 'dv-reading-progress';
+    progress.setAttribute('data-dv-reading-progress', '');
+    progress.setAttribute('aria-hidden', 'true');
+
+    var bar = document.createElement('span');
+    bar.className = 'dv-reading-progress__bar';
+    progress.appendChild(bar);
+    document.body.appendChild(progress);
+
+    return bar;
+  }
+
+  function revealStoryAdsAfterFinal(root) {
+    Array.prototype.slice.call(root.querySelectorAll('[data-dv-ad-after-reveal]')).forEach(function (ad) {
+      ad.hidden = false;
+      ad.setAttribute('aria-hidden', 'false');
+    });
+  }
+
+  function revealStoryChoice(root, slug, button, options) {
+    options = options || {};
+
+    var buttons = Array.prototype.slice.call(root.querySelectorAll('[data-dv-choice]'));
+    var result = root.querySelector('[data-dv-choice-result]');
+    var finalBlock = root.querySelector('[data-dv-final], [data-dv-reveal]');
+    var proofBlock = root.querySelector('[data-dv-proof], [data-dv-facts]');
+
+    if (!buttons.length || !button || !result || !finalBlock || !proofBlock) return;
+
+    var isCorrect = button.getAttribute('data-dv-correct') === 'true';
+    var selectedIndex = buttons.indexOf(button);
+
+    buttons.forEach(function (item) {
+      item.disabled = true;
+      item.setAttribute('aria-disabled', 'true');
+      item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+      item.classList.remove('is-selected', 'is-correct', 'is-wrong');
+
+      if (item.getAttribute('data-dv-correct') === 'true') {
+        item.classList.add('is-correct');
+      }
+    });
+
+    button.classList.add('is-selected');
+
+    if (!isCorrect) {
+      button.classList.add('is-wrong');
+    }
+
+    result.hidden = false;
+    result.setAttribute('role', 'status');
+    result.textContent = isCorrect
+      ? 'Версия выдержала проверку. Теперь смотрим, какая деталь решила дело.'
+      : 'Версия звучала убедительно, но решающая деталь ведёт в другую сторону.';
+
+    finalBlock.hidden = false;
+    proofBlock.hidden = false;
+    finalBlock.setAttribute('aria-hidden', 'false');
+    proofBlock.setAttribute('aria-hidden', 'false');
+    finalBlock.classList.add('dv-is-revealed');
+    proofBlock.classList.add('dv-is-revealed');
+    revealStoryAdsAfterFinal(root);
+
+    setStoryStatus(slug, 'read');
+    setStoryProgress(slug, 100);
+
+    if (!options.restore) {
+      saveChoice(slug, {
+        index: selectedIndex,
+        correct: isCorrect,
+        at: Date.now()
+      });
+      sendGoal('pe_version_selected');
+      sendGoal('pe_story_completed');
+    }
+
+    if (options.scroll) {
+      setTimeout(function () {
+        var reducedMotion = window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        finalBlock.scrollIntoView({
+          behavior: reducedMotion ? 'auto' : 'smooth',
+          block: 'start'
+        });
+      }, 180);
+    }
+  }
+
+  function initStoryChoice(root, slug) {
+    var buttons = Array.prototype.slice.call(root.querySelectorAll('[data-dv-choice]'));
+    if (!buttons.length) return;
+
+    buttons.forEach(function (button, index) {
+      button.setAttribute('aria-pressed', 'false');
+
+      if (button.dataset.dvChoiceBound === 'true') return;
+      button.dataset.dvChoiceBound = 'true';
+
+      button.addEventListener('click', function () {
+        revealStoryChoice(root, slug, button, {
+          scroll: true
+        });
+      });
+    });
+
+    var savedChoice = getSavedChoice(slug);
+    var status = getStoryStatus(slug);
+
+    if (savedChoice && typeof savedChoice.index === 'number' && buttons[savedChoice.index]) {
+      revealStoryChoice(root, slug, buttons[savedChoice.index], {
+        restore: true,
+        scroll: false
+      });
+    } else if (status === 'read') {
+      var correctButton = buttons.find(function (button) {
+        return button.getAttribute('data-dv-correct') === 'true';
+      });
+
+      if (correctButton) {
+        revealStoryChoice(root, slug, correctButton, {
+          restore: true,
+          scroll: false
+        });
+      }
+    }
+  }
+
+  function initStoryGoalsAndProgress(root, slug) {
+    var article = root.querySelector('[data-dv-story-text], .dv-story-text');
+    var progressBar = createReadingProgressBar();
+
+    sendGoal('dv_story_open');
+
+    setTimeout(function () {
+      sendGoal('dv_story_time_60');
+    }, 60000);
+
+    setTimeout(function () {
+      sendGoal('dv_story_time_180');
+    }, 180000);
+
+    function checkReadingGoals() {
+      if (!article) return;
+
+      var percent = getReadingPercent(article);
+      var rounded = Math.round(percent);
+
+      if (progressBar) {
+        progressBar.style.width = rounded + '%';
+      }
+
+      root.style.setProperty('--dv-reading-progress', rounded + '%');
+      setStoryProgress(slug, rounded);
+
+      if (percent >= 10) sendGoal('dv_story_read_start');
+      if (percent >= 25) sendGoal('dv_story_read_25');
+      if (percent >= 50) sendGoal('dv_story_read_50');
+      if (percent >= 75) {
+        sendGoal('dv_story_read_75');
+        sendGoal('pe_story_progress_75');
+      }
+      if (percent >= 90) sendGoal('dv_story_read_90');
+      if (percent >= 98) sendGoal('dv_story_read_complete');
+    }
+
+    window.addEventListener('scroll', checkReadingGoals, { passive: true });
+    window.addEventListener('resize', checkReadingGoals);
+
+    checkReadingGoals();
+
+    bindClick(
+      '[data-dv-goal="next-story"], .dv-next-story',
+      'dv_next_story_click',
+      'pe_next_story_clicked'
+    );
+
+    bindClick(
+      '[data-dv-goal="prev-story"], .dv-prev-story',
+      'dv_prev_story_click'
+    );
+
+    bindClick(
+      '[data-dv-goal="back-to-stories"], .dv-back-to-stories',
+      'dv_back_to_stories_click'
+    );
+  }
+
+  function initStoryPage() {
+    var root = getStoryRoot();
+    if (!root) return;
+
+    var slug = getStorySlug(root);
+    if (!slug) return;
+
+    setStoryStatus(slug, 'started');
+    ensureStoryImage(root, slug);
+    initStoryChoice(root, slug);
+    initStoryGoalsAndProgress(root, slug);
+  }
+
+  onReady(function () {
+    initReturnVisitGoal();
+
+    if (isHomePage()) {
+      initHomeGoals();
+    }
+
+    if (isStoriesListPage()) {
+      initStoriesListFilters();
+      initStoriesFormatFilters();
+      initStoriesListControls();
+      initStoriesFilterJumps();
+      applyCatalogStatuses();
+      initStoriesListGoals();
+    }
+
+    if (isStoryPage()) {
+      initStoryPage();
+    }
+  });
+})();
+</script>
+
+<!-- /DILIVOX / ГЛОБАЛЬНАЯ СИСТЕМА UX + ЯНДЕКС.МЕТРИКА -->

@@ -4,91 +4,99 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 
-const source = fs.readFileSync(path.join(__dirname, '..', 'tilda', 'dilivox-metrica-goals-v1.js'), 'utf8');
-const prepare = fs.readFileSync(path.join(__dirname, '..', '..', '..', 'scripts', 'prepare-dilivox-tilda-production-head.sh'), 'utf8');
+const source = fs.readFileSync(
+  path.join(__dirname, '..', 'tilda', 'dilivox-metrika-goals-global-head-after-counter-UPDATED.txt'),
+  'utf8'
+);
+const script = source.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
+
+const oldGoals = [
+  'dv_back_to_stories_click', 'dv_home_cards_seen', 'dv_home_final_seen',
+  'dv_home_first_story_click', 'dv_home_scroll_50', 'dv_home_scroll_75',
+  'dv_home_scroll_90', 'dv_home_story_card_click', 'dv_home_time_30',
+  'dv_home_time_60', 'dv_home_to_stories_click', 'dv_next_story_click',
+  'dv_prev_story_click', 'dv_stories_filter_', 'dv_stories_format_',
+  'dv_stories_list_open', 'dv_story_card_click', 'dv_story_open',
+  'dv_story_read_25', 'dv_story_read_50', 'dv_story_read_75',
+  'dv_story_read_90', 'dv_story_read_complete', 'dv_story_read_start',
+  'dv_story_time_180', 'dv_story_time_60',
+];
 
 function storage(initial = {}) {
-  const map = new Map(Object.entries(initial));
-  return { getItem(k) { return map.has(k) ? map.get(k) : null; }, setItem(k,v) { map.set(k,String(v)); } };
+  const values = new Map(Object.entries(initial));
+  return {
+    getItem(key) { return values.has(key) ? values.get(key) : null; },
+    setItem(key, value) { values.set(key, String(value)); },
+  };
 }
 
-function fixture({ returning = false } = {}) {
-  const calls = [], docHandlers = {}, addCounts = {};
-  const reveal = { hidden: false, getAttribute() { return null; } };
-  const proof = { hidden: false, getAttribute() { return null; } };
-  const root = { querySelector(sel) { return sel.includes('proof') || sel.includes('facts') ? proof : reveal; } };
-  const choice = { closest(sel) { return sel === '[data-dv-choice]' ? choice : root; } };
+function returnVisitSession(localStorage) {
+  const calls = [];
+  let ready;
   const document = {
     readyState: 'loading',
-    addEventListener(type, fn) { docHandlers[type] = fn; addCounts[type] = (addCounts[type] || 0) + 1; }
+    addEventListener(type, callback) { if (type === 'DOMContentLoaded') ready = callback; },
+    querySelector() { return null; },
   };
-  const rawYm = function(counter, method, identifier) { calls.push([counter, method, identifier]); };
-  rawYm.a = [];
-  rawYm.l = 12345;
-  const window = {
-    document, ym: rawYm,
-    localStorage: storage(returning ? {'pe_dilivox_goal_v1:visitor_seen':'1'} : {}),
-    sessionStorage: storage(), setTimeout(fn) { fn(); }
+  const context = {
+    window: {}, document, location: { pathname: '/not-a-dilivox-page' },
+    localStorage, sessionStorage: storage(),
+    ym(counter, method, goal) { calls.push([counter, method, goal]); },
   };
-  const context = vm.createContext({ window, document, setTimeout: window.setTimeout, Date });
-  function load() {
-    vm.runInContext(source, context);
-    if (docHandlers.DOMContentLoaded) {
-      const ready = docHandlers.DOMContentLoaded;
-      delete docHandlers.DOMContentLoaded;
-      ready();
-    }
-  }
-  function trustedChoice() { docHandlers.click({ isTrusted:true, target:choice }); }
-  return { window, calls, addCounts, load, trustedChoice };
+  context.window = context;
+  vm.runInNewContext(script, context);
+  ready();
+  return calls;
 }
 
-test('bridge never initializes counter or contains provider/network writes', () => {
-  assert.ok(!source.includes("'init'"));
-  assert.ok(!source.includes('Ya.Context'));
+test('full updated file preserves counter and every legacy goal', () => {
+  assert.equal((source.match(/var DILIVOX_COUNTER_ID = 110349067;/g) || []).length, 1);
+  assert.equal((source.match(/addEventListener\(/g) || []).length, 11);
+  assert.ok(!/ym\s*\([^)]*['"]init['"]/.test(source));
+  assert.ok(!/window\.ym\s*=/.test(source));
+  for (const goal of oldGoals) assert.ok(source.includes(`'${goal}'`), goal);
+});
+
+test('new goals are inserted in the existing authoritative handlers', () => {
+  assert.match(source, /if \(percent >= 75\) \{\s*sendGoal\('dv_story_read_75'\);\s*sendGoal\('pe_story_progress_75'\);/);
+  assert.match(source, /if \(!options\.restore\) \{[\s\S]*?saveChoice\([\s\S]*?sendGoal\('pe_version_selected'\);\s*sendGoal\('pe_story_completed'\);\s*\}/);
+  assert.match(source, /'dv_next_story_click',\s*'pe_next_story_clicked'/);
+  assert.doesNotMatch(source, /percent >= 98[^\n]*pe_story_completed/);
+  for (const goal of ['pe_story_progress_75', 'pe_version_selected', 'pe_story_completed', 'pe_next_story_clicked', 'pe_return_visit']) {
+    assert.ok(source.includes(`'${goal}'`), goal);
+  }
+});
+
+test('return visit fires only once in each later browser session', () => {
+  const local = storage();
+  assert.deepEqual(returnVisitSession(local), []);
+  assert.deepEqual(returnVisitSession(local), [[110349067, 'reachGoal', 'pe_return_visit']]);
+
+  const sameSessionCalls = [];
+  let ready;
+  const session = storage();
+  const document = {
+    readyState: 'loading',
+    addEventListener(type, callback) { if (type === 'DOMContentLoaded') ready = callback; },
+    querySelector() { return null; },
+  };
+  const context = {
+    window: {}, document, location: { pathname: '/other' },
+    localStorage: local, sessionStorage: session,
+    ym(counter, method, goal) { sameSessionCalls.push([counter, method, goal]); },
+  };
+  context.window = context;
+  vm.runInNewContext(script, context);
+  ready();
+  vm.runInNewContext(script, context);
+  ready();
+  assert.equal(sameSessionCalls.filter(call => call[2] === 'pe_return_visit').length, 1);
+});
+
+test('file contains no provider, Direct, YAN or network writes', () => {
   assert.ok(!source.includes('fetch('));
   assert.ok(!source.includes('XMLHttpRequest'));
-  assert.ok(!source.includes('metrika:write'));
-});
-
-test('legacy authoritative signals normalize to one canonical reachGoal', () => {
-  const f = fixture(); f.load();
-  f.window.ym(110349067, 'reachGoal', 'dv_story_read_75');
-  f.window.ym(110349067, 'reachGoal', 'dv_story_read_75');
-  f.window.ym(110349067, 'reachGoal', 'dv_next_story_click');
-  f.window.ym(110349067, 'reachGoal', 'dv_next_story_click');
-  assert.deepEqual(f.calls.map(x => x[2]), ['pe_story_progress_75','pe_next_story_clicked']);
-});
-
-test('choice and revealed completion use existing transition and dispatch once', () => {
-  const f = fixture(); f.load(); f.trustedChoice(); f.trustedChoice();
-  const ids = f.calls.map(x => x[2]);
-  assert.equal(ids.filter(x => x === 'pe_version_selected').length, 1);
-  assert.equal(ids.filter(x => x === 'pe_story_completed').length, 1);
-});
-
-test('repeated script load installs no second listener or normalizer', () => {
-  const f = fixture(); f.load();
-  const normalized = f.window.ym; const clickListeners = f.addCounts.click;
-  f.load();
-  assert.equal(f.window.ym, normalized);
-  assert.equal(f.window.ym.l, 12345);
-  assert.equal(f.addCounts.click, clickListeners);
-  f.window.ym(110349067, 'reachGoal', 'dv_story_read_75');
-  assert.equal(f.calls.filter(x => x[2] === 'pe_story_progress_75').length, 1);
-});
-
-test('return visit fires once per later session and kill switch blocks dispatch', () => {
-  const f = fixture({ returning:true }); f.load(); f.load();
-  assert.equal(f.calls.filter(x => x[2] === 'pe_return_visit').length, 1);
-  f.window.PROFIT_ENGINE_METRICA_GOALS_KILL = true;
-  f.window.ym(110349067, 'reachGoal', 'dv_story_read_75');
-  assert.equal(f.calls.filter(x => x[2] === 'pe_story_progress_75').length, 0);
-});
-
-test('production package is one bridge and excludes second event controller', () => {
-  assert.ok(!prepare.includes('event_js='));
-  assert.ok(!prepare.includes('ProfitEngineEvents.install'));
-  assert.ok(prepare.includes('existing DILIVOX_SYSTEM_V1'));
-  assert.ok(prepare.includes('do not alter YAN blocks or story T123 blocks'));
+  assert.ok(!source.includes('Campaigns.add'));
+  assert.ok(!source.includes('Campaigns.update'));
+  assert.ok(!source.includes('Ya.Context.AdvManager.render'));
 });
