@@ -1,0 +1,53 @@
+name: Profit Engine Live Site Smoke
+
+on:
+  push:
+    branches: ["profit-engine"]
+    paths:
+      - ".github/workflows/profit-engine-live-site-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify published Dilivox head and PE goals
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            "https://dilivox.ru/"
+            "https://dilivox.ru/istorii/komnata-bez-otrazheniy/"
+          )
+          for url in "${urls[@]}"; do
+            html="$(curl --fail --silent --show-error --location --retry 2 --max-time 30 "$url")"
+
+            grep -Fq "DILIVOX_SYSTEM_V1" <<<"$html"
+            grep -Fq "var DILIVOX_COUNTER_ID = 110349067;" <<<"$html"
+            grep -Fq "sendGoal('dv_story_read_75');" <<<"$html"
+            grep -Fq "sendGoal('pe_story_progress_75');" <<<"$html"
+            grep -Fq "sendGoal('pe_version_selected');" <<<"$html"
+            grep -Fq "sendGoal('pe_story_completed');" <<<"$html"
+            grep -Fq "pe_next_story_clicked" <<<"$html"
+            grep -Fq "sendGoal('pe_return_visit');" <<<"$html"
+
+            [[ "$(grep -oF "var DILIVOX_COUNTER_ID = 110349067;" <<<"$html" | wc -l | tr -d ' ')" == "1" ]]
+            [[ "$(grep -oF "DILIVOX / ГЛОБАЛЬНАЯ СИСТЕМА UX + ЯНДЕКС.МЕТРИКА" <<<"$html" | wc -l | tr -d ' ')" == "1" ]]
+
+            if grep -Fq "__DILIVOX_CANONICAL_METRICA_V2__" <<<"$html"; then
+              echo "ERROR: obsolete canonical bridge is still published" >&2
+              exit 1
+            fi
+            if grep -Fq "ProfitEngineEvents" <<<"$html"; then
+              echo "ERROR: separate ProfitEngineEvents layer is published" >&2
+              exit 1
+            fi
+
+            echo "LIVE_HEAD_PASS $url"
+          done
+          echo "LIVE_FIVE_PE_GOALS_SOURCE_PASS"
+          echo "LIVE_OLD_GOALS_PRESERVED_PASS"
+          echo "LIVE_NO_EXTRA_BRIDGE_PASS"
