@@ -1,7 +1,7 @@
 # DILIVOX SITE STATE
 
 Status: P0 PRODUCTION INSTRUMENTATION INCOMPLETE
-Updated: 2026-08-31
+Updated: 2026-09-01
 Site: `dilivox.ru`
 Site ID: `dilivox`
 Platform: Tilda + custom T123/HTML/JS
@@ -9,122 +9,80 @@ Canonical operational board: `profit-engine/P0_SYSTEM_COMPLETION_BOARD.md`
 
 ## Product role
 
-Dilivox is the first complete site-side node of Profit Engine, not merely a landing page.
+Dilivox is the first full site-side node of Profit Engine.
 
-Required closed loop:
+Required loop:
 
-`Direct -> Dilivox -> attributable visitor -> behavior/content path -> YAN ads/revenue -> Metrica/YAN reconciliation -> K5 -> Profit Engine decision -> guarded Direct/site action -> measured outcome`
+`Direct -> Dilivox -> attributable reader -> behavior/content path -> YAN revenue -> Metrica/YAN reconciliation -> K5 -> guarded decision/action -> measured money outcome`.
 
-The Owner approved this entire site workstream on 2026-08-26 in `OWNER_APPROVAL_DILIVOX_SITE_WORKSTREAM.md`.
-
-## Production truth
-
-### Live and verified
+## Live and verified
 
 - public `dilivox.ru` is live;
-- YAN/RSYA domain statistics are readable through YAN Statistics API;
-- Metrica counter `110349067` is readable with edit permission;
-- Direct attribution dimensions are readable in Metrica;
-- existing story/T123 source hooks are inventoried;
-- existing YAN placements are inventoried in provider-neutral placement registry;
-- exact site/content registries and event schemas exist.
+- YAN Statistics for the domain is readable;
+- Metrica counter `110349067` is readable;
+- Direct campaign attribution dimensions are readable in Metrica;
+- YAN→Metrica monetization has now passed technical read-back: the canonical bootstrap reached `READ_MODEL_READY`, which runtime only permits when monetization probe `yan_total_by_date` is PASS;
+- exact two Dilivox campaigns are readable;
+- all five canonical Profit Engine Metrica goals are now live and read-back verified;
+- Metrica provider goal count is 27; missing/invalid/duplicate canonical IDs are all zero;
+- separate Metrica administration OAuth boundary is verified; Direct OAuth was not modified.
 
-### Owner action completed / provider propagation pending
+Evidence:
+`profit-engine/evidence/TASK-013-METRICA-GOALS-AND-READ-MODEL-PASS-2026-09-01.md`.
 
-Owner enabled **YAN reports in Metrica** for Dilivox and bound counter `110349067` on 2026-08-31.
-
-Before this change Metrica returned exact provider error:
-
-`partner is not enabled for 110349067`
-
-for every `ym:s:yanPartnerPrice` query, while ordinary Direct campaign attribution returned HTTP 200. Technical monetization PASS must be re-read after provider propagation; Owner UI confirmation is not substituted for API evidence.
-
-### Implemented in code but NOT yet published on production Tilda
-
-Task-005/006 site instrumentation was historically accepted as code but its evidence explicitly recorded no Tilda publication.
-
-Unpublished accepted successor:
-
-`profit-engine/sites/dilivox/tilda/dilivox-event-layer-task006.js`
-
-It contains SiteAgent + first-party event controller. Production event dispatch is still disabled/not configured.
-
-New production-safe Metrica bridge:
-
-`profit-engine/sites/dilivox/tilda/dilivox-metrica-goals-v1.js`
-
-It maps existing Dilivox hooks to canonical `reachGoal` events and does not modify YAN blocks, story content or choice/reveal behavior.
-
-### First-party event endpoint
-
-NOT CONFIGURED in production.
-
-The event layer can currently create/queue events but there is no accepted production endpoint/transport. Therefore event-stream persistence is not yet a production fact.
-
-## Canonical Metrica goals
-
-Registry:
-`profit-engine/sites/dilivox/metrica-goals.json`
+## Canonical Metrica goals — LIVE PROVIDER VERIFIED
 
 Counter: `110349067`.
 
-Required exact JavaScript-event goals:
+- `pe_story_progress_75`;
+- `pe_version_selected`;
+- `pe_story_completed`;
+- `pe_next_story_clicked`;
+- `pe_return_visit`.
 
-- `pe_story_progress_75` — reader reaches ~75% of story;
-- `pe_version_selected` — a story choice/version is selected;
-- `pe_story_completed` — completion/reveal reaches accepted terminal condition;
-- `pe_next_story_clicked` — recirculation to another story;
-- `pe_return_visit` — later browser session return.
+These remain proxy goals and `native_bidding_eligible=false` until later revenue validation.
 
-These are proxy goals. They are not revenue and are not automatically eligible for Direct optimization. They must first prove a relationship to later reconciled YAN revenue.
+## Implemented but NOT yet published on production Tilda
 
-Audit/apply runtime:
+Accepted event layer:
+`profit-engine/sites/dilivox/tilda/dilivox-event-layer-task006.js`
 
-`python3 -m profit_engine_runtime.metrica_goals_cli`
+Metrica goal bridge:
+`profit-engine/sites/dilivox/tilda/dilivox-metrica-goals-v1.js`
 
-Default is read-only audit. `--apply-missing` may create only missing canonical exact goals, never update/delete, and requires read-back PASS.
+Prepared one-paste site-wide HEAD package:
+`~/.config/profit-engine/tilda/dilivox-profit-engine-head-v1.html`
 
-## Existing site hooks / invariants
+Latest live probe still fails closed:
 
-Source inventory confirms current custom T123 contract includes hooks such as:
+- `site_instrumentation_live=false`;
+- `site_probe_exit_code=2`.
 
-- `data-dv-page`;
-- `data-dv-story-slug`;
-- `data-dv-story-text`;
-- `data-dv-choice`;
-- `data-dv-reveal`;
-- `data-dv-goal`;
-- `data-dv-ad-block`.
+Therefore provider-side goals are live, but production browser instrumentation is not yet launch-complete and real goal arrivals are not yet accepted.
 
-Production instrumentation must consume these hooks without renaming/breaking current story code.
+## Publication invariants
 
-Existing YAN block configuration must remain untouched during Task 013.
+During Tilda publication:
 
-## Site kill switches
+- keep all existing YAN ad-block code unchanged;
+- consume existing `data-dv-*` hooks without renaming them;
+- load event layer exactly once;
+- load Metrica bridge exactly once;
+- first-party dispatch remains disabled;
+- story navigation/choice/reveal behavior must remain unchanged;
+- no duplicate goal storm;
+- no new Profit Engine console/network errors.
 
-Required independent safety:
+Emergency Metrica bridge kill:
+`window.PROFIT_ENGINE_METRICA_GOALS_KILL=true`.
 
-- Task-006 event dispatch stays disabled until endpoint acceptance;
-- `window.PROFIT_ENGINE_METRICA_GOALS_KILL=true` disables the new Metrica goal bridge;
-- existing SiteAgent/event-layer kill switches remain authoritative;
-- removal of the injected global scripts + republish is the hard rollback.
+Hard rollback: remove injected global Profit Engine code and republish.
 
-## Production publication gate
+## First-party event endpoint
 
-Task 013 must publish the site instrumentation globally through Tilda custom code.
+NOT LIVE.
 
-Current project tools do not have a Tilda write connector. Tilda officially supports site-wide custom head code via `Site Settings -> More -> HTML code for the head section`, and T123 for page-body custom code. Therefore one final external Tilda UI paste/publish step is unavoidable; Central Brain owns the exact tested package and validation, Owner should only perform that external UI action.
-
-Production acceptance requires:
-
-1. event layer loaded exactly once;
-2. Metrica goal bridge loaded exactly once;
-3. story navigation/choice/reveal unchanged;
-4. YAN blocks unchanged and rendering;
-5. canonical goals actually arrive in Metrica;
-6. no duplicate goal storm;
-7. no new console/network errors from Profit Engine;
-8. rollback verified/documented.
+Task 015 remains the authority for a durable raw-first endpoint. Privacy v2 must be published before first-party production event dispatch is enabled.
 
 ## Money/optimization state
 
@@ -132,29 +90,29 @@ K5 target remains:
 
 `YAN revenue / Direct spend >= 5.0`
 
-No current site behavior metric can replace K5.
+Current bootstrap state is `READ_MODEL_READY`, so money preflight executed without runtime error. Exact spend/revenue/K5 outcomes for the two campaigns still require Central Brain review before any reversible Direct smoke selection.
 
-Landing routing, recirculation and ad-placement experiments remain blocked from autonomous production optimization until instrumentation + money attribution are live and their causal/economic evidence is sufficient.
+No site behavior metric replaces K5.
 
 ## P0 site next order
 
-1. re-read YAN→Metrica monetization propagation;
-2. audit/create canonical Metrica goals;
-3. publish Task-006 event layer + Metrica goal bridge globally in Tilda;
-4. live-validate goals and site regressions;
-5. deploy first-party event ingestion endpoint;
-6. enable event dispatch only after endpoint acceptance;
-7. materialize behavior/cohort evidence;
-8. use that evidence in manual-search controller and later site experiments.
+1. publish the prepared Profit Engine block into Tilda **site-wide HEAD**;
+2. publish all pages;
+3. rerun live-site probe;
+4. verify real canonical goal arrivals and no site/YAN regression;
+5. later publish Privacy v2 + first-party endpoint;
+6. enable first-party dispatch only after endpoint acceptance.
 
 ## Acceptance state
 
 `DILIVOX_SITE_WORKSTREAM_OWNER_APPROVED = true`
 
-`DILIVOX_PRODUCTION_INSTRUMENTATION_LIVE = false`
+`DILIVOX_METRICA_GOALS_LIVE_VERIFIED = true`
 
-`DILIVOX_METRICA_GOALS_LIVE_VERIFIED = false`
+`DILIVOX_YAN_METRICA_MONETIZATION_LIVE_VERIFIED = true`
+
+`DILIVOX_PRODUCTION_INSTRUMENTATION_LIVE = false`
 
 `DILIVOX_FIRST_PARTY_EVENT_ENDPOINT_LIVE = false`
 
-Until those production facts change with evidence, the complete first-site ecosystem is not launch-complete.
+The complete first-site ecosystem is not launch-complete until production instrumentation and subsequent economic/control gates are closed.
