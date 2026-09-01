@@ -10,6 +10,7 @@ from typing import Any
 
 
 DEFAULT_CONFIG_PATH = Path("~/.config/profit-engine/sites/dilivox.json").expanduser()
+DEFAULT_METRICA_WRITE_TOKEN_REF = "keychain:ProfitEngine-MetricaOAuth-Write/profit-engine"
 
 
 @dataclass(frozen=True)
@@ -18,6 +19,8 @@ class SiteConfig:
     canonical_domain: str = "dilivox.ru"
     rollout_mode: str = "READ_ONLY"
     yandex_oauth_token_ref: str = "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN"
+    metrica_oauth_token_ref: str = "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN"
+    metrica_write_token_ref: str = DEFAULT_METRICA_WRITE_TOKEN_REF
     yan_stats_token_ref: str = "env:PROFIT_ENGINE_YAN_STATS_TOKEN"
     direct_operator_login: str | None = None
     direct_client_login: str | None = None
@@ -51,11 +54,15 @@ def load_site_config(path: Path = DEFAULT_CONFIG_PATH) -> tuple[SiteConfig, bool
     client_login = _private_value(direct.get("client_login_ref"))
     if operator_login and client_login and operator_login.casefold() == client_login.casefold():
         raise ValueError("Direct managed target login must differ from the operator/manager login")
+    direct_token_ref = direct.get("token_source_ref", "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN")
+    metrica_read_ref = metrica.get("token_source_ref", direct_token_ref)
     return SiteConfig(
         site_id=data.get("site_id", "dilivox"),
         canonical_domain=data.get("canonical_domain", "dilivox.ru"),
         rollout_mode=data["rollout_mode"],
-        yandex_oauth_token_ref=direct.get("token_source_ref", "env:PROFIT_ENGINE_YANDEX_OAUTH_TOKEN"),
+        yandex_oauth_token_ref=direct_token_ref,
+        metrica_oauth_token_ref=metrica_read_ref,
+        metrica_write_token_ref=metrica.get("write_token_source_ref", DEFAULT_METRICA_WRITE_TOKEN_REF),
         yan_stats_token_ref=yan.get("token_source_ref", "env:PROFIT_ENGINE_YAN_STATS_TOKEN"),
         direct_operator_login=operator_login,
         direct_client_login=client_login,
