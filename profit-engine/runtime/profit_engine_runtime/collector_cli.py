@@ -22,7 +22,7 @@ def execute(provider: str, *, fixture: bool, config_path: Path,
     config, _ = load_site_config(config_path)
     selected = ("direct", "metrica", "yan") if provider == "all" else (provider,)
     statuses: dict[str, str] = {}
-    shared_token = yan_token = None
+    direct_token = metrica_token = yan_token = None
     if not fixture:
         doctor = {item.provider: item for item in doctor_run(config_path)}
         aliases = {"direct": "direct", "metrica": "metrica", "yan": "yan_statistics"}
@@ -31,16 +31,17 @@ def execute(provider: str, *, fixture: bool, config_path: Path,
             statuses[name] = result.status.value
         if any(statuses[name] != DoctorStatus.PASS.value for name in selected):
             return {"mode": "live", "status": "BLOCKED_MISSING_CREDENTIAL", "providers": statuses}
-        shared_token = resolve_secret(config.yandex_oauth_token_ref)
+        direct_token = resolve_secret(config.yandex_oauth_token_ref)
+        metrica_token = resolve_secret(config.metrica_oauth_token_ref)
         yan_token = resolve_secret(config.yan_stats_token_ref)
 
     relational = InMemoryRelationalStore()
     orchestrator = IngestionOrchestrator(LocalRawStore(raw_root), relational)
     transport = None if fixture else UrllibTransport(max_attempts=3)
     collectors = {
-        "direct": DirectCollector(transport, config, shared_token, day,
+        "direct": DirectCollector(transport, config, direct_token, day,
             fixture_payload=DIRECT if fixture else None, captured_at=FIXTURE_CAPTURED_AT if fixture else None),
-        "metrica": MetricaCollector(transport, config, shared_token, day,
+        "metrica": MetricaCollector(transport, config, metrica_token, day,
             counter_id=config.metrica_counter_id, dimensions=config.metrica_dimensions,
             fixture_payload=METRICA if fixture else None,
             captured_at=FIXTURE_CAPTURED_AT if fixture else None),
