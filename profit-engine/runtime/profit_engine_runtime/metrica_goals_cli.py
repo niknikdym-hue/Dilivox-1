@@ -12,6 +12,15 @@ from .redaction import redact
 
 
 DEFAULT_GOALS_PATH = Path(__file__).resolve().parents[2] / "sites" / "dilivox" / "metrica-goals.json"
+WRITE_TOKEN_REQUIRED = "BLOCKED_METRICA_WRITE_TOKEN_REQUIRED"
+WRITE_SCOPE_REQUIRED = "BLOCKED_METRICA_WRITE_SCOPE"
+
+
+class MetricaProviderError(RuntimeError):
+    def __init__(self, status_code: int, message: str):
+        super().__init__(f"Metrica HTTP {status_code}: {message}")
+        self.status_code = status_code
+        self.provider_message = message
 
 
 def _load_registry(path: Path) -> dict[str, Any]:
@@ -46,7 +55,7 @@ def _request_json(request: urllib.request.Request) -> tuple[int, dict[str, Any]]
             errors = body.get("errors")
             if isinstance(errors, list) and errors and isinstance(errors[0], dict):
                 message = errors[0].get("message")
-        raise RuntimeError(f"Metrica HTTP {exc.code}: {message or 'provider error'}") from None
+        raise MetricaProviderError(exc.code, str(message or "provider error")) from None
 
 
 def _goal_identifiers(goal: dict[str, Any]) -> set[str]:
@@ -58,15 +67,7 @@ def _goal_identifiers(goal: dict[str, Any]) -> set[str]:
 
 
 def _action_goal_create_payload(spec: dict[str, Any]) -> dict[str, Any]:
-    """Return the minimal live-compatible create shape for a JS-event goal.
-
-    The live Metrica management endpoint for counter 110349067 rejected the
-    optional ``goal.is_favorite`` member with HTTP 400 on 2026-09-01 even though
-    the published OpenAPI schema documents it.  Launch code therefore sends only
-    fields required to identify and define the action goal. Optional response/
-    preference fields must not be added here without a fresh live compatibility
-    proof.
-    """
+    """Return the minimal live-compatible create shape for a JS-event goal."""
     return {
         "goal": {
             "name": str(spec["name"]),
@@ -82,9 +83,9 @@ def audit_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
         raise FileNotFoundError(f"private Dilivox config not found at {config_path}")
     if not config.metrica_counter_id:
         raise ValueError("exact Metrica counter binding is required")
-    token = resolve_secret(config.yandex_oauth_token_ref)
+    token = resolve_secret(config.metrica_oauth_token_ref)
     if not token:
-        raise ValueError("Metrica OAuth credential is unavailable")
+        raise ValueError("Metrica read OAuth credential is unavailable")
 
     registry = _load_registry(goals_path)
     request = urllib.request.Request(
@@ -165,31 +166,56 @@ def apply_missing_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any
         }
 
     config, _ = load_site_config(config_path)
-    token = resolve_secret(config.yandex_oauth_token_ref)
-    if not token:
-        raise ValueError("Metrica OAuth credential is unavailable")
-    registry = _load_registry(goals_path)
+    write_token = resolve_secret(config.metrica_write_token_ref)
+    if not write_token:
+        return {
+            "mode": "DILIVOX_METRICA_GOALS_APPLY",
+            "state": WRITE_TOKEN_REQUIRED,
+            "created": [],
+            "provider_write_requests": 0,
+            "blind_retry": False,
+            "required_scope": "metrika:write",
+            "keychain_service": "ProfitEngine-MetricaOAuth-Write",
+            "credential_values_printed": False,
+            "readback": before,
+        }
 
+    registry = _load_registry(goals_path)
     created: list[str] = []
     requests_sent = 0
-    for spec in registry["goals"]:
-        identifier = str(spec["identifier"])
-        if identifier not in missing:
-            continue
-        body = json.dumps(_action_goal_create_payload(spec), ensure_ascii=False).encode("utf-8")
-        request = urllib.request.Request(
-            f"{config.metrica_management_endpoint}/counter/{config.metrica_counter_id}/goals",
-            data=body,
-            headers={
-                "Authorization": f"OAuth {token}",
-                "Accept": "application/json",
-                "Content-Type": "application/json; charset=utf-8",
-            },
-            method="POST",
-        )
-        _request_json(request)
-        requests_sent += 1
-        created.append(identifier)
+    try:
+        for spec in registry["goals"]:
+            identifier = str(spec["identifier"])
+            if identifier not in missing:
+                continue
+            body = json.dumps(_action_goal_create_payload(spec), ensure_ascii=False).encode("utf-8")
+            request = urllib.request.Request(
+                f"{config.metrica_management_endpoint}/counter/{config.metrica_counter_id}/goals",
+                data=body,
+                headers={
+                    "Authorization": f"OAuth {write_token}",
+                    "Accept": "application/json",
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                method="POST",
+            )
+            requests_sent += 1
+            _request_json(request)
+            created.append(identifier)
+    except MetricaProviderError as exc:
+        state = WRITE_SCOPE_REQUIRED if exc.status_code == 403 else "METRICA_GOAL_CREATE_PROVIDER_ERROR"
+        return redact({
+            "mode": "DILIVOX_METRICA_GOALS_APPLY",
+            "state": state,
+            "created": created,
+            "provider_write_requests": requests_sent,
+            "blind_retry": False,
+            "http_status": exc.status_code,
+            "provider_message": exc.provider_message,
+            "required_scope": "metrika:write" if exc.status_code == 403 else None,
+            "credential_values_printed": False,
+            "readback": before,
+        }, (write_token,))
 
     readback = audit_goals(config_path=config_path, goals_path=goals_path)
     state = "APPLIED_AND_VERIFIED" if readback["state"] == "PASS" else "APPLIED_BUT_READBACK_NOT_PASS"
@@ -201,7 +227,7 @@ def apply_missing_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any
         "blind_retry": False,
         "readback": readback,
         "credential_values_printed": False,
-    }, (token,))
+    }, (write_token,))
 
 
 def main() -> int:
@@ -210,10 +236,7 @@ def main() -> int:
     parser.add_argument("--goals", type=Path, default=DEFAULT_GOALS_PATH)
     parser.add_argument("--apply-missing", action="store_true", help="Create only missing canonical goals; this is a Metrica configuration write")
     args = parser.parse_args()
-    if args.apply_missing:
-        output = apply_missing_goals(config_path=args.config, goals_path=args.goals)
-    else:
-        output = audit_goals(config_path=args.config, goals_path=args.goals)
+    output = apply_missing_goals(config_path=args.config, goals_path=args.goals) if args.apply_missing else audit_goals(config_path=args.config, goals_path=args.goals)
     print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
     return 0 if output.get("state") in {"PASS", "NO_CHANGES_NEEDED", "APPLIED_AND_VERIFIED"} else 2
 
