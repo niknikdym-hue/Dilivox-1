@@ -86,9 +86,9 @@ def run_probe(*, config_path: Path, date_from: str, date_to: str) -> dict[str, o
         raise FileNotFoundError(f"private Dilivox config not found at {config_path}")
     if not config.metrica_counter_id:
         raise ValueError("exact Metrica counter binding is required")
-    token = resolve_secret(config.yandex_oauth_token_ref)
+    token = resolve_secret(config.metrica_oauth_token_ref)
     if not token:
-        raise ValueError("shared Metrica OAuth credential is unavailable")
+        raise ValueError("Metrica read OAuth credential is unavailable")
 
     results: list[dict[str, object]] = []
     for name, query in build_probe_queries(
