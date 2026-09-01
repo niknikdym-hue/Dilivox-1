@@ -27,19 +27,32 @@ class ControlPanelTests(unittest.TestCase):
             self.assertEqual("BLOCKED_LOCAL_CONFIG", value["state"])
             self.assertFalse(value["provider_write_allowed"])
             self.assertEqual("LOCKED", value["writer_state"])
+            self.assertEqual("STOP", value["owner_advice"]["primary_action"]["severity"])
             inventory.assert_not_called()
             compatibility.assert_not_called()
             goals.assert_not_called()
 
-    def test_panel_has_no_provider_write_endpoint(self):
+    def test_panel_is_decision_first_and_has_no_provider_write_endpoint(self):
         html = control_panel.HTML
-        self.assertIn("Боевые действия", html)
-        self.assertIn("LOCKED", html)
+        self.assertIn("Пульт прибыли", html)
+        self.assertIn("Что делать сейчас", html)
+        self.assertIn("Приоритетные действия", html)
+        self.assertIn("Сделать", html)
+        self.assertIn("Зачем", html)
+        self.assertIn("Не делать", html)
+        self.assertIn("Ручной Яндекс Поиск", html)
+        self.assertIn("WRITER LOCKED", html)
         self.assertIn("/api/refresh", html)
         self.assertNotIn("/api/write", html)
         self.assertNotIn("/api/suspend", html)
         self.assertNotIn("/api/resume", html)
         self.assertNotIn("/api/bid", html)
+
+    def test_panel_does_not_present_pe_goals_as_owner_work(self):
+        html = control_panel.HTML
+        self.assertIn("Используем существующие dv_*", html)
+        self.assertNotIn("PE · История 75%", html)
+        self.assertNotIn("pe_story_progress_75", html)
 
 
 if __name__ == "__main__":
