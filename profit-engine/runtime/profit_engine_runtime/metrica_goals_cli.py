@@ -14,6 +14,7 @@ from .redaction import redact
 DEFAULT_GOALS_PATH = Path(__file__).resolve().parents[2] / "sites" / "dilivox" / "metrica-goals.json"
 WRITE_TOKEN_REQUIRED = "BLOCKED_METRICA_WRITE_TOKEN_REQUIRED"
 WRITE_SCOPE_REQUIRED = "BLOCKED_METRICA_WRITE_SCOPE"
+DISABLED_MANAGEMENT_MODE = "USE_EXISTING_DILIVOX_DV_GOALS"
 
 
 class MetricaProviderError(RuntimeError):
@@ -26,8 +27,17 @@ class MetricaProviderError(RuntimeError):
 def _load_registry(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
     goals = value.get("goals")
-    if not isinstance(goals, list) or not goals:
+    if not isinstance(goals, list):
+        raise ValueError("Metrica goal registry must contain a goals list")
+
+    if value.get("managed") is False:
+        if goals:
+            raise ValueError("disabled Metrica goal management requires an empty goals list")
+        return value
+
+    if not goals:
         raise ValueError("Metrica goal registry must contain a non-empty goals list")
+
     identifiers: set[str] = set()
     for goal in goals:
         identifier = str(goal.get("identifier", ""))
@@ -37,6 +47,25 @@ def _load_registry(path: Path) -> dict[str, Any]:
         if goal.get("metrica_type") != "action" or goal.get("condition_type") != "exact":
             raise ValueError("P0 Dilivox goals must be exact JavaScript-event goals")
     return value
+
+
+def _management_disabled_result(registry: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "mode": "DILIVOX_METRICA_GOALS_AUDIT_READ_ONLY",
+        "state": "PASS",
+        "managed": False,
+        "management_mode": str(registry.get("management_mode") or DISABLED_MANAGEMENT_MODE),
+        "expected_goal_count": 0,
+        "provider_goal_count": None,
+        "missing_identifiers": [],
+        "invalid_identifiers": [],
+        "duplicate_identifiers": [],
+        "goals": [],
+        "provider_write_allowed": False,
+        "provider_write_requests": 0,
+        "credential_values_printed": False,
+        "note": "Profit Engine does not manage Metrica goals for Dilivox; existing DILIVOX_SYSTEM_V1 dv_* goals are the accepted diagnostic layer.",
+    }
 
 
 def _request_json(request: urllib.request.Request) -> tuple[int, dict[str, Any]]:
@@ -78,6 +107,10 @@ def _action_goal_create_payload(spec: dict[str, Any]) -> dict[str, Any]:
 
 
 def audit_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
+    registry = _load_registry(goals_path)
+    if registry.get("managed") is False:
+        return _management_disabled_result(registry)
+
     config, present = load_site_config(config_path)
     if not present:
         raise FileNotFoundError(f"private Dilivox config not found at {config_path}")
@@ -87,7 +120,6 @@ def audit_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
     if not token:
         raise ValueError("Metrica read OAuth credential is unavailable")
 
-    registry = _load_registry(goals_path)
     request = urllib.request.Request(
         f"{config.metrica_management_endpoint}/counter/{config.metrica_counter_id}/goals",
         headers={"Authorization": f"OAuth {token}", "Accept": "application/json"},
@@ -137,6 +169,7 @@ def audit_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
         "mode": "DILIVOX_METRICA_GOALS_AUDIT_READ_ONLY",
         "http_status": status,
         "state": overall,
+        "managed": True,
         "expected_goal_count": len(expected),
         "provider_goal_count": len(current),
         "missing_identifiers": missing,
@@ -152,6 +185,20 @@ def audit_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
 
 def apply_missing_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any]:
     """Create only registry goals that are missing. No update/delete and no retry."""
+    registry = _load_registry(goals_path)
+    if registry.get("managed") is False:
+        before = _management_disabled_result(registry)
+        return {
+            "mode": "DILIVOX_METRICA_GOALS_APPLY",
+            "state": "NO_CHANGES_NEEDED",
+            "managed": False,
+            "management_mode": before["management_mode"],
+            "created": [],
+            "provider_write_requests": 0,
+            "blind_retry": False,
+            "readback": before,
+        }
+
     before = audit_goals(config_path=config_path, goals_path=goals_path)
     if before["invalid_identifiers"] or before["duplicate_identifiers"]:
         raise ValueError("refusing goal writes while existing canonical identifiers are invalid or duplicated")
@@ -180,7 +227,6 @@ def apply_missing_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any
             "readback": before,
         }
 
-    registry = _load_registry(goals_path)
     created: list[str] = []
     requests_sent = 0
     try:
@@ -231,10 +277,10 @@ def apply_missing_goals(*, config_path: Path, goals_path: Path) -> dict[str, Any
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Audit or explicitly create canonical Dilivox Metrica JS goals")
+    parser = argparse.ArgumentParser(description="Audit or explicitly create managed Dilivox Metrica JS goals")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG_PATH)
     parser.add_argument("--goals", type=Path, default=DEFAULT_GOALS_PATH)
-    parser.add_argument("--apply-missing", action="store_true", help="Create only missing canonical goals; this is a Metrica configuration write")
+    parser.add_argument("--apply-missing", action="store_true", help="Create only missing managed goals; disabled registries are a no-op")
     args = parser.parse_args()
     output = apply_missing_goals(config_path=args.config, goals_path=args.goals) if args.apply_missing else audit_goals(config_path=args.config, goals_path=args.goals)
     print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
