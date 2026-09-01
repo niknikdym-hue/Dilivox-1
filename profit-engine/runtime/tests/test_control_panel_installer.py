@@ -30,6 +30,14 @@ class ControlPanelInstallerContractTests(unittest.TestCase):
         self.assertIn("P0 bootstrap will continue", self.installer)
         self.assertIn("=== P0: METRICA GOALS AUDIT ===", self.bootstrap)
 
+    def test_upgrade_restarts_only_profit_engine_control_panel_module(self) -> None:
+        self.assertIn("pgrep -f 'profit_engine_runtime[.]control_panel'", self.installer)
+        self.assertIn('kill "$pid"', self.installer)
+        self.assertNotIn("pkill python", self.installer)
+        restart_pos = self.installer.index("old_panel_pids=")
+        open_pos = self.installer.rindex('/usr/bin/open "$APP"')
+        self.assertLess(restart_pos, open_pos)
+
 
 if __name__ == "__main__":
     unittest.main()
