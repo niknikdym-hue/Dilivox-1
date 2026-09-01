@@ -94,6 +94,20 @@ printf '\nINSTALLED: %s\n' "$APP"
 printf 'LOCAL URL: http://127.0.0.1:8765\n'
 printf 'PROVIDER WRITES FROM PANEL: LOCKED / 0\n'
 
+# An already-running panel has loaded the previous Python/HTML code into memory.
+# Stop only this exact module before opening the freshly installed version. This
+# is an upgrade/reload action only; it has no provider side effects.
+old_panel_pids="$(pgrep -f 'profit_engine_runtime[.]control_panel' || true)"
+if [[ -n "$old_panel_pids" ]]; then
+  while IFS= read -r pid; do
+    [[ -n "$pid" ]] && kill "$pid" 2>/dev/null || true
+  done <<< "$old_panel_pids"
+  for _ in {1..20}; do
+    pgrep -f 'profit_engine_runtime[.]control_panel' >/dev/null 2>&1 || break
+    sleep 0.05
+  done
+fi
+
 # Opening the UI is convenience, not an installation/analytics gate. A Finder/open
 # problem must not abort the rest of the P0 bootstrap after the bundle itself passed validation.
 if ! /usr/bin/open "$APP" >/dev/null 2>&1; then
