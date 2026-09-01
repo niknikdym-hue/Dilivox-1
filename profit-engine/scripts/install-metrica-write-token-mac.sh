@@ -3,7 +3,7 @@ set -euo pipefail
 
 SERVICE="ProfitEngine-MetricaOAuth-Write"
 ACCOUNT="profit-engine"
-ROOT="$HOME/.local/share/profit-engine/Dilivox-1"
+SOURCE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CONFIG="$HOME/.config/profit-engine/sites/dilivox.json"
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
@@ -49,9 +49,9 @@ unset token
 
 echo "METRICA_WRITE_TOKEN_STORED: Keychain $SERVICE/$ACCOUNT; значение не выводится."
 
-if [[ -d "$ROOT/.git" && -f "$CONFIG" ]]; then
-  export PYTHONPATH="$ROOT/profit-engine/runtime"
-  printf '\n=== VERIFY BY BOUNDED MISSING-GOAL APPLY/READBACK ===\n'
+if [[ -f "$CONFIG" ]]; then
+  export PYTHONPATH="$SOURCE_ROOT/profit-engine/runtime"
+  printf '\n=== VERIFY BY FRESH-RUNTIME BOUNDED MISSING-GOAL APPLY/READBACK ===\n'
   set +e
   python3 -m profit_engine_runtime.metrica_goals_cli --config "$CONFIG" --apply-missing
   rc=$?
@@ -64,4 +64,4 @@ if [[ -d "$ROOT/.git" && -f "$CONFIG" ]]; then
   exit "$rc"
 fi
 
-echo "METRICA_WRITE_TOKEN_STORED: runtime/config пока недоступны; проверка будет выполнена следующим P0 bootstrap."
+echo "METRICA_WRITE_TOKEN_STORED: private config пока недоступен; проверка будет выполнена следующим P0 bootstrap."
