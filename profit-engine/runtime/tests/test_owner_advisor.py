@@ -51,7 +51,7 @@ class OwnerAdvisorTests(unittest.TestCase):
         self.assertEqual("TARGET_MET", advice["portfolio"]["status"])
         self.assertEqual("5.50", advice["portfolio"]["k5"])
         self.assertIn("удерживать", advice["primary_action"]["title"].lower())
-        self.assertIn("подтверждения", advice["primary_action"]["do_now"].lower())
+        self.assertIn("подтверждение", advice["primary_action"]["do_now"].lower())
 
     def test_data_hold_outranks_profit_recommendations(self):
         advice = build_owner_advice(
