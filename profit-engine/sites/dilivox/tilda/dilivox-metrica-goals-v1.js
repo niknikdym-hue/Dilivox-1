@@ -1,103 +1,86 @@
 (function (w, d) {
   "use strict";
-
   var COUNTER_ID = 110349067;
+  var INSTALL_KEY = "__DILIVOX_CANONICAL_METRICA_V2__";
   var PREFIX = "pe_dilivox_goal_v1:";
-  var sent = Object.create(null);
-
-  function killed() {
-    return w.PROFIT_ENGINE_METRICA_GOALS_KILL === true;
+  var LEGACY_MAP = Object.freeze({
+    dv_story_read_75: "pe_story_progress_75",
+    dv_next_story_click: "pe_next_story_clicked"
+  });
+  if (w[INSTALL_KEY] && w[INSTALL_KEY].installed) {
+    w.ProfitEngineMetricaGoals = w[INSTALL_KEY].api;
+    return;
   }
-
-  function reach(identifier) {
-    if (killed() || sent[identifier]) return false;
-    if (typeof w.ym !== "function") return false;
+  var state = { installed: true, sent: Object.create(null), originalYm: null, api: null };
+  w[INSTALL_KEY] = state;
+  function killed() { return w.PROFIT_ENGINE_METRICA_GOALS_KILL === true; }
+  function dispatch(identifier) {
+    if (killed() || state.sent[identifier] || typeof state.originalYm !== "function") return false;
     try {
-      w.ym(COUNTER_ID, "reachGoal", identifier);
-      sent[identifier] = true;
+      state.originalYm.call(w, COUNTER_ID, "reachGoal", identifier);
+      state.sent[identifier] = true;
       return true;
-    } catch (_) {
-      return false;
-    }
+    } catch (_) { return false; }
   }
-
+  function installNormalizer() {
+    if (typeof w.ym !== "function") return false;
+    if (w.ym.__dilivoxCanonicalNormalizer === true) return true;
+    state.originalYm = w.ym;
+    function normalizedYm(counter, method, identifier) {
+      if (counter === COUNTER_ID && method === "reachGoal" && LEGACY_MAP[identifier]) {
+        dispatch(LEGACY_MAP[identifier]);
+        return;
+      }
+      return state.originalYm.apply(this, arguments);
+    }
+    normalizedYm.__dilivoxCanonicalNormalizer = true;
+    Object.keys(state.originalYm).forEach(function (key) {
+      try { normalizedYm[key] = state.originalYm[key]; } catch (_) {}
+    });
+    w.ym = normalizedYm;
+    return true;
+  }
   function safeStorage(storage, method, key, value) {
-    try {
-      return method === "get" ? storage.getItem(key) : storage.setItem(key, value);
-    } catch (_) {
-      return null;
-    }
+    try { return method === "get" ? storage.getItem(key) : storage.setItem(key, value); }
+    catch (_) { return null; }
   }
-
   function markReturnVisit() {
-    if (killed()) return;
     var durableKey = PREFIX + "visitor_seen";
     var sessionKey = PREFIX + "session_seen";
-    var inSession = safeStorage(w.sessionStorage, "get", sessionKey);
-    if (inSession) return;
+    if (safeStorage(w.sessionStorage, "get", sessionKey)) return;
     var seenBefore = safeStorage(w.localStorage, "get", durableKey);
     safeStorage(w.sessionStorage, "set", sessionKey, "1");
     safeStorage(w.localStorage, "set", durableKey, String(Date.now()));
-    if (seenBefore) reach("pe_return_visit");
+    if (seenBefore) dispatch("pe_return_visit");
   }
-
-  function storyProgress75() {
-    var text = d.querySelector("[data-dv-story-text]");
-    if (!text) return;
-    function check() {
-      try {
-        var rect = text.getBoundingClientRect();
-        var vh = w.innerHeight || d.documentElement.clientHeight || 0;
-        var ratio = Math.max(0, Math.min(1, (vh - rect.top) / Math.max(rect.height, 1)));
-        if (ratio >= 0.75) reach("pe_story_progress_75");
-      } catch (_) {}
-    }
-    w.addEventListener("scroll", check, { passive: true });
-    w.addEventListener("resize", check, { passive: true });
-    check();
-  }
-
-  function wireClicks() {
+  function wireAuthoritativeChoiceTransition() {
     d.addEventListener("click", function (event) {
       if (killed() || !event.isTrusted) return;
       try {
         var choice = event.target.closest && event.target.closest("[data-dv-choice]");
-        if (choice) reach("pe_version_selected");
-        var nav = event.target.closest && event.target.closest('[data-dv-goal="next-story"]');
-        if (nav) reach("pe_next_story_clicked");
+        if (!choice) return;
+        dispatch("pe_version_selected");
+        var root = choice.closest && choice.closest('[data-dv-page="story"], main.dv-story, [data-dv-choice-group]');
+        var reveal = root && root.querySelector && root.querySelector("[data-dv-final], [data-dv-reveal]");
+        var proof = root && root.querySelector && root.querySelector("[data-dv-proof], [data-dv-facts]");
+        if (reveal && proof && !reveal.hidden && reveal.getAttribute("aria-hidden") !== "true" &&
+            !proof.hidden && proof.getAttribute("aria-hidden") !== "true") dispatch("pe_story_completed");
       } catch (_) {}
-    }, true);
+    }, false);
   }
-
-  function wireCompletion() {
-    var reveals = d.querySelectorAll("[data-dv-reveal]");
-    if (!reveals.length || typeof w.IntersectionObserver !== "function") return;
-    var observer = new w.IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.intersectionRatio < 0.5) return;
-        var node = entry.target;
-        var open = !node.hidden && node.getAttribute("aria-hidden") !== "true";
-        if (open) reach("pe_story_completed");
-      });
-    }, { threshold: [0.5] });
-    reveals.forEach(function (node) { observer.observe(node); });
-  }
-
   function init() {
     if (killed()) return;
+    installNormalizer();
     markReturnVisit();
-    storyProgress75();
-    wireClicks();
-    wireCompletion();
+    wireAuthoritativeChoiceTransition();
   }
-
-  if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", init, { once: true });
-  else setTimeout(init, 0);
-
-  w.ProfitEngineMetricaGoals = Object.freeze({
-    version: "1.0",
-    counterId: COUNTER_ID,
-    reach: reach,
+  var api = Object.freeze({
+    version: "2.0-existing-ux-normalizer", counterId: COUNTER_ID,
+    dispatch: dispatch, reach: dispatch, installNormalizer: installNormalizer, legacyMap: LEGACY_MAP,
     killSwitchName: "PROFIT_ENGINE_METRICA_GOALS_KILL"
   });
+  state.api = api;
+  w.ProfitEngineMetricaGoals = api;
+  if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", init, { once: true });
+  else setTimeout(init, 0);
 })(window, document);

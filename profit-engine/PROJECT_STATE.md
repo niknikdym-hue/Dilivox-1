@@ -93,13 +93,25 @@ This does **not** by itself prove K5>=5 and does not grant Direct write authorit
 
 Provider-side goals and monetization are ready, but browser instrumentation is not published on production Tilda.
 
+The pre-existing Dilivox global UX/Metrica implementation was reconciled before
+publication. `DILIVOX_SYSTEM_V1` remains the sole authoritative UX/event source
+for reading progress, story choice/reveal and next-story navigation. The Profit
+Engine package is now only one idempotent Metrica normalizer: it initializes no
+counter, installs no second progress/navigation controller, maps the existing
+legacy 75%/next-story signals, and adds only the missing canonical choice,
+completion and return-visit mappings.
+
 Latest bootstrap:
 
 - `site_instrumentation_live=false`;
 - `site_probe_exit_code=2`;
 - prepared package: `~/.config/profit-engine/tilda/dilivox-profit-engine-head-v1.html`.
 
-Current project tools have no Tilda write connector. The next unavoidable Owner UI step is to paste the prepared package in Tilda site-wide HEAD and publish all pages, then rerun live-site verification.
+Current project tools have no Tilda write connector. After Central Brain accepts
+the reconciliation, the single Owner step is to keep the existing counter and
+`DILIVOX_SYSTEM_V1` once, paste/replace the one minimal Profit Engine bridge once
+immediately after it, publish all pages, and rerun live-site verification. Do not
+publish `dilivox-event-layer-task006.js` as a second DOM controller.
 
 First-party event dispatch remains disabled until Privacy v2 + endpoint acceptance.
 

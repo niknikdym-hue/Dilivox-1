@@ -42,13 +42,20 @@ Counter: `110349067`.
 
 These remain proxy goals and `native_bidding_eligible=false` until later revenue validation.
 
-## Implemented but NOT yet published on production Tilda
+## Reconciled but NOT yet published on production Tilda
 
-Accepted event layer:
-`profit-engine/sites/dilivox/tilda/dilivox-event-layer-task006.js`
+Pre-existing authoritative UX/event source is the local
+`Dilivox/02-header-footer:/dilivox-metrika-goals-global-head-after-counter.txt`
+with guard `DILIVOX_SYSTEM_V1`. Its installation note places the counter and UX
+block once in global HEAD; inspection does not independently prove that production
+contains the exact current local file.
 
-Metrica goal bridge:
-`profit-engine/sites/dilivox/tilda/dilivox-metrica-goals-v1.js`
+Single canonical Metrica normalizer:
+`profit-engine/sites/dilivox/tilda/dilivox-metrica-goals-v1.js`.
+
+The accepted Task-006 event-layer remains a first-party source contract but is
+excluded from this Tilda package because its DOM wiring would parallel existing
+progress/choice/navigation listeners.
 
 Prepared one-paste site-wide HEAD package:
 `~/.config/profit-engine/tilda/dilivox-profit-engine-head-v1.html`
@@ -64,10 +71,10 @@ Therefore provider-side goals are live, but production browser instrumentation i
 
 During Tilda publication:
 
-- keep all existing YAN ad-block code unchanged;
+- keep the existing counter, `DILIVOX_SYSTEM_V1`, and YAN ad-block code unchanged and exactly once;
 - consume existing `data-dv-*` hooks without renaming them;
-- load event layer exactly once;
-- load Metrica bridge exactly once;
+- load only the canonical Metrica normalizer exactly once;
+- do not load `dilivox-event-layer-task006.js` separately;
 - first-party dispatch remains disabled;
 - story navigation/choice/reveal behavior must remain unchanged;
 - no duplicate goal storm;

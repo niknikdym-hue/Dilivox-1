@@ -19,6 +19,12 @@ class SiteLiveProbeTests(unittest.TestCase):
         result = probe_site(fetcher=lambda _: html)
         self.assertEqual("PRODUCTION_INSTRUMENTATION_MISSING_OR_PARTIAL", result["state"])
 
+    def test_parallel_task006_controller_is_not_required_by_canonical_probe(self):
+        html = "\n".join(MARKERS.values())
+        self.assertNotIn("ProfitEngineEvents", html)
+        self.assertNotIn("ProfitEngineSiteAgent", html)
+        self.assertEqual("PRODUCTION_INSTRUMENTATION_PRESENT", probe_site(fetcher=lambda _: html)["state"])
+
     def test_inspection_hashes_html_without_exposing_other_data(self):
         html = "<html>" + "".join(MARKERS.values()) + "</html>"
         page = inspect_html("https://dilivox.ru/", html)

@@ -13,9 +13,9 @@ URLS = (
 )
 MARKERS = {
     "package_v1": "PROFIT ENGINE DILIVOX PRODUCTION INSTRUMENTATION v1",
-    "site_agent": "ProfitEngineSiteAgent",
-    "event_layer": "ProfitEngineEvents",
+    "existing_ux_event_source": "DILIVOX_SYSTEM_V1",
     "metrica_goals": "ProfitEngineMetricaGoals",
+    "canonical_normalizer": "__DILIVOX_CANONICAL_METRICA_V2__",
     "metrica_counter": "110349067",
 }
 Fetcher = Callable[[str], str]

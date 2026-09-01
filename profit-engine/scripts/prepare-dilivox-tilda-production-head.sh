@@ -2,7 +2,6 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-event_js="$repo_root/profit-engine/sites/dilivox/tilda/dilivox-event-layer-task006.js"
 goals_js="$repo_root/profit-engine/sites/dilivox/tilda/dilivox-metrica-goals-v1.js"
 out_dir="$HOME/.config/profit-engine/tilda"
 out="$out_dir/dilivox-profit-engine-head-v1.html"
@@ -12,31 +11,8 @@ chmod 700 "$out_dir"
 
 {
   printf '%s\n' '<!-- PROFIT ENGINE DILIVOX PRODUCTION INSTRUMENTATION v1 -->'
-  printf '%s\n' '<!-- SiteAgent + event controller: no production transport; Metrica goals only. -->'
-  printf '%s\n' '<script>'
-  cat "$event_js"
-  printf '\n%s\n' '</script>'
-  printf '%s\n' '<script>'
-  cat <<'BOOT'
-(function (w, d) {
-  "use strict";
-  function start() {
-    if (w.DilivoxProfitEngineEventController || !w.ProfitEngineEvents) return;
-    try {
-      w.DilivoxProfitEngineEventController = w.ProfitEngineEvents.install(w, {
-        autoStart: true,
-        // Intentionally NO transport: Task 013 records/queues in-memory only.
-        // First-party network dispatch remains blocked until Task 015 endpoint acceptance.
-        transport: null,
-        dispatchKillSwitch: false
-      });
-    } catch (_) {}
-  }
-  if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", start, { once: true });
-  else setTimeout(start, 0);
-})(window, document);
-BOOT
-  printf '%s\n' '</script>'
+  printf '%s\n' '<!-- Existing DILIVOX_SYSTEM_V1 remains the sole UX/event source. -->'
+  printf '%s\n' '<!-- This bridge initializes no counter and installs no second progress/navigation controller. -->'
   printf '%s\n' '<script>'
   cat "$goals_js"
   printf '\n%s\n' '</script>'
@@ -67,7 +43,8 @@ first_party_network_transport=false
 
 TILDA STEP:
 1. Settings сайта -> More/Ещё -> HTML code for the HEAD section.
-2. Replace only the Profit Engine block between its v1 comments if one already exists; otherwise paste once.
-3. Save and Publish all pages.
-4. Do not alter existing YAN blocks or story T123 blocks.
+2. Keep the existing Metrica counter 110349067 and existing DILIVOX_SYSTEM_V1 UX block exactly once.
+3. Replace only the Profit Engine block between its v1 comments if one exists; otherwise paste this block once immediately after DILIVOX_SYSTEM_V1.
+4. Save and Publish all pages only after Central Brain acceptance.
+5. Do not add dilivox-event-layer-task006.js separately; do not alter YAN blocks or story T123 blocks.
 EOF

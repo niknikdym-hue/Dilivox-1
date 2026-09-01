@@ -25,8 +25,8 @@ K5 remains a target until mature reconciled live data proves it.
 | 3 | Exact Dilivox campaign inventory | PASS | 46 campaigns read; exact Dilivox pair isolated | use only exact IDs |
 | 4 | YAN → Metrica monetization link | **LIVE TECHNICAL PASS** | post-Owner bootstrap reached `READ_MODEL_READY`; runtime can reach that only when `yan_total_by_date` monetization probe is PASS | keep monitoring freshness; no inference across campaigns |
 | 5 | Metrica conversion goals | **LIVE PASS** | 27 provider goals after apply; all five canonical PE goals PASS, missing/invalid/duplicate = 0; `APPLIED_AND_VERIFIED` | validate real arrivals after site publication |
-| 6 | Dilivox Metrica goal bridge | CODE_READY / NOT_PUBLISHED | tested bridge maps existing hooks to canonical goals | publish globally in Tilda and live-probe |
-| 7 | SiteAgent + event layer | CODE_ACCEPTED / NOT_PUBLISHED | accepted Task-005/006 artifacts exist | publish with first-party dispatch disabled |
+| 6 | Dilivox Metrica goal bridge | RECONCILED / CODE_READY / NOT_PUBLISHED | pre-existing `DILIVOX_SYSTEM_V1` is the sole event source; tested idempotent bridge normalizes it to the five live goals without counter init or duplicate progress/navigation listeners | after acceptance publish one bridge once and live-probe |
+| 7 | SiteAgent + event layer | CODE_ACCEPTED / NOT_PUBLISHED SEPARATELY | accepted Task-005/006 artifacts remain source contracts; the Task-006 DOM controller is excluded from this package to prevent duplicate listeners | do not publish separately until a later accepted first-party endpoint requires it |
 | 8 | First-party event endpoint | SPECIFIED / NOT_DEPLOYED | raw-first endpoint design exists | Privacy v2 first, then deploy and smoke |
 | 9 | Money preflight | **LIVE RAN / CENTRAL-BRAIN REVIEW REQUIRED** | `READ_MODEL_READY` means both exact campaign preflights completed without runtime `ERROR`; exact spend/revenue/K5 outcomes still need review | inspect exact money evidence before any Direct smoke |
 | 10 | First reversible Direct smoke | READY_IN_CODE / NOT_AUTHORIZED | one-shot suspend/resume writer accepted; no live mutation sent | choose one lowest-downside exact action from money evidence, rebuild proposal/Governor/plan, explicit Owner authorization, one attempt |
@@ -75,18 +75,19 @@ Evidence:
 Prepared package:
 `~/.config/profit-engine/tilda/dilivox-profit-engine-head-v1.html`
 
-Source artifacts:
+Production source artifact:
 
-- `sites/dilivox/tilda/dilivox-event-layer-task006.js`;
-- `sites/dilivox/tilda/dilivox-metrica-goals-v1.js`.
+- `sites/dilivox/tilda/dilivox-metrica-goals-v1.js` — the single idempotent normalizer over existing `DILIVOX_SYSTEM_V1`.
+
+`dilivox-event-layer-task006.js` remains an accepted source contract but is deliberately absent from this production package.
 
 Required publication order:
 
-1. keep current YAN ad-block code unchanged;
-2. paste the prepared Profit Engine package into Tilda site-wide HEAD;
-3. publish all pages;
-4. run live-site probe;
-5. verify event layer + goal bridge loaded once and no YAN/layout/story regression;
+1. keep the current counter, `DILIVOX_SYSTEM_V1`, and YAN blocks unchanged and exactly once;
+2. paste/replace the minimal Profit Engine bridge once immediately after `DILIVOX_SYSTEM_V1`;
+3. do not add the Task-006 event-layer file separately;
+4. publish all pages after acceptance;
+5. run live-site probe and verify one bridge, no duplicate goal dispatch, and no YAN/layout/story regression;
 6. validate real canonical goal arrivals.
 
 First-party event dispatch stays disabled until Privacy v2 + endpoint acceptance.
