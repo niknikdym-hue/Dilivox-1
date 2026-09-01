@@ -23,14 +23,20 @@ if security find-generic-password -s "$SERVICE" -a "$ACCOUNT" -w >/dev/null 2>&1
   fi
 fi
 
-client_id="$(osascript -e 'text returned of (display dialog "Введите Client ID ОТДЕЛЬНОГО Yandex OAuth API-приложения для Profit Engine Metrica. У приложения должны быть права metrika:read и metrika:write. Не используйте и не перенастраивайте рабочее Direct OAuth-приложение." default answer "" buttons {"Отмена", "Продолжить"} default button "Продолжить")')"
+choice="$(osascript -e 'button returned of (display dialog "Нужно отдельное Yandex OAuth приложение только для администрирования Метрики.\n\nТип: Для доступа к API или отладки\nНазвание: Profit Engine — Metrica Admin\nДоступы: metrika:read и metrika:write\n\nРабочее Direct OAuth-приложение НЕ меняйте.\n\nЕсли такого приложения ещё нет, нажмите Создать — откроется официальный Yandex OAuth." buttons {"Уже создано", "Создать"} default button "Создать")')"
+if [[ "$choice" == "Создать" ]]; then
+  /usr/bin/open "https://oauth.yandex.ru/client/new/" >/dev/null 2>&1 || true
+  osascript -e 'display dialog "Создайте приложение «Для доступа к API или отладки», укажите доступы metrika:read и metrika:write, затем скопируйте Client ID. После этого нажмите Продолжить." buttons {"Продолжить"} default button "Продолжить"' >/dev/null
+fi
+
+client_id="$(osascript -e 'text returned of (display dialog "Вставьте Client ID отдельного приложения Profit Engine — Metrica Admin. Client ID не является OAuth-токеном; он нужен только для открытия страницы выдачи токена." default answer "" buttons {"Отмена", "Продолжить"} default button "Продолжить")')"
 if [[ -z "$client_id" ]]; then
   echo "BLOCKED: Client ID не введён." >&2
   exit 2
 fi
 
 /usr/bin/open "https://oauth.yandex.ru/authorize?response_type=token&client_id=${client_id}&force_confirm=yes" >/dev/null 2>&1 || true
-osascript -e 'display dialog "В браузере разрешите отдельному приложению доступ к Метрике. После выдачи OAuth-токена скопируйте его. Сам токен в ChatGPT/GitHub не отправляйте. Затем нажмите Продолжить." buttons {"Продолжить"} default button "Продолжить"' >/dev/null
+osascript -e 'display dialog "В браузере нажмите Разрешить. На странице verification_code скопируйте access_token. Сам токен в ChatGPT/GitHub не отправляйте. Затем нажмите Продолжить." buttons {"Продолжить"} default button "Продолжить"' >/dev/null
 
 token="$(osascript -e 'text returned of (display dialog "Вставьте OAuth-токен с правами metrika:read + metrika:write. Он будет сохранён только в macOS Keychain." default answer "" with hidden answer buttons {"Отмена", "Сохранить"} default button "Сохранить")')"
 if [[ -z "$token" ]]; then
@@ -53,7 +59,7 @@ if [[ -d "$ROOT/.git" && -f "$CONFIG" ]]; then
   if [[ $rc -eq 0 ]]; then
     echo "METRICA_WRITE_SCOPE_VERIFIED: канонические цели созданы/проверены."
   else
-    echo "METRICA_WRITE_SCOPE_NOT_VERIFIED: проверьте, что отдельное OAuth-приложение имеет metrika:write. Повторных POST этот скрипт автоматически не делает." >&2
+    echo "METRICA_WRITE_SCOPE_NOT_VERIFIED: отдельное OAuth-приложение должно иметь metrika:write; автоматического повторного POST нет." >&2
   fi
   exit "$rc"
 fi
