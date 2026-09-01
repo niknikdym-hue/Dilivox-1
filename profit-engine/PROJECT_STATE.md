@@ -1,7 +1,7 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: P0 SYSTEM COMPLETION / LIVE MONEY + SITE INSTRUMENTATION GATES
-Updated: 2026-08-31
+Status: P0 SYSTEM COMPLETION / METRICA WRITE + MONEY + SITE GATES
+Updated: 2026-09-01
 Canonical public branch: `profit-engine`
 Private core branch: `main`
 Operational authority: `profit-engine/P0_SYSTEM_COMPLETION_BOARD.md`
@@ -34,7 +34,7 @@ Every production claim must distinguish:
 
 Code/tests alone never imply production completion.
 
-Codex remains paused until Owner explicitly reports usage restored. Central Brain is the current launch-critical executor.
+Owner explicitly restored permission to use Codex on 2026-09-01. Codex may now be used as an executor for bounded P0 implementation slices when useful. Central Brain retains architecture, sequencing and acceptance authority.
 
 ## Locked governance
 
@@ -86,7 +86,7 @@ Fresh live post-Editing certification subsequently passed:
 - Direct operator identity: PASS;
 - exact managed target `Campaigns.get`: PASS;
 - `Units-Used-Login` exact target check: PASS;
-- Metrica counter `110349067`: PASS;
+- Metrica counter `110349067`: PASS for reads;
 - YAN Statistics `dilivox.ru`: PASS;
 - readiness: `READY_FOR_LIVE_CANDIDATE_SELECTION`.
 
@@ -119,11 +119,11 @@ A bounded six-request compatibility probe proved:
 - every monetization probe: HTTP 400;
 - exact provider message: `partner is not enabled for 110349067`.
 
-Owner then enabled YAN reports in Metrica for Dilivox and bound counter `110349067` on 2026-08-31.
+Owner then enabled YAN reports in Metrica for Dilivox and bound counter `110349067`.
 
 Provider propagation/read-back is still required. Owner UI state is not substituted for API evidence.
 
-Runtime now classifies this exact condition fail-closed instead of traceback.
+Runtime classifies this condition fail-closed instead of traceback.
 
 Evidence:
 `evidence/TASK-012-METRICA-YAN-MONETIZATION-LINK-BLOCKER.md`.
@@ -146,7 +146,7 @@ Money states:
 
 No money-preflight result itself grants provider write authority.
 
-Next live money step is blocked only on YAN→Metrica monetization propagation/read-back.
+Next live money step is blocked on YAN→Metrica monetization technical read-back, not on Metrica goal creation.
 
 ## Production Direct writer — READY IN CODE / NO LIVE WRITE YET
 
@@ -196,7 +196,7 @@ Production truth:
 Current site authority:
 `sites/dilivox/SITE_STATE.md`.
 
-## Canonical Metrica goals — P0
+## Canonical Metrica goals — LIVE AUDIT COMPLETE / WRITE SCOPE REQUIRED
 
 Registry:
 `sites/dilivox/metrica-goals.json`.
@@ -211,16 +211,33 @@ Exact proxy goals:
 
 All begin `native_bidding_eligible=false`. They may be promoted only after revenue validation; K5 remains economic truth.
 
-Implemented:
+Live audit on 2026-09-01:
 
-- live read-only goals audit;
-- guarded missing-only Metrica goal creation;
-- no update/delete;
-- duplicate/wrong-type hold;
-- no blind retry;
-- read-back required.
+- GET goals: HTTP 200;
+- provider has 22 existing goals;
+- all five PE goals: `MISSING`;
+- duplicate canonical identifiers: 0;
+- invalid/wrong-type canonical identifiers: 0.
 
-Production goal existence is not yet verified.
+First create compatibility attempt exposed two separate issues and both are now modeled explicitly:
+
+1. optional `goal.is_favorite` was rejected by the live provider; create payload is now minimal `name + type + conditions`;
+2. minimal create then reached provider and returned HTTP 403 `Access is denied`, proving the current read credential is not accepted for goal administration.
+
+Current credential architecture is provider/authority-specific:
+
+- Direct read/control credential stays on its existing Direct Keychain reference;
+- Metrica reads use `providers.metrica.token_source_ref`;
+- Metrica configuration writes use separate `providers.metrica.write_token_source_ref`;
+- default write Keychain service: `ProfitEngine-MetricaOAuth-Write`, account `profit-engine`;
+- YAN Statistics retains its own credential.
+
+The working Direct OAuth app/token must not be expanded merely to create Metrica goals. P0 uses a separate Yandex OAuth API-access application with only `metrika:read` + `metrika:write`.
+
+Guided local installer:
+`scripts/install-metrica-write-token-mac.sh`.
+
+Expected missing/scope failures are structured fail-closed states and do not blind-retry.
 
 ## Production Tilda goal bridge — CODE READY / NOT PUBLISHED
 
@@ -229,40 +246,33 @@ Artifact:
 
 Uses existing `data-dv-*` hooks and Metrica `reachGoal` only.
 
-It does not mutate:
-
-- YAN blocks;
-- story content;
-- choice/reveal behavior;
-- provider budgets/campaigns.
+It does not mutate YAN blocks, story content, choice/reveal behavior or provider budgets/campaigns.
 
 Emergency kill:
 `window.PROFIT_ENGINE_METRICA_GOALS_KILL=true`.
 
-CI including the goal bridge tests: run #168 / `33435860538` — SUCCESS.
+Current project tools do not provide a Tilda write connector. One final Tilda external UI paste/publish step remains unavoidable after the exact production package is accepted.
 
-Current available project tools do not provide a Tilda write connector. One final Tilda external UI paste/publish step is therefore unavoidable after the exact production package is accepted.
+## Local Profit Engine control panel — INSTALLED / RUSSIAN UI / WRITE LOCKED
 
-## Local Profit Engine control panel — CODE READY / NOT INSTALLED
+Owner Mac now has:
+`~/Applications/Profit Engine.app`.
 
-Implemented localhost-only operator panel:
+The first bundle packaging defect (`CFBundleExecutable` missing) was fixed and regression-tested.
+
+Panel properties:
 
 - bind `127.0.0.1:8765` only;
+- Russian Owner-facing labels/statuses;
+- technical codes retained only for diagnostics;
 - reads Keychain/private config;
 - shows provider/link/goals/campaign/money/K5/P0-search state;
 - local snapshots mode 0600;
 - provider write endpoints do not exist;
-- writer shown as `LOCKED`.
+- writer shown as locked;
+- installer reuses the local runtime repo and restarts the Profit Engine panel process after upgrades.
 
-macOS installer creates:
-`~/Applications/Profit Engine.app`.
-
-Artifact:
-`scripts/install-profit-engine-control-panel.sh`.
-
-Installation on Owner Mac remains pending.
-
-## Manual Search Profit Control — NEW P0 DEVELOPMENT PRIORITY
+## Manual Search Profit Control — P0 DEVELOPMENT PRIORITY
 
 Owner decision: a dedicated search-only manually-bid campaign is the primary acquisition-controller development path because it is closer to direct K5 control.
 
@@ -271,6 +281,16 @@ Canonical strategy authority:
 
 Dedicated concept:
 `DILIVOX | SEARCH | PROFIT ENGINE`.
+
+Accepted code state:
+
+- MS1 exact read model: accepted;
+- MS2 defensible attribution-grain boundary: accepted;
+- MS3 non-executable shadow bid controller: accepted;
+- MS5 dedicated search-only campaign dry-run: accepted;
+- MS4 panel integration: next build slice;
+- MS6 guarded campaign create: not authorized;
+- MS7 guarded `KeywordBids.set`: not implemented/authorized.
 
 Target provider shape:
 
@@ -283,8 +303,6 @@ Target provider shape:
 - shadow Profit Engine bid controller;
 - later separately accepted guarded `KeywordBids.set` / `SearchBid`;
 - K5/confidence are primary decision truth.
-
-This is P0 build priority, not yet a live campaign and not yet an economic winner.
 
 Task:
 `tasks/TASK-014-MANUAL-SEARCH-PROFIT-CONTROLLER.md`.
@@ -306,8 +324,9 @@ Remaining order:
 
 ### Task 013 — production site instrumentation + goals
 
-- live-audit canonical Metrica goals;
-- create only missing exact goals if clean;
+- live goal audit: COMPLETE, five PE goals missing;
+- install separate `metrika:write` credential;
+- create only missing exact goals + read-back;
 - publish accepted Task-006 event layer;
 - publish Metrica goal bridge;
 - validate production goals/site/YAN regressions;
@@ -315,23 +334,20 @@ Remaining order:
 
 ### Task 014 — manual search controller
 
-- exact read model;
-- defensible attribution grain;
-- shadow bid controller;
-- panel integration;
-- dedicated campaign dry-run;
-- separate guarded campaign creation acceptance;
-- separate guarded bid-writer acceptance;
-- supervised live learning;
-- only then bounded automation;
+- MS1 read model: accepted;
+- MS2 attribution grain: accepted;
+- MS3 shadow controller: accepted;
+- MS4 panel integration: next;
+- MS5 campaign dry-run: accepted;
+- MS6 guarded campaign creation: not authorized;
+- MS7 guarded bid writer: not authorized;
+- supervised live learning only after those gates;
 - later fair benchmark vs native strategies.
 
 ## Single operational authority
 
 Use:
 `P0_SYSTEM_COMPLETION_BOARD.md`.
-
-It is the canonical gap matrix and next-action resolver.
 
 Resume order:
 
