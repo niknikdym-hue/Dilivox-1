@@ -9,13 +9,20 @@ CONFIG="$HOME/.config/profit-engine/sites/dilivox.json"
 
 mkdir -p "$INSTALL_ROOT" "$HOME/Applications"
 
-staging="$INSTALL_ROOT/Dilivox-1.new"
-rm -rf "$staging"
-git clone --depth 1 --branch profit-engine "$REPO_URL" "$staging"
-rm -rf "$INSTALL_REPO.old"
-if [[ -d "$INSTALL_REPO" ]]; then mv "$INSTALL_REPO" "$INSTALL_REPO.old"; fi
-mv "$staging" "$INSTALL_REPO"
-rm -rf "$INSTALL_REPO.old"
+# The install repo is a managed local runtime mirror. Reuse it on upgrades so a
+# bootstrap retry does not download the full repository again after a UI-only fix.
+if [[ -d "$INSTALL_REPO/.git" ]]; then
+  git -C "$INSTALL_REPO" fetch --depth 1 origin profit-engine
+  git -C "$INSTALL_REPO" checkout -q profit-engine
+  git -C "$INSTALL_REPO" reset --hard origin/profit-engine >/dev/null
+  git -C "$INSTALL_REPO" clean -fd >/dev/null
+else
+  staging="$INSTALL_ROOT/Dilivox-1.new"
+  rm -rf "$staging"
+  git clone --depth 1 --branch profit-engine "$REPO_URL" "$staging"
+  rm -rf "$INSTALL_REPO"
+  mv "$staging" "$INSTALL_REPO"
+fi
 
 if [[ ! -f "$CONFIG" ]]; then
   if ! command -v osascript >/dev/null 2>&1; then
