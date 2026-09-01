@@ -6,19 +6,21 @@ from profit_engine_runtime.control_panel import HTML
 
 
 class ControlPanelRussianUiTests(unittest.TestCase):
-    def test_primary_operator_surface_is_russian(self):
+    def test_primary_operator_surface_is_russian_and_actionable(self):
         required = (
-            "Панель управления",
-            "Состояние системы",
-            "Экономика Dilivox",
-            "Кампании Dilivox",
-            "Цели Метрики",
-            "Ручное управление поисковой рекламой",
-            "ЗАБЛОКИРОВАНО",
-            "Ожидаем данные РСЯ в Метрике",
-            "Приостановлена",
-            "Активна",
-            "Требует настройки",
+            "Пульт прибыли",
+            "Фактический K5",
+            "Что делать сейчас",
+            "Приоритетные действия",
+            "Экономика по кампаниям",
+            "Три рычага прибыли",
+            "Дешевле покупать трафик",
+            "Больше дохода с читателя",
+            "Масштабировать только доказанное",
+            "Ручной Яндекс Поиск",
+            "Техническая диагностика",
+            "Используем существующие dv_*",
+            "ЗАБЛОКИРОВАНЫ",
         )
         for text in required:
             self.assertIn(text, HTML)
