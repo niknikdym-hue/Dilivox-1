@@ -59,6 +59,32 @@ class MetricaGoalsTests(unittest.TestCase):
         registry.write_text(json.dumps(REGISTRY, ensure_ascii=False), encoding="utf-8")
         return directory, config, registry
 
+    def test_disabled_registry_never_reads_or_writes_provider(self):
+        directory, config, registry = self.fixture_paths()
+        self.addCleanup(directory.cleanup)
+        registry.write_text(json.dumps({
+            "schema_version": "1.1",
+            "site_id": "dilivox",
+            "managed": False,
+            "management_mode": "USE_EXISTING_DILIVOX_DV_GOALS",
+            "goals": [],
+        }), encoding="utf-8")
+        with patch.object(goals, "_request_json") as provider_request, patch.object(
+            goals, "resolve_secret"
+        ) as secret_read:
+            audit = goals.audit_goals(config_path=config, goals_path=registry)
+            apply = goals.apply_missing_goals(config_path=config, goals_path=registry)
+        self.assertEqual("PASS", audit["state"])
+        self.assertFalse(audit["managed"])
+        self.assertEqual(0, audit["expected_goal_count"])
+        self.assertEqual(0, audit["provider_write_requests"])
+        self.assertEqual("NO_CHANGES_NEEDED", apply["state"])
+        self.assertFalse(apply["managed"])
+        self.assertEqual([], apply["created"])
+        self.assertEqual(0, apply["provider_write_requests"])
+        provider_request.assert_not_called()
+        secret_read.assert_not_called()
+
     def test_audit_passes_only_exact_action_goals(self):
         directory, config, registry = self.fixture_paths()
         self.addCleanup(directory.cleanup)
