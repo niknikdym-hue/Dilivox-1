@@ -49,6 +49,7 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <key>CFBundleVersion</key><string>1</string>
 <key>CFBundleShortVersionString</key><string>0.1</string>
 <key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleExecutable</key><string>ProfitEngine</string>
 <key>LSMinimumSystemVersion</key><string>12.0</string>
 </dict></plist>
 PLIST
@@ -68,7 +69,26 @@ exec /usr/bin/env python3 -m profit_engine_runtime.control_panel --open
 SH
 chmod 755 "$APP/Contents/MacOS/ProfitEngine"
 
+# Fail before Finder/open if the bundle contract is broken. This guards the exact
+# defect that previously produced "application cannot be opened because its executable is missing".
+if [[ ! -x "$APP/Contents/MacOS/ProfitEngine" ]]; then
+  echo "BLOCKED_CONTROL_PANEL_BUNDLE: executable is missing or not executable." >&2
+  exit 2
+fi
+if command -v /usr/libexec/PlistBuddy >/dev/null 2>&1; then
+  executable_name="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP/Contents/Info.plist" 2>/dev/null || true)"
+  if [[ "$executable_name" != "ProfitEngine" ]]; then
+    echo "BLOCKED_CONTROL_PANEL_BUNDLE: CFBundleExecutable is not bound to ProfitEngine." >&2
+    exit 2
+  fi
+fi
+
 printf '\nINSTALLED: %s\n' "$APP"
 printf 'LOCAL URL: http://127.0.0.1:8765\n'
 printf 'PROVIDER WRITES FROM PANEL: LOCKED / 0\n'
-/usr/bin/open "$APP"
+
+# Opening the UI is convenience, not an installation/analytics gate. A Finder/open
+# problem must not abort the rest of the P0 bootstrap after the bundle itself passed validation.
+if ! /usr/bin/open "$APP" >/dev/null 2>&1; then
+  echo "WARN_CONTROL_PANEL_OPEN: bundle is installed and validated, but macOS open returned nonzero; P0 bootstrap will continue." >&2
+fi
