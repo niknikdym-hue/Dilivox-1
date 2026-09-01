@@ -96,6 +96,23 @@ class MetricaGoalsTests(unittest.TestCase):
         self.assertIn("pe_story_completed", result["duplicate_identifiers"])
         self.assertIn("pe_next_story_clicked", result["missing_identifiers"])
 
+    def test_live_create_payload_is_minimal_and_omits_is_favorite(self):
+        payload = goals._action_goal_create_payload(REGISTRY["goals"][0])
+        self.assertEqual(
+            {
+                "goal": {
+                    "name": "PE · История завершена",
+                    "type": "action",
+                    "conditions": [{"type": "exact", "url": "pe_story_completed"}],
+                }
+            },
+            payload,
+        )
+        self.assertNotIn("is_favorite", payload["goal"])
+        self.assertNotIn("id", payload["goal"])
+        self.assertNotIn("status", payload["goal"])
+        self.assertNotIn("default_price", payload["goal"])
+
     def test_apply_creates_only_missing_then_requires_pass_readback(self):
         directory, config, registry = self.fixture_paths()
         self.addCleanup(directory.cleanup)
@@ -127,6 +144,10 @@ class MetricaGoalsTests(unittest.TestCase):
         self.assertEqual(["pe_next_story_clicked"], result["created"])
         self.assertEqual(1, result["provider_write_requests"])
         self.assertEqual("POST", calls[0].method)
+        body = json.loads(calls[0].data.decode("utf-8"))
+        self.assertEqual({"name", "type", "conditions"}, set(body["goal"]))
+        self.assertNotIn("is_favorite", body["goal"])
+        self.assertEqual("application/json; charset=utf-8", calls[0].headers["Content-type"])
 
     def test_registry_rejects_duplicate_identifiers(self):
         with tempfile.TemporaryDirectory() as directory:
