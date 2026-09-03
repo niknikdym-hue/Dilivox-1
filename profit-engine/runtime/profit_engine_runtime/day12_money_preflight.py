@@ -1,12 +1,11 @@
-"""Read-only Day-12 money preflight for exact Direct campaign candidate evaluation.
+"""Read-only money preflight for exact Dilivox Direct campaign evaluation.
 
-The preflight joins three independent live observations for the same date window:
+The preflight joins three observations for one completed date window:
 - exact Yandex Direct campaign spend;
-- Metrica YAN revenue attributed to the exact Direct campaign under last Direct click;
-- YAN Statistics total revenue for exact dilivox.ru as a control total.
+- Metrica YAN revenue attributed to the exact Direct campaign;
+- YAN Statistics domain revenue as a control total.
 
-It never grants provider write authority. Any ambiguous money basis or reconciliation
-violation fails closed.
+No function in this module grants provider write authority.
 """
 from __future__ import annotations
 
@@ -37,6 +36,7 @@ METRICA_METRICS = (
 DIRECT_FIELDS = ("Date", "CampaignId", "Clicks", "Cost")
 YAN_FIELDS = ("partner_wo_nds", "hits", "hits_render", "shows")
 RECONCILIATION_TOLERANCE = Decimal("0.05")
+MONEY_CURRENCY = "RUB"
 
 
 class MoneyPreflightState(StrEnum):
@@ -139,22 +139,20 @@ class Day12MoneyProbe:
             raise ValueError("all three read credentials are required")
 
         direct = self.read_direct_spend(
-            campaign_id=str(provider_id), date_from=date_from, date_to=date_to,
-            token=direct_token, max_report_polls=max_report_polls,
+            campaign_id=str(provider_id),
+            date_from=date_from,
+            date_to=date_to,
+            token=direct_token,
+            max_report_polls=max_report_polls,
         )
         metrica = self.read_metrica_attributed_revenue(
-            campaign_id=str(provider_id), date_from=date_from, date_to=date_to,
+            campaign_id=str(provider_id),
+            date_from=date_from,
+            date_to=date_to,
             token=metrica_token,
         )
-        yan = self.read_yan_control(
-            date_from=date_from, date_to=date_to, token=yan_token,
-        )
-        return build_money_preflight(
-            site_id=self.config.site_id,
-            direct=direct,
-            metrica=metrica,
-            yan=yan,
-        )
+        yan = self.read_yan_control(date_from=date_from, date_to=date_to, token=yan_token)
+        return build_money_preflight(site_id=self.config.site_id, direct=direct, metrica=metrica, yan=yan)
 
     def read_direct_spend(
         self,
@@ -169,6 +167,7 @@ class Day12MoneyProbe:
         _date_window(date_from, date_to)
         if max_report_polls < 1 or max_report_polls > 5:
             raise ValueError("Direct report polling must be bounded to 1..5 read attempts")
+
         response: HttpResponse | None = None
         for _ in range(max_report_polls):
             response = self.transport.send(HttpRequest(
@@ -190,11 +189,7 @@ class Day12MoneyProbe:
                         "SelectionCriteria": {
                             "DateFrom": date_from,
                             "DateTo": date_to,
-                            "Filter": [{
-                                "Field": "CampaignId",
-                                "Operator": "IN",
-                                "Values": [provider_id],
-                            }],
+                            "Filter": [{"Field": "CampaignId", "Operator": "IN", "Values": [provider_id]}],
                         },
                         "FieldNames": list(DIRECT_FIELDS),
                         "ReportName": f"profit-engine-day12-{provider_id}-{date_from}-{date_to}",
@@ -210,6 +205,7 @@ class Day12MoneyProbe:
                 break
             if response.status_code not in {201, 202}:
                 raise TransportError("Direct spend report failed", status_code=response.status_code)
+
         assert response is not None
         if response.status_code != 200 or not isinstance(response.json_body, str):
             raise TransportError("Direct spend report did not become ready", status_code=response.status_code)
@@ -223,9 +219,14 @@ class Day12MoneyProbe:
             spend += _money(row["Cost"])
             clicks += int(row["Clicks"])
         return DirectSpendObservation(
-            campaign_id=str(provider_id), date_from=date_from, date_to=date_to,
-            spend_rub=spend, clicks=clicks, report_rows=len(rows),
-            request_id=response.request_id, units=_header(response.headers, "Units"),
+            campaign_id=str(provider_id),
+            date_from=date_from,
+            date_to=date_to,
+            spend_rub=spend,
+            clicks=clicks,
+            report_rows=len(rows),
+            request_id=response.request_id,
+            units=_header(response.headers, "Units"),
         )
 
     def read_metrica_attributed_revenue(
@@ -248,6 +249,7 @@ class Day12MoneyProbe:
                 "date2": date_to,
                 "dimensions": ",".join(METRICA_DIMENSIONS),
                 "metrics": ",".join(METRICA_METRICS),
+                "currency": MONEY_CURRENCY,
                 "accuracy": "full",
                 "limit": "100000",
             },
@@ -271,8 +273,7 @@ class Day12MoneyProbe:
             metrics = row.get("metrics")
             if not isinstance(dimensions, list) or len(dimensions) < 2 or not isinstance(metrics, list):
                 continue
-            campaign_dimension = _dimension_value(dimensions[1])
-            if campaign_dimension != provider_id:
+            if _dimension_value(dimensions[1]) != provider_id:
                 continue
             if len(metrics) != len(METRICA_METRICS):
                 raise ValueError("Metrica metrics shape mismatch")
@@ -294,16 +295,10 @@ class Day12MoneyProbe:
             matched_rows=matched,
             sampled=bool(body.get("sampled", False)),
             contains_sensitive_data=bool(body.get("contains_sensitive_data", False)),
-            currency=str(body.get("currency")) if body.get("currency") is not None else None,
+            currency=MONEY_CURRENCY,
         )
 
-    def read_yan_control(
-        self,
-        *,
-        date_from: str,
-        date_to: str,
-        token: str,
-    ) -> YanControlObservation:
+    def read_yan_control(self, *, date_from: str, date_to: str, token: str) -> YanControlObservation:
         _date_window(date_from, date_to)
         response = self.transport.send(HttpRequest(
             "GET",
@@ -317,7 +312,7 @@ class Day12MoneyProbe:
                 "entity_field": "domain",
                 "field": list(YAN_FIELDS),
                 "filter": f'["domain","=","{self.config.canonical_domain}"]',
-                "currency": "RUB",
+                "currency": MONEY_CURRENCY,
                 "timezone": "Europe/Moscow",
             },
         ))
@@ -332,6 +327,7 @@ class Day12MoneyProbe:
         points = data.get("points")
         if not isinstance(points, list):
             raise ValueError("YAN control report points are malformed")
+
         revenue = Decimal("0")
         hits = Decimal("0")
         renders = Decimal("0")
@@ -358,6 +354,7 @@ class Day12MoneyProbe:
                 hits += _decimal_metric(measure.get("hits", 0))
                 renders += _decimal_metric(measure.get("hits_render", 0))
                 shows += _decimal_metric(measure.get("shows", 0))
+
         return YanControlObservation(
             domain=self.config.canonical_domain,
             date_from=date_from,
@@ -367,7 +364,7 @@ class Day12MoneyProbe:
             hits_render=renders,
             shows=shows,
             points=exact_points,
-            currency="RUB",
+            currency=MONEY_CURRENCY,
         )
 
 
@@ -389,7 +386,7 @@ def build_money_preflight(
     holds: list[str] = []
     if direct.spend_rub < 0 or metrica.attributed_yan_revenue_rub < 0 or yan.revenue_rub < 0:
         holds.append("negative_money_value")
-    if metrica.currency != "RUB" or yan.currency != "RUB":
+    if metrica.currency != MONEY_CURRENCY or yan.currency != MONEY_CURRENCY:
         holds.append("ambiguous_currency_or_money_basis")
     if metrica.sampled:
         holds.append("metrica_sampled")
@@ -402,12 +399,8 @@ def build_money_preflight(
         if excess > yan.revenue_rub * RECONCILIATION_TOLERANCE:
             holds.append("metrica_attributed_revenue_exceeds_yan_control_total")
 
-    k5 = None
-    if direct.spend_rub > 0:
-        k5 = metrica.attributed_yan_revenue_rub / direct.spend_rub
-    share = None
-    if yan.revenue_rub > 0:
-        share = metrica.attributed_yan_revenue_rub / yan.revenue_rub
+    k5 = metrica.attributed_yan_revenue_rub / direct.spend_rub if direct.spend_rub > 0 else None
+    share = metrica.attributed_yan_revenue_rub / yan.revenue_rub if yan.revenue_rub > 0 else None
 
     if holds:
         state = MoneyPreflightState.HOLD_DATA_QUALITY
@@ -417,7 +410,7 @@ def build_money_preflight(
         state = MoneyPreflightState.READY_FOR_CANDIDATE_EVALUATION
 
     core = {
-        "preflight_version": "1.0",
+        "preflight_version": "1.1",
         "site_id": site_id,
         "campaign_id": direct.campaign_id,
         "date_from": direct.date_from,
@@ -500,6 +493,4 @@ def _header(headers: Mapping[str, str], name: str) -> str | None:
 
 
 def _digest(value: object) -> str:
-    return sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
-    ).hexdigest()
+    return sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")).hexdigest()
