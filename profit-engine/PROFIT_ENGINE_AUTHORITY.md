@@ -1,10 +1,10 @@
 # DILIVOX PROFIT ENGINE — AUTHORITY
 
-Version: 0.3
+Version: 0.4
 Date: 2026-09-11
 Branch: `profit-engine`
 Repository: `niknikdym-hue/Dilivox-1`
-Status: OWNER-APPROVED CORE + OWNER-APPROVED ADAPTIVE FUNNEL PROFIT GATES + PROPOSED EXECUTION MODEL
+Status: OWNER-APPROVED CORE + OWNER-APPROVED ADAPTIVE FUNNEL PROFIT GATES + OWNER-APPROVED LIGHTWEIGHT EKSAMIO PATTERNS + PROPOSED EXECUTION MODEL
 
 ## 1. PURPOSE AND AUTHORITY
 
@@ -18,11 +18,12 @@ Rules:
 
 Chat is not the long-term source of truth. Approved project decisions must be synchronized here.
 
-Canonical companion for the adaptive-site workstream:
+Canonical companions for the adaptive-site workstream:
 
-`profit-engine/ADAPTIVE_FUNNEL_IMPLEMENTATION_PLAN.md`
+- `profit-engine/ADAPTIVE_FUNNEL_IMPLEMENTATION_PLAN.md`
+- `profit-engine/EKSAMIO_PATTERN_ADOPTION_FOR_ADAPTIVE_FUNNEL.md`
 
-That companion contains the detailed calculations, catalog-growth model, genre hypotheses, AI cost examples and staged implementation plan. If it conflicts with this authority document, this authority document wins.
+The Adaptive Funnel plan contains the detailed calculations, catalog-growth model, genre hypotheses, AI cost examples and staged implementation plan. The Eksamio adoption companion locks the approved lightweight patterns and the explicit non-adoption boundary for W0-W2. If either conflicts with this authority document, this authority document wins.
 
 ---
 
@@ -206,6 +207,34 @@ Rules:
 - no dedicated always-on AI/GPU capacity unless measured traffic and economics justify it;
 - the first real-time AI experiment, if later justified, should normally be limited to about 5-10% of eligible traffic with a control group;
 - real-time AI may scale only after it independently satisfies A-009 (`FEATURE_ROI >= 3.0`) on attributable economic evidence.
+
+### A-014 — LIGHTWEIGHT EKSAMIO PATTERN ADOPTION — APPROVED
+
+DILIVOX may borrow only the low-cost architectural mechanisms from Eksamio that improve measurement, routing auditability or resilience. It must not import Eksamio's educational SaaS complexity by default.
+
+Approved mechanisms:
+1. append-only `Event Truth`: observed behavior is recorded separately from inferred value;
+2. browser behavior signals are not authoritative money truth;
+3. one small `VisitorStateLite` instead of competing reader profiles;
+4. a versioned, inspectable `NextContentDecision` contract with action, candidate set, reason codes, policy version and decision id;
+5. an explicit decision-outcome loop (`SHOWN -> CLICKED -> OPENED -> COMPLETED/ABANDONED`) so routing can be evaluated causally;
+6. fail-closed adaptive routing with `STATIC_EDITORIAL_FALLBACK` and a global kill switch;
+7. a compact read-only Owner Console focused on money and the reader funnel, not a large BI/control system.
+
+Explicitly not adopted for the first Adaptive Funnel:
+- PEIS learner model;
+- mandatory reader registration/login;
+- PostgreSQL per-reader educational history as a launch prerequisite;
+- Tutor/voice/educational mastery infrastructure;
+- entitlement/payment runtime;
+- multi-provider live AI failover;
+- SSE/WebSocket agent infrastructure;
+- psychological/personality reader profiling;
+- a second control/task database duplicating Profit Engine/GitHub truth.
+
+W0-W2 must follow the detailed companion `profit-engine/EKSAMIO_PATTERN_ADOPTION_FOR_ADAPTIVE_FUNNEL.md`.
+
+Codex/OpenAI API may be used to develop/test/review these mechanisms only under `CODEX_DEVELOPMENT_ONLY_POLICY.md`; Codex is not part of visitor routing or production commercial decision-making.
 
 ---
 
@@ -729,6 +758,13 @@ Until these are approved, implementation must preserve the ability to calculate 
 ---
 
 ## 17. CHANGE LOG
+
+### 0.4 — 2026-09-11
+- Owner approved selective adoption of proven Eksamio implementation patterns for DILIVOX without importing Eksamio product complexity.
+- Locked seven lightweight mechanisms: Event Truth, browser-signal/money-truth separation, VisitorStateLite, versioned NextContentDecision, decision-outcome loop, fail-closed/static fallback with kill switch, and compact read-only Owner Console.
+- Explicitly rejected automatic import of PEIS, registration, Tutor/voice, mastery infrastructure, per-reader educational Postgres history, entitlement/payment runtime, multi-provider live AI failover and heavyweight realtime agent infrastructure.
+- Added canonical W0-W2 companion `EKSAMIO_PATTERN_ADOPTION_FOR_ADAPTIVE_FUNNEL.md`.
+- Reaffirmed Codex/OpenAI API as development-only tooling under `CODEX_DEVELOPMENT_ONLY_POLICY.md`.
 
 ### 0.3 — 2026-09-11
 - Owner approved the Feature Profit Gate: optional features must create at least 4× incremental attributable revenue versus full feature cost, equivalent to `FEATURE_ROI >= 3.0`.
