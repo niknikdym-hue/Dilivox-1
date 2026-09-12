@@ -1,6 +1,6 @@
 # TASK 020 — DILIVOX OWNER CONTROL PANEL V2
 
-Status: READY FOR BOUNDED DEVELOPMENT
+Status: READY FOR BOUNDED DEVELOPMENT / OWNER DUAL-WINDOW UPDATE APPLIES
 Executor: Codex development-only under Central Brain acceptance
 Depends on:
 - existing `profit_engine_runtime/control_panel.py`;
@@ -10,9 +10,9 @@ May begin before AF-0 live acceptance: YES, read-only/offline project projection
 
 ## Objective
 
-Extend the existing local `Profit Engine.app` into the single whole-project Owner Control surface, borrowing Eksamio's useful project-control UI principles while preserving DILIVOX's money-first operation and existing panel.
+Extend the existing local `Profit Engine.app` into one application with one localhost backend and two separate top-level windows: `/profit` for the money-first `Пульт прибыли`, and `/project` for `DILIVOX — Управление проектом`.
 
-Do not create a second app.
+Do not create a second app, backend or task database. GitHub remains durable truth/execution backend, while normal Owner work happens inside Project Control.
 
 ## Existing surface to preserve
 
@@ -57,16 +57,17 @@ Extend the panel snapshot with bounded project facts:
 - content gate/count;
 - source freshness/conflict state.
 
-### Slice 3 — UI views
+### Slice 3 — dual-window UI views
 
-Add to the existing panel shell:
-1. Profit;
-2. Critical Path;
+Preserve the existing Profit screen as a separate money-only window. Add to the Project window:
+1. Critical Path;
+2. Whole Project;
 3. Adaptive Funnel;
 4. Content;
 5. Providers & Compliance;
 6. Owner Gates;
-7. History.
+7. Development;
+8. History.
 
 Responsive/mobile behavior must remain usable.
 
@@ -109,35 +110,38 @@ Show:
 - wave cost/revenue/ROI state when evidence exists;
 - next-wave recommendation.
 
-### Slice 7 — development activity
+### Slice 7 — development activity and controls
 
-Optional read-only block for Codex development state:
+Required in-panel development state:
 - bounded task;
 - branch/PR/SHA;
 - CI/check result;
 - expected acceptance evidence.
 
-Codex activity must be visually separate from product completion.
+Codex activity must be visually separate from product completion. Add exact bounded controls for refresh/start/start-package/pause/resume/stop via the accepted Task 021 control plane.
 
 ## Controls
 
-First V2 remains conservative.
+Required:
+- start selected exact canonical task;
+- start canonical next Critical Path task without inventing priority;
+- sequential bounded package of 1-5 compatible tasks;
+- pause after current bounded step;
+- resume only from exact checkpoint;
+- stop exact active run/package;
+- refresh GitHub/runtime/project truth;
+- quality-first route preview with upward-only Owner override.
 
-Allowed:
-- refresh data/status;
-- filter/search tasks;
-- open exact GitHub task/PR/workflow/evidence;
-- show Owner Gate instructions;
-- safe local Adaptive Funnel kill/fallback control only if backed by an accepted runtime contract.
+The browser never receives GitHub/OpenAI credentials and cannot choose arbitrary repository/workflow/branch/shell commands.
 
-Not allowed merely because V2 exists:
+Still not allowed merely because Project Control exists:
 - Direct provider mutations from ordinary panel buttons;
 - budget changes;
 - Tilda publication;
-- merge/deploy authority;
+- automatic merge/deploy authority;
 - production AI execution.
 
-Future Start/Pause/Resume/Stop development controls may be added only as a separate accepted slice and may dispatch bounded development workflows only.
+Owner Gate decisions are exact-scope durable evidence and never grant generic production authority.
 
 ## Source conflict behavior
 
@@ -175,9 +179,13 @@ Cached data is non-authoritative.
 11. No provider write endpoint is introduced by this task.
 12. Codex remains development-only.
 13. UI works on desktop and narrow/mobile layout.
-14. Tests/CI pass.
+14. tests/CI pass;
+15. one app/one backend opens distinct Profit and Project windows without duplicate backend processes;
+16. full bounded controls pass mock adapter/security/idempotency/package tests;
+17. free G0 end-to-end control smoke passes with zero OpenAI calls and unchanged `DEV_AI_COST`;
+18. exact-head CI is green and one Draft PR awaits Central Brain acceptance.
 
 Terminal state:
-`DILIVOX_OWNER_CONTROL_V2_CODE_READY`.
+`DILIVOX_OWNER_CONTROL_FULL_CODE_READY`.
 
 Live/operational acceptance is separate from code readiness and requires real project/provider evidence feeds.

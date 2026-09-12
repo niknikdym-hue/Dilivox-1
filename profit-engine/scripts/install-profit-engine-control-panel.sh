@@ -4,10 +4,11 @@ set -euo pipefail
 REPO_URL="https://github.com/niknikdym-hue/Dilivox-1.git"
 INSTALL_ROOT="$HOME/.local/share/profit-engine"
 INSTALL_REPO="$INSTALL_ROOT/Dilivox-1"
-APP="$HOME/Applications/Profit Engine.app"
+APP="$HOME/Desktop/Profit Engine.app"
+LEGACY_APP="$HOME/Applications/Profit Engine.app"
 CONFIG="$HOME/.config/profit-engine/sites/dilivox.json"
 
-mkdir -p "$INSTALL_ROOT" "$HOME/Applications"
+mkdir -p "$INSTALL_ROOT" "$HOME/Applications" "$HOME/Desktop"
 
 # The install repo is a managed local runtime mirror. Reuse it on upgrades so a
 # bootstrap retry does not download the full repository again after a UI-only fix.
@@ -44,6 +45,9 @@ if [[ ! -f "$CONFIG" ]]; then
 fi
 chmod 600 "$CONFIG"
 
+# The real application bundle lives on Desktop so the Owner has one normal,
+# double-clickable Profit Engine.app. ~/Applications keeps only a compatibility
+# symlink to the same bundle; there is never a second application/backend copy.
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cat > "$APP/Contents/Info.plist" <<'PLIST'
@@ -53,8 +57,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <key>CFBundleName</key><string>Profit Engine</string>
 <key>CFBundleDisplayName</key><string>Profit Engine</string>
 <key>CFBundleIdentifier</key><string>ru.dilivox.profit-engine</string>
-<key>CFBundleVersion</key><string>2</string>
-<key>CFBundleShortVersionString</key><string>0.2</string>
+<key>CFBundleVersion</key><string>3</string>
+<key>CFBundleShortVersionString</key><string>0.3</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleExecutable</key><string>ProfitEngine</string>
 <key>LSMinimumSystemVersion</key><string>12.0</string>
@@ -65,14 +69,71 @@ cat > "$APP/Contents/MacOS/ProfitEngine" <<'SH'
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$HOME/.local/share/profit-engine/Dilivox-1"
-URL="http://127.0.0.1:8765"
-if /usr/bin/curl -fsS "$URL/api/snapshot" >/dev/null 2>&1; then
-  /usr/bin/open "$URL"
+BASE_URL="http://127.0.0.1:8765"
+PROFIT_URL="$BASE_URL/profit"
+PROJECT_URL="$BASE_URL/project"
+LOCK_DIR="$HOME/.config/profit-engine/control-panel/backend.lock"
+
+open_owner_windows() {
+  if ! /usr/bin/osascript <<'APPLESCRIPT'
+on ensureWindow(targetUrl)
+  tell application "Safari"
+    repeat with existingWindow in windows
+      repeat with existingTab in tabs of existingWindow
+        if URL of existingTab starts with targetUrl then
+          set current tab of existingWindow to existingTab
+          set index of existingWindow to 1
+          return
+        end if
+      end repeat
+    end repeat
+    make new document with properties {URL:targetUrl}
+  end tell
+end ensureWindow
+tell application "Safari"
+  my ensureWindow("http://127.0.0.1:8765/profit")
+  my ensureWindow("http://127.0.0.1:8765/project")
+  activate
+end tell
+APPLESCRIPT
+  then
+    /usr/bin/open "$PROFIT_URL"
+    /usr/bin/open "$PROJECT_URL"
+  fi
+}
+
+if /usr/bin/curl -fsS "$BASE_URL/api/health" >/dev/null 2>&1; then
+  open_owner_windows
   exit 0
 fi
+
+mkdir -p "$(dirname "$LOCK_DIR")"
+if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+  running_pid="$(cat "$LOCK_DIR/pid" 2>/dev/null || true)"
+  if [[ "$running_pid" =~ ^[0-9]+$ ]] && kill -0 "$running_pid" 2>/dev/null; then
+    for _ in {1..50}; do
+      if /usr/bin/curl -fsS "$BASE_URL/api/health" >/dev/null 2>&1; then
+        open_owner_windows
+        exit 0
+      fi
+      sleep 0.1
+    done
+    echo "BLOCKED_CONTROL_PANEL_BACKEND: existing backend process did not become healthy." >&2
+    exit 2
+  fi
+  rm -f "$LOCK_DIR/pid"
+  rmdir "$LOCK_DIR" 2>/dev/null || {
+    echo "BLOCKED_CONTROL_PANEL_LOCK: stale lock could not be cleared safely." >&2
+    exit 2
+  }
+  mkdir "$LOCK_DIR"
+fi
+printf '%s\n' "$$" > "$LOCK_DIR/pid"
+chmod 700 "$LOCK_DIR"
+chmod 600 "$LOCK_DIR/pid"
 cd "$ROOT"
 export PYTHONPATH="$ROOT/profit-engine/runtime"
-exec /usr/bin/env python3 -m profit_engine_runtime.owner_control_v2 --open
+exec /usr/bin/env python3 -m profit_engine_runtime.owner_control_v2 --open-two
 SH
 chmod 755 "$APP/Contents/MacOS/ProfitEngine"
 
@@ -89,9 +150,17 @@ if command -v /usr/libexec/PlistBuddy >/dev/null 2>&1; then
   fi
 fi
 
+# Preserve the historical ~/Applications entry only as a symlink to the one
+# real Desktop app. This also replaces the previous installed copy after the
+# new Desktop bundle has passed validation.
+rm -rf "$LEGACY_APP"
+ln -s "$APP" "$LEGACY_APP"
+
 printf '\nINSTALLED: %s\n' "$APP"
-printf 'LOCAL URL: http://127.0.0.1:8765\n'
-printf 'OWNER CONTROL: V2 / DEVELOPMENT VISIBILITY ON\n'
+printf 'COMPATIBILITY LINK: %s -> %s\n' "$LEGACY_APP" "$APP"
+printf 'PROFIT WINDOW: http://127.0.0.1:8765/profit\n'
+printf 'PROJECT WINDOW: http://127.0.0.1:8765/project\n'
+printf 'OWNER CONTROL: ONE APP / ONE BACKEND / TWO WINDOWS\n'
 printf 'PROVIDER WRITES FROM PANEL: LOCKED / 0\n'
 
 # An already-running panel has loaded the previous Python/HTML code into memory.

@@ -1,0 +1,94 @@
+name: Profit Engine Owner Gate Evidence
+run-name: DILIVOX owner gate · ${{ inputs.request_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      gate_id:
+        description: Exact canonical Owner Gate ID
+        required: true
+        type: string
+      task_id:
+        description: Exact canonical task ID
+        required: true
+        type: string
+      decision:
+        description: Exact bounded Owner decision
+        required: true
+        type: choice
+        options: [APPROVE, REJECT, DEFER]
+      scope_digest:
+        description: Exact immutable gate scope digest
+        required: true
+        type: string
+      canonical_sha:
+        description: Exact canonical authority SHA
+        required: true
+        type: string
+      request_id:
+        description: Idempotency request ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONPATH: profit-engine/runtime
+    steps:
+      - name: Checkout exact canonical authority
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Require repository Owner and exact authority SHA
+        shell: bash
+        env:
+          GATE_ID: ${{ inputs.gate_id }}
+          TASK_ID: ${{ inputs.task_id }}
+          DECISION: ${{ inputs.decision }}
+          SCOPE_DIGEST: ${{ inputs.scope_digest }}
+          CANONICAL_SHA: ${{ inputs.canonical_sha }}
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTOR" = 'niknikdym-hue'
+          test "$GITHUB_SHA" = "$CANONICAL_SHA"
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          from profit_engine_runtime.project_board import build_project_board
+          gate=os.environ['GATE_ID']; task=os.environ['TASK_ID']; decision=os.environ['DECISION']
+          digest=os.environ['SCOPE_DIGEST']; sha=os.environ['CANONICAL_SHA']; request=os.environ['REQUEST_ID']
+          if not re.fullmatch(r'OWNER-GATE::(?:TASK|MILESTONE)-[A-Z0-9-]{3,100}',gate): raise SystemExit('invalid gate ID')
+          if not re.fullmatch(r'(?:TASK|MILESTONE)-[A-Z0-9-]{3,100}',task): raise SystemExit('invalid task ID')
+          if decision not in {'APPROVE','REJECT','DEFER'}: raise SystemExit('invalid decision')
+          if not re.fullmatch(r'[0-9a-f]{64}',digest): raise SystemExit('invalid scope digest')
+          if not re.fullmatch(r'[0-9a-f]{40}',sha): raise SystemExit('invalid canonical SHA')
+          if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{7,79}',request): raise SystemExit('invalid request ID')
+          projected=next((row for row in build_project_board()['owner_gates'] if row['task_id']==task),None)
+          if not projected: raise SystemExit('task is not an unresolved canonical Owner Gate')
+          if projected['owner_gate_id']!=gate: raise SystemExit('gate ID does not match canonical task')
+          if projected['owner_gate_scope_digest']!=digest: raise SystemExit('scope digest does not match canonical task')
+          value={
+              'schema_version':'dilivox-owner-gate-workflow-evidence-v1',
+              'gate_id':gate,'task_id':task,'decision':decision,'scope_digest':digest,
+              'canonical_sha':sha,'request_id':request,'github_actor':os.environ['GITHUB_ACTOR'],
+              'github_run_id':os.environ['GITHUB_RUN_ID'],'provider_write_allowed':False,
+              'generic_authority_granted':False,'auto_merge':False,'auto_deploy':False,
+          }
+          Path('/tmp/dilivox-owner-gate-evidence.json').write_text(json.dumps(value,indent=2,sort_keys=True)+'\n')
+          print('DILIVOX_OWNER_GATE_EVIDENCE=RECORDED')
+          PY
+
+      - name: Upload exact decision evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: owner-gate-${{ inputs.request_id }}-${{ github.run_id }}
+          path: /tmp/dilivox-owner-gate-evidence.json
+          if-no-files-found: error
+          retention-days: 90
