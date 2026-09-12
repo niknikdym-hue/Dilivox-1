@@ -7,6 +7,7 @@ Branch: `profit-engine`
 Authority: `profit-engine/PROFIT_ENGINE_AUTHORITY.md` v0.4
 Strategic plan: `profit-engine/ADAPTIVE_FUNNEL_IMPLEMENTATION_PLAN.md`
 Pattern constraint: `profit-engine/EKSAMIO_PATTERN_ADOPTION_FOR_ADAPTIVE_FUNNEL.md`
+Owner panel contract: `profit-engine/DILIVOX_OWNER_CONTROL_PANEL_REQUIREMENTS.md`
 Development tooling: `profit-engine/CODEX_DEVELOPMENT_ONLY_POLICY.md`
 
 If this document conflicts with `PROFIT_ENGINE_AUTHORITY.md`, authority wins.
@@ -114,7 +115,9 @@ Earlier approved documents use `W1/W2` at different levels of granularity. They 
 | `AF-1` | strategic W1 | current 50-story content/baseline map | `ADAPTIVE_AF1_BASELINE_READY` |
 | `AF-2` | strategic W2 part 1 + pattern W1 | formal routing core | `ADAPTIVE_AF2_ROUTING_CORE_READY` |
 | `AF-3` | strategic W2 part 2 + pattern W2 | bounded rule-based experiment | `ADAPTIVE_AF3_EXPERIMENT_EVIDENCE_READY` |
-| `AF-4` | W2 close / W3 gate | economic evaluation + Owner Panel decision | `ADAPTIVE_AF4_SCALE_DECISION_READY` |
+| `AF-4` | W2 close / W3 gate | economic evaluation / scale decision | `ADAPTIVE_AF4_SCALE_DECISION_READY` |
+
+Owner Panel V2 is a cross-cutting execution task. Its read-only project projection may be developed before AF-4; its economic widgets consume AF-4 truth when available.
 
 After AF-4, content growth follows the approved W3-W9 strategy.
 
@@ -136,7 +139,7 @@ Required result:
 - endpoint outage cannot break reading;
 - stale/unreconciled money blocks profit-aware conclusions.
 
-AF-0 live gate may remain pending while AF-1 and AF-2 are developed/tested offline.
+AF-0 live gate may remain pending while AF-1, AF-2 and read-only Owner Panel project work are developed/tested offline.
 
 ---
 
@@ -237,7 +240,7 @@ Acceptance:
 
 Implementation task:
 
-`TASK-019-ADAPTIVE-PROFIT-EVALUATION-AND-PANEL.md`
+`TASK-019-ADAPTIVE-PROFIT-EVALUATION.md`
 
 Deliverables:
 - treatment vs control comparison for continuation, stories/session, return and ARPU/RPV;
@@ -246,12 +249,12 @@ Deliverables:
 - `FEATURE_ROI`;
 - evidence state/confidence/sample status;
 - decision output: `TEST`, `KEEP`, `HOLD`, `KILL`, `SCALE_ALLOWED`;
-- integration into existing `Profit Engine.app`, not a second app.
+- bounded aggregate snapshot for Owner Panel V2.
 
 Scale rules:
 - `FEATURE_ROI >= 3.0` required for scale;
 - unresolved reconciliation => `HOLD`;
-- positive engagement but inadequate economics => `KEEP_TESTING` or `KILL`, never automatic scale;
+- positive engagement but inadequate economics => continue bounded test or `KILL`, never automatic scale;
 - severe economic downside => `KILL`;
 - AI remains OFF.
 
@@ -291,12 +294,15 @@ Commercial-scale test and conditional growth only. No automatic 800+ catalog.
 
 ---
 
-## 11. OWNER PANEL END STATE
+## 11. OWNER PANEL V2
+
+Implementation task:
+
+`TASK-020-OWNER-CONTROL-PANEL-V2.md`
 
 The existing `Profit Engine.app` is the single Owner Control surface and must be extended rather than replaced.
 
 Required top-level project rail:
-
 - `A — Measurement & Compliance`;
 - `B — Profit Engine Live Control`;
 - `C — Adaptive Funnel MVP`;
@@ -319,6 +325,7 @@ Owner Panel must keep status semantics separate:
 - `LIVE_SITE_VERIFIED`;
 - `ECONOMICALLY_PROVEN`;
 - `BLOCKED_EXTERNAL`;
+- `BLOCKED_DATA`;
 - `OWNER_GATE`;
 - `DONE`.
 
@@ -370,15 +377,16 @@ Development may begin immediately in this order:
 1. finish/verify AF-0 obligations using Tasks 013 and 015;
 2. implement Task 016 baseline content map;
 3. implement Task 017 routing core entirely offline/deterministically;
-4. extend the existing Owner Panel read-only project model so AF states are visible;
+4. implement Task 020 slices 1-4 in parallel: whole-project board, status model, views, truth semantics;
 5. only after AF-0 live acceptance, perform Task 018 bounded production experiment;
-6. Task 019 economic evaluation determines `KEEP/HOLD/KILL/SCALE`;
-7. only then authorize the first 50 -> 150 measured content wave.
+6. Task 019 economic evaluation determines `TEST/KEEP/HOLD/KILL/SCALE_ALLOWED`;
+7. feed Task 019 truth into Task 020 Adaptive/Content/Profit views;
+8. only then authorize the first 50 -> 150 measured content wave.
 
 Parallel-safe work before Tilda/endpoint live gates:
 - Task 016;
 - Task 017;
-- Owner Panel project/task projection and offline UI tests.
+- Task 020 read-only project/task projection and offline UI tests.
 
 Not parallel-safe before AF-0 live acceptance:
 - production treatment traffic;
@@ -393,9 +401,9 @@ Not parallel-safe before AF-0 live acceptance:
 This project is execution-ready when:
 - authority + strategic plan + Eksamio adoption constraint are linked;
 - AF-0..AF-4 packages are unambiguous;
-- each new package has a bounded task spec;
-- dependencies and owner gates are explicit;
+- Tasks 016-020 provide bounded implementation contracts;
+- dependencies and Owner Gates are explicit;
 - acceptance states distinguish code/live/economic truth;
-- the existing Owner Panel extension target is specified;
+- existing Owner Panel extension target is specified;
 - no task requires production AI;
 - no task duplicates Task 013/015 or creates a second reader/control system.
