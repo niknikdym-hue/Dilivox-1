@@ -1,6 +1,6 @@
 # TASK 020 — FULL OWNER CONTROL / DUAL-WINDOW PROJECT MANAGEMENT
 
-Status: `IMPLEMENTED_AWAITING_DRAFT_PR_EXACT_HEAD_CI`
+Status: `DILIVOX_OWNER_CONTROL_FULL_CODE_READY / AWAITING_CENTRAL_BRAIN_ACCEPTANCE`
 
 Central Brain acceptance remains required. This evidence does not declare the task accepted.
 
@@ -10,6 +10,8 @@ Central Brain acceptance remains required. This evidence does not declare the ta
 - Canonical branch: `profit-engine`
 - Exact fetched base: `c06220299dc700ed442ce53eb364105e12100999`
 - Development branch: `brain/task-020-owner-control-full`
+- Implementation commit: `2292ed0dd311006ca1151c444b06fcbbf7065fcf`
+- Draft PR: `https://github.com/niknikdym-hue/Dilivox-1/pull/22`
 - Required route/model: `G3 / gpt-5.6-sol / high`
 - Task hard cap: `$3.00`
 - OpenAI provider calls made by this implementation session: `0`
@@ -104,6 +106,8 @@ The test matrix covers one app/one backend/two routes, legacy Profit regression,
 - The installed application bundle upgrade is delivered by the updated single-app installer after canonical acceptance; this feature branch is not merged or deployed by Task 020.
 - Central Brain acceptance remains required before any project status advances from code-ready evidence.
 
-## Expected terminal after exact-head CI
+## Terminal handoff
 
 `DILIVOX_OWNER_CONTROL_FULL_CODE_READY`
+
+The final branch SHA is the exact head of Draft PR #22. Its `Profit Engine CI` and required PR checks must remain GREEN; Central Brain still performs acceptance and any later merge.
