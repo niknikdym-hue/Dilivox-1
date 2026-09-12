@@ -1,0 +1,6 @@
+{
+  "schema_version": "dilivox-dev-cost-ledger-v1",
+  "currency": "USD",
+  "purpose": "Accepted DILIVOX development-only AI cost; never production visitor AI cost.",
+  "entries": []
+}
