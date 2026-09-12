@@ -1,6 +1,6 @@
-# DILIVOX OWNER CONTROL — WHOLE-PROJECT PANEL REQUIREMENTS
+# DILIVOX OWNER CONTROL — DUAL-WINDOW PROJECT MANAGEMENT REQUIREMENTS
 
-Status: IMPLEMENTATION CONTRACT / SINGLE-PANEL EXTENSION
+Status: OWNER-UPDATED IMPLEMENTATION CONTRACT / ONE APP + ONE BACKEND + TWO WINDOWS
 Date: 2026-09-12
 Repository: `niknikdym-hue/Dilivox-1`
 Branch: `profit-engine`
@@ -11,7 +11,14 @@ Development FinOps: `profit-engine/DEVELOPMENT_FINOPS_POLICY.md`
 
 ## 1. PURPOSE
 
-Extend the existing local `Profit Engine.app` into the Owner's single control surface for the whole DILIVOX Profit Engine program.
+Extend the existing local `Profit Engine.app` into the Owner's single application for the whole DILIVOX Profit Engine program.
+
+Owner decision of 2026-09-12 supersedes the earlier combined/read-mostly UI assumption in this companion: the one application and one localhost backend expose two separate top-level working windows:
+
+- `/profit` — `Пульт прибыли`, exclusively money-first commercial control;
+- `/project` — `DILIVOX — Управление проектом`, whole-project development control.
+
+GitHub remains durable source of truth and execution backend, but normal Owner operation must not require the GitHub web UI.
 
 Do not create a second owner application or a second project/task database.
 
@@ -25,14 +32,14 @@ The panel must answer at a glance:
 7. What actually requires Owner action now?
 8. What development work is GitHub/Codex doing/has completed, why that route was selected, and how much paid development budget remains?
 
-## 2. SINGLE-PANEL INVARIANT
+## 2. ONE-APPLICATION / DUAL-WINDOW INVARIANT
 
-The existing `control_panel.py` / `Profit Engine.app` remains the shell.
+The existing `control_panel.py` / `Profit Engine.app` remains the money-first shell and application identity. `owner_control_v2.py` extends its one local backend and opens the two distinct routes/windows. Both consume the same canonical projection and runtime truth.
 
-New whole-project views must be added to that shell or to modules imported by it.
+The Profit window contains no development task list or GitHub controls. The Project window contains the whole-project cockpit and bounded development controls.
 
 Forbidden:
-- second localhost owner app for Adaptive Funnel;
+- second localhost backend or owner app for Adaptive Funnel;
 - second task database that can diverge from GitHub/canonical docs;
 - browser-stored optimistic project truth;
 - panel availability becoming a dependency of dilivox.ru;
@@ -120,9 +127,9 @@ Each stage shows:
 
 Do not fabricate percentages when denominator is not objective.
 
-## 5. REQUIRED VIEWS
+## 5. REQUIRED WINDOWS AND PROJECT VIEWS
 
-### 5.1 Profit
+### 5.1 Profit window
 Keep and extend the current money-first screen.
 
 Headline metrics:
@@ -139,12 +146,18 @@ Below:
 - compact reader funnel;
 - up to three high-priority alerts.
 
-### 5.2 Critical Path
+No project-development task clutter or GitHub controls are permitted in this window.
+
+### 5.2 Project: Critical Path
 Only tasks that can move/block the next real milestone.
 
 Must preserve dependency order.
 
-### 5.3 Adaptive Funnel
+### 5.3 Project: Whole Project
+
+Show every canonical task and accepted historical task. Task detail must be understandable without opening GitHub.
+
+### 5.4 Project: Adaptive Funnel
 Show:
 - AF-0..AF-4 states;
 - current policy version;
@@ -158,7 +171,7 @@ Show:
 - FEATURE_ROI;
 - current decision `TEST/KEEP/HOLD/KILL/SCALE_ALLOWED`.
 
-### 5.4 Content
+### 5.5 Project: Content
 Show:
 - active catalog count;
 - target gate: 50 / 150 / 300 / 400-600;
@@ -171,7 +184,7 @@ Show:
 - content-wave ROI/payback status;
 - next-wave allocation recommendation.
 
-### 5.5 Providers & Compliance
+### 5.6 Project: Providers & Compliance
 Show:
 - Direct health;
 - Metrica health;
@@ -182,7 +195,7 @@ Show:
 - traffic-quality/compliance holds;
 - no secrets.
 
-### 5.6 Owner Gates
+### 5.7 Project: Owner Gates
 Only actions that really require Owner authorization, including where applicable:
 - Tilda/public publication;
 - privacy publication;
@@ -196,12 +209,18 @@ Only actions that really require Owner authorization, including where applicable
 
 Routine development questions and normal Codex work inside the approved development envelope are not Owner Gates.
 
-### 5.7 History
+Owner decisions are exact-scope, SHA-bound, append-only local evidence plus a server-side GitHub workflow evidence dispatch. `APPROVE` never becomes generic provider/write authority.
+
+### 5.8 Project: Development
+
+Show current task/package, base SHA, branch, run/checks, route/model, current and latest completed action, checkpoint/pause state, result, Draft PR state, scope result and cost evidence. Raw GitHub links may appear only under expandable diagnostics/evidence.
+
+### 5.9 Project: History
 Accepted milestones, evidence and formerly critical items remain queryable.
 
 Completed work must not disappear and make the project look unfinished from zero.
 
-### 5.8 Development FinOps
+### 5.10 Project: Development FinOps
 Show development execution economics separately from production economics.
 
 Headline fields:
@@ -295,22 +314,24 @@ Development activity is not product progress by itself. It becomes progress only
 
 Codex remains development-only and never appears as a production routing actor.
 
-## 9. CONTROLS
+## 9. FULL BOUNDED DEVELOPMENT CONTROLS
 
-First whole-project panel release remains operationally conservative.
+The Project window must provide `refresh`, `start`, `start_package`, `pause`, `resume` and `stop` through explicit localhost endpoints.
 
-Allowed initial controls:
-- refresh status/data;
-- select/view a bounded development task;
-- open the exact GitHub workflow/PR/evidence page;
-- toggle a local/project-level Adaptive Funnel kill-switch only if the underlying accepted runtime contract supports it safely;
-- display Owner Gate instructions.
+Rules:
+- browser -> localhost backend -> authenticated fixed-scope GitHub adapter -> allowlisted workflow dispatch;
+- Start binds exact canonical task, dependencies, authority SHA, route/model, allowed paths, checks and hard cap;
+- package contains 1-5 compatible tasks and advances sequentially only after the prior technical PASS;
+- Pause takes effect after the current bounded step and prevents the next package task;
+- Resume requires an exact proven checkpoint and unchanged authority base;
+- Stop targets the exact active run/package; no automatic retry;
+- Owner may override G1 upward to G2/G3 and G2 upward to G3, never below quality floor;
+- G4/Astra is separately explicit and never automatic;
+- no automatic merge, deploy, Tilda publication, provider mutation or commercial action.
 
-Do not add direct provider mutation buttons merely because the panel exists. Existing provider-write governance remains separate and guarded.
+Production actions remain governed by their accepted exact controllers and separate Owner approvals; generic project buttons grant no production authority.
 
-If future Start/Pause/Resume/Stop development controls are added like Eksamio, they must dispatch only the bounded development workflow and must not grant merge/deploy/provider-write authority.
-
-Within an approved development envelope, those controls may route directly to GitHub-native/Luna/Terra/Sol according to the task quality/capability classification without an extra Owner confirmation per ordinary task.
+State-changing local requests require exact `127.0.0.1` Origin, per-launch anti-CSRF token, JSON-only bodies, command allowlists, idempotency/request IDs and burst protection. Credentials remain server-side.
 
 ## 10. SAFETY / ISOLATION
 
@@ -323,36 +344,42 @@ Within an approved development envelope, those controls may route directly to Gi
 - stale/conflicted source visible;
 - money reconciliation hold blocks optimistic scale messaging.
 
-## 11. ACCEPTANCE CRITERIA — OWNER CONTROL V2
+## 11. ACCEPTANCE CRITERIA — OWNER CONTROL FULL
 
 Accepted only when:
-1. existing money view still works;
-2. stages A-E are always visible;
-3. Critical Path shows dependency-ordered current blockers/tasks;
-4. Adaptive Funnel shows AF-0..AF-4 and kill/fallback state;
-5. Content shows catalog gate and wave economics;
-6. Owner Gates contains only actual Owner actions;
-7. GitHub/project evidence can distinguish code/live/economic states;
-8. stale/conflict renders visibly;
-9. no second task database exists;
-10. panel outage cannot affect public reading;
-11. no provider secret is needed in browser;
-12. no provider write is possible from ordinary panel refresh/render;
-13. Codex remains development-only;
-14. tests verify stage/task completeness and status non-upgrade rules;
-15. Development FinOps view shows route/model/quality rationale/caps/actual DEV_AI_COST/envelope balance;
-16. a free route cannot be selected by policy when the task contract requires a higher quality/capability route;
-17. normal Codex spend inside the approved envelope does not create a false Owner Gate.
+1. one `Profit Engine.app` starts/reuses one backend and opens separate `/profit` and `/project` windows;
+2. existing money view still works and contains no development clutter;
+3. stages A-E are always visible in Project Control;
+4. Critical Path shows dependency-ordered current blockers/tasks;
+5. Adaptive Funnel shows AF-0..AF-4 and kill/fallback state;
+6. Content shows catalog gate and wave economics;
+7. Owner Gates contains only actual Owner actions;
+8. GitHub/project evidence can distinguish code/live/economic states;
+9. stale/conflict renders visibly;
+10. no second task database exists;
+11. panel outage cannot affect public reading;
+12. no provider secret is needed in browser;
+13. no provider write is possible from ordinary panel refresh/render;
+14. Codex remains development-only;
+15. tests verify stage/task completeness and status non-upgrade rules;
+16. Development FinOps view shows route/model/quality rationale/reserved cap/actual DEV_AI_COST/envelope balance;
+17. Start/Pause/Resume/Stop/Refresh and bounded sequential packages are exercised against a mock GitHub adapter;
+18. a free route cannot be selected by policy when the task contract requires a higher quality/capability route;
+19. normal Codex spend inside the approved envelope does not create a false Owner Gate;
+20. security tests reject foreign/missing Origin, missing CSRF, arbitrary repository/workflow/command and duplicate Start;
+21. the first real end-to-end smoke is G0/free and leaves `DEV_AI_COST` unchanged;
+22. no automatic merge/deploy/provider write is introduced.
 
 ## 12. IMPLEMENTATION ORDER
 
 1. define machine-readable whole-project board projection;
 2. extend current snapshot model with project/adaptive/content/development-FinOps facts;
-3. add read-only stage rail + views to existing panel;
-4. add GitHub/evidence adapter where appropriate;
+3. add dual-window routes while preserving the existing Profit screen;
+4. add the server-side fixed-scope GitHub control/evidence adapter;
 5. add conflict/staleness detection;
 6. add AF experiment/economics view;
 7. add content-wave economics view;
 8. add separate development activity/FinOps block;
 9. test completeness/status semantics/quality-routing semantics;
-10. only then consider optional bounded development workflow controls.
+10. add and test bounded development workflow controls;
+11. run the free G0 Project Control smoke before any paid smoke.

@@ -100,6 +100,34 @@ def _load_cost_ledger() -> tuple[float, str, int]:
         return 0.0, "LEDGER_INVALID", 0
 
 
+def _load_route_cost_summary() -> dict[str, dict[str, Any]]:
+    summary = {
+        route: {"route": route, "model": model, "accepted_tasks": 0, "actual_dev_ai_cost_usd": 0.0}
+        for route, model in (
+            ("G0", "GitHub/Python"), ("G1", "gpt-5.6-luna"), ("G2", "gpt-5.6-terra"),
+            ("G3", "gpt-5.6-sol"), ("G4", "gpt-6-astra"),
+        )
+    }
+    if not COST_LEDGER_PATH.exists():
+        return summary
+    try:
+        value = json.loads(COST_LEDGER_PATH.read_text(encoding="utf-8"))
+        for entry in value.get("entries") or []:
+            if not isinstance(entry, dict) or entry.get("accepted") is not True:
+                continue
+            route = str(entry.get("execution_route") or "")
+            if route not in summary:
+                continue
+            amount = float(entry.get("dev_ai_cost_usd") or 0.0)
+            if amount < 0:
+                continue
+            summary[route]["accepted_tasks"] += 1
+            summary[route]["actual_dev_ai_cost_usd"] = round(summary[route]["actual_dev_ai_cost_usd"] + amount, 6)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return summary
+    return summary
+
+
 def _source_path(path: Path) -> str:
     try:
         return path.relative_to(PROFIT_ENGINE_ROOT).as_posix()
@@ -160,6 +188,10 @@ def collect_development_status(*, fetch_remote: bool = True) -> dict[str, Any]:
         "dev_ai_cost_state": dev_cost_state,
         "accepted_cost_entries": accepted_cost_entries,
         "remaining_dev_envelope_usd": round(max(0.0, DEV_ENVELOPE_USD - dev_cost), 6),
+        "route_cost_summary": list(_load_route_cost_summary().values()),
+        "reserved_cost_is_actual_cost": False,
+        "envelope_warning_80_percent": dev_cost >= DEV_ENVELOPE_USD * 0.8,
+        "envelope_exhausted_owner_gate": dev_cost >= DEV_ENVELOPE_USD,
         "current_request": _load_latest_request(),
         "routes": [
             {"route": "G0", "model": "GitHub/Python", "paid": False},

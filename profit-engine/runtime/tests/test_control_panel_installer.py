@@ -38,6 +38,17 @@ class ControlPanelInstallerContractTests(unittest.TestCase):
         open_pos = self.installer.rindex('/usr/bin/open "$APP"')
         self.assertLess(restart_pos, open_pos)
 
+    def test_one_app_reuses_one_backend_and_opens_two_distinct_windows(self) -> None:
+        self.assertIn('PROFIT_URL="$BASE_URL/profit"', self.installer)
+        self.assertIn('PROJECT_URL="$BASE_URL/project"', self.installer)
+        self.assertIn('"$BASE_URL/api/health"', self.installer)
+        self.assertIn('backend.lock', self.installer)
+        self.assertIn('make new document with properties {URL:targetUrl}', self.installer)
+        self.assertIn('ensureWindow("http://127.0.0.1:8765/profit")', self.installer)
+        self.assertIn('ensureWindow("http://127.0.0.1:8765/project")', self.installer)
+        self.assertIn('profit_engine_runtime.owner_control_v2 --open-two', self.installer)
+        self.assertEqual(1, self.installer.count('<key>CFBundleIdentifier</key><string>ru.dilivox.profit-engine</string>'))
+
 
 if __name__ == "__main__":
     unittest.main()
