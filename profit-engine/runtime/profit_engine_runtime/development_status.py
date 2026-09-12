@@ -7,6 +7,8 @@ import urllib.error
 import urllib.request
 from typing import Any
 
+from .development_router import classify_task
+
 
 GITHUB_REPOSITORY = "niknikdym-hue/Dilivox-1"
 DEV_BRANCH = "profit-engine"
@@ -15,7 +17,9 @@ DEFAULT_PACKAGE_CAP_USD = 3.0
 RUNS_URL = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/actions/runs?per_page=30"
 PREFLIGHT_WORKFLOW_PATH = ".github/workflows/profit-engine-dev-preflight.yml"
 DEV_WORKFLOW_PATH = ".github/workflows/profit-engine-bounded-dev-task.yml"
-COST_LEDGER_PATH = Path(__file__).resolve().parents[2] / "data" / "development-cost-ledger.json"
+PROFIT_ENGINE_ROOT = Path(__file__).resolve().parents[2]
+COST_LEDGER_PATH = PROFIT_ENGINE_ROOT / "data" / "development-cost-ledger.json"
+DEV_REQUEST_DIR = PROFIT_ENGINE_ROOT / "dev-requests"
 
 
 def _fetch_json(url: str, timeout: float = 5.0) -> dict[str, Any]:
@@ -48,12 +52,7 @@ def _compact_run(run: dict[str, Any]) -> dict[str, Any]:
 
 
 def _latest_workflow_run(payload: dict[str, Any], workflow_path: str) -> dict[str, Any] | None:
-    """Return latest workflow run by immutable workflow path, not UI run-name.
-
-    GitHub may render `run-name` as the run object's display/name field, so
-    matching human-facing names can make the owner panel falsely report
-    NOT_CHECKED. The repository workflow path is the stable identity.
-    """
+    """Return latest workflow run by immutable workflow path, not UI run-name."""
 
     runs = payload.get("workflow_runs") or []
     for run in runs:
@@ -101,6 +100,42 @@ def _load_cost_ledger() -> tuple[float, str, int]:
         return 0.0, "LEDGER_INVALID", 0
 
 
+def _load_latest_request() -> dict[str, Any] | None:
+    if not DEV_REQUEST_DIR.exists():
+        return None
+    rows: list[tuple[datetime, dict[str, Any]]] = []
+    for path in DEV_REQUEST_DIR.glob("*.json"):
+        try:
+            req = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(req, dict) or req.get("execute") is not True:
+                continue
+            created = datetime.fromisoformat(str(req["created_at"]).replace("Z", "+00:00"))
+            descriptor = dict(req.get("task_descriptor") or {})
+            descriptor.setdefault("task_id", req.get("task_id"))
+            route = classify_task(descriptor)
+            rows.append((created, {
+                "request_id": req.get("request_id"),
+                "created_at": req.get("created_at"),
+                "task_id": req.get("task_id"),
+                "task_file": req.get("task_file"),
+                "base_sha": req.get("base_sha"),
+                "task_budget_usd": req.get("task_budget_usd"),
+                "execution_route": route.execution_route,
+                "model_route": route.model_route or "GitHub/Python",
+                "quality_floor": route.quality_floor,
+                "routing_reason": route.routing_reason,
+                "why_not_cheaper": route.why_not_cheaper,
+                "owner_approval_required": route.owner_approval_required,
+                "source_path": path.relative_to(PROFIT_ENGINE_ROOT).as_posix(),
+            }))
+        except (OSError, KeyError, ValueError, TypeError, json.JSONDecodeError):
+            continue
+    if not rows:
+        return None
+    rows.sort(key=lambda item: item[0], reverse=True)
+    return rows[0][1]
+
+
 def collect_development_status(*, fetch_remote: bool = True) -> dict[str, Any]:
     dev_cost, dev_cost_state, accepted_cost_entries = _load_cost_ledger()
     value: dict[str, Any] = {
@@ -116,6 +151,7 @@ def collect_development_status(*, fetch_remote: bool = True) -> dict[str, Any]:
         "dev_ai_cost_state": dev_cost_state,
         "accepted_cost_entries": accepted_cost_entries,
         "remaining_dev_envelope_usd": round(max(0.0, DEV_ENVELOPE_USD - dev_cost), 6),
+        "current_request": _load_latest_request(),
         "routes": [
             {"route": "G0", "model": "GitHub/Python", "paid": False},
             {"route": "G1", "model": "gpt-5.6-luna", "paid": True},
