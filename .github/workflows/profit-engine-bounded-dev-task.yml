@@ -24,6 +24,12 @@ jobs:
     env:
       PYTHONPATH: profit-engine/runtime
     steps:
+      - name: Require owner-controlled push before any paid work
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTOR" = 'niknikdym-hue' || { echo 'Only repository owner may start a DILIVOX bounded development request.'; exit 1; }
+
       - name: Checkout request commit
         uses: actions/checkout@v4
         with:
@@ -35,25 +41,32 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          request_path="$(git diff-tree --no-commit-id --name-only -r HEAD | awk '/^profit-engine\/dev-requests\/.*\.json$/{print}' | head -n2)"
-          test "$(printf '%s\n' "$request_path" | awk 'NF{n++} END{print n+0}')" = 1 || { echo 'Exactly one development request must be added/changed per commit.'; exit 1; }
+          all_changed="$(git diff-tree --no-commit-id --name-only -r HEAD | awk 'NF')"
+          test "$(printf '%s\n' "$all_changed" | awk 'NF{n++} END{print n+0}')" = 1 || { echo 'A development-request trigger commit must change exactly one file.'; printf '%s\n' "$all_changed"; exit 1; }
+          request_path="$(printf '%s\n' "$all_changed" | awk '/^profit-engine\/dev-requests\/.*\.json$/{print}')"
+          test -n "$request_path" || { echo 'The only changed file must be one profit-engine/dev-requests/*.json request.'; exit 1; }
           test -f "$request_path"
           cp "$request_path" /tmp/dilivox-dev-request.json
           python - <<'PY'
           import json, os, subprocess
+          from datetime import datetime
           from pathlib import Path
           req=json.loads(Path('/tmp/dilivox-dev-request.json').read_text())
-          required={'request_id','task_id','task_file','execute','allowed_paths','check_profiles','task_descriptor'}
+          required={'request_id','created_at','task_id','task_file','base_sha','task_budget_usd','execute','allowed_paths','check_profiles','task_descriptor'}
           missing=sorted(required-set(req))
           if missing: raise SystemExit(f'missing request fields: {missing}')
           if req['execute'] is not True: raise SystemExit('execute must be true; non-execution templates do not belong in dev-requests')
+          try:
+              datetime.fromisoformat(str(req['created_at']).replace('Z','+00:00'))
+          except ValueError as exc:
+              raise SystemExit('created_at must be ISO-8601') from exc
           if not isinstance(req['allowed_paths'],list) or not req['allowed_paths']: raise SystemExit('allowed_paths must be non-empty list')
           if len(req['allowed_paths'])>12: raise SystemExit('allowed_paths exceeds 12')
           allowed_checks={'runtime_unit','node_tests','json_validate','diff_check','router_tests'}
           checks=req['check_profiles']
-          if not isinstance(checks,list) or not set(checks)<=allowed_checks: raise SystemExit('unsupported check profile')
+          if not isinstance(checks,list) or not checks or not set(checks)<=allowed_checks: raise SystemExit('unsupported/empty check profile')
           parent=subprocess.check_output(['git','rev-parse','HEAD^'],text=True).strip()
-          requested=str(req.get('base_sha') or parent)
+          requested=str(req['base_sha']).strip()
           if requested!=parent: raise SystemExit(f'base_sha must equal request parent: {parent}')
           task_file=Path(req['task_file'])
           subprocess.run(['git','show',f'{parent}:{task_file.as_posix()}'],check=True,stdout=subprocess.DEVNULL)
@@ -66,7 +79,7 @@ jobs:
           print('BASE_SHA='+parent)
           PY
 
-      - name: Route by quality floor before any paid call
+      - name: Route by quality floor and enforce cumulative envelope before any paid call
         id: route
         shell: bash
         run: |
@@ -75,23 +88,41 @@ jobs:
           import json, os
           from decimal import Decimal
           from pathlib import Path
-          from profit_engine_runtime.development_router import classify_task
+          from profit_engine_runtime.development_router import INITIAL_OPENAI_DEV_ENVELOPE_USD, classify_task
           req=json.loads(Path('/tmp/dilivox-dev-request.json').read_text())
           descriptor=dict(req['task_descriptor'])
           descriptor.setdefault('task_id',req['task_id'])
           route=classify_task(descriptor)
-          requested=Decimal(str(req.get('task_budget_usd','0')))
+          requested=Decimal(str(req['task_budget_usd']))
+
+          ledger=json.loads(Path('profit-engine/data/development-cost-ledger.json').read_text())
+          if ledger.get('schema_version')!='dilivox-dev-cost-ledger-v1': raise SystemExit('development cost ledger version mismatch')
+          accepted=Decimal('0')
+          for entry in ledger.get('entries') or []:
+              if entry.get('accepted') is True:
+                  amount=Decimal(str(entry.get('dev_ai_cost_usd') or '0'))
+                  if amount < 0: raise SystemExit('negative accepted development cost')
+                  accepted += amount
+          remaining=INITIAL_OPENAI_DEV_ENVELOPE_USD-accepted
+          if remaining < 0: raise SystemExit('accepted development cost already exceeds envelope')
+
           if route.execution_route=='G0':
-              hard=Decimal('0')
               if requested!=0: raise SystemExit('G0 request must use $0 budget')
           elif route.execution_route=='G4':
               if route.owner_approval_required: raise SystemExit('Astra route requires explicit astra_authorized=true in task descriptor')
               if requested<=0 or requested>Decimal('3.00'): raise SystemExit('Astra task budget must be >0 and <=$3 for this workflow')
-              hard=requested
           else:
               hard=Decimal(route.hard_cap_usd or '0')
               if requested<=0 or requested>hard: raise SystemExit(f'requested budget ${requested} exceeds route hard cap ${hard}')
-          manifest={'request_id':req['request_id'],'task_id':req['task_id'],'route':route.to_dict(),'requested_budget_usd':str(requested),'base_sha':'${{ steps.admit.outputs.base_sha }}','provider_call_performed':False}
+          if requested > remaining:
+              raise SystemExit(f'requested budget ${requested} exceeds remaining accepted development envelope ${remaining}')
+
+          manifest={
+              'request_id':req['request_id'],'task_id':req['task_id'],'created_at':req['created_at'],
+              'route':route.to_dict(),'requested_budget_usd':str(requested),
+              'accepted_dev_ai_cost_before_run_usd':str(accepted),'remaining_envelope_before_run_usd':str(remaining),
+              'base_sha':'${{ steps.admit.outputs.base_sha }}','provider_call_performed':False,
+          }
           Path('/tmp/dilivox-dev-route.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               f.write('execution_route='+route.execution_route+'\n')
@@ -100,6 +131,8 @@ jobs:
           print('DILIVOX_DEV_ROUTE='+route.execution_route)
           print('MODEL='+(route.model_route or 'none'))
           print('BUDGET_USD='+str(requested))
+          print('DEV_AI_COST_ACCEPTED_USD='+str(accepted))
+          print('DEV_ENVELOPE_REMAINING_USD='+str(remaining))
           PY
 
       - name: Stop paid workflow cleanly for G0
@@ -132,7 +165,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # /tmp survives checkout steps on the same runner.
           python - <<'PY'
           import json
           from pathlib import Path
@@ -252,6 +284,7 @@ jobs:
               budget=json.loads(Path('/tmp/dilivox-dev-budget.json').read_text())
           route['provider_call_performed']=bool(budget.get('requests',0))
           route['budget_health']=budget
+          route['cost_accounting_basis']='CONSERVATIVE_RESERVED_UPPER_BOUND_UNTIL_LEDGER_RECONCILIATION'
           route['changed_paths']=Path('/tmp/dilivox-changed-paths.txt').read_text().splitlines() if Path('/tmp/dilivox-changed-paths.txt').exists() else []
           route['github_run_id']=os.environ.get('GITHUB_RUN_ID')
           route['github_sha']=os.environ.get('GITHUB_SHA')
