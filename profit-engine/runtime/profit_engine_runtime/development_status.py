@@ -100,6 +100,15 @@ def _load_cost_ledger() -> tuple[float, str, int]:
         return 0.0, "LEDGER_INVALID", 0
 
 
+def _source_path(path: Path) -> str:
+    try:
+        return path.relative_to(PROFIT_ENGINE_ROOT).as_posix()
+    except ValueError:
+        # Unit tests may inject a temporary request directory. Production still
+        # uses the canonical DEV_REQUEST_DIR rooted below PROFIT_ENGINE_ROOT.
+        return path.name
+
+
 def _load_latest_request() -> dict[str, Any] | None:
     if not DEV_REQUEST_DIR.exists():
         return None
@@ -126,7 +135,7 @@ def _load_latest_request() -> dict[str, Any] | None:
                 "routing_reason": route.routing_reason,
                 "why_not_cheaper": route.why_not_cheaper,
                 "owner_approval_required": route.owner_approval_required,
-                "source_path": path.relative_to(PROFIT_ENGINE_ROOT).as_posix(),
+                "source_path": _source_path(path),
             }))
         except (OSError, KeyError, ValueError, TypeError, json.JSONDecodeError):
             continue
