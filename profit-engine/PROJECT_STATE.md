@@ -8,6 +8,7 @@ Operational authority: `profit-engine/P0_SYSTEM_COMPLETION_BOARD.md`
 Adaptive authority: `profit-engine/PROFIT_ENGINE_AUTHORITY.md` v0.4
 Adaptive execution project: `profit-engine/ADAPTIVE_FUNNEL_EXECUTION_PROJECT.md`
 Owner Panel contract: `profit-engine/DILIVOX_OWNER_CONTROL_PANEL_REQUIREMENTS.md`
+Development FinOps: `profit-engine/DEVELOPMENT_FINOPS_POLICY.md`
 Tracking issue: `#19 — Profit Engine Task 012 — Live guarded production launch`
 
 ## Objective
@@ -30,7 +31,13 @@ GitHub is source of truth. Distinguish `DESIGNED`, `CODE_READY`, `LIVE_PROVIDER_
 
 Codex/OpenAI API is development tooling only under `CODEX_DEVELOPMENT_ONLY_POLICY.md`. It may implement bounded tasks but does not participate in production visitor routing or commercial decision-making.
 
-Astra is not required to begin the current execution plan. A future independent architecture/review pass may be used only as a bounded review when justified; it is not a mandatory runtime or per-task dependency.
+Development routing is `QUALITY-FIRST / COST-AWARE` under `DEVELOPMENT_FINOPS_POLICY.md`: use the least expensive route that is fully sufficient for the required quality and risk level. There is no requirement to try a free route first. If the task genuinely requires Codex, Codex is used directly; if complexity/risk justifies Sol, Sol may be selected directly inside the approved development envelope.
+
+Initial shared OpenAI development envelope for AF-0/AF-1/AF-2 + executor + read-only Owner Panel slices:
+
+`INITIAL_OPENAI_DEV_ENVELOPE_USD = 10.00`.
+
+Astra is not required to begin the current execution plan and is OFF by default. A future independent architecture/review pass may be used only as a bounded review when justified; without a separately approved Astra envelope, Astra use is an Owner Gate.
 
 ## Locked governance
 
@@ -46,7 +53,10 @@ Astra is not required to begin the current execution plan. A future independent 
 - no motivated/artificial/incentivized traffic or ad clicks;
 - optional paid features require `FEATURE_ROI >= 3.0` before scale;
 - Adaptive Funnel default production path is rule-based and must work without an LLM;
-- Codex is development-only.
+- Codex is development-only;
+- development cost optimization may not reduce quality or knowingly create repair-heavy work;
+- normal bounded Luna/Terra/Sol work inside the approved development envelope is not itself an Owner Gate;
+- hard development envelope exhaustion is an Owner Gate before additional paid work.
 
 ## Live provider state — latest recorded evidence
 
@@ -142,6 +152,8 @@ Panel implementation contract:
 Implementation task:
 `profit-engine/tasks/TASK-020-OWNER-CONTROL-PANEL-V2.md`.
 
+Owner Control V2 must also expose Development FinOps separately from production economics: selected execution/model route, routing reason, why-not-cheaper, quality floor, hard cap, actual `DEV_AI_COST`, shared envelope, remaining balance, 80% warning and Astra enabled/disabled state.
+
 ## Production Direct writer
 
 Accepted in code in the prior P0 state; no live Direct mutation is asserted here as having been sent.
@@ -168,7 +180,8 @@ Authority/policy:
 - `PROFIT_ENGINE_AUTHORITY.md` v0.4;
 - `ADAPTIVE_FUNNEL_IMPLEMENTATION_PLAN.md`;
 - `EKSAMIO_PATTERN_ADOPTION_FOR_ADAPTIVE_FUNNEL.md`;
-- `ADAPTIVE_FUNNEL_EXECUTION_PROJECT.md`.
+- `ADAPTIVE_FUNNEL_EXECUTION_PROJECT.md`;
+- `DEVELOPMENT_FINOPS_POLICY.md`.
 
 Execution packages:
 - `AF-0` measurement truth — Tasks 013 + 015;
@@ -177,7 +190,7 @@ Execution packages:
 - `AF-3` bounded rule-based production experiment — Task 018;
 - `AF-4` economic evaluation/Feature ROI — Task 019;
 - cross-cutting whole-project Owner Panel V2 — Task 020;
-- bounded Codex development executor — Task 021.
+- bounded quality-first Codex development executor — Task 021.
 
 New task specs:
 - `tasks/TASK-016-ADAPTIVE-BASELINE-CONTENT-MAP.md`;
@@ -191,6 +204,28 @@ Tasks 016, 017, 020 read-only/project slices and 021 may be developed before liv
 
 Task 018 production experiment is blocked until the relevant AF-0 live instrumentation/privacy/endpoint gates pass.
 Task 019 requires real Task 018 evidence and reconciled money.
+
+## Development execution routing — CURRENT OWNER DECISION
+
+Canonical priority:
+
+`QUALITY & CORRECTNESS -> DELIVERY SPEED -> COST EFFICIENCY -> MODEL MINIMIZATION`.
+
+Routes:
+- `G0`: GitHub-native/deterministic when fully sufficient, OpenAI `$0`;
+- `G1`: Luna for small bounded reasoning/code work;
+- `G2`: Terra as default paid developer for normal engineering;
+- `G3`: Sol for genuinely complex/high-consequence engineering;
+- `G4`: Astra exceptional/explicit only.
+
+There is no mandatory `G0 -> G1 -> G2 -> G3` ladder. A task may start directly on the minimum sufficient route.
+
+Examples for current lane:
+- Task 016: mostly G0, with bounded model assistance only where metadata cannot be derived deterministically;
+- Task 017: G2/Terra by default;
+- Task 015 endpoint/idempotency/security slices: G2 or G3 according to exact risk;
+- Direct/money/reconciliation safety logic: G3/Sol review where materially justified;
+- Astra: only separately justified architecture/critical review.
 
 ## Content scale direction
 
@@ -219,10 +254,10 @@ Dilivox-specific economics override generic market popularity.
 5. Privacy v2 + Task 015 first-party endpoint acceptance.
 
 ### Lane B — parallel Adaptive development that is safe before live gates
-1. Task 021 bounded Codex development executor;
+1. Task 021 bounded quality-first development executor;
 2. Task 016 baseline content map;
 3. Task 017 NextContentDecision core;
-4. Task 020 Owner Panel V2 slices 1-4: whole-project board, status model, views, truth semantics.
+4. Task 020 Owner Panel V2 slices 1-4: whole-project board, status model, views, truth semantics, Development FinOps view.
 
 ### Lane C — only after AF-0 live acceptance
 1. Task 018 bounded rule-based production experiment;
