@@ -53,8 +53,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <key>CFBundleName</key><string>Profit Engine</string>
 <key>CFBundleDisplayName</key><string>Profit Engine</string>
 <key>CFBundleIdentifier</key><string>ru.dilivox.profit-engine</string>
-<key>CFBundleVersion</key><string>1</string>
-<key>CFBundleShortVersionString</key><string>0.1</string>
+<key>CFBundleVersion</key><string>2</string>
+<key>CFBundleShortVersionString</key><string>0.2</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleExecutable</key><string>ProfitEngine</string>
 <key>LSMinimumSystemVersion</key><string>12.0</string>
@@ -72,12 +72,11 @@ if /usr/bin/curl -fsS "$URL/api/snapshot" >/dev/null 2>&1; then
 fi
 cd "$ROOT"
 export PYTHONPATH="$ROOT/profit-engine/runtime"
-exec /usr/bin/env python3 -m profit_engine_runtime.control_panel --open
+exec /usr/bin/env python3 -m profit_engine_runtime.owner_control_v2 --open
 SH
 chmod 755 "$APP/Contents/MacOS/ProfitEngine"
 
-# Fail before Finder/open if the bundle contract is broken. This guards the exact
-# defect that previously produced "application cannot be opened because its executable is missing".
+# Fail before Finder/open if the bundle contract is broken.
 if [[ ! -x "$APP/Contents/MacOS/ProfitEngine" ]]; then
   echo "BLOCKED_CONTROL_PANEL_BUNDLE: executable is missing or not executable." >&2
   exit 2
@@ -92,18 +91,18 @@ fi
 
 printf '\nINSTALLED: %s\n' "$APP"
 printf 'LOCAL URL: http://127.0.0.1:8765\n'
+printf 'OWNER CONTROL: V2 / DEVELOPMENT VISIBILITY ON\n'
 printf 'PROVIDER WRITES FROM PANEL: LOCKED / 0\n'
 
 # An already-running panel has loaded the previous Python/HTML code into memory.
-# Stop only this exact module before opening the freshly installed version. This
-# is an upgrade/reload action only; it has no provider side effects.
-old_panel_pids="$(pgrep -f 'profit_engine_runtime[.]control_panel' || true)"
+# Stop either exact legacy or V2 panel before opening the freshly installed version.
+old_panel_pids="$(pgrep -f 'profit_engine_runtime[.](control_panel|owner_control_v2)' || true)"
 if [[ -n "$old_panel_pids" ]]; then
   while IFS= read -r pid; do
     [[ -n "$pid" ]] && kill "$pid" 2>/dev/null || true
   done <<< "$old_panel_pids"
   for _ in {1..20}; do
-    pgrep -f 'profit_engine_runtime[.]control_panel' >/dev/null 2>&1 || break
+    pgrep -f 'profit_engine_runtime[.](control_panel|owner_control_v2)' >/dev/null 2>&1 || break
     sleep 0.05
   done
 fi
