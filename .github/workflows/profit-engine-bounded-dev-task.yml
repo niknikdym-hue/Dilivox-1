@@ -1,0 +1,310 @@
+name: Profit Engine Bounded Dev Task
+run-name: DILIVOX bounded dev · ${{ github.sha }}
+
+on:
+  push:
+    branches:
+      - profit-engine
+      - brain/task-021-quality-first-dev-executor
+    paths:
+      - 'profit-engine/dev-requests/*.json'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: dilivox-bounded-dev-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONPATH: profit-engine/runtime
+    steps:
+      - name: Require owner-controlled push before any paid work
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTOR" = 'niknikdym-hue' || { echo 'Only repository owner may start a DILIVOX bounded development request.'; exit 1; }
+
+      - name: Checkout request commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Admit exactly one bounded request and freeze base
+        id: admit
+        shell: bash
+        run: |
+          set -euo pipefail
+          all_changed="$(git diff-tree --no-commit-id --name-only -r HEAD | awk 'NF')"
+          test "$(printf '%s\n' "$all_changed" | awk 'NF{n++} END{print n+0}')" = 1 || { echo 'A development-request trigger commit must change exactly one file.'; printf '%s\n' "$all_changed"; exit 1; }
+          request_path="$(printf '%s\n' "$all_changed" | awk '/^profit-engine\/dev-requests\/.*\.json$/{print}')"
+          test -n "$request_path" || { echo 'The only changed file must be one profit-engine/dev-requests/*.json request.'; exit 1; }
+          test -f "$request_path"
+          cp "$request_path" /tmp/dilivox-dev-request.json
+          python - <<'PY'
+          import json, os, subprocess
+          from datetime import datetime
+          from pathlib import Path
+          req=json.loads(Path('/tmp/dilivox-dev-request.json').read_text())
+          required={'request_id','created_at','task_id','task_file','base_sha','task_budget_usd','execute','allowed_paths','check_profiles','task_descriptor'}
+          missing=sorted(required-set(req))
+          if missing: raise SystemExit(f'missing request fields: {missing}')
+          if req['execute'] is not True: raise SystemExit('execute must be true; non-execution templates do not belong in dev-requests')
+          try:
+              datetime.fromisoformat(str(req['created_at']).replace('Z','+00:00'))
+          except ValueError as exc:
+              raise SystemExit('created_at must be ISO-8601') from exc
+          if not isinstance(req['allowed_paths'],list) or not req['allowed_paths']: raise SystemExit('allowed_paths must be non-empty list')
+          if len(req['allowed_paths'])>12: raise SystemExit('allowed_paths exceeds 12')
+          allowed_checks={'runtime_unit','node_tests','json_validate','diff_check','router_tests'}
+          checks=req['check_profiles']
+          if not isinstance(checks,list) or not checks or not set(checks)<=allowed_checks: raise SystemExit('unsupported/empty check profile')
+          parent=subprocess.check_output(['git','rev-parse','HEAD^'],text=True).strip()
+          requested=str(req['base_sha']).strip()
+          if requested!=parent: raise SystemExit(f'base_sha must equal request parent: {parent}')
+          task_file=Path(req['task_file'])
+          subprocess.run(['git','show',f'{parent}:{task_file.as_posix()}'],check=True,stdout=subprocess.DEVNULL)
+          Path('/tmp/dilivox-base-sha.txt').write_text(parent+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('base_sha='+parent+'\n')
+              f.write('request_id='+str(req['request_id'])+'\n')
+              f.write('task_id='+str(req['task_id'])+'\n')
+          print('DILIVOX_DEV_REQUEST_ADMITTED='+str(req['request_id']))
+          print('BASE_SHA='+parent)
+          PY
+
+      - name: Route by quality floor and enforce cumulative envelope before any paid call
+        id: route
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from decimal import Decimal
+          from pathlib import Path
+          from profit_engine_runtime.development_router import INITIAL_OPENAI_DEV_ENVELOPE_USD, classify_task
+          req=json.loads(Path('/tmp/dilivox-dev-request.json').read_text())
+          descriptor=dict(req['task_descriptor'])
+          descriptor.setdefault('task_id',req['task_id'])
+          route=classify_task(descriptor)
+          requested=Decimal(str(req['task_budget_usd']))
+
+          ledger=json.loads(Path('profit-engine/data/development-cost-ledger.json').read_text())
+          if ledger.get('schema_version')!='dilivox-dev-cost-ledger-v1': raise SystemExit('development cost ledger version mismatch')
+          accepted=Decimal('0')
+          for entry in ledger.get('entries') or []:
+              if entry.get('accepted') is True:
+                  amount=Decimal(str(entry.get('dev_ai_cost_usd') or '0'))
+                  if amount < 0: raise SystemExit('negative accepted development cost')
+                  accepted += amount
+          remaining=INITIAL_OPENAI_DEV_ENVELOPE_USD-accepted
+          if remaining < 0: raise SystemExit('accepted development cost already exceeds envelope')
+
+          if route.execution_route=='G0':
+              if requested!=0: raise SystemExit('G0 request must use $0 budget')
+          elif route.execution_route=='G4':
+              if route.owner_approval_required: raise SystemExit('Astra route requires explicit astra_authorized=true in task descriptor')
+              if requested<=0 or requested>Decimal('3.00'): raise SystemExit('Astra task budget must be >0 and <=$3 for this workflow')
+          else:
+              hard=Decimal(route.hard_cap_usd or '0')
+              if requested<=0 or requested>hard: raise SystemExit(f'requested budget ${requested} exceeds route hard cap ${hard}')
+          if requested > remaining:
+              raise SystemExit(f'requested budget ${requested} exceeds remaining accepted development envelope ${remaining}')
+
+          manifest={
+              'request_id':req['request_id'],'task_id':req['task_id'],'created_at':req['created_at'],
+              'route':route.to_dict(),'requested_budget_usd':str(requested),
+              'accepted_dev_ai_cost_before_run_usd':str(accepted),'remaining_envelope_before_run_usd':str(remaining),
+              'base_sha':'${{ steps.admit.outputs.base_sha }}','provider_call_performed':False,
+          }
+          Path('/tmp/dilivox-dev-route.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('execution_route='+route.execution_route+'\n')
+              f.write('model='+(route.model_route or 'none')+'\n')
+              f.write('budget='+str(requested)+'\n')
+          print('DILIVOX_DEV_ROUTE='+route.execution_route)
+          print('MODEL='+(route.model_route or 'none'))
+          print('BUDGET_USD='+str(requested))
+          print('DEV_AI_COST_ACCEPTED_USD='+str(accepted))
+          print('DEV_ENVELOPE_REMAINING_USD='+str(remaining))
+          PY
+
+      - name: Stop paid workflow cleanly for G0
+        if: ${{ steps.route.outputs.execution_route == 'G0' }}
+        shell: bash
+        run: |
+          echo 'DILIVOX_DEV_RESULT=FREE_ROUTE_REQUIRED'
+          echo 'This task should be executed deterministically; no OpenAI call was made.'
+
+      - name: Verify API key for paid route without exposing value
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${OPENAI_API_KEY:-}" || { echo 'OPENAI_API_KEY=MISSING'; exit 1; }
+          echo 'OPENAI_API_KEY=CONFIGURED'
+
+      - name: Checkout frozen code base
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.admit.outputs.base_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Restore request and compose bounded prompt
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path('/tmp/dilivox-dev-request.json').read_text())
+          task_text=Path(req['task_file']).read_text(encoding='utf-8')
+          prompt={
+              'task_id':req['task_id'],
+              'task_contract':task_text,
+              'allowed_paths':req['allowed_paths'],
+              'quality_floor':req['task_descriptor'].get('quality_floor','production-grade'),
+              'rules':[
+                  'Solve exactly this bounded development task.',
+                  'Do not choose or reprioritize project tasks.',
+                  'Only modify paths covered by allowed_paths.',
+                  'Do not merge, deploy, publish Tilda, mutate production/provider state, or expose secrets.',
+                  'Do not call external paid APIs yourself.',
+                  'Leave a reviewable workspace diff and update/add deterministic tests where appropriate.',
+              ],
+          }
+          Path('/tmp/dilivox-codex-prompt.txt').write_text(json.dumps(prompt,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Start hard budget proxy
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DILIVOX_DEV_TASK_BUDGET_USD: ${{ steps.route.outputs.budget }}
+          DILIVOX_DEV_ALLOWED_MODELS: ${{ steps.route.outputs.model }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          keyfile="$(mktemp)"
+          printf '%s' "$OPENAI_API_KEY" > "$keyfile"
+          chmod 600 "$keyfile"
+          bash -c "cat '$keyfile' | env -u OPENAI_API_KEY DILIVOX_DEV_TASK_BUDGET_USD='$DILIVOX_DEV_TASK_BUDGET_USD' DILIVOX_DEV_ALLOWED_MODELS='$DILIVOX_DEV_ALLOWED_MODELS' node '$PWD/profit-engine/runtime/dev_budget_proxy.mjs' >/tmp/dilivox-dev-budget-proxy.log 2>&1 &"
+          rm -f "$keyfile"
+          for _ in {1..20}; do curl -fsS http://127.0.0.1:8787/health >/dev/null && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8787/health
+
+      - name: API-Codex executes bounded task
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          responses-api-endpoint: http://127.0.0.1:8787/v1/responses
+          prompt-file: /tmp/dilivox-codex-prompt.txt
+          output-file: /tmp/dilivox-codex-output.txt
+          model: ${{ steps.route.outputs.model }}
+          effort: medium
+          permission-profile: ':workspace'
+          safety-strategy: drop-sudo
+          allow-bots: true
+          codex-args: '["--ephemeral"]'
+
+      - name: Validate changed paths before checks
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -N -- . || true
+          git diff --no-ext-diff --name-only > /tmp/dilivox-changed-paths.txt
+          git diff --no-ext-diff --binary > /tmp/dilivox-candidate.patch
+          test -s /tmp/dilivox-candidate.patch || { echo 'Codex produced no patch'; exit 1; }
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path('/tmp/dilivox-dev-request.json').read_text())
+          allowed=[str(x).rstrip('/') for x in req['allowed_paths']]
+          changed=[x.strip() for x in Path('/tmp/dilivox-changed-paths.txt').read_text().splitlines() if x.strip()]
+          if len(changed)>12: raise SystemExit(f'too many changed paths: {len(changed)}')
+          bad=[p for p in changed if not any(p==a or p.startswith(a+'/') for a in allowed)]
+          if bad: raise SystemExit(f'out-of-scope paths: {bad}')
+          print('DILIVOX_DEV_SCOPE=PASS')
+          print('CHANGED_PATHS='+','.join(changed))
+          PY
+
+      - name: Run allowlisted trusted checks
+        if: ${{ steps.route.outputs.execution_route != 'G0' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          checks="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(' '.join(json.loads(Path('/tmp/dilivox-dev-request.json').read_text())['check_profiles']))
+          PY
+          )"
+          for check in $checks; do
+            case "$check" in
+              runtime_unit) python -m unittest discover -s profit-engine/runtime/tests -v ;;
+              router_tests) python -m unittest profit-engine/runtime/tests/test_development_router.py -v ;;
+              node_tests) node --test profit-engine/sites/dilivox/tests/*.test.cjs ;;
+              json_validate) python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in Path('profit-engine').rglob('*.json'):
+              json.loads(path.read_text(encoding='utf-8'))
+          print('JSON_VALIDATE=PASS')
+          PY
+              ;;
+              diff_check) git diff --check ;;
+              *) echo "unsupported check: $check"; exit 1 ;;
+            esac
+          done
+          curl -fsS http://127.0.0.1:8787/health > /tmp/dilivox-dev-budget.json
+
+      - name: Finalize auditable result manifest
+        if: ${{ always() && steps.route.outputs.execution_route != 'G0' }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          route=json.loads(Path('/tmp/dilivox-dev-route.json').read_text())
+          budget={}
+          if Path('/tmp/dilivox-dev-budget.json').exists():
+              budget=json.loads(Path('/tmp/dilivox-dev-budget.json').read_text())
+          route['provider_call_performed']=bool(budget.get('requests',0))
+          route['budget_health']=budget
+          route['cost_accounting_basis']='CONSERVATIVE_RESERVED_UPPER_BOUND_UNTIL_LEDGER_RECONCILIATION'
+          route['changed_paths']=Path('/tmp/dilivox-changed-paths.txt').read_text().splitlines() if Path('/tmp/dilivox-changed-paths.txt').exists() else []
+          route['github_run_id']=os.environ.get('GITHUB_RUN_ID')
+          route['github_sha']=os.environ.get('GITHUB_SHA')
+          route['auto_merge']=False
+          route['auto_deploy']=False
+          route['provider_writes']=False
+          Path('/tmp/dilivox-dev-result.json').write_text(json.dumps(route,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Upload bounded result
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dilivox-dev-${{ steps.admit.outputs.request_id }}-${{ github.run_id }}
+          path: |
+            /tmp/dilivox-dev-request.json
+            /tmp/dilivox-dev-route.json
+            /tmp/dilivox-dev-result.json
+            /tmp/dilivox-candidate.patch
+            /tmp/dilivox-codex-output.txt
+            /tmp/dilivox-dev-budget.json
+          if-no-files-found: warn
+          retention-days: 30

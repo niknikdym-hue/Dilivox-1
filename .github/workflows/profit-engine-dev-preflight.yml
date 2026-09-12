@@ -1,0 +1,120 @@
+name: Profit Engine Dev Preflight
+run-name: DILIVOX dev preflight · ${{ github.ref_name }}
+
+on:
+  push:
+    branches:
+      - profit-engine
+      - brain/task-021-quality-first-dev-executor
+  pull_request:
+    branches:
+      - profit-engine
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: profit-engine/runtime
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Development router tests
+        run: python -m unittest profit-engine/runtime/tests/test_development_router.py -v
+
+      - name: Budget proxy self-test
+        run: node profit-engine/runtime/dev_budget_proxy.mjs --self-test
+
+      - name: Confirm quality-first policy invariants
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          policy = Path('profit-engine/DEVELOPMENT_FINOPS_POLICY.md').read_text(encoding='utf-8')
+          task = Path('profit-engine/tasks/TASK-021-CODEX-DEVELOPMENT-EXECUTOR.md').read_text(encoding='utf-8')
+          assert 'QUALITY-FIRST / COST-AWARE' in policy
+          assert 'There is no requirement to attempt G0 first.' in policy
+          assert 'INITIAL_OPENAI_DEV_ENVELOPE_USD = 10.00' in task
+          assert 'no automatic merge' in task.lower()
+          print('DILIVOX_DEV_POLICY_STATIC=PASS')
+          PY
+
+      - name: Diff whitespace check
+        run: git diff --check HEAD^ HEAD || git diff --check
+
+  api-key-preflight:
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    needs: static
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify OPENAI_API_KEY presence without exposing it
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${OPENAI_API_KEY:-}" || { echo 'DILIVOX_OPENAI_API_KEY=MISSING'; exit 1; }
+          echo 'DILIVOX_OPENAI_API_KEY=CONFIGURED'
+
+      - name: Write non-secret preflight manifest
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          assert os.environ.get('OPENAI_API_KEY')
+          value = {
+              'schema_version': 'dilivox-dev-preflight-v1',
+              'api_key_configured': True,
+              'provider_call_performed': False,
+              'openai_dev_envelope_usd': '10.00',
+              'default_package_hard_cap_usd': '3.00',
+              'routes': {
+                  'G0': 'github_native',
+                  'G1': 'gpt-5.6-luna',
+                  'G2': 'gpt-5.6-terra',
+                  'G3': 'gpt-5.6-sol',
+                  'G4': 'gpt-6-astra_owner_opt_in',
+              },
+              'quality_first': True,
+              'auto_paid_retry': False,
+              'auto_merge': False,
+              'auto_deploy': False,
+              'repository': os.environ.get('GITHUB_REPOSITORY'),
+              'ref': os.environ.get('GITHUB_REF_NAME'),
+              'sha': os.environ.get('GITHUB_SHA'),
+              'run_id': os.environ.get('GITHUB_RUN_ID'),
+          }
+          Path('/tmp/dilivox-dev-preflight.json').write_text(json.dumps(value, indent=2, sort_keys=True) + '\n')
+          print('DILIVOX_DEV_PREFLIGHT=READY_NO_PAID_CALL')
+          PY
+
+      - name: Upload preflight manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: dilivox-dev-preflight-${{ github.run_id }}
+          path: /tmp/dilivox-dev-preflight.json
+          if-no-files-found: error
+          retention-days: 30
