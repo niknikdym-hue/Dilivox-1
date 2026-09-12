@@ -4,10 +4,11 @@ set -euo pipefail
 REPO_URL="https://github.com/niknikdym-hue/Dilivox-1.git"
 INSTALL_ROOT="$HOME/.local/share/profit-engine"
 INSTALL_REPO="$INSTALL_ROOT/Dilivox-1"
-APP="$HOME/Applications/Profit Engine.app"
+APP="$HOME/Desktop/Profit Engine.app"
+LEGACY_APP="$HOME/Applications/Profit Engine.app"
 CONFIG="$HOME/.config/profit-engine/sites/dilivox.json"
 
-mkdir -p "$INSTALL_ROOT" "$HOME/Applications"
+mkdir -p "$INSTALL_ROOT" "$HOME/Applications" "$HOME/Desktop"
 
 # The install repo is a managed local runtime mirror. Reuse it on upgrades so a
 # bootstrap retry does not download the full repository again after a UI-only fix.
@@ -44,6 +45,9 @@ if [[ ! -f "$CONFIG" ]]; then
 fi
 chmod 600 "$CONFIG"
 
+# The real application bundle lives on Desktop so the Owner has one normal,
+# double-clickable Profit Engine.app. ~/Applications keeps only a compatibility
+# symlink to the same bundle; there is never a second application/backend copy.
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cat > "$APP/Contents/Info.plist" <<'PLIST'
@@ -146,7 +150,14 @@ if command -v /usr/libexec/PlistBuddy >/dev/null 2>&1; then
   fi
 fi
 
+# Preserve the historical ~/Applications entry only as a symlink to the one
+# real Desktop app. This also replaces the previous installed copy after the
+# new Desktop bundle has passed validation.
+rm -rf "$LEGACY_APP"
+ln -s "$APP" "$LEGACY_APP"
+
 printf '\nINSTALLED: %s\n' "$APP"
+printf 'COMPATIBILITY LINK: %s -> %s\n' "$LEGACY_APP" "$APP"
 printf 'PROFIT WINDOW: http://127.0.0.1:8765/profit\n'
 printf 'PROJECT WINDOW: http://127.0.0.1:8765/project\n'
 printf 'OWNER CONTROL: ONE APP / ONE BACKEND / TWO WINDOWS\n'
