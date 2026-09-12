@@ -1,6 +1,6 @@
 # PROFIT ENGINE — PROJECT STATE
 
-Status: P0 SYSTEM COMPLETION / SITE PUBLICATION + MONEY REVIEW / ADAPTIVE EXECUTION READY
+Status: P0 SYSTEM COMPLETION / SITE PUBLICATION + MONEY REVIEW / OWNER CONTROL ACCEPTED / ADAPTIVE EXECUTION READY
 Updated: 2026-09-12
 Canonical public branch: `profit-engine`
 Private core branch: `main`
@@ -33,7 +33,7 @@ Codex/OpenAI API is development tooling only under `CODEX_DEVELOPMENT_ONLY_POLIC
 
 Development routing is `QUALITY-FIRST / COST-AWARE` under `DEVELOPMENT_FINOPS_POLICY.md`: use the least expensive route that is fully sufficient for the required quality and risk level. There is no requirement to try a free route first. If the task genuinely requires Codex, Codex is used directly; if complexity/risk justifies Sol, Sol may be selected directly inside the approved development envelope.
 
-Initial shared OpenAI development envelope for AF-0/AF-1/AF-2 + executor + read-only Owner Panel slices:
+Initial shared OpenAI development envelope for AF-0/AF-1/AF-2 + executor + Owner Control work:
 
 `INITIAL_OPENAI_DEV_ENVELOPE_USD = 10.00`.
 
@@ -129,30 +129,61 @@ The Owner publication step remains: keep the existing counter and `DILIVOX_SYSTE
 
 First-party event dispatch remains disabled until Privacy v2 + Task 015 endpoint acceptance.
 
-## Local control panel
+## Owner Control — TASK 020 + TASK 021 ACCEPTED IN CANONICAL CODE
 
-Existing implementation:
-`profit-engine/runtime/profit_engine_runtime/control_panel.py`.
+Task 021 development control plane was accepted first. Task 020 Full Owner Control was then Central-Brain reviewed and merged through PR #22.
 
-Installed local app was recorded at `~/Applications/Profit Engine.app`.
+Task 020 accepted merge SHA:
 
-Current design properties:
-- Russian UI;
-- localhost only `127.0.0.1:8765`;
-- money-first K5/spend/revenue view;
-- owner advice;
-- provider-write endpoints absent from ordinary panel operation;
-- writer state recorded as `LOCKED` in the prior snapshot model.
+`262ac109bc3dcf1d6b50638d6142e5c8f5adae90`.
 
-Owner-approved direction on 2026-09-12: extend this existing app into the single whole-project Owner Control V2. Do not create a second Adaptive Funnel owner app or second task database.
+Canonical acceptance evidence:
 
-Panel implementation contract:
-`profit-engine/DILIVOX_OWNER_CONTROL_PANEL_REQUIREMENTS.md`.
+`profit-engine/evidence/TASK-020-OWNER-CONTROL-FULL-ACCEPTED-2026-09-12.md`.
 
-Implementation task:
-`profit-engine/tasks/TASK-020-OWNER-CONTROL-PANEL-V2.md`.
+The accepted product contract is:
 
-Owner Control V2 must also expose Development FinOps separately from production economics: selected execution/model route, routing reason, why-not-cheaper, quality floor, hard cap, actual `DEV_AI_COST`, shared envelope, remaining balance, 80% warning and Astra enabled/disabled state.
+- exactly one `Profit Engine.app`;
+- exactly one localhost backend on `127.0.0.1:8765`;
+- two separate top-level windows/routes:
+  - `/profit` — `Пульт прибыли`;
+  - `/project` — `DILIVOX — Управление проектом`;
+- GitHub remains durable source of truth and execution plane;
+- ordinary Owner development work is controlled from `/project`, not by manually navigating GitHub web UI;
+- no second mutable task database;
+- provider writes/Tilda/deploy/production-AI authority are not granted by generic panel controls.
+
+`/project` includes:
+
+- stages A-E;
+- Critical Path;
+- Whole Project;
+- Adaptive Funnel;
+- Content;
+- Providers & Compliance;
+- Owner Gates;
+- Development;
+- History;
+- Start selected / Start next / package 1-5 / Pause / Resume / Stop / Refresh;
+- quality-first route/model visibility;
+- Development FinOps (`DEV_AI_COST`, hard cap, reserved vs actual, remaining envelope);
+- exact task/scope/SHA Owner Gate decisions.
+
+The free end-to-end G0 smoke passed with zero OpenAI provider calls and zero DEV_AI_COST. Post-merge canonical CI and API-key preflight also passed.
+
+### Desktop installation contract
+
+Canonical installer now installs the one real bundle to:
+
+`~/Desktop/Profit Engine.app`.
+
+The historical path:
+
+`~/Applications/Profit Engine.app`
+
+is only a compatibility symlink to that same Desktop bundle.
+
+Important: this state records that the installer/code is accepted. It does **not** claim the Owner's Mac has already installed this post-merge build. One local update/install is still required before the new Desktop button and two-window Owner Control are physically present on the Owner's Mac.
 
 ## Production Direct writer
 
@@ -189,10 +220,10 @@ Execution packages:
 - `AF-2` formal routing core — Task 017;
 - `AF-3` bounded rule-based production experiment — Task 018;
 - `AF-4` economic evaluation/Feature ROI — Task 019;
-- cross-cutting whole-project Owner Panel V2 — Task 020;
-- bounded quality-first Codex development executor — Task 021.
+- cross-cutting whole-project Owner Panel — Task 020 — `CODE_READY / CENTRAL_BRAIN_ACCEPTED`;
+- bounded quality-first Codex development executor — Task 021 — `CODE_READY / CONTROL_PLANE_ACCEPTED`.
 
-New task specs:
+Task specs:
 - `tasks/TASK-016-ADAPTIVE-BASELINE-CONTENT-MAP.md`;
 - `tasks/TASK-017-NEXT-CONTENT-DECISION-CORE.md`;
 - `tasks/TASK-018-RULE-BASED-ADAPTIVE-EXPERIMENT.md`;
@@ -200,8 +231,7 @@ New task specs:
 - `tasks/TASK-020-OWNER-CONTROL-PANEL-V2.md`;
 - `tasks/TASK-021-CODEX-DEVELOPMENT-EXECUTOR.md`.
 
-Tasks 016, 017, 020 read-only/project slices and 021 may be developed before live AF-0 acceptance.
-
+Tasks 016 and 017 may be developed before live AF-0 acceptance.
 Task 018 production experiment is blocked until the relevant AF-0 live instrumentation/privacy/endpoint gates pass.
 Task 019 requires real Task 018 evidence and reconciled money.
 
@@ -221,7 +251,7 @@ Routes:
 There is no mandatory `G0 -> G1 -> G2 -> G3` ladder. A task may start directly on the minimum sufficient route.
 
 Examples for current lane:
-- Task 016: mostly G0, with bounded model assistance only where metadata cannot be derived deterministically;
+- Task 016: mostly deterministic/low-cost work, with bounded model assistance only where metadata/code synthesis actually requires it;
 - Task 017: G2/Terra by default;
 - Task 015 endpoint/idempotency/security slices: G2 or G3 according to exact risk;
 - Direct/money/reconciliation safety logic: G3/Sol review where materially justified;
@@ -246,23 +276,26 @@ Dilivox-specific economics override generic market popularity.
 
 ## Current execution order
 
+### Immediate local Owner step — install accepted Owner Control build
+
+Run the accepted canonical installer once so the Owner's Mac receives the current Desktop `Profit Engine.app`. This is local application installation only; it does not deploy or mutate the public site/providers.
+
 ### Lane A — close live Profit Engine truth
 1. Task 013: publish/live-verify the minimal Tilda instrumentation bridge;
 2. refresh/review exact money preflight outcomes;
 3. prepare any reversible Direct smoke only under existing exact Owner authorization rules;
-4. continue MS4 panel/shadow integration where it does not conflict with the new Owner Panel contract;
+4. continue MS4 panel/shadow integration where it does not conflict with the accepted Owner Control contract;
 5. Privacy v2 + Task 015 first-party endpoint acceptance.
 
-### Lane B — parallel Adaptive development that is safe before live gates
-1. Task 021 bounded quality-first development executor;
-2. Task 016 baseline content map;
-3. Task 017 NextContentDecision core;
-4. Task 020 Owner Panel V2 slices 1-4: whole-project board, status model, views, truth semantics, Development FinOps view.
+### Lane B — Adaptive development safe before live gates
+1. Task 016 baseline content map;
+2. Task 017 NextContentDecision core;
+3. use the accepted Owner Control + Task 021 executor for bounded execution and review.
 
 ### Lane C — only after AF-0 live acceptance
 1. Task 018 bounded rule-based production experiment;
 2. Task 019 economic evaluation / Feature ROI;
-3. feed accepted Task 019 truth into Owner Panel;
+3. feed accepted Task 019 truth into Owner Control;
 4. decide `KEEP/HOLD/KILL/SCALE`;
 5. only then consider the first measured 50 -> 150 content wave.
 
@@ -272,4 +305,4 @@ First-site Profit Engine ecosystem is complete only when paid acquisition, produ
 
 Adaptive Funnel is economically accepted only when the rule-based treatment has attributable evidence, full incremental feature cost is known, reconciliation is clean, and the Feature Profit Gate is satisfied for scale.
 
-Owner Control V2 is the single local/private view of project truth; its availability must never be a dependency of the public site.
+Owner Control is the single local/private view of project truth and control; its availability must never be a dependency of the public site.
