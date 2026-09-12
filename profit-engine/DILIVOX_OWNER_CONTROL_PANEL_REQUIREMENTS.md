@@ -7,6 +7,7 @@ Branch: `profit-engine`
 Existing implementation to extend: `profit-engine/runtime/profit_engine_runtime/control_panel.py`
 Authority: `profit-engine/PROFIT_ENGINE_AUTHORITY.md`
 Execution project: `profit-engine/ADAPTIVE_FUNNEL_EXECUTION_PROJECT.md`
+Development FinOps: `profit-engine/DEVELOPMENT_FINOPS_POLICY.md`
 
 ## 1. PURPOSE
 
@@ -22,7 +23,7 @@ The panel must answer at a glance:
 5. What is Adaptive Funnel doing and can it be killed safely?
 6. Which content clusters/series are earning or wasting money?
 7. What actually requires Owner action now?
-8. What development work is Codex doing/has completed, without confusing agent activity with product progress?
+8. What development work is GitHub/Codex doing/has completed, why that route was selected, and how much paid development budget remains?
 
 ## 2. SINGLE-PANEL INVARIANT
 
@@ -45,6 +46,7 @@ Read from canonical repository documents and task specs:
 - `PROJECT_STATE.md`;
 - `P0_SYSTEM_COMPLETION_BOARD.md`;
 - `ADAPTIVE_FUNNEL_EXECUTION_PROJECT.md`;
+- `DEVELOPMENT_FINOPS_POLICY.md`;
 - `tasks/TASK-*.md` and machine-readable projection derived from them.
 
 ### Repository facts
@@ -188,14 +190,46 @@ Only actions that really require Owner authorization, including where applicable
 - >20% weekly budget increase;
 - production spend outside approved bound;
 - future AI experiment spend beyond approved bound;
+- Development AI envelope exhausted or proposed extension;
+- Astra use without an already approved Astra envelope;
 - weakening of privacy/compliance/capital safeguards.
 
-Routine development questions are not Owner Gates.
+Routine development questions and normal Codex work inside the approved development envelope are not Owner Gates.
 
 ### 5.7 History
 Accepted milestones, evidence and formerly critical items remain queryable.
 
 Completed work must not disappear and make the project look unfinished from zero.
+
+### 5.8 Development FinOps
+Show development execution economics separately from production economics.
+
+Headline fields:
+- current development task;
+- `execution_route` (`G0|G1|G2|G3|G4`);
+- model (`none|Luna|Terra|Sol|Astra`);
+- `routing_reason`;
+- `why_not_cheaper` where applicable;
+- quality floor;
+- task/package hard cap;
+- actual `DEV_AI_COST`;
+- phase development envelope;
+- remaining envelope;
+- 80% warning state;
+- Astra enabled/disabled.
+
+Summary counters:
+- GitHub-native tasks and OpenAI cost `$0`;
+- Luna task count/cost;
+- Terra task count/cost;
+- Sol task count/cost;
+- Astra task count/cost.
+
+Rules:
+- free route is not displayed as preferable when it cannot meet the task quality floor;
+- normal paid development inside the approved envelope must not be shown as a blocker merely because it costs money;
+- development AI cost must never be mixed with `PRODUCTION_AI_COST`, visitor economics or K5;
+- a stronger route is acceptable when its task record shows why a cheaper route would reduce quality, increase risk or create predictable rework.
 
 ## 6. TASK CARD CONTRACT
 
@@ -213,7 +247,11 @@ Every project task card should expose, where applicable:
 - CI/check evidence;
 - live-site/provider evidence state;
 - economic evidence state;
-- executor (`Central Brain`, `Codex`, `Owner`, `External`);
+- executor (`Central Brain`, `GitHub-native`, `Codex`, `Owner`, `External`);
+- execution route/model;
+- routing reason / why-not-cheaper;
+- quality floor;
+- development hard cap / actual cost where applicable;
 - owner gate yes/no;
 - current action;
 - next action;
@@ -242,15 +280,18 @@ Rules:
 
 ## 8. DEVELOPMENT ACTIVITY
 
-Codex development activity may be shown separately:
+GitHub-native/Codex development activity may be shown separately:
 - current bounded task;
 - repository/branch/SHA boundary;
+- execution/model route;
+- quality/routing rationale;
 - run/check state;
 - expected acceptance evidence;
+- spend/cap;
 - last review result;
 - owner gate if encountered.
 
-Codex activity is not product progress by itself. It becomes progress only after accepted evidence advances a project task.
+Development activity is not product progress by itself. It becomes progress only after accepted evidence advances a project task.
 
 Codex remains development-only and never appears as a production routing actor.
 
@@ -268,6 +309,8 @@ Allowed initial controls:
 Do not add direct provider mutation buttons merely because the panel exists. Existing provider-write governance remains separate and guarded.
 
 If future Start/Pause/Resume/Stop development controls are added like Eksamio, they must dispatch only the bounded development workflow and must not grant merge/deploy/provider-write authority.
+
+Within an approved development envelope, those controls may route directly to GitHub-native/Luna/Terra/Sol according to the task quality/capability classification without an extra Owner confirmation per ordinary task.
 
 ## 10. SAFETY / ISOLATION
 
@@ -296,17 +339,20 @@ Accepted only when:
 11. no provider secret is needed in browser;
 12. no provider write is possible from ordinary panel refresh/render;
 13. Codex remains development-only;
-14. tests verify stage/task completeness and status non-upgrade rules.
+14. tests verify stage/task completeness and status non-upgrade rules;
+15. Development FinOps view shows route/model/quality rationale/caps/actual DEV_AI_COST/envelope balance;
+16. a free route cannot be selected by policy when the task contract requires a higher quality/capability route;
+17. normal Codex spend inside the approved envelope does not create a false Owner Gate.
 
 ## 12. IMPLEMENTATION ORDER
 
 1. define machine-readable whole-project board projection;
-2. extend current snapshot model with project/adaptive/content facts;
+2. extend current snapshot model with project/adaptive/content/development-FinOps facts;
 3. add read-only stage rail + views to existing panel;
 4. add GitHub/evidence adapter where appropriate;
 5. add conflict/staleness detection;
 6. add AF experiment/economics view;
 7. add content-wave economics view;
-8. add separate development activity block;
-9. test completeness/status semantics;
+8. add separate development activity/FinOps block;
+9. test completeness/status semantics/quality-routing semantics;
 10. only then consider optional bounded development workflow controls.
