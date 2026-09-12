@@ -27,7 +27,7 @@ class OwnerControlV2Tests(unittest.TestCase):
     def test_panel_does_not_gain_provider_write_controls(self) -> None:
         self.assertNotIn("Direct.write", HTML)
         self.assertNotIn("YAN.write", HTML)
-        self.assertIn("provider writes", HTML.lower())
+        self.assertIn("provider-write endpoint", HTML.lower())
 
 
 if __name__ == "__main__":
