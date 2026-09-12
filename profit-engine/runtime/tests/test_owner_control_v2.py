@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import json
+import tempfile
+from pathlib import Path
 import unittest
+from unittest.mock import patch
 
+from profit_engine_runtime import development_status
 from profit_engine_runtime.development_status import (
     DEV_WORKFLOW_PATH,
     PREFLIGHT_WORKFLOW_PATH,
@@ -44,12 +49,47 @@ class OwnerControlV2Tests(unittest.TestCase):
         self.assertEqual(_latest_workflow_run(payload, PREFLIGHT_WORKFLOW_PATH)["id"], 1)
         self.assertEqual(_latest_workflow_run(payload, DEV_WORKFLOW_PATH)["id"], 2)
 
+    def test_latest_request_exposes_route_model_reason_and_cap(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            request = {
+                "request_id": "req-test",
+                "created_at": "2026-09-12T18:00:00+00:00",
+                "task_id": "TASK-017",
+                "task_file": "profit-engine/tasks/TASK-017-NEXT-CONTENT-DECISION-CORE.md",
+                "base_sha": "a" * 40,
+                "task_budget_usd": "0.75",
+                "execute": True,
+                "allowed_paths": ["profit-engine/runtime"],
+                "check_profiles": ["runtime_unit"],
+                "task_descriptor": {
+                    "task_id": "TASK-017",
+                    "new_code": True,
+                    "quality_floor": "production-grade",
+                },
+            }
+            (root / "req-test.json").write_text(json.dumps(request), encoding="utf-8")
+            with patch.object(development_status, "DEV_REQUEST_DIR", root):
+                current = development_status._load_latest_request()
+        self.assertEqual(current["task_id"], "TASK-017")
+        self.assertEqual(current["execution_route"], "G2")
+        self.assertEqual(current["model_route"], "gpt-5.6-terra")
+        self.assertEqual(current["task_budget_usd"], "0.75")
+        self.assertIn("Terra", current["routing_reason"])
+        self.assertIn("not confidently sufficient", current["why_not_cheaper"])
+
     def test_single_panel_contains_dev_visibility(self) -> None:
         html = build_html()
         self.assertIn("Разработка · API Codex", html)
         self.assertIn('id="devApiState"', html)
         self.assertIn('id="devEnvelope"', html)
         self.assertIn('id="devSpent"', html)
+        self.assertIn('id="devRemaining"', html)
+        self.assertIn('id="devTaskId"', html)
+        self.assertIn('id="devModel"', html)
+        self.assertIn('id="devReason"', html)
+        self.assertIn('id="devWhyNotCheaper"', html)
+        self.assertIn('id="devRunLink"', html)
         self.assertIn("renderDevelopment", html)
         self.assertEqual(html, HTML)
 
