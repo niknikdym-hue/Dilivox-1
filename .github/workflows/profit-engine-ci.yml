@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - profit-engine
+      - brain/task-021-quality-first-dev-executor
   pull_request:
     branches:
       - profit-engine
@@ -39,6 +40,9 @@ jobs:
 
       - name: Node tests
         run: node --test profit-engine/sites/dilivox/tests/*.test.cjs
+
+      - name: Development budget proxy self-test
+        run: node profit-engine/runtime/dev_budget_proxy.mjs --self-test
 
       - name: Validate JSON artifacts
         run: |
