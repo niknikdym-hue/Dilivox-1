@@ -49,6 +49,18 @@ class ControlPanelInstallerContractTests(unittest.TestCase):
         self.assertIn('profit_engine_runtime.owner_control_v2 --open-two', self.installer)
         self.assertEqual(1, self.installer.count('<key>CFBundleIdentifier</key><string>ru.dilivox.profit-engine</string>'))
 
+    def test_real_app_is_on_desktop_and_legacy_location_is_only_a_symlink(self) -> None:
+        self.assertIn('APP="$HOME/Desktop/Profit Engine.app"', self.installer)
+        self.assertIn('LEGACY_APP="$HOME/Applications/Profit Engine.app"', self.installer)
+        self.assertIn('mkdir -p "$INSTALL_ROOT" "$HOME/Applications" "$HOME/Desktop"', self.installer)
+        self.assertIn('rm -rf "$LEGACY_APP"', self.installer)
+        self.assertIn('ln -s "$APP" "$LEGACY_APP"', self.installer)
+        build_pos = self.installer.index('cat > "$APP/Contents/Info.plist"')
+        link_pos = self.installer.index('ln -s "$APP" "$LEGACY_APP"')
+        validate_pos = self.installer.index('[[ ! -x "$APP/Contents/MacOS/ProfitEngine" ]]')
+        self.assertLess(build_pos, validate_pos)
+        self.assertLess(validate_pos, link_pos)
+
 
 if __name__ == "__main__":
     unittest.main()
